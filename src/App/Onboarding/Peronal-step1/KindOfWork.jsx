@@ -25,7 +25,6 @@ export default function KindOfWork () {
         source
       }))
 
-
     dispatch(saveKindsOfWorks(selectedWorks))
   }, [works, dispatch])
   return (

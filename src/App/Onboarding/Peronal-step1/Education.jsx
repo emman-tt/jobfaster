@@ -1,32 +1,47 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { QuestionHeader } from '../../../components/QuestionHeader'
 import { Plus, Trash2 } from 'lucide-react'
+import { useDispatch } from 'react-redux'
+import { saveEducation } from '../../../store/personalSlice'
 
 export default function Education () {
+  const [edu, setEdu] = useState([
+    {
+      id: 1,
+      level: '',
+      instituition: '',
+      degree: '',
+      year: ''
+    }
+  ])
+  const dispatch = useDispatch()
   function removeEducation (id) {
     setEdu(prev => prev.filter(item => item.id != id))
   }
   function addNewEducation () {
     const newField = {
       id: crypto.randomUUID(),
-      level: 'Level of Education',
-      instituition: 'Instituition',
-      degree: 'Degree',
-      year: 'Graduation year'
+      level: '',
+      instituition: '',
+      degree: '',
+      year: ''
     }
 
     setEdu([...edu, newField])
   }
 
-  const [edu, setEdu] = useState([
-    {
-      id: 1,
-      level: 'Level of Education',
-      instituition: 'Instituition',
-      degree: 'Degree',
-      year: 'Graduation year'
-    }
-  ])
+  function handleChange (e, id) {
+    const { value, name } = e.target
+
+    setEdu(prev =>
+      prev.map(item => (item.id === id ? { ...item, [name]: value } : item))
+    )
+  }
+
+  useEffect(() => {
+    dispatch(saveEducation(edu))
+  }, [edu, dispatch])
+
   return (
     <section className='w-full mt-10'>
       <QuestionHeader
@@ -56,23 +71,29 @@ export default function Education () {
             </div>
             <input
               name='level'
+              onChange={e => handleChange(e, item.id)}
               className='w-full border text-sm border-slate-300 rounded-xl text-black outline-0 py-3 pl-10 pr-3'
-              placeholder={item.level}
+              placeholder={'level'}
             />
             <input
               name='institution'
+              onChange={e => handleChange(e, item.id)}
               className='w-full border text-sm border-slate-300 rounded-xl text-black outline-0 py-3 pl-10 pr-3'
-              placeholder={item.instituition}
+              placeholder={'institution'}
             />
             <input
               name='degree'
+              type='text'
+              onChange={e => handleChange(e, item.id)}
               className='w-full border text-sm border-slate-300 rounded-xl text-black outline-0 py-3 pl-10 pr-3'
-              placeholder={item.degree}
+              placeholder={'degree'}
             />
             <input
-              name='graduation'
+              name='year'
+              type='number'
+              onChange={e => handleChange(e, item.id)}
               className='w-full border text-sm border-slate-300 rounded-xl text-black outline-0 py-3 pl-10 pr-3'
-              placeholder={item.year}
+              placeholder={'year'}
             />
           </section>
         ))}
