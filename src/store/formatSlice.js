@@ -6,7 +6,8 @@ const initialState = {
   summaryType: 'Professional',
   fileType: 'PDF',
   relevantBulletCount: 4,
-  lessRelevantBulletCount: 2
+  lessRelevantBulletCount: 2,
+  bulletPointsMetricsAndCompany: 'Italic,font-600,'
 }
 export const formatSlice = createSlice({
   name: 'format',
