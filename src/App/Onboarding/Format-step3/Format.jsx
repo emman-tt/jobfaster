@@ -1,12 +1,12 @@
 // import { useState } from 'react'
-import { QuestionHeader } from '../../components/QuestionHeader'
-import { BackNext } from '../../components/BackNext'
-import { TwoButtonsAnswer } from '../../components/TwoButtonsAnswer'
-import FileType from './Format-step3/fileType'
-import SummaryType from './Format-step3/SummaryType'
-import OnlineLinks from './Format-step3/OnlineLinks'
-import BulletPoints from './Format-step3/BulletPoinst'
-import Hobbies from './Format-step3/Hobbies'
+import { QuestionHeader } from '../../../components/QuestionHeader'
+import { BackNext } from '../../../components/BackNext'
+import { TwoButtonsAnswer } from '../../../components/TwoButtonsAnswer'
+import FileType from './fileType'
+import SummaryType from './SummaryType'
+import OnlineLinks from './OnlineLinks'
+import BulletPoints from './BulletPoinst'
+import Hobbies from './Hobbies'
 export default function Format () {
   return (
     <section className=' w-full pb-20  h-full p-10 px-15 flex flex-col pt-5 rounded-2xl bg-white'>

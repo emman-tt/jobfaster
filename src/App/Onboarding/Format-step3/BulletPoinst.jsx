@@ -6,6 +6,9 @@ export default function BulletPoints () {
   const { relevantBulletCount, lessRelevantBulletCount } = useSelector(
     state => state.format
   )
+
+  //   In the points always include metrics(time,values,percentages,amounts) in the bulet points to make it catchy
+
   return (
     <section className='mt-15'>
       <QuestionHeader question='How many bullet points per job/experience/projects/volunteers should you include?'>

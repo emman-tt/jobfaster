@@ -160,7 +160,7 @@ export default function Jobs () {
 
       <BackNext
         nextLink='/onboarding/format'
-        previousLink='/onboarding/role'
+        previousLink='/onboarding/personal'
         className={'mt-13 px-10'}
       />
     </section>

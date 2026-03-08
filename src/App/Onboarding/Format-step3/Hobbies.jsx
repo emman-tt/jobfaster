@@ -2,6 +2,7 @@ import { QuestionHeader } from '../../../components/QuestionHeader'
 import { TwoButtonsAnswer } from '../../../components/TwoButtonsAnswer'
 import { TextArea } from '../../../components/TextArea'
 export default function Hobbies () {
+    
   return (
     <section className='mt-15'>
       <QuestionHeader question='Do you want to include non-traditional sections like hobbies in your cover letter, If yes please list them in numeric order in the box'>
