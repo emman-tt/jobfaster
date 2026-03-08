@@ -1,0 +1,16 @@
+export const TwoButtonsAnswer = ({ options = [1, 2], callback, className }) => {
+  return options.map(item => (
+    <div
+      key={item.id}
+      onClick={callback}
+      className={`flex  gap-5 w-full border cursor-pointer rounded-xl py-4 px-2 pl-5 border-slate-200 hover:shadow-lg transition-all duration-200 ease items-center ${className}`}
+    >
+      <div
+        className={`border ${
+          item.selected && 'border-4'
+        } border-[#ec5b13] inline-block w-4 h-4  rounded-full`}
+      ></div>
+      <div className='text-sm font-semibold'>{item.name}</div>
+    </div>
+  ))
+}
