@@ -1,8 +1,38 @@
-export const TwoButtonsAnswer = ({ options = [1, 2], callback, className }) => {
-  return options.map(item => (
+import { useEffect, useState } from 'react'
+
+export const TwoButtonsAnswer = ({
+  options = [1, 2],
+  className,
+  defaultSelect = ''
+}) => {
+  const [biOptions, setBiOptions] = useState([
+    { id: options[0], selected: false, name: options[0] },
+    { id: options[1], selected: true, name: options[1] }
+  ])
+
+  useEffect(() => {
+    setBiOptions(prev =>
+      prev.map(item =>
+        item.name === defaultSelect
+          ? { ...item, selected: true }
+          : { ...item, selected: false }
+      )
+    )
+  }, [defaultSelect])
+
+  function selector (id) {
+    setBiOptions(prev =>
+      prev.map(item =>
+        item.id === id
+          ? { ...item, selected: true }
+          : { ...item, selected: false }
+      )
+    )
+  }
+  return biOptions.map(item => (
     <div
       key={item.id}
-      onClick={callback}
+      onClick={() => selector(item.id)}
       className={`flex  gap-5 w-full border cursor-pointer rounded-xl py-4 px-2 pl-5 border-slate-200 hover:shadow-lg transition-all duration-200 ease items-center ${className}`}
     >
       <div

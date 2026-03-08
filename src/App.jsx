@@ -3,6 +3,7 @@ import Onboarding from './Pages/Onboarding'
 import { Personal } from './App/Onboarding/Personal'
 import Jobs from './App/Onboarding/Job'
 import Format from './App/Onboarding/Format'
+
 function App () {
   return (
     <BrowserRouter>

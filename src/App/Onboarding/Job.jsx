@@ -75,27 +75,6 @@ export default function Jobs () {
         </div>
       </div>
 
-      {/* <section className='w-full flex flex-col mt-8'>
-        <h2 className='mt-4 pl-7 w-max  font-my-font font-semibold text-lg'>
-          What industries are you most interested in?
-        </h2>
-
-        <p className='text-xs text-black/80 flex gap-3 pl-7'>
-          <Info className='w-3 h-3 mt-1 ' />
-          To inject the "missing" keywords that recruiters in that specific
-          field are programmed to look for.
-        </p>
-
-        <div className='grid grid-cols-2 w-full gap-3 px-10 mt-7'>
-          {[1, 2, 3, 4, 5, 6].map(item => (
-            <input className='w-full border text-sm border-black/40 rounded-xl text-black outline-0 py-3.5 pl-10 pr-3' />
-          ))}
-        </div>
-        <button className=' py-4 rounded-2xl bg-orange-100 gap-2 items-center cursor-pointer text-orange-600 justify-center border-0  border-black/60 mt-10  text-sm w-[30%]   flex self-center text-center font-semibold'>
-          <Plus className='w-4 h-4' /> Add new
-        </button>
-      </section> */}
-
       <section className='mt-9'>
         <h2 className='mt-4 pl-7 w-max  font-my-font font-semibold text-lg'>
           What type of company culture/environment do you thrive in?
