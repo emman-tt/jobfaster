@@ -44,7 +44,7 @@ export default function Jobs () {
 
   return (
     <section className=' w-full pb-20  h-full p-10 px-15 flex flex-col pt-5 rounded-2xl bg-white'>
-      <div className='w-full flex items-center'>
+      <section className='w-full flex items-center'>
         <QuestionHeader question='   What specific job titles are you targeting ?'>
           Different industries have distinct language, tone, and
           standards—specialization helps use right keywords
@@ -73,7 +73,7 @@ export default function Jobs () {
             </div>
           )}
         </div>
-      </div>
+      </section>
 
       <section className='mt-9'>
         <h2 className='mt-4 pl-7 w-max  font-my-font font-semibold text-lg'>

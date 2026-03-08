@@ -7,6 +7,7 @@ import SummaryType from './SummaryType'
 import OnlineLinks from './OnlineLinks'
 import BulletPoints from './BulletPoinst'
 import Hobbies from './Hobbies'
+import HeaderStyles from './HeaderStyles'
 export default function Format () {
   return (
     <section className=' w-full pb-20  h-full p-10 px-15 flex flex-col pt-5 rounded-2xl bg-white'>
@@ -34,6 +35,7 @@ export default function Format () {
       </section>
       <BulletPoints />
       <Hobbies />
+      <HeaderStyles />
       <BackNext className={'mt-15'} previousLink='/onboarding/job' />
     </section>
   )
