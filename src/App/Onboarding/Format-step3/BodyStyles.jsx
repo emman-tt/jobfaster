@@ -10,7 +10,7 @@ export default function BodyStyles () {
     },
     size: {
       show: false,
-      selected: 10
+      selected: 11
     },
     align: {
       show: false,
@@ -52,7 +52,7 @@ export default function BodyStyles () {
             </button>
           </div>
           {toggle.font.show && (
-            <ul className=' absolute z-10 bg-white  flex flex-col justify-between p-10 pr-2 gap-4 py-4 overflow-y-scroll h-40  w-full text-black rounded-xl shadow-lg [scrollbar-width:thin]'>
+            <ul className=' absolute z-10 bg-white  flex flex-col  p-10 pr-2 gap-4 py-4 overflow-y-scroll h-40  w-full text-black rounded-xl shadow-lg [scrollbar-width:thin]'>
               {bodyFonts.map(item => (
                 <li
                   onClick={() =>
@@ -167,10 +167,10 @@ export default function BodyStyles () {
       <div className='rounded-2xl bg-[#f3f5f7] mt-5 p-8 w-full'>
         <p
           style={{
-            fontSize: `${toggle.size.selected}px`,
+            fontSize: `${toggle.size.selected}pt`,
             textAlign: toggle.align.selected
           }}
-          className={`font-medium
+          className={`font-medium leading-relaxed
             ${bodyFonts.find(item => item.name === toggle.font.selected).type}`}
         >
           Senior Software Engineer with 5+ years of experience in building
@@ -185,11 +185,11 @@ export default function BodyStyles () {
 
 const bodyFonts = [
   { name: 'Inter', type: 'font-inter' },
-  { name: 'Roboto', type: 'font-roboto' },
-  { name: 'Lato', type: 'font-lato' },
-  { name: 'Open Sans', type: 'font-open' },
-  { name: 'Garamond', type: 'font-garamond' },
-  { name: 'Georgia', type: 'font-georgia' }
+  { name: 'Roboto', type: 'font-roboto' }
+  //   { name: 'Lato', type: 'font-lato' },
+  //   { name: 'Open Sans', type: 'font-open' },
+  //   { name: 'Garamond', type: 'font-garamond' },
+  //   { name: 'Georgia', type: 'font-georgia' }
 ]
 
 const bodyAlign = ['left', 'right', 'center', 'justify']

@@ -10,7 +10,7 @@ export default function BulletStyles () {
     },
     size: {
       show: false,
-      selected: 16
+      selected: 14
     },
     type: {
       show: false,
@@ -167,7 +167,7 @@ export default function BulletStyles () {
       <div className='rounded-2xl bg-[#f3f5f7] mt-5 p-8 w-full'>
         <ul
           style={{
-            fontSize: `${toggle.size.selected}px`,
+            fontSize: `${toggle.size.selected}pt`,
             listStyleType: toggle.type.selected
           }}
           className={` flex flex-col gap-2   font-normal ${
@@ -176,18 +176,18 @@ export default function BulletStyles () {
         >
           <li>
             Developed and maintained
-            <span className='font-semibold'> web applications</span> using{' '}
-            <span className='font-semibold italic'>React</span> and Tailwind
+            <span className='font-semibold'> web applications</span> using
+            <span className='font-semibold italic'> React</span> and Tailwind
             CSS.
           </li>
           <li>
-            Collaborated with cross-functional teams at{' '}
+            Collaborated with cross-functional teams at
             <span className='font-semibold italic'> Microsoft</span> to deliver
             high-quality products.
           </li>
           <li>
-            Optimized application performance by{' '}
-            <span className='font-semibold'>60%</span> speed compared to the
+            Optimized application performance by
+            <span className='font-semibold'> 60%</span> speed compared to the
             previous and improved user experience.
           </li>
         </ul>
@@ -200,11 +200,11 @@ const bulletFonts = [
   { name: 'Inter', type: 'font-inter' },
   { name: 'Roboto', type: 'font-roboto' },
   { name: 'Lato', type: 'font-lato' },
-  { name: 'Open Sans', type: 'font-open' },
-  { name: 'Garamond', type: 'font-garamond' },
-  { name: 'Georgia', type: 'font-georgia' }
+  { name: 'Open Sans', type: 'font-open' }
+  //   { name: 'Garamond', type: 'font-garamond' },
+  //   { name: 'Georgia', type: 'font-georgia' }
 ]
 
 const bulletTypes = ['disc', 'circle', 'square', 'none']
 
-const bulletSize = [14, 15, 16, 17]
+const bulletSize = [12, 13, 14, 15, 16]

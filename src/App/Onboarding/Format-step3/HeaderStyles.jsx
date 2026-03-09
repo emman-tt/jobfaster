@@ -10,7 +10,7 @@ export default function HeaderStyles () {
     },
     size: {
       show: false,
-      selected: 24
+      selected: 20
     },
     align: {
       show: false,
@@ -163,14 +163,17 @@ export default function HeaderStyles () {
         style={{
           fontSize: `${headerSize.find(
             item => item === toggle.size.selected
-          )}px`,
+          )}pt`,
           justifyContent: `${headerAlign.find(
+            item => item === toggle.align.selected
+          )}`,
+          textAlign: `${headerAlign.find(
             item => item === toggle.align.selected
           )}`
         }}
         className={`py-6 ${
           headerFonts.find(item => item.name === toggle.font.selected).type
-        }  h-19 rounded-2xl items-center bg-[#f3f5f7] flex mt-5 font-bold  px-2 w-full`}
+        }  h-22 rounded-2xl items-center bg-[#f3f5f7] flex mt-5 font-bold  px-2 w-full`}
       >
         Emmanuel Acquah | astroverse@gmail.com | Ghana,Accra
       </p>
@@ -188,4 +191,4 @@ const headerFonts = [
 ]
 const headerAlign = ['left', 'right', 'center']
 
-const headerSize = [19, 20, 21, 22, 23, 24, 25]
+const headerSize = [18, 19, 20, 21, 22, 23, 24]

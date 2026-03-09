@@ -31,7 +31,7 @@ export const Personal = () => {
         </div>
       </section>
 
-      <BackNext nextLink='/onboarding/job' className={'mt-25 px-10'} />
+      <BackNext nextLink='/onboarding/experience' className={'mt-25 px-10'} />
     </section>
   )
 }
