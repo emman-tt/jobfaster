@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { QuestionHeader } from '../../../components/QuestionHeader'
 import { ChevronDown } from 'lucide-react'
+import useClickOutside from '../../../hooks/useClick'
 
 export default function BodyStyles () {
   const [toggle, setToggles] = useState({
@@ -17,6 +18,23 @@ export default function BodyStyles () {
       selected: 'left'
     }
   })
+  const allRef = useClickOutside(() =>
+    setToggles({
+      ...toggle,
+      align: {
+        ...toggle.align,
+        show: false
+      },
+      size: {
+        ...toggle.size,
+        show: false
+      },
+      font: {
+        ...toggle.font,
+        show: false
+      }
+    })
+  )
 
   return (
     <section className='px-5 mt-15 flex flex-col'>
@@ -27,7 +45,7 @@ export default function BodyStyles () {
         styling of body text.
       </QuestionHeader>
 
-      <section className='flex w-full px-3 mt-5 gap-3'>
+      <section ref={allRef} className='flex w-full px-3 mt-5 gap-3'>
         {/* Choose Font */}
         <div className=' relative w-full  '>
           <div

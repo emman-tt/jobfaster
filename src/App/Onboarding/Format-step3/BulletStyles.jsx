@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { QuestionHeader } from '../../../components/QuestionHeader'
 import { ChevronDown } from 'lucide-react'
+import useClickOutside from '../../../hooks/useClick'
 
 export default function BulletStyles () {
   const [toggle, setToggles] = useState({
@@ -18,6 +19,24 @@ export default function BulletStyles () {
     }
   })
 
+  const allRef = useClickOutside(() =>
+    setToggles({
+      ...toggle,
+      font: {
+        ...toggle.font,
+        show: false
+      },
+      size: {
+        ...toggle.size,
+        show: false
+      },
+      type: {
+        ...toggle.type,
+        show: false
+      }
+    })
+  )
+
   return (
     <section className='px-5 mt-15 flex flex-col'>
       <QuestionHeader question="Let's build the best styling and fonts of your Bullet text. ">
@@ -27,7 +46,7 @@ export default function BulletStyles () {
         bullet points.
       </QuestionHeader>
 
-      <section className='flex w-full px-3 mt-5 gap-3'>
+      <section ref={allRef} className='flex w-full px-3 mt-5 gap-3'>
         {/* Choose Font */}
         <div className=' relative w-full  '>
           <div

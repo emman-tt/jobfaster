@@ -30,5 +30,9 @@ export const personalSlice = createSlice({
   }
 })
 
-export const { saveContactDetails, saveSkillsAndTools, saveKindsOfWorks, saveEducation } =
-  personalSlice.actions
+export const {
+  saveContactDetails,
+  saveSkillsAndTools,
+  saveKindsOfWorks,
+  saveEducation
+} = personalSlice.actions

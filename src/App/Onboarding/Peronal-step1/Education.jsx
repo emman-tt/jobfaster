@@ -43,7 +43,7 @@ export default function Education () {
   }, [edu, dispatch])
 
   return (
-    <section className='w-full mt-10'>
+    <section className='w-full mt-20'>
       <QuestionHeader
         question='  What is your highest level of education institution, degree, and
         graduation year?'
