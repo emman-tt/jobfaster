@@ -48,9 +48,8 @@ export default function Education () {
         question='  What is your highest level of education institution, degree, and
         graduation year?'
       >
-        If your education is on the higher level like University,Masters PHd
-        etc. please avoid add lower educations like high school unless you are a
-        fresh graduate.
+        List your most advanced degrees. Skip high school unless it's your most
+        recent academic achievement.
       </QuestionHeader>
       <section className='flex flex-col  gap-0'>
         {edu.map((item, i) => (

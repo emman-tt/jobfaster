@@ -31,7 +31,8 @@ export default function KindOfWork () {
     <section className='mt-15'>
       <QuestionHeader question='What kind of work do you do ?'>
         Different industries have distinct language, tone, and
-        standards—specialization helps use right keywords
+        standards—specialization helps use right keywords.Its best to select at
+        least one.
       </QuestionHeader>
 
       <section className='grid grid-cols-2 p-6 gap-x-2 w-full gap-y-2'>

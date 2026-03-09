@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { QuestionHeader } from '../../../components/QuestionHeader'
 import { saveContactDetails } from '../../../store/personalSlice'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 export default function Address () {
   const dispatch = useDispatch()
   const [formData, setFormData] = useState({
@@ -10,6 +10,7 @@ export default function Address () {
     location: '',
     email: ''
   })
+  const { errors } = useSelector(state => state.personal)
 
   const handleChange = e => {
     const { name, value } = e.target
@@ -20,7 +21,11 @@ export default function Address () {
   }
 
   useEffect(() => {
-    dispatch(saveContactDetails(formData))
+    const delayDebounce = setTimeout(() => {
+      dispatch(saveContactDetails(formData))
+    }, 500)
+
+    return () => clearTimeout(delayDebounce)
   }, [formData, dispatch])
 
   return (
@@ -33,6 +38,9 @@ export default function Address () {
       <ul className='text-black px-10 grid-cols-2 grid gap-4 mt-4 w-full'>
         <li className='flex flex-col  gap-1 w-full '>
           <div className='  text-sm font-semibold pl-5'>Full name</div>
+          <p className='text-red-500 font-semibold text-xs pl-5'>
+            {errors.fullName?.length > 0 && errors.fullName}
+          </p>
           <input
             type='text'
             required
@@ -44,6 +52,9 @@ export default function Address () {
         </li>
         <li className='flex flex-col  gap-1 w-full '>
           <div className='  text-sm font-semibold pl-5'>Phone number</div>
+          <p className='text-red-500 font-semibold text-xs pl-5'>
+            {errors.phone?.length > 0 && errors.phone}
+          </p>
           <input
             type='tel'
             required
@@ -57,6 +68,9 @@ export default function Address () {
           <div className='  text-sm font-semibold pl-5'>
             Country and City/State
           </div>
+          <p className='text-red-500 font-semibold text-xs pl-5'>
+            {errors.location?.length > 0 && errors.location}
+          </p>
           <input
             name='location'
             type='text'
@@ -68,6 +82,9 @@ export default function Address () {
         </li>
         <li className='flex flex-col  gap-1 w-full '>
           <div className='  text-sm font-semibold pl-5'>Email</div>
+          <p className='text-red-500 font-semibold text-xs pl-5'>
+            {errors.email?.length > 0 && errors.email}
+          </p>
           <input
             name='email'
             required

@@ -1,6 +1,6 @@
 import { NavLink } from 'react-router-dom'
 
-export function BackNext ({ className, nextLink = '', previousLink = '' }) {
+export function BackNext ({ className, onClick, previousLink }) {
   return (
     <section className={`w-full flex justify-between  ${className}`}>
       <NavLink
@@ -9,12 +9,12 @@ export function BackNext ({ className, nextLink = '', previousLink = '' }) {
       >
         Previous
       </NavLink>
-      <NavLink
-        to={nextLink}
+      <button
+        onClick={onClick}
         className='bg-[#fd9159] hover:bg-orange-600 rounded-2xl text-white text-center font-semibold text-sm w-40 py-4'
       >
         Next
-      </NavLink>
+      </button>
     </section>
   )
 }

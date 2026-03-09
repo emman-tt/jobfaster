@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { skills_and_tools } from '../../../utils/PersonalSkills'
 import { QuestionHeader } from '../../../components/QuestionHeader'
 import { Search, X } from 'lucide-react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { saveSkillsAndTools } from '../../../store/personalSlice'
 import useClickOutside from '../../../hooks/useClick'
 export default function ToolsAndSkills () {
@@ -10,7 +10,7 @@ export default function ToolsAndSkills () {
   const [selectedSkills, setSelectedSkills] = useState([])
 
   const [isOpen, setIsOpen] = useState(false)
-
+  const error = useSelector(state => state.personal.errors.skillsAndTools)
   const popupRef = useClickOutside(() => setIsOpen(false))
   const dispatch = useDispatch()
   const filteredSkills = useMemo(() => {
@@ -44,7 +44,7 @@ export default function ToolsAndSkills () {
     <section className='flex mt-15 flex-col'>
       <div className='w-full flex items-center'>
         <QuestionHeader
-          question='  What technical skills ( tools, programming languages, equipment) do
+          question='  What technical skills ( tools, programming languages, equipment,software,programs) do
             you use regularly ?'
         >
           List the tools you use daily. Pro-tip: Include at least 3 libraries
@@ -79,10 +79,21 @@ export default function ToolsAndSkills () {
                   {item}
                 </span>
               ))}
+              <p
+                onClick={() => {
+                  addToSkills(searchInput)
+                }}
+                className='text-black cursor-pointer'
+              >
+                {searchInput.length > 2 && searchInput}
+              </p>
             </div>
           )}
         </div>
       </div>
+      <p className='text-red-500 font-semibold text-xs pl-14 mt-4'>
+        {error?.length > 0 && error}
+      </p>
       <section
         className={` ${
           isOpen ? 'w-[60%]' : 'w-full'

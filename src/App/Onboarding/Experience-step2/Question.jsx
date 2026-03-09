@@ -76,7 +76,7 @@ export default function Question () {
             <div
               className={`transition-all duration-300 ease-in-out ${
                 activeAccordion === item.id
-                  ? 'max-h-[500px]  opacity-100 py-6'
+                  ? 'max-h-125  opacity-100 py-6'
                   : 'max-h-0 opacity-0'
               } px-8   overflow-hidden`}
             >

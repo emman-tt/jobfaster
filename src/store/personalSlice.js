@@ -9,7 +9,8 @@ const initialState = {
   },
   skillsAndTools: [],
   kindsOfWork: [],
-  education: []
+  education: [],
+  errors: {}
 }
 export const personalSlice = createSlice({
   name: 'personal',
@@ -26,6 +27,9 @@ export const personalSlice = createSlice({
     },
     saveEducation: (state, action) => {
       state.education = action.payload
+    },
+    saveErrors: (state, action) => {
+      state.errors = action.payload
     }
   }
 })
@@ -34,5 +38,7 @@ export const {
   saveContactDetails,
   saveSkillsAndTools,
   saveKindsOfWorks,
-  saveEducation
+  saveEducation,
+  saveErrors,
+  clearErrors
 } = personalSlice.actions
