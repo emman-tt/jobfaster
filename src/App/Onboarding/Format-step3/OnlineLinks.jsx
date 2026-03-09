@@ -1,10 +1,13 @@
 import { useState } from 'react'
 import { QuestionHeader } from '../../../components/QuestionHeader'
-import {onlineProfiles} from '../../../utils/links'
+import { onlineProfiles } from '../../../utils/links'
 import { ChevronDown, Trash2 } from 'lucide-react'
+import useClickOutside from '../../../hooks/useClick'
 export default function OnlineLinks () {
   const [links, setLinks] = useState(onlineProfiles)
   const [linksBox, showLinksBox] = useState(false)
+
+  const popupRef = useClickOutside(() => showLinksBox(false))
   function addNewLink (id) {
     setLinks(prev =>
       prev.map(item => (item.id === id ? { ...item, selected: true } : item))
@@ -17,7 +20,7 @@ export default function OnlineLinks () {
     )
   }
   return (
-    <section className='mt-15 '>
+    <section ref={popupRef} className='mt-15 '>
       <QuestionHeader question=' Do you want to include links to your portfolio, GitHub, or online profiles?'>
         Hyperlinked portfolios give immediate access to work samples,ensure
         links are working and not very long

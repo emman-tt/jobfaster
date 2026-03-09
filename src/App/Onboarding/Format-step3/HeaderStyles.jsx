@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { QuestionHeader } from '../../../components/QuestionHeader'
 import { ChevronDown } from 'lucide-react'
+import useClickOutside from '../../../hooks/useClick'
 
 export default function HeaderStyles () {
   const [toggle, setToggles] = useState({
@@ -17,14 +18,61 @@ export default function HeaderStyles () {
       selected: 'center'
     }
   })
+  // const fontRef = useClickOutside(() =>
+  //   setToggles({
+  //     ...toggle,
+  //     font: {
+  //       ...toggle.font,
+  //       show: false
+  //     }
+  //   })
+  // )
+  // const fontSizeRef = useClickOutside(() =>
+  //   setToggles({
+  //     ...toggle,
+  //     size: {
+  //       ...toggle.size,
+  //       show: false
+  //     }
+  //   })
+  // )
+  // const fontAlignRef = useClickOutside(() =>
+  //   setToggles({
+  //     ...toggle,
+  //     align: {
+  //       ...toggle.align,
+  //       show: false
+  //     }
+  //   })
+  // )
+
+  const allRef = useClickOutside(() =>
+    setToggles({
+      ...toggle,
+      align: {
+        ...toggle.align,
+        show: false
+      },
+      size: {
+        ...toggle.size,
+        show: false
+      },
+      font: {
+        ...toggle.font,
+        show: false
+      }
+    })
+  )
   return (
-    <section className='px-5 mt-15 flex flex-col'>
+    <section ref={allRef} className='px-5 mt-15 flex flex-col'>
       <QuestionHeader question="Let's build the best styling and fonts of your Header text. ">
         Note that your header is your email, name , contact and the personal
         details at the very top. The preview Box below is an example to guide
         you. Leaving it untouched results to the default and standard styling of
         headers.
       </QuestionHeader>
+
+      {/* Font type  */}
 
       <section className='flex w-full px-3 mt-5 gap-3'>
         <div className=' relative w-full  '>

@@ -33,7 +33,7 @@ export default function Experience () {
       </div>
       <BackNext
         previousLink='/onboarding/personal'
-        nextLink='/onboarding/format'
+        nextLink='/onboarding/job'
         className={'mt-25 px-10'}
       />
     </section>

@@ -1,16 +1,15 @@
-
-import JobTitle from './Job-step2/JobTitle'
+import JobTitle from './JobTitle'
 import { Info, Plus, Search } from 'lucide-react'
-import { BackNext } from '../../components/BackNext'
-import { QuestionHeader } from '../../components/QuestionHeader'
-import Environment from './Job-step2/Environment'
-import LocationType from './Job-step2/LocationType'
+import { BackNext } from '../../../components/BackNext'
+import { QuestionHeader } from '../../../components/QuestionHeader'
+import Environment from './Environment'
+import LocationType from './LocationType'
 export default function Jobs () {
   return (
     <section className=' w-full pb-20  h-full p-10 px-15 flex flex-col pt-5 rounded-2xl bg-white'>
       <JobTitle />
       <Environment />
-    <LocationType/>
+      <LocationType />
 
       <section className='mt-10 flex flex-col'>
         <h2 className='mt-4 pl-7 w-max  font-my-font font-semibold text-lg'>
@@ -35,7 +34,7 @@ export default function Jobs () {
 
       <BackNext
         nextLink='/onboarding/format'
-        previousLink='/onboarding/personal'
+        previousLink='/onboarding/experience'
         className={'mt-13 px-10'}
       />
     </section>

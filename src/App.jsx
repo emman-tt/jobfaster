@@ -1,7 +1,7 @@
 import { Route, Routes, BrowserRouter, Navigate } from 'react-router-dom'
 import Onboarding from './Pages/Onboarding'
 import { Personal } from './App/Onboarding/Peronal-step1/Personal'
-import Jobs from './App/Onboarding/Job'
+import Jobs from './App/Onboarding/Job-step2/Job'
 import Format from './App/Onboarding/Format-step3/Format'
 import Experience from './App/Onboarding/Experience-step2/Experience'
 
