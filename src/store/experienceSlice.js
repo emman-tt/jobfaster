@@ -20,16 +20,9 @@ const initialState = {
       teamAbilities: '',
       finalResult: ''
     },
-    {
-      id: 3,
-      summary: '',
-      toolsAndSoftware: '',
-      metricsAndValues: '',
-      majorChallengeSolved: '',
-      teamAbilities: '',
-      finalResult: ''
-    }
-  ]
+ 
+  ],
+  errors: []
 }
 export const experienceSlice = createSlice({
   name: 'experience',
@@ -45,8 +38,11 @@ export const experienceSlice = createSlice({
     },
     addExtraField: (state, action) => {
       state.experience = [...state.experience, action.payload]
+    },
+    saveErrors: (state, action) => {
+      state.errors = action.payload
     }
   }
 })
 
-export const { saveExperience,addExtraField } = experienceSlice.actions
+export const { saveExperience, addExtraField,saveErrors } = experienceSlice.actions

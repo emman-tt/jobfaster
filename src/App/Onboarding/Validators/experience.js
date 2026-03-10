@@ -4,8 +4,7 @@ export const validateExperience = experienceArray => {
   const errors = experienceArray.map(exp => {
     const itemErrors = {}
 
-    const followUpKeys = [
-      'summary',
+    const followUps = [
       'toolsAndSoftware',
       'metricsAndValues',
       'majorChallengeSolved',
@@ -13,24 +12,24 @@ export const validateExperience = experienceArray => {
       'finalResult'
     ]
 
-    // 2. Count how many are actually filled out
-    const answeredCount = followUpKeys.filter(
+    const answeredCount = followUps.filter(
       key => exp[key]?.trim().length > 0
     ).length
 
-    // 3. Apply your rules
     if (!exp.summary || exp.summary.trim().length < 10) {
       itemErrors.summary = 'A brief summary of your role is required.'
     }
 
     if (answeredCount < 3) {
-      // General error message if they haven't hit the "3 answers" threshold
-      itemErrors.general = `Please answer at least ${
+      itemErrors.followUps = `Please answer at least ${
         3 - answeredCount
       } more questions to strengthen this experience.`
     }
 
-    if (Object.keys(itemErrors).length > 0) hasError = true
+    if (Object.keys(itemErrors).length > 0) {
+      hasError = true
+      itemErrors.id = exp.id
+    }
     return itemErrors
   })
 

@@ -2,38 +2,46 @@ import { useState } from 'react'
 import { QuestionHeader } from '../../../components/QuestionHeader'
 import { BackNext } from '../../../components/BackNext'
 import { ChevronDown } from 'lucide-react'
-
-export default function Question ({ onChange }) {
+import { useSelector } from 'react-redux'
+export default function Question ({ onChange, questionId }) {
   const [activeAccordion, setActiveAccordion] = useState(null)
-  const [followUps, setFollowUps] = useState({
-    p1: '',
-    p2: '',
-    p3: '',
-    p4: '',
-    p5: ''
-  })
 
-  const handleChange = (id, value) => {
-    setFollowUps(prev => ({
-      ...prev,
-      [id]: value
-    }))
-  }
+  const { errors } = useSelector(state => state.experience)
 
   const toggleAccordion = id => {
     setActiveAccordion(prev => (prev === id ? null : id))
   }
 
+  function findSummaryError () {
+    const msg = errors.find(item => item.id == questionId)?.summary
+    if (!msg || msg.length === 0) {
+      return
+    }
+
+    return msg
+  }
+  function findFollowUpError () {
+    const msg = errors.find(item => item.id == questionId)?.followUps
+    if (!msg || msg.length === 0) {
+      return
+    }
+
+    return msg
+  }
+
   return (
-    <section className='w-full'>
+    <section className='w-full '>
       {/* Main Question */}
       <section className='w-full'>
-        <QuestionHeader question='Tell me about a major experience you want on your resume. This could be a Job, a Technical Project, an Internship, or Volunteer Work What was your role and what did you primarily do?'>
+        <QuestionHeader question='Talk  about a major experience you want on your resume. This could be a Job, a Technical Project, an Internship, or Volunteer Work. What was your role and what did you primarily do?'>
           Start with the most relevant or recent role. This forms the foundation
           of your experience section.
         </QuestionHeader>
 
-        <div className='w-[80%] px-10 flex items-center gap-7 mt-6'>
+        <div className='w-[80%] px-10 flex items-center flex-col mt-6'>
+          <p className='text-red-500 self-start pb-2 font-semibold text-xs pl-5'>
+            {findSummaryError()}
+          </p>
           <textarea
             onChange={onChange}
             rows={5}
@@ -45,56 +53,61 @@ export default function Question ({ onChange }) {
       </section>
 
       {/* Dynamic Follow-up Accordion */}
-      <div className='flex flex-col gap-4 mt-10 w-full  px-10'>
+      <div className='flex flex-col gap-0 mt-10 w-full  px-10'>
+        <p className='text-red-500 self-start  font-semibold text-xs pl-5'>
+          {findFollowUpError()}
+        </p>
         <h3 className='font-bold text-lg text-slate-800 mb-2'>
-          Boost your experience details (Answer at least Two(2) )
+          Boost your experience details (Answer at least Three(3) )
         </h3>
-        {condensedFollowUps.map(item => (
-          <div
-            key={item.id}
-            className={`  ${
-              activeAccordion === item.id
-                ? 'border-orange-400 border'
-                : 'border-0'
-            }    rounded-2xl overflow-hidden shadow-sm`}
-          >
-            <button
-              onClick={() => toggleAccordion(item.id)}
-              className='w-full flex justify-between items-center py-5 px-8  cursor-pointer transition-colors'
-            >
-              <span className='font-semibold text-sm text-slate-700'>
-                {item.label}
-              </span>
-              <ChevronDown
-                className={`w-5 h-5 text-slate-500 transition-transform duration-300 ${
-                  activeAccordion === item.id ? 'rotate-180' : ''
-                }`}
-              />
-            </button>
-
+        <div className='flex flex-col gap-3'>
+          {condensedFollowUps.map(item => (
             <div
-              className={`transition-all duration-300 ease-in-out ${
+              key={item.id}
+              className={`  ${
                 activeAccordion === item.id
-                  ? 'max-h-125  opacity-100 py-6'
-                  : 'max-h-0 opacity-0'
-              } px-8   overflow-hidden`}
+                  ? 'border-orange-400 border'
+                  : 'border-0'
+              }    rounded-2xl overflow-hidden shadow-sm`}
             >
-              <QuestionHeader question={item.question}>
-                {item.insight}
-              </QuestionHeader>
-
-              <div className='mt-6'>
-                <textarea
-                  onChange={onChange}
-                  rows={4}
-                  name={item.name}
-                  placeholder={`Tell us more about ${item.label.toLowerCase()}...`}
-                  className='w-full border text-sm  rounded-xl text-black outline-0 py-4 px-6 focus:border-[#ec5b13] transition-colors'
+              <button
+                onClick={() => toggleAccordion(item.id)}
+                className='w-full flex justify-between items-center py-5 px-8  cursor-pointer transition-colors'
+              >
+                <span className='font-semibold text-sm text-slate-700'>
+                  {item.label}
+                </span>
+                <ChevronDown
+                  className={`w-5 h-5 text-slate-500 transition-transform duration-300 ${
+                    activeAccordion === item.id ? 'rotate-180' : ''
+                  }`}
                 />
+              </button>
+
+              <div
+                className={`transition-all duration-300 ease-in-out ${
+                  activeAccordion === item.id
+                    ? 'max-h-125  opacity-100 py-6'
+                    : 'max-h-0 opacity-0'
+                } px-8   overflow-hidden`}
+              >
+                <QuestionHeader question={item.question}>
+                  {item.insight}
+                </QuestionHeader>
+
+                <div className='mt-6'>
+                  <textarea
+                    onChange={onChange}
+                    rows={4}
+                    name={item.name}
+                    placeholder={`Tell us more about ${item.label.toLowerCase()}...`}
+                    className='w-full border text-sm  rounded-xl text-black outline-0 py-4 px-6 focus:border-[#ec5b13] transition-colors'
+                  />
+                </div>
               </div>
             </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
     </section>
   )
