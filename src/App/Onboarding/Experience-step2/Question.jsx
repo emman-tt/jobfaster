@@ -54,12 +54,12 @@ export default function Question ({ onChange, questionId }) {
 
       {/* Dynamic Follow-up Accordion */}
       <div className='flex flex-col gap-0 mt-10 w-full  px-10'>
-        <p className='text-red-500 self-start  font-semibold text-xs pl-5'>
-          {findFollowUpError()}
-        </p>
         <h3 className='font-bold text-lg text-slate-800 mb-2'>
           Boost your experience details (Answer at least Three(3) )
         </h3>
+        <p className='text-red-500 self-start  font-semibold text-xs pl-5'>
+          {findFollowUpError()}
+        </p>
         <div className='flex flex-col gap-3'>
           {condensedFollowUps.map(item => (
             <div

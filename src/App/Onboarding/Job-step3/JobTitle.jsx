@@ -1,15 +1,16 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { Job_titles } from '../../../utils/PersonalSkills'
 import { QuestionHeader } from '../../../components/QuestionHeader'
 import { Search, X } from 'lucide-react'
 import useClickOutside from '../../../hooks/useClick'
-
+import { useDispatch } from 'react-redux'
+import { saveJobTitles } from '../../../store/jobSlice'
 export default function JobTitle () {
   const [searchInput, setSearchInput] = useState('')
   const [selectedSkills, setSelectedSkills] = useState([])
 
   const [isOpen, setIsOpen] = useState(false)
-
+  const dispatch = useDispatch()
   const popupRef = useClickOutside(() => setIsOpen(false))
 
   function removeSkills (input) {
@@ -26,6 +27,10 @@ export default function JobTitle () {
     setSelectedSkills(prev => [...prev, input])
   }
 
+  useEffect(() => {
+    dispatch(saveJobTitles(selectedSkills))
+  }, [selectedSkills, dispatch])
+
   const filteredTitles = useMemo(() => {
     const query = searchInput.toLowerCase().trim()
     if (query === '') {
@@ -37,17 +42,17 @@ export default function JobTitle () {
     })
   }, [searchInput])
   return (
-    <section
-      ref={popupRef}
-      className='w-full  flex-col  relative flex items-center'
-    >
+    <section className='w-full  flex-col  relative flex items-center'>
       <div className='w-full flex items-center'>
-        <QuestionHeader question='What specific job titles are you targeting ?'>
+        <QuestionHeader question='What specific job titles are you targeting ? (optional)'>
           Different industries have distinct language, tone, and
           standards—specialization helps use right keywords
         </QuestionHeader>
 
-        <div className='flex relative border rounded-2xl items-center gap-5 py-3 ml-15 mt-4 self-end  w-[60%] px-10 border-black'>
+        <div
+          ref={popupRef}
+          className='flex relative border rounded-2xl items-center gap-5 py-3 ml-15 mt-4 self-end  w-[60%] px-10 border-black'
+        >
           <Search className='w-6 h-6' />
           <input
             type='text'
@@ -62,18 +67,18 @@ export default function JobTitle () {
           {/* Suggestion Box */}
           {isOpen && searchInput.length > 0 && (
             <div className='absolute shadow-sm rounded-xl z-4 w-full -bottom-42 font-mono overflow-y-scroll overflow-hidden h-40 p-8 pt-2 text-sm font-light bg-white gap-1.5 flex flex-col left-0 right-0'>
-              {filteredTitles.map(item => (
+              {filteredTitles.map((item, i) => (
                 <span
                   onClick={() => {
                     addToSkills(item)
                   }}
-                  key={item}
+                  key={`item${i}`}
                   className=' cursor-pointer hover:text-orange-500'
                 >
                   {item}
                 </span>
               ))}
-              <p className='text-black'>
+              <p className='text-black cursor-pointer hover:text-orange-500'>
                 {searchInput.length > 2 && searchInput}
               </p>
             </div>

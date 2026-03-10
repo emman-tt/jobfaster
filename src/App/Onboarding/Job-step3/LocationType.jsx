@@ -1,10 +1,11 @@
 import { Info } from 'lucide-react'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { QuestionHeader } from '../../../components/QuestionHeader'
-
+import { saveJobLocation } from '../../../store/jobSlice'
+import { useDispatch } from 'react-redux'
 export default function LocationType () {
   const [location, setLocation] = useState(locationType)
-
+  const dispatch = useDispatch()
   function selectLocationType (id, status) {
     if (status === false) {
       return setLocation(prev =>
@@ -16,6 +17,11 @@ export default function LocationType () {
       prev.map(item => (item.id === id ? { ...item, selected: false } : item))
     )
   }
+
+  useEffect(() => {
+    const selects = location.filter(item => item.selected === true)
+    dispatch(saveJobLocation(selects.map(item => item.name)))
+  }, [location, dispatch])
 
   return (
     <section className='w-full mt-10'>

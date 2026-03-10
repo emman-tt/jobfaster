@@ -1,8 +1,10 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { QuestionHeader } from '../../../components/QuestionHeader'
-
+import { saveEnvironment } from '../../../store/jobSlice'
+import { useDispatch } from 'react-redux'
 export default function Environment () {
   const [works, setWorks] = useState(environment)
+  const dispatch = useDispatch()
   function selector (id, status) {
     if (status === false) {
       return setWorks(prev =>
@@ -14,6 +16,11 @@ export default function Environment () {
       prev.map(item => (item.id === id ? { ...item, selected: false } : item))
     )
   }
+
+  useEffect(() => {
+    const selects = works.filter(item => item.selected === true)
+    dispatch(saveEnvironment(selects.map(item => item.name)))
+  }, [works, dispatch])
   return (
     <section className='mt-9'>
       <QuestionHeader question='What type of company culture/environment do you thrive in?'>
