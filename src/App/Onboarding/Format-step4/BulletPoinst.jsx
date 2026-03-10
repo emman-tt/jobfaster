@@ -3,9 +3,24 @@ import { saveBulletCount } from '../../../store/formatSlice'
 import { useDispatch, useSelector } from 'react-redux'
 export default function BulletPoints () {
   const dispatch = useDispatch()
-  const { relevantBulletCount, lessRelevantBulletCount } = useSelector(
+  const { relevantBulletCount, lessRelevantBulletCount, errors } = useSelector(
     state => state.format
   )
+
+  function findRelevantError () {
+    const msg = errors?.relevantBulletCount
+    if (msg?.length > 0) {
+      return msg
+    }
+    return ' '
+  }
+  function findIrrelevantError () {
+    const msg = errors?.irrelevantBulletCount
+    if (msg?.length > 0) {
+      return msg
+    }
+    return ' '
+  }
 
   //   In the points always include metrics(time,values,percentages,amounts) in the bulet points to make it catchy
 
@@ -50,6 +65,14 @@ export default function BulletPoints () {
           placeholder='Number of less relevant points'
         />
       </section>
+      <div className='flex px-10 w-[80%] mt-2 justify-between'>
+        <p className='text-red-500 self-start  font-semibold text-xs pl-5'>
+          {findRelevantError()}
+        </p>
+        <p className='text-red-500 self-start  font-semibold text-xs pl-5'>
+          {findIrrelevantError()}
+        </p>
+      </div>
     </section>
   )
 }

@@ -9,7 +9,8 @@ const initialState = {
   lessRelevantBulletCount: 2,
   MetricsStlyes: {
     font: 'Italic',
-    fontWeight: 'font-600'
+    fontWeight: 'font-600',
+    italic: true
   },
   hobbies: '',
   styles: {

@@ -33,9 +33,6 @@ export default function OnlineLinks () {
       return [...prevSaved, { name: itemToAdd.name, link: '' }]
     })
   }
-  useEffect(() => {
-    console.log(savedLinks)
-  }, [savedLinks])
 
   function handleChange (e) {
     const { name, value } = e.target

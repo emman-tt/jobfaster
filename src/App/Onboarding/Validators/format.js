@@ -1,5 +1,5 @@
 export function ValidateFormat (data) {
-  const { onlineLinks } = data
+  const { onlineLinks, relevantBulletCount, lessRelevantBulletCount } = data
   let hasError = false
   let error = {
     onlineLinks: []
@@ -14,6 +14,20 @@ export function ValidateFormat (data) {
     }
     return item
   })
+
+  if (Number(relevantBulletCount) < 3 || Number(relevantBulletCount) > 9) {
+    hasError = true
+    error.relevantBulletCount =
+      'Input should  fall within the standard range of  3 - 9'
+  }
+  if (
+    Number(lessRelevantBulletCount) < 1 ||
+    Number(lessRelevantBulletCount) > 5
+  ) {
+    hasError = true
+    error.irrelevantBulletCount =
+      'Input should  fall within the standard range of 1 - 5'
+  }
 
   return {
     hasError,
