@@ -10,6 +10,24 @@ const initialState = {
       majorChallengeSolved: '',
       teamAbilities: '',
       finalResult: ''
+    },
+    {
+      id: 2,
+      summary: '',
+      toolsAndSoftware: '',
+      metricsAndValues: '',
+      majorChallengeSolved: '',
+      teamAbilities: '',
+      finalResult: ''
+    },
+    {
+      id: 3,
+      summary: '',
+      toolsAndSoftware: '',
+      metricsAndValues: '',
+      majorChallengeSolved: '',
+      teamAbilities: '',
+      finalResult: ''
     }
   ]
 }
@@ -17,44 +35,18 @@ export const experienceSlice = createSlice({
   name: 'experience',
   initialState,
   reducers: {
-    saveSummary: (state, action) => {
-      const { id, value } = action.payload
-      const field = state.experience.find(item => item.id === id)
-      field.summary = value
+    saveExperience: (state, action) => {
+      const { id, value, name } = action.payload
+
+      const section = state.experience.find(item => item.id === id)
+      if (section) {
+        section[name] = value
+      }
     },
-    saveTools: (state, action) => {
-      const { id, value } = action.payload
-      const field = state.experience.find(item => item.id === id)
-      field.toolsAndSoftware = value
-    },
-    saveMetrics: (state, action) => {
-      const { id, value } = action.payload
-      const field = state.experience.find(item => item.id === id)
-      field.metricsAndValues = value
-    },
-    saveChallenges: (state, action) => {
-      const { id, value } = action.payload
-      const field = state.experience.find(item => item.id === id)
-      field.majorChallengeSolved = value
-    },
-    saveTeamWork: (state, action) => {
-      const { id, value } = action.payload
-      const field = state.experience.find(item => item.id === id)
-      field.teamAbilities = value
-    },
-    saveFinalResult: (state, action) => {
-      const { id, value } = action.payload
-      const field = state.experience.find(item => item.id === id)
-      field.finalResult = value
+    addExtraField: (state, action) => {
+      state.experience = [...state.experience, action.payload]
     }
   }
 })
 
-export const {
-  saveChallenges,
-  saveFinalResult,
-  saveMetrics,
-  saveSummary,
-  saveTeamWork,
-  saveTools
-} = experienceSlice.actions
+export const { saveExperience,addExtraField } = experienceSlice.actions

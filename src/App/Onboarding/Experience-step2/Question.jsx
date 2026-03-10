@@ -3,8 +3,7 @@ import { QuestionHeader } from '../../../components/QuestionHeader'
 import { BackNext } from '../../../components/BackNext'
 import { ChevronDown } from 'lucide-react'
 
-export default function Question () {
-  const [mainExperience, setMainExperience] = useState('')
+export default function Question ({ onChange }) {
   const [activeAccordion, setActiveAccordion] = useState(null)
   const [followUps, setFollowUps] = useState({
     p1: '',
@@ -36,9 +35,9 @@ export default function Question () {
 
         <div className='w-[80%] px-10 flex items-center gap-7 mt-6'>
           <textarea
-            value={mainExperience}
-            onChange={e => setMainExperience(e.target.value)}
+            onChange={onChange}
             rows={5}
+            name='summary'
             placeholder='e.g., Software Engineer at Google, led the development of a new cloud storage feature...'
             className='w-full border text-sm border-slate-300 rounded-xl text-black outline-0 py-4 px-6 shadow-sm focus:border-[#ec5b13] transition-colors'
           />
@@ -48,7 +47,7 @@ export default function Question () {
       {/* Dynamic Follow-up Accordion */}
       <div className='flex flex-col gap-4 mt-10 w-full  px-10'>
         <h3 className='font-bold text-lg text-slate-800 mb-2'>
-          Boost your experience details (Optional but Recommended)
+          Boost your experience details (Answer at least Two(2) )
         </h3>
         {condensedFollowUps.map(item => (
           <div
@@ -86,9 +85,9 @@ export default function Question () {
 
               <div className='mt-6'>
                 <textarea
-                  value={followUps[item.id]}
-                  onChange={e => handleChange(item.id, e.target.value)}
+                  onChange={onChange}
                   rows={4}
+                  name={item.name}
                   placeholder={`Tell us more about ${item.label.toLowerCase()}...`}
                   className='w-full border text-sm  rounded-xl text-black outline-0 py-4 px-6 focus:border-[#ec5b13] transition-colors'
                 />
@@ -105,6 +104,7 @@ const condensedFollowUps = [
   {
     id: 'p1',
     label: 'Tech & Tools',
+    name: 'toolsAndSoftware',
     question:
       'What specific tools, software, or languages did you use (e.g., React, Node, SQL, Excel)?',
     purpose: 'Hard skill extraction & ATS optimization.',
@@ -114,6 +114,7 @@ const condensedFollowUps = [
   {
     id: 'p2',
     label: 'Efficiency & Numbers',
+    name: 'metricsAndValues',
     question:
       'Did you make a process faster, save money, or handle a high volume of tasks? (Give an estimate).',
     purpose: 'Quantifiable ROI and Productivity.',
@@ -123,6 +124,7 @@ const condensedFollowUps = [
   {
     id: 'p3',
     label: 'Problem Solving & Innovation',
+    name: 'majorChallengeSolved',
     question:
       'What was a major challenge you solved, or an idea you suggested that was actually used?',
     purpose: 'Demonstrate initiative and critical thinking.',
@@ -132,6 +134,7 @@ const condensedFollowUps = [
   {
     id: 'p4',
     label: 'Leadership & Collaboration',
+    name: 'teamAbilities',
     question:
       'Did you mentor others, lead a group, or work across different teams/clients?',
     purpose: 'Identify soft skills and management potential.',
@@ -141,6 +144,7 @@ const condensedFollowUps = [
   {
     id: 'p5',
     label: 'The Big Win (Result)',
+    name: 'finalResult',
     question:
       'What was the final result or best feedback you received? (e.g., A live URL, a finished app, a 5-star review).',
     purpose: "Capture the 'Outcome' and Social Proof.",
