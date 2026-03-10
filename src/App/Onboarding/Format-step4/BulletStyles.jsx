@@ -1,9 +1,12 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { QuestionHeader } from '../../../components/QuestionHeader'
 import { ChevronDown } from 'lucide-react'
 import useClickOutside from '../../../hooks/useClick'
-
+import { useDispatch } from 'react-redux'
+import { saveStyles } from '../../../store/formatSlice'
 export default function BulletStyles () {
+  const dispatch = useDispatch()
+
   const [toggle, setToggles] = useState({
     font: {
       show: false,
@@ -19,7 +22,20 @@ export default function BulletStyles () {
     }
   })
 
-  const allRef = useClickOutside(() =>
+  useEffect(() => {
+    const styles = {
+      font: toggle.font.selected,
+      size: toggle.size.selected,
+      bulletingType: toggle.type.selected
+    }
+    dispatch(
+      saveStyles({
+        category: 'bullet',
+        value: styles
+      })
+    )
+  }, [toggle, dispatch])
+  function disableAll () {
     setToggles({
       ...toggle,
       font: {
@@ -35,7 +51,9 @@ export default function BulletStyles () {
         show: false
       }
     })
-  )
+  }
+
+  const allRef = useClickOutside(() => disableAll())
 
   return (
     <section className='px-5 mt-15 flex flex-col'>
@@ -74,13 +92,14 @@ export default function BulletStyles () {
             <ul className=' absolute z-10 bg-white  flex flex-col justify-between p-10 pr-2 gap-4 py-4 overflow-y-scroll h-40  w-full text-black rounded-xl shadow-lg [scrollbar-width:thin]'>
               {bulletFonts.map(item => (
                 <li
-                  onClick={() =>
+                  onClick={() => {
                     setToggles({
                       ...toggle,
                       font: { ...toggle.font, selected: item.name },
                       show: false
                     })
-                  }
+                    // disableAll()
+                  }}
                   className={`text-sm gap-4 ${item.type} flex items-center  cursor-pointer`}
                   key={item.name}
                 >
@@ -118,13 +137,14 @@ export default function BulletStyles () {
             <ul className=' absolute z-10 bg-white  flex flex-col justify-between p-10 pr-2 gap-4 py-4 overflow-y-scroll h-40  w-full text-black rounded-xl font-semibold shadow-lg [scrollbar-width:thin]'>
               {bulletSize.map(item => (
                 <li
-                  onClick={() =>
+                  onClick={() => {
                     setToggles({
                       ...toggle,
                       size: { ...toggle.size, selected: item },
                       show: false
                     })
-                  }
+                    // disableAll()
+                  }}
                   className={`text-sm gap-4   flex items-center  cursor-pointer`}
                   key={item}
                 >
@@ -162,12 +182,13 @@ export default function BulletStyles () {
             <ul className=' absolute z-10 bg-white   flex flex-col  p-10 pr-2 gap-4 py-4 overflow-y-scroll h-40  w-full text-black rounded-xl font-semibold shadow-lg [scrollbar-width:thin]'>
               {bulletTypes.map(item => (
                 <li
-                  onClick={() =>
+                  onClick={() => {
                     setToggles({
                       ...toggle,
                       type: { ...toggle.type, selected: item }
                     })
-                  }
+                    // disableAll()
+                  }}
                   className={`text-sm gap-4   flex items-center  cursor-pointer`}
                   key={item}
                 >

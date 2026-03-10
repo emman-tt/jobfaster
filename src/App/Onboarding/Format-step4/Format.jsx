@@ -12,7 +12,7 @@ import BodyStyles from './BodyStyles'
 import { ValidateFormat } from '../Validators/format'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
-import { saveErrors } from '../../../store/formatSlice'
+import { saveErrors, selectSummaryType } from '../../../store/formatSlice'
 
 export default function Format () {
   const dispatch = useDispatch()
@@ -33,6 +33,10 @@ export default function Format () {
     }
   }
 
+  function saveSummaryType (item) {
+    dispatch(selectSummaryType(item))
+  }
+
   return (
     <section className=' w-full pb-20  h-full p-10 px-15 flex flex-col pt-5 rounded-2xl bg-white'>
       <FileType />
@@ -45,18 +49,22 @@ export default function Format () {
           prevent "age-guessing" by recruiters.
         </QuestionHeader>
         <section className='flex w-[80%] mt-8 px-10 gap-5'>
-          <TwoButtonsAnswer defaultSelect='No' options={['Yes', 'No']} />
+          <TwoButtonsAnswer
+            callbackHook={() => saveSummaryType()}
+            defaultSelect='No'
+            options={['Yes', 'No']}
+          />
         </section>
       </section>
-      <section className='mt-15'>
-        <QuestionHeader question='Do you want to use bullet points or paragraph descriptions for your experience?'>
+      {/* <section className='mt-15'>
+        <QuestionHeader   question='Do you want to use bullet points or paragraph descriptions for your experience?'>
           95% of recruiters prefer bullet points because they make your
           achievements easier to read at a glance.
         </QuestionHeader>
         <section className='flex w-[80%] mt-8 px-10 gap-5'>
-          <TwoButtonsAnswer defaultSelect='Yes' options={['Yes', 'No']} />
+          <TwoButtonsAnswer  defaultSelect='Yes' options={['Yes', 'No']} />
         </section>
-      </section>
+      </section> */}
       <BulletPoints />
       <Hobbies />
       <HeaderStyles />

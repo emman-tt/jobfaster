@@ -20,7 +20,7 @@ export default function BulletPoints () {
         <input
           type='number'
           max={10}
-          min={0}
+          // value={4}
           value={relevantBulletCount}
           onChange={e => {
             dispatch(

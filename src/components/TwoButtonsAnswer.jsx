@@ -3,7 +3,8 @@ import { useEffect, useState } from 'react'
 export const TwoButtonsAnswer = ({
   options = [1, 2],
   className,
-  defaultSelect = ''
+  defaultSelect = '',
+  callbackHook
 }) => {
   const [biOptions, setBiOptions] = useState([
     { id: options[0], selected: false, name: options[0] },
@@ -28,7 +29,10 @@ export const TwoButtonsAnswer = ({
           : { ...item, selected: false }
       )
     )
+    const select = biOptions.find(item => item.id === id)
+    callbackHook(select.name)
   }
+
   return biOptions.map(item => (
     <div
       key={item.id}

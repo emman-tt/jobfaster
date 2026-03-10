@@ -1,9 +1,11 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { QuestionHeader } from '../../../components/QuestionHeader'
 import { ChevronDown } from 'lucide-react'
 import useClickOutside from '../../../hooks/useClick'
-
+import { useDispatch } from 'react-redux'
+import { saveStyles } from '../../../store/formatSlice'
 export default function HeaderStyles () {
+  const dispatch = useDispatch()
   const [toggle, setToggles] = useState({
     font: {
       show: false,
@@ -18,33 +20,6 @@ export default function HeaderStyles () {
       selected: 'center'
     }
   })
-  // const fontRef = useClickOutside(() =>
-  //   setToggles({
-  //     ...toggle,
-  //     font: {
-  //       ...toggle.font,
-  //       show: false
-  //     }
-  //   })
-  // )
-  // const fontSizeRef = useClickOutside(() =>
-  //   setToggles({
-  //     ...toggle,
-  //     size: {
-  //       ...toggle.size,
-  //       show: false
-  //     }
-  //   })
-  // )
-  // const fontAlignRef = useClickOutside(() =>
-  //   setToggles({
-  //     ...toggle,
-  //     align: {
-  //       ...toggle.align,
-  //       show: false
-  //     }
-  //   })
-  // )
 
   const allRef = useClickOutside(() =>
     setToggles({
@@ -63,6 +38,21 @@ export default function HeaderStyles () {
       }
     })
   )
+
+  useEffect(() => {
+    const styles = {
+      font: toggle.font.selected,
+      size: toggle.size.selected,
+      align: toggle.align.selected
+    }
+    dispatch(
+      saveStyles({
+        category: 'header',
+        value: styles
+      })
+    )
+  }, [toggle, dispatch])
+
   return (
     <section ref={allRef} className='px-5 mt-15 flex flex-col'>
       <QuestionHeader question="Let's build the best styling and fonts of your Header text. ">

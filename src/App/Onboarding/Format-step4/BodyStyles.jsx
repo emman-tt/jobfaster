@@ -1,9 +1,12 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { QuestionHeader } from '../../../components/QuestionHeader'
 import { ChevronDown } from 'lucide-react'
 import useClickOutside from '../../../hooks/useClick'
-
+import { useDispatch } from 'react-redux'
+import { saveStyles } from '../../../store/formatSlice'
 export default function BodyStyles () {
+  const dispatch = useDispatch()
+
   const [toggle, setToggles] = useState({
     font: {
       show: false,
@@ -18,6 +21,20 @@ export default function BodyStyles () {
       selected: 'left'
     }
   })
+
+  useEffect(() => {
+    const styles = {
+      font: toggle.font.selected,
+      size: toggle.size.selected,
+      align: toggle.align.selected
+    }
+    dispatch(
+      saveStyles({
+        category: 'body',
+        value: styles
+      })
+    )
+  }, [toggle, dispatch])
   const allRef = useClickOutside(() =>
     setToggles({
       ...toggle,

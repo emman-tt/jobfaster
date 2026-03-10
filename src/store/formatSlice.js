@@ -7,7 +7,28 @@ const initialState = {
   fileType: 'PDF',
   relevantBulletCount: 4,
   lessRelevantBulletCount: 2,
-  bulletPointsMetricsAndCompanyAndResults: 'Italic,font-600',
+  MetricsStlyes: {
+    font: 'Italic',
+    fontWeight: 'font-600'
+  },
+  hobbies: '',
+  styles: {
+    headerStyles: {
+      font: 'Inter',
+      size: 20,
+      align: 'center'
+    },
+    bulletStyles: {
+      font: 'Inter',
+      size: 14,
+      bulletingType: 'disc'
+    },
+    bodyStyles: {
+      font: 'Inter',
+      size: 11,
+      align: 'left'
+    }
+  },
   errors: {}
 }
 export const formatSlice = createSlice({
@@ -34,6 +55,19 @@ export const formatSlice = createSlice({
     },
     saveErrors: (state, action) => {
       state.errors = action.payload
+    },
+    saveHobbies: (state, action) => {
+      state.hobbies = action.payload
+    },
+    saveStyles: (state, action) => {
+      const { category, value } = action.payload
+      if (category === 'header') {
+        state.styles.headerStyles = value
+      } else if (category === 'bullet') {
+        state.styles.bulletStyles = value
+      } else {
+        state.styles.bodyStyles = value
+      }
     }
   }
 })
@@ -44,5 +78,7 @@ export const {
   saveBulletCount,
   toggleEducationDatesShow,
   saveOnlineLinks,
-  saveErrors
+  saveErrors,
+  saveStyles,
+  saveHobbies
 } = formatSlice.actions
