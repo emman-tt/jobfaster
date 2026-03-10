@@ -7,7 +7,8 @@ const initialState = {
   fileType: 'PDF',
   relevantBulletCount: 4,
   lessRelevantBulletCount: 2,
-  bulletPointsMetricsAndCompanyAndResults: 'Italic,font-600'
+  bulletPointsMetricsAndCompanyAndResults: 'Italic,font-600',
+  errors: {}
 }
 export const formatSlice = createSlice({
   name: 'format',
@@ -27,10 +28,13 @@ export const formatSlice = createSlice({
       category === 'relevant'
         ? (state.relevantBulletCount = value)
         : (state.lessRelevantBulletCount = value)
+    },
+    saveOnlineLinks: (state, action) => {
+      state.onlineLinks = action.payload
+    },
+    saveErrors: (state, action) => {
+      state.errors = action.payload
     }
-    // saveOnlineLinks: (state, action) => {
-    //   state.onlineLinks = action.payload
-    // }
   }
 })
 
@@ -38,5 +42,7 @@ export const {
   selectFileType,
   selectSummaryType,
   saveBulletCount,
-  toggleEducationDatesShow
+  toggleEducationDatesShow,
+  saveOnlineLinks,
+  saveErrors
 } = formatSlice.actions

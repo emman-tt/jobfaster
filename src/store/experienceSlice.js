@@ -19,8 +19,7 @@ const initialState = {
       majorChallengeSolved: '',
       teamAbilities: '',
       finalResult: ''
-    },
- 
+    }
   ],
   errors: []
 }
@@ -45,4 +44,5 @@ export const experienceSlice = createSlice({
   }
 })
 
-export const { saveExperience, addExtraField,saveErrors } = experienceSlice.actions
+export const { saveExperience, addExtraField, saveErrors } =
+  experienceSlice.actions
