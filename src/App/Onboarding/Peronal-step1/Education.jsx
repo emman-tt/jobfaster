@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { QuestionHeader } from '../../../components/QuestionHeader'
 import { Plus, Trash2 } from 'lucide-react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { saveEducation } from '../../../store/personalSlice'
 
 export default function Education () {
@@ -14,6 +14,8 @@ export default function Education () {
       year: ''
     }
   ])
+  const error = useSelector(state => state.personal.errors.education)
+
   const dispatch = useDispatch()
   function removeEducation (id) {
     setEdu(prev => prev.filter(item => item.id != id))
@@ -75,10 +77,10 @@ export default function Education () {
               placeholder={'level'}
             />
             <input
-              name='institution'
+              name='instituition'
               onChange={e => handleChange(e, item.id)}
               className='w-full border text-sm border-slate-300 rounded-xl text-black outline-0 py-3 pl-10 pr-3'
-              placeholder={'institution'}
+              placeholder={'instituition'}
             />
             <input
               name='degree'
@@ -97,6 +99,9 @@ export default function Education () {
           </section>
         ))}
       </section>
+      <p className='text-red-500 font-semibold text-xs pl-14 '>
+        {error?.length > 0 && error}
+      </p>
       <div className='w-full flex justify-center items-center'>
         <button
           onClick={() => {

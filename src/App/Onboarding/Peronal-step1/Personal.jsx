@@ -11,9 +11,7 @@ import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 export const Personal = () => {
   const dispatch = useDispatch()
-  const personalData = useSelector(
-    state => state.personal
-  )
+  const personalData = useSelector(state => state.personal)
   const navigate = useNavigate()
   function navigateNext () {
     try {
@@ -22,8 +20,7 @@ export const Personal = () => {
       if (hasError) {
         return
       }
-
-      navigate('experience')
+      navigate('/onboarding/experience')
     } catch (err) {
       console.error('Validation failed to execute:', err)
     }

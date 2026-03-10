@@ -1,6 +1,7 @@
 export function validateContact (data) {
   const { fullName, phone, location, email } = data.contactDetails
   const skills = data.skillsAndTools
+  const education = data.education
 
   const errors = {}
   let hasError = false
@@ -45,6 +46,17 @@ export function validateContact (data) {
   if (skills.length < 3 || !skills) {
     hasError = true
     errors.skillsAndTools = 'Must have  at least three (3)'
+  }
+
+  const atLeastOneFilled = education.find(item => {
+    const { level, instituition, degree, year } = item
+
+    return level.trim() || instituition.trim() || degree.trim() || year.trim()
+  })
+
+  if (!atLeastOneFilled) {
+    hasError = true
+    errors.education = 'Fill at least one education details'
   }
 
   return {
