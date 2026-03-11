@@ -1,5 +1,6 @@
 import { Search } from 'lucide-react'
 import Folder from '../../../components/Folder'
+import { PaperFile } from './Paper'
 export default function Main () {
   return (
     <section className='flex flex-col p-10 gap-10 pt-0'>
@@ -18,7 +19,7 @@ export default function Main () {
       </div>
 
       <section className='flex  items-start justify-start  pl-10   h-full w-full gap-15'>
-        {userFolders.map(item => (
+        {userFoldersAndFiles.map(item => (
           <div key={item.id} className='w-20 cursor-pointer '>
             <Folder />
             <div className='flex w-full text-xs mt-2 items-center text-[10px] text-gray-700 justify-center font-semibold gap-1'>
@@ -27,11 +28,12 @@ export default function Main () {
             </div>
           </div>
         ))}
+        <PaperFile />
       </section>
     </section>
   )
 }
-const userFolders = [
+const userFoldersAndFiles = [
   {
     id: 1,
     name: 'Tripify',

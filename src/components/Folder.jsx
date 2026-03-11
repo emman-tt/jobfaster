@@ -2,33 +2,6 @@ import { Paper } from '../App/Dashboard/Overview/Paper'
 
 const folderColour = '#feb053'
 export default function Folder () {
-  //   const box = useRef(null)
-  //   useGSAP(() => {}, {
-  //     scope: box
-  //   })
-
-  // //   function onHoverPaper () {}
-  // //   function onLeavePaper () {}
-
-  //   useEffect(() => {
-  //     const papers = gsap.utils.toArray('.paper')
-  //     active === 1
-  //       ? papers.forEach(item => {
-  //           gsap.to(item, {
-  //             y: -40,
-  //             ease: 'bounce',
-  //             duration: 0.6
-  //           })
-  //         })
-  //       : papers.forEach(item => {
-  //           gsap.to(item, {
-  //             y: 0,
-
-  //             ease: 'bounce',
-  //             duration: 0.1
-  //           })
-  //         })
-  //   }, [active])
   return (
     <section className='w-full  flex justify-center items-center'>
       <div className='relative flex flex-col'>
@@ -46,13 +19,13 @@ export default function Folder () {
         </svg>
 
         <div
-          className={`bg-[${folderColour}]  cursor-pointer  relative rounded-tl-none rounded-xl h-18 w-26`}
+          className={`bg-[${folderColour}] group  cursor-pointer  relative rounded-tl-none rounded-xl h-18 w-26`}
         >
           {filesArray.map(item => (
             <Paper key={item.id} className={`${item.styles}  paper absolute`} />
           ))}
           <div
-            className={`bg-[#ff8c00b3] absolute left-0 backdrop-blur-xs right-0 bottom-0 h-15 z-40 rounded-xl `}
+            className={`bg-[#ff8c00b3] group-hover:bg-[#ff8c0029] transition-all duration-100 ease-in-out absolute left-0 backdrop-blur-xs right-0 bottom-0 h-15 z-40 rounded-xl `}
           ></div>
         </div>
       </div>
