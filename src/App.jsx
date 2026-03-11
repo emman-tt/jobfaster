@@ -18,7 +18,7 @@ function App () {
           <Route path='format' element={<Format />} />
         </Route>
         <Route path='/dashboard' element={<Dashboard />}>
-          <Route index element={<Navigate to={'overview'} />} />
+          <Route index element={<Navigate to={'/dashboard/overview'} />} />
           <Route path='overview' element={<Overview />} />
         </Route>
       </Routes>

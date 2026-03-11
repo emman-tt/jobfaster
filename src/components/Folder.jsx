@@ -1,41 +1,36 @@
-import { useRef } from 'react'
-import { gsap } from '../libs/gsap'
-import { useGSAP } from '@gsap/react'
+import { Paper } from '../App/Dashboard/Overview/Paper'
 
 const folderColour = '#feb053'
 export default function Folder () {
-  const box = useRef(null)
-  useGSAP(() => {}, {
-    scope: box
-  })
+  //   const box = useRef(null)
+  //   useGSAP(() => {}, {
+  //     scope: box
+  //   })
 
-  function onHoverPaper () {
-    const papers = gsap.utils.toArray('.paper')
-    papers.forEach(item => {
-      gsap.to(item, {
-        y: -40,
-        // translateX: i === 1 ? -30 : 0,
-        ease: 'bounce',
-        duration: 0.6
-      })
-    })
-  }
-  function onLeavePaper () {
-    const papers = gsap.utils.toArray('.paper')
-    papers.forEach(item => {
-      gsap.to(item, {
-        y: 0,
+  // //   function onHoverPaper () {}
+  // //   function onLeavePaper () {}
 
-        ease: 'bounce',
-        duration: 0.1
-      })
-    })
-  }
+  //   useEffect(() => {
+  //     const papers = gsap.utils.toArray('.paper')
+  //     active === 1
+  //       ? papers.forEach(item => {
+  //           gsap.to(item, {
+  //             y: -40,
+  //             ease: 'bounce',
+  //             duration: 0.6
+  //           })
+  //         })
+  //       : papers.forEach(item => {
+  //           gsap.to(item, {
+  //             y: 0,
+
+  //             ease: 'bounce',
+  //             duration: 0.1
+  //           })
+  //         })
+  //   }, [active])
   return (
-    <section
-      ref={box}
-      className='w-full h-screen flex justify-center items-center'
-    >
+    <section className='w-full  flex justify-center items-center'>
       <div className='relative flex flex-col'>
         <svg
           width='89'
@@ -51,16 +46,13 @@ export default function Folder () {
         </svg>
 
         <div
-          onMouseOver={() => onHoverPaper()}
-          onMouseLeave={() => onLeavePaper()}
-          //   onMouseEnter={() => onHoverPaper()}
-          className={`bg-[${folderColour}] cursor-pointer  relative rounded-tl-none rounded-xl h-35 w-40`}
+          className={`bg-[${folderColour}]  cursor-pointer  relative rounded-tl-none rounded-xl h-18 w-26`}
         >
           {filesArray.map(item => (
-            <Paper key={item.id} className={`${item.styles} paper absolute`} />
+            <Paper key={item.id} className={`${item.styles}  paper absolute`} />
           ))}
           <div
-            className={`bg-[#feb053] absolute left-0 backdrop-blur-xs right-0 bottom-0 h-25 z-40 rounded-xl `}
+            className={`bg-[#ff8c00b3] absolute left-0 backdrop-blur-xs right-0 bottom-0 h-15 z-40 rounded-xl `}
           ></div>
         </div>
       </div>
@@ -71,28 +63,11 @@ export default function Folder () {
 const filesArray = [
   {
     id: 1,
-    styles: 'rotate-1 z-30  -translate-y-1 top-0 right-2'
+    styles: 'rotate-10 z-40 shadow-sm  -translate-y-10 top-0 right-1'
   },
-  { id: 2, styles: '-rotate-12  z-9 -translate-y-4 top-0 left-2' },
+  { id: 2, styles: '-rotate-12  z-30 shadow-sm -translate-y-10 top-0 left-0' },
   {
     id: 3,
-    styles: 'rotate-12  z-10  translate-x-2 top-0'
+    styles: 'rotate-12  z-22 shadow-xl  translate-x-2 -translate-y-10'
   }
 ]
-
-export const Paper = ({ className }) => {
-  return (
-    <div className={`bg-[#f2f2f2] w-28  h-30 rounded-xl p-3 ${className} `}>
-      <p className='text-xs font-extralight  line-clamp-4'>
-        <img
-          width='23'
-          height='23'
-          src='https://img.icons8.com/color/48/pdf-2--v1.png'
-          alt='pdf-2--v1'
-        />
-        a lot of scribbling you know just to scribble scriblle as apdf doc foe
-        scriblling coud be word or pdf or text md tho any of them
-      </p>
-    </div>
-  )
-}
