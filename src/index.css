@@ -10,13 +10,15 @@
 
 @import url("https://fonts.googleapis.com/css2?family=Nosifer&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,700;1,400&family=Inter:wght@400;500;700&family=Lato:ital,wght@0,400;0,700;1,400&family=Open+Sans:ital,wght@0,400;0,700;1,400&family=Roboto:ital,wght@0,400;0,500;0,700;1,400&display=swap");
-
+/* IBM Plex Sans Import */
+@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap");
+/* Satoshi Import - Variable Font */
+@import url("https://api.fontshare.com/v2/css?f[]=satoshi@900,700,500,300,400&display=swap");
 @import "tailwindcss";
 
 @utility foldertop {
   clip-path: polygon(55% 79%, 88% 100%, 0% 100%, 0% 79%);
 }
-
 
 @theme {
   /* Sans-Serif Stack */
@@ -24,6 +26,8 @@
   --font-roboto: "Roboto", sans-serif;
   --font-lato: "Lato", sans-serif;
   --font-open: "Open Sans", sans-serif;
+  --font-IBM: "IBM", sans-serif;
+  --font-satoshi: "satoshi", sans-serif;
 
   /* Serif Stack */
   --font-garamond: "EB Garamond", serif;

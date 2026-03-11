@@ -1,13 +1,28 @@
-import { Blocks, IceCream2Icon, PanelLeftClose } from 'lucide-react'
+import {
+  ArrowUpDown,
+  BadgePlus,
+  Blocks,
+  Circle,
+  CircleEllipsis,
+  IceCream2Icon,
+  Layers,
+  Mail,
+  Newspaper,
+  NotebookPenIcon,
+  PanelLeftClose,
+  PlusCircle,
+  Settings,
+  User2
+} from 'lucide-react'
 
 export default function Sidebar ({ className }) {
   return (
     <section className={`$ flex flex-col h-full justify-between  ${className}`}>
       <div>
-        <section className='w-full flex justify-between items-center rounded-xl text-xs  bg-white p-2'>
+        <section className='w-full flex justify-between items-center rounded-xl text-xs  bg-white p-2 '>
           <div className='flex items-center gap-2'>
-            <div className='p-3 rounded-sm bg-orange-400 flex justify-center items-center'>
-              <IceCream2Icon className='w-6 h-6 text-black' />
+            <div className='p-2 rounded-sm bg-orange-400 flex justify-center items-center'>
+              <IceCream2Icon className='w-4 h-4  text-black' />
             </div>
             <div className='flex flex-col '>
               <p className=' font-semibold font-inter'>JobFaster</p>
@@ -19,12 +34,43 @@ export default function Sidebar ({ className }) {
 
         <section className='flex flex-col w-full p-2 mt-5 gap-5'>
           {processes.map(item => (
-            <div key={item.id} className='flex gap-3'>
-              <span className='w-4 h-4'>{item.icon}</span>
-              <p className='text-sm'>{item.name}</p>
+            <div key={item.id} className='flex gap-3 items-center'>
+              <span>{item.icon}</span>
+              <p className='text-sm font-IBM text-[12px]'>{item.name}</p>
             </div>
           ))}
         </section>
+        <section className='flex flex-col w-full border-t border-gray-700 pt-7 p-2 mt-5 gap-5'>
+          {tools.map(item => (
+            <div key={item.id} className='flex gap-3 items-center'>
+              <span>{item.icon}</span>
+              <p className='text-sm font-IBM text-[12px]'>{item.name}</p>
+            </div>
+          ))}
+        </section>
+      </div>
+
+      <div className=' flex flex-col gap-4  '>
+        <div className='px-2 flex flex-col gap-3'>
+          {bottom.map(item => (
+            <div key={item.id} className='flex gap-3 items-center'>
+              <span>{item.icon}</span>
+              <p className='text-sm font-IBM  text-[12px]'>{item.name}</p>
+            </div>
+          ))}
+        </div>
+        <div className=' w-full flex gap-3 px-2 rounded-xl py-3 items-center bg-[#e8e7ea]'>
+          <div className='w-[20%] bg-white p-2 rounded-xl flex justify-center items-center'>
+            <User2 className='w-6 h-6' />
+          </div>
+          <div className='flex w-[60%] flex-col text-xs'>
+            <p className=' font-satoshi font-semibold'>Emmanuel Acquah</p>
+            <p className=' truncate'>emmanuelacquah.dev@gmail.com</p>
+          </div>
+          <div className='w-[20%]'>
+            <ArrowUpDown className='h-4 w-4' />
+          </div>
+        </div>
       </div>
     </section>
   )
@@ -34,16 +80,36 @@ const processes = [
   {
     id: 1,
     name: 'Overview',
-    icon: <Blocks className='w-6 h-6' />
+    icon: <Blocks className='w-4 h-4' />
   },
   {
     id: 2,
     name: 'My Resumes',
-    icon: <Blocks />
+    icon: <Newspaper className='w-4 h-4' />
   },
   {
     id: 3,
     name: 'Templates Library',
-    icon: <Blocks />
+    icon: <Layers className='w-4 h-4' />
+  },
+  {
+    id: 4,
+    name: 'Apply for  job',
+    icon: <BadgePlus className='w-4 h-4' />
   }
+]
+
+const tools = [
+  { id: 1, name: 'Integrate Mail', icon: <Mail className='w-4 h-4' /> },
+  { id: 2, name: 'Create Resume', icon: <PlusCircle className='w-4 h-4' /> },
+  {
+    id: 3,
+    name: 'Generate Cover Letter',
+    icon: <NotebookPenIcon className='w-4 h-4' />
+  }
+]
+
+const bottom = [
+  { id: 1, name: 'FAQ', icon: <CircleEllipsis className='w-4 h-4' /> },
+  { id: 2, name: 'Settings', icon: <Settings className='w-4 h-4' /> }
 ]

@@ -5,6 +5,7 @@ import Jobs from './App/Onboarding/Job-step3/Job'
 import Format from './App/Onboarding/Format-step4/Format'
 import Experience from './App/Onboarding/Experience-step2/Experience'
 import Dashboard from './Pages/Dashboard'
+import Overview from './App/Dashboard/Overview/Overview'
 function App () {
   return (
     <BrowserRouter>
@@ -16,7 +17,10 @@ function App () {
           <Route path='experience' element={<Experience />} />
           <Route path='format' element={<Format />} />
         </Route>
-        <Route path='/dashboard' element={<Dashboard />} />
+        <Route path='/dashboard' element={<Dashboard />}>
+          <Route index element={<Navigate to={'overview'} />} />
+          <Route path='overview' element={<Overview />} />
+        </Route>
       </Routes>
     </BrowserRouter>
   )
