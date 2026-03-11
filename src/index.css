@@ -13,6 +13,11 @@
 
 @import "tailwindcss";
 
+@utility foldertop {
+  clip-path: polygon(55% 79%, 88% 100%, 0% 100%, 0% 79%);
+}
+
+
 @theme {
   /* Sans-Serif Stack */
   --font-inter: "Inter", sans-serif;
