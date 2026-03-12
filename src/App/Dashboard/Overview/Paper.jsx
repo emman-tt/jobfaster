@@ -1,4 +1,4 @@
-import { ResumePreview } from '../Preview/Preview'
+import { SmallPreview } from '../Preview/Preview'
 
 export const Paper = ({ className, extension }) => {
   return (
@@ -25,9 +25,12 @@ export const Paper = ({ className, extension }) => {
   )
 }
 
-export const PaperFile = ({ className, item }) => {
+export const PaperFile = ({ className, item, onClick }) => {
   return (
-    <section className=' flex flex-col w-35 cursor-pointer h-30   px-2 bg-[#cbc9c947] p-2 rounded-xl '>
+    <section
+      onClick={onClick}
+      className=' flex flex-col w-35 cursor-pointer h-30   px-2 bg-[#cbc9c947] p-2 rounded-xl '
+    >
       <div
         className={`bg-[#fefefec1] items-start relative shadow-xs h-full w-full flex      rounded-xl   ${className} `}
       >
@@ -47,7 +50,7 @@ export const PaperFile = ({ className, item }) => {
           />
         )}
 
-        <ResumePreview
+        <SmallPreview
           scale={0.2}
           content={item.content}
           className='w-full h-full'

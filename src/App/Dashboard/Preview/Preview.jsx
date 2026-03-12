@@ -1,10 +1,4 @@
-import { ResumeHtml } from '../../../assets/templates/ResumeHtml'
-
-export const ResumePreview = ({
-  scale = 0.1, // Very small for "file icon" size
-  className,
-  content
-}) => {
+export const SmallPreview = ({ scale = 0.1, className, content }) => {
   return (
     <div
       className={`relative overflow-hidden bg-white shadow-sm border border-slate-200 rounded-sm ${className}`}

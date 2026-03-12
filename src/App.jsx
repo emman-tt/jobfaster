@@ -6,7 +6,8 @@ import Format from './App/Onboarding/Format-step4/Format'
 import Experience from './App/Onboarding/Experience-step2/Experience'
 import Dashboard from './Pages/Dashboard'
 import Overview from './App/Dashboard/Overview/Overview'
-import { ResumePreview } from './App/Dashboard/Preview/Preview'
+import { FullPreview } from './App/Dashboard/Resume/FullPreview'
+import Resume from './App/Dashboard/Resume/Resume'
 function App () {
   return (
     <BrowserRouter>
@@ -22,7 +23,7 @@ function App () {
           <Route index element={<Navigate to={'/dashboard/overview'} />} />
           <Route path='overview' element={<Overview />} />
           <Route path='resumes' element={<Overview />} />
-          <Route path='resume' element={<ResumePreview />} />
+          <Route path='resume/:id' element={<Resume />} />
         </Route>
       </Routes>
     </BrowserRouter>

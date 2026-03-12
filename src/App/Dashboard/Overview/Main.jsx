@@ -3,11 +3,11 @@ import Folder from '../../../components/Folder'
 import { PaperFile } from './Paper'
 import { useSelector } from 'react-redux'
 import { useEffect, useState } from 'react'
-import { useLocation } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 export default function Main () {
   const { programs } = useSelector(state => state.files)
   const [header, setHeader] = useState('Recently Opened')
-
+  const navigate = useNavigate()
   const location = useLocation()
   useEffect(() => {
     const path = location.pathname.split('/')
@@ -18,6 +18,11 @@ export default function Main () {
       setHeader('Recently Opened')
     }
   }, [location])
+
+  function openFile (id) {
+    navigate(`/dashboard/resume/${id}`)
+  }
+
   return (
     <section className='flex flex-col p-10 gap-10 pt-0'>
       <div className='w-full flex  justify-between items-center px-5 pr-40'>
@@ -37,7 +42,7 @@ export default function Main () {
       <section className='flex  items-center justify-start  pl-10   h-full w-full gap-20 flex-wrap'>
         {programs.map(item =>
           item.type === 'folder' ? (
-            <div key={item.id} className='w-20 cursor-pointer '>
+            <div key={item.id} className='w-20 cursor-pointer'>
               <Folder files={item.files} />
               <div className='flex w-full text-xs mt-2 items-center text-[10px] text-gray-700 justify-center font-semibold gap-1'>
                 <p className=' truncate'>{item.name}</p>
@@ -45,7 +50,12 @@ export default function Main () {
               </div>
             </div>
           ) : (
-            <PaperFile item={item} />
+            <PaperFile
+              onClick={() => {
+                openFile(item.id)
+              }}
+              item={item}
+            />
           )
         )}
       </section>

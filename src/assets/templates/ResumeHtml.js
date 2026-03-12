@@ -8,7 +8,7 @@ export const ResumeHtml = [
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Times New Roman', serif; padding: 40px; }
-        .resume { max-width: 800px; margin: 0 auto;  padding: 50px; box-shadow: 0 5px 20px rgba(0,0,0,0.1); }
+        .resume { max-width: 800px; margin: 0 auto;  padding: 50px;  }
         .header { text-align: center; margin-bottom: 30px; border-bottom: 2px solid #2c3e50; padding-bottom: 20px; }
         .name { font-size: 36px; font-weight: bold; color: #2c3e50; letter-spacing: 2px; }
         .title { font-size: 18px; color: #7f8c8d; margin-top: 5px; }
@@ -123,7 +123,7 @@ export const ResumeHtml = [
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Garamond', 'Times New Roman', serif;  padding: 40px; }
-        .resume { max-width: 800px; margin: 0 auto; background: white; padding: 50px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); border: 0px solid #d4d4d4; }
+        .resume { max-width: 800px; margin: 0 auto; background: white; padding: 50px;  border: 0px solid #d4d4d4; }
         .header { margin-bottom: 30px; border-bottom: 1px solid #b0b0b0; padding-bottom: 20px; }
         .name { font-size: 42px; font-weight: normal; color: #1e2a3a; letter-spacing: 1px; }
         .subhead { font-size: 20px; color: #4a5568; font-style: italic; margin-top: 5px; }
@@ -250,7 +250,7 @@ export const ResumeHtml = [
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Helvetica', Arial, sans-serif;  padding: 40px; }
-        .resume { max-width: 700px; margin: 0 auto; background: white; padding: 50px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
+        .resume { max-width: 700px; margin: 0 auto; background: white; padding: 50px; }
         .header { margin-bottom: 40px; }
         .name { font-size: 42px; font-weight: 300; margin-bottom: 5px; }
         .subhead { font-size: 20px; color: #666; font-weight: 300; margin-bottom: 20px; }
@@ -349,8 +349,8 @@ export const ResumeHtml = [
     <title>Executive Classic Resume</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Times New Roman', Times, serif;  padding: 40px; }
-        .resume { max-width: 800px; margin: 0 auto; background: white; padding: 50px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+        body { font-family: 'Times New Roman', Times, serif;  padding: 0px; }
+        .resume { max-width: 800px; margin: 0 auto; background: white; padding: 50px; }
         .header { text-align: center; margin-bottom: 30px; border-bottom: 2px solid #2c3e50; padding-bottom: 20px; }
         .name { font-size: 36px; font-weight: bold; color: #1a1a1a; letter-spacing: 1px; text-transform: uppercase; }
         .title { font-size: 18px; color: #4a4a4a; margin-top: 5px; font-style: italic; }
@@ -472,7 +472,7 @@ export const ResumeHtml = [
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Courier New', 'SF Mono', monospace; padding: 40px; }
-        .resume { max-width: 850px; margin: 0 auto; background: #ffffff; padding: 40px; border-left: 8px solid #0a9396; box-shadow: 0 5px 20px rgba(0,0,0,0.1); }
+        .resume { max-width: 850px; margin: 0 auto; background: #ffffff; padding: 40px; border-left: 8px solid #0a9396;  }
         .header { margin-bottom: 30px; }
         .name { font-size: 48px; font-weight: 700; color: #0a1128; letter-spacing: -1px; }
         .badge { display: inline-block; background: #0a9396; color: white; padding: 4px 12px; border-radius: 4px; font-size: 14px; font-weight: normal; margin-left: 10px; vertical-align: middle; }
@@ -582,7 +582,7 @@ export const ResumeHtml = [
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Calibri', 'Helvetica', Arial, sans-serif; padding: 0px; }
-        .resume { max-width: 800px; margin: 0 auto; background: white; padding: 0px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+        .resume { max-width: 800px; margin: 0 auto; background: white; padding: 50px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
         .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0px; border-bottom: 2px solid #2c3e50; padding-bottom: 0px; }
         .name-title h1 { font-size: 36px; color: #2c3e50; margin-bottom: 5px; }
         .name-title h2 { font-size: 18px; color: #7f8c8d; font-weight: normal; }

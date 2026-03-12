@@ -89,12 +89,12 @@ const initialState = {
       ]
     },
     {
-      id: 4,
+      id: 6,
       type: 'file',
       extension: 'pdf',
       name: 'Mtn resume',
       size: 1.4,
-      content: ResumeHtml[7].content
+      content: ResumeHtml[5].content
     }
   ]
 }
