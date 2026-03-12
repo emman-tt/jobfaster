@@ -14,6 +14,7 @@ import {
   Settings,
   User2
 } from 'lucide-react'
+import { NavLink } from 'react-router-dom'
 
 export default function Sidebar ({ className }) {
   return (
@@ -34,10 +35,14 @@ export default function Sidebar ({ className }) {
 
         <section className='flex flex-col w-full p-2 mt-5 gap-5'>
           {processes.map(item => (
-            <div key={item.id} className='flex gap-3 items-center'>
+            <NavLink
+              to={item.href}
+              key={item.id}
+              className='flex gap-3 items-center'
+            >
               <span>{item.icon}</span>
               <p className='text-sm font-IBM text-[12px]'>{item.name}</p>
-            </div>
+            </NavLink>
           ))}
         </section>
         <section className='flex flex-col w-full border-t border-gray-700 pt-7 p-2 mt-5 gap-5'>
@@ -80,22 +85,26 @@ const processes = [
   {
     id: 1,
     name: 'Overview',
-    icon: <Blocks className='w-4 h-4' />
+    icon: <Blocks className='w-4 h-4' />,
+    href: 'overview'
   },
   {
     id: 2,
     name: 'My Resumes',
-    icon: <Newspaper className='w-4 h-4' />
+    icon: <Newspaper className='w-4 h-4' />,
+    href: 'resumes'
   },
   {
     id: 3,
     name: 'Templates Library',
-    icon: <Layers className='w-4 h-4' />
+    icon: <Layers className='w-4 h-4' />,
+    href: 'templates'
   },
   {
     id: 4,
     name: 'Apply for  job',
-    icon: <BadgePlus className='w-4 h-4' />
+    icon: <BadgePlus className='w-4 h-4' />,
+    href: 'jobs'
   }
 ]
 
