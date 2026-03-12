@@ -19,7 +19,7 @@ export default function Folder ({ files }) {
         </svg>
 
         <div
-          className={`bg-[#feb053] group  cursor-pointer  relative rounded-tl-none rounded-xl h-18 w-26`}
+          className={`bg-[#feb053] group  cursor-pointer  relative rounded-tl-none rounded-xl h-22 w-28`}
         >
           {files.map((item, i) => (
             <Paper

@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { ResumeHtml } from '../App/Dashboard/Preview/ResumeHtml'
+import { ResumeHtml } from '../assets/templates/ResumeHtml'
 const initialState = {
   programs: [
     {
@@ -20,21 +20,24 @@ const initialState = {
           type: 'file',
           extension: 'pdf',
           name: 'Kali server application',
-          size: 0.5
+          size: 0.5,
+          content: ResumeHtml[0].content
         },
         {
           id: 2,
           type: 'file',
           extension: 'pdf',
           name: 'IOS resume',
-          size: 0.4
+          size: 0.4,
+          content: ResumeHtml[1].content
         },
         {
           id: 3,
           type: 'file',
           extension: 'pdf',
           name: 'IOS resume',
-          size: 0.4
+          size: 0.4,
+          content: ResumeHtml[2].content
         }
       ]
     },
@@ -43,14 +46,16 @@ const initialState = {
       type: 'file',
       extension: 'pdf',
       name: 'RudyAi',
-      size: 0.5
+      size: 0.5,
+      content: ResumeHtml[3].content
     },
     {
       id: 2,
       type: 'file',
       extension: 'word',
       name: 'Tilios application',
-      size: 0.9
+      size: 0.9,
+      content: ResumeHtml[4].content
     },
     {
       id: 3,
@@ -70,14 +75,16 @@ const initialState = {
           type: 'file',
           extension: 'word',
           name: 'IOS resume',
-          size: 0.4
+          size: 0.4,
+          content: ResumeHtml[5].content
         },
         {
           id: 3,
           type: 'file',
           extension: 'pdf',
           name: 'IOS resume',
-          size: 0.4
+          size: 0.4,
+          content: ResumeHtml[6].content
         }
       ]
     },
@@ -86,7 +93,8 @@ const initialState = {
       type: 'file',
       extension: 'pdf',
       name: 'Mtn resume',
-      size: 1.4
+      size: 1.4,
+      content: ResumeHtml[7].content
     }
   ]
 }

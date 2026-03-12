@@ -34,7 +34,7 @@ export default function Main () {
         </div>
       </div>
 
-      <section className='flex  items-start justify-start  pl-10   h-full w-full gap-15'>
+      <section className='flex  items-center justify-start  pl-10   h-full w-full gap-20 flex-wrap'>
         {programs.map(item =>
           item.type === 'folder' ? (
             <div key={item.id} className='w-20 cursor-pointer '>

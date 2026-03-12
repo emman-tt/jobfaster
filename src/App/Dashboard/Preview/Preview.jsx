@@ -1,23 +1,31 @@
-import { ResumeHtml } from './ResumeHtml'
-export const ResumePreviewStage = () => {
+import { ResumeHtml } from '../../../assets/templates/ResumeHtml'
+
+export const ResumePreview = ({
+  scale = 0.1, // Very small for "file icon" size
+  className,
+  content
+}) => {
   return (
-    <div className='relative w-full  aspect-[1/1.41] overflow-hidden rounded-lg    transition-all  h-full flex border-0  justify-center items-center'>
+    <div
+      className={`relative overflow-hidden bg-white shadow-sm border border-slate-200 rounded-sm ${className}`}
+    >
       <div
         style={{
-          //   transform: `scale(0.5)`,
+          transform: `scale(${scale})`,
           transformOrigin: 'top left',
-
+          width: '800px',
           height: '1132px'
         }}
-        className=' flex  justify-center items-center w-full select-none'
+        className='pointer-events-none select-none'
       >
         <iframe
-          srcDoc={ResumeHtml[4].content}
+          srcDoc={content}
           title='Resume Preview'
-          className='w-300 h-screen   border-0'
+          className='w-full h-full border-0'
+          scrolling='no'
         />
       </div>
+      <div className='absolute inset-0 z-10' />
     </div>
-    //     shadow-[0_0_50px_-12px_rgba(0,0,0,0.1)]
   )
 }
