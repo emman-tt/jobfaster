@@ -68,7 +68,9 @@ const initialState = {
           type: 'file',
           extension: 'pdf',
           name: 'Kali server application',
-          size: 0.5
+          size: 0.5,
+          content: ResumeHtml[7].content
+
         },
         {
           id: 2,
@@ -94,7 +96,7 @@ const initialState = {
       extension: 'pdf',
       name: 'Mtn resume',
       size: 1.4,
-      content: ResumeHtml[5].content
+      content: ResumeHtml[4].content
     }
   ]
 }

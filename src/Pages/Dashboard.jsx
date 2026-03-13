@@ -3,18 +3,48 @@ import Sidebar from '../App/Dashboard/Sidebar'
 import { useSelector } from 'react-redux'
 import Overlay from '../components/Overlay'
 import Resume from '../App/Dashboard/Overview/Modals/Resume'
-
+import { toggleRightbar } from '../store/dashboardSlice'
 import UploadResume from '../App/Dashboard/Overview/Modals/UploadResume'
 import UploadFile from '../App/Dashboard/Overview/Modals/UploadFile'
 import Folder from '../App/Dashboard/Overview/Modals/Folder'
+import Rightbar from '../App/Dashboard/Rightbar/Rightbar'
+import { PanelLeftOpenIcon, PanelRightOpenIcon } from 'lucide-react'
+import { useDispatch } from 'react-redux'
 export default function Dashboard () {
   const { modals } = useSelector(state => state.modal)
+  const { showRightbar } = useSelector(state => state.dashboard)
+  const dispatch = useDispatch()
+
+  function openRightbar () {
+    dispatch(toggleRightbar(true))
+  }
+  function closeRightbar () {
+    dispatch(toggleRightbar(false))
+  }
 
   return (
-    <section className='flex relative  w-full h-screen '>
+    <section className='flex relative overflow-hidden  w-full h-screen '>
       <Sidebar className={'w-[18%] bg-[#f8f8f8] p-5 '} />
       <section className='w-full h-full '>
         <Outlet />
+      </section>
+      <section className=' flex gap-5  '>
+        {!showRightbar ? (
+          <PanelRightOpenIcon
+            onClick={() => {
+              openRightbar()
+            }}
+            className={`w-5 cursor-pointer h-5 mt-5 mr-7   `}
+          />
+        ) : (
+          <PanelLeftOpenIcon
+            onClick={() => {
+              closeRightbar()
+            }}
+            className={`w-5 cursor-pointer h-5 mt-5 `}
+          />
+        )}
+        {showRightbar && <Rightbar className={'w-80'} />}
       </section>
 
       {modals.resume && (

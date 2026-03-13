@@ -1,7 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit'
 
 const initialState = {
-  showHeader: true
+  showHeader: true,
+  showRightbar: false
 }
 
 export const dashboardSlice = createSlice({
@@ -10,8 +11,11 @@ export const dashboardSlice = createSlice({
   reducers: {
     toggleHeader: (state, action) => {
       state.showHeader = action.payload
+    },
+    toggleRightbar: (state, action) => {
+      state.showRightbar = action.payload
     }
   }
 })
 
-export const { toggleHeader } = dashboardSlice.actions
+export const { toggleHeader,toggleRightbar } = dashboardSlice.actions

@@ -9,7 +9,7 @@ import { useLocation } from 'react-router-dom'
 import { toggleHeader } from '../../../store/dashboardSlice'
 export const Header = () => {
   const dispatch = useDispatch()
-  const { showHeader } = useSelector(state => state.dashboard)
+  const { showHeader, showRightbar } = useSelector(state => state.dashboard)
   const headerRef = useRef()
   const location = useLocation()
 
@@ -55,13 +55,17 @@ export const Header = () => {
   }, [showHeader])
 
   return (
-    <section ref={headerRef} className='flex flex-col p-10 pt-5'>
+    <section ref={headerRef} className='flex flex-col p-10 pr-0 pt-5'>
       <h2 className=' text-3xl font-garamond'>Good Morning, Emmanuel</h2>
       <p className=' font-semibold mt-1 text-black/20 text-xs font-satoshi'>
         A new day, a new opportunity! Lets create something new
       </p>
 
-      <nav className='flex w-full justify-between h-34 mt-5 gap-10 pr-40'>
+      <nav
+        className={`flex w-full justify-between h-37 mt-5 gap-5 ${
+          !showRightbar && 'pr-30'
+        }`}
+      >
         <section
           onClick={() => openModal('resume')}
           className='w-full hover:bg-gray-100 cursor-pointer bg-[#f8f8f8] overflow-hidden rounded-xl  flex h-full p-2'

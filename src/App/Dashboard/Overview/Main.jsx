@@ -54,13 +54,18 @@ export default function Main () {
   }
 
   return (
-    <section className='flex flex-col p-10 gap-0 pt-0'>
+    <section className='flex flex-col pl-5 gap-0 pt-0'>
       <div className='px-5 '>
         <div className='w-full flex  justify-between items-center  '>
           <h2 className=' w-full text-2xl font-IBM'>{headerText}</h2>
 
-          <div className=' flex w-full items-center gap-7'>
-            <button onClick={() => {openFolderModal()}} className=' text-xs font-satoshi flex gap-2 bg-orange-400 hover:bg-amber-600 px-4 cursor-pointer py-3 text-white items-center h-full rounded-xl'>
+          <div className=' flex w-full items-center gap-5'>
+            <button
+              onClick={() => {
+                openFolderModal()
+              }}
+              className=' text-xs font-satoshi flex gap-2 bg-orange-400 hover:bg-amber-600 px-4 w-max cursor-pointer py-3 text-white items-center h-full rounded-xl'
+            >
               <FolderCodeIcon className=' w-4 h-4' />
               New Folder
             </button>
@@ -68,17 +73,17 @@ export default function Main () {
               onClick={() => {
                 openFileModal()
               }}
-              className=' text-xs font-satoshi px-4 flex gap-2 bg-orange-400 hover:bg-amber-600 cursor-pointer py-3 text-white items-center h-full rounded-xl'
+              className=' text-xs font-satoshi w-max  px-4 flex gap-2 bg-orange-400 hover:bg-amber-600 cursor-pointer py-3 text-white items-center h-full rounded-xl'
             >
               <FilePlusCornerIcon className=' w-4 h-4' />
               Add File
             </button>
-            <div className=' w-70 border-slate-200 p-3 rounded-xl items-center gap-5 border flex'>
+            <div className=' w-70 border-slate-200 p-3 py-2.5   rounded-xl items-center gap-5 border flex'>
               <Search className='w-5 h-5' />
               <input
                 type='text'
                 placeholder='Search by Folder or File name'
-                className='w-full text-sm h-full outline-0'
+                className='w-full text-xs font-satoshi h-full outline-0'
                 name=''
                 id=''
               />
@@ -107,7 +112,7 @@ export default function Main () {
         </div>
       </div>
 
-      <section className='flex mt-10 items-center relative justify-start  pl-10   h-full w-full gap-20 flex-wrap'>
+      <section className='flex mt-0  relative justify-start  pt-5 pl-10 gap-y-5 overflow-y-scroll h-70 [scrollbar-width:thin] py-15 w-full gap-15 flex-wrap'>
         {folder && openedFolder && (
           <section className=' flex w-full gap-10'>
             {openedFolder.files.map(item => (
