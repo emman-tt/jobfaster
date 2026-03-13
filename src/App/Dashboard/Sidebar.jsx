@@ -15,8 +15,12 @@ import {
   User2
 } from 'lucide-react'
 import { NavLink } from 'react-router-dom'
+import { useLocation } from 'react-router-dom'
 
 export default function Sidebar ({ className }) {
+  const pathname = useLocation().pathname
+  const actualPath = pathname.split('/').at(-1)
+  const isActive = processes.find(item => item.href === actualPath)?.id
   return (
     <section className={`$ flex flex-col h-full justify-between  ${className}`}>
       <div>
@@ -33,12 +37,15 @@ export default function Sidebar ({ className }) {
           <PanelLeftClose className='w-5 h-5' />
         </section>
 
-        <section className='flex flex-col w-full p-2 mt-5 gap-5'>
+        <section className='flex flex-col w-full p-2 mt-5 gap-3'>
           {processes.map(item => (
             <NavLink
               to={item.href}
               key={item.id}
-              className='flex gap-3 items-center'
+              style={{
+                backgroundColor: item.id === isActive ? '#e6e8ec' : 'inherit'
+              }}
+              className='flex gap-3  rounded-xl p-2 items-center'
             >
               <span>{item.icon}</span>
               <p className='text-sm font-IBM text-[12px]'>{item.name}</p>

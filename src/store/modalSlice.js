@@ -3,7 +3,10 @@ import { createSlice } from '@reduxjs/toolkit'
 const initialState = {
   modals: {
     resume: false,
-    cover: false
+    cover: false,
+    uploadResume: false,
+    uploadFile: false,
+    folder:false
   }
 }
 export const modalSlice = createSlice({

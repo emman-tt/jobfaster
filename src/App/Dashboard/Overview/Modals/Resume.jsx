@@ -12,7 +12,8 @@ export default function Resume () {
       navigate('/onboarding/personal')
     }
     if (selected === 2) {
-      navigate('/onboarding/personal')
+      dispatch(toggleModals('resume'))
+      dispatch(toggleModals('uploadResume'))
     }
   }
 
