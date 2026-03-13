@@ -1,3 +1,4 @@
+import { Outlet } from "react-router-dom"
 import { Header } from "./header"
 import Main from "./Main"
 
@@ -6,6 +7,7 @@ export default function Overview () {
     <section>
       <Header />
       <Main/>
+ 
     </section>
   )
 }

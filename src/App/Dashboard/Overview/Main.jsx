@@ -18,11 +18,11 @@ export default function Main () {
     state.files.programs.find(item => item.id == id)
   )
 
-  const [folder, showFolder] = useState(false)
   const navigate = useNavigate()
   const location = useLocation()
   const actualPath = location.pathname.split('/').at(-1)
   const [loader, showLoader] = useState(true)
+
   const headerText =
     actualPath !== 'overview' ? 'Saved Resumes' : 'Recently Opened'
 
@@ -32,16 +32,18 @@ export default function Main () {
     }, 1000)
   }, [])
 
-  function openFile (id) {
-    navigate(`/dashboard/resume/${id}`)
+  function openFile (folderid, resumeid) {
+    if (folderid == 0 || !folderid) {
+      return navigate(`/dashboard/file/?resumeID=${resumeid}`)
+    }
+    navigate(`/dashboard/file/?folderID=${folderid}&resumeID=${resumeid}`)
   }
 
   function openFolder (item) {
     showLoader(true)
-    showFolder(false)
+
     setTimeout(() => {
       showLoader(false)
-      showFolder(true)
     }, 400)
     navigate(`/dashboard/folder/${item.id}`)
   }
@@ -113,13 +115,13 @@ export default function Main () {
       </div>
 
       <section className='flex mt-0  relative justify-start  pt-5 pl-10 gap-y-5 overflow-y-scroll h-70 [scrollbar-width:thin] py-15 w-full gap-15 flex-wrap'>
-        {folder && openedFolder && (
+        {openedFolder && (
           <section className=' flex w-full gap-10'>
             {openedFolder.files.map(item => (
               <PaperFile
                 key={item.id}
                 onClick={() => {
-                  openFile(item.id)
+                  openFile(openedFolder.id, item.id)
                 }}
                 item={item}
               />
@@ -150,7 +152,7 @@ export default function Main () {
             ) : (
               <PaperFile
                 onClick={() => {
-                  openFile(item.id)
+                  openFile(0, item.id)
                 }}
                 key={item.id}
                 item={item}

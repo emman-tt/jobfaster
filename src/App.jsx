@@ -24,7 +24,7 @@ function App () {
           <Route path='overview' element={<Overview />} />
           <Route path='resumes' element={<Overview />} />
           <Route path='folder/:id' element={<Overview />} />
-          <Route path='resume/:id' element={<Resume />} />
+          <Route path='file' element={<Resume />} />
         </Route>
       </Routes>
     </BrowserRouter>
