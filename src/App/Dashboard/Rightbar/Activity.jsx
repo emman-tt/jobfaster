@@ -43,22 +43,29 @@ export default function Activity () {
   }
 
   return (
-    <section className=' w-full border-t h-full overflow-auto [scrollbar-width:thin]'>
-      <section className=' flex flex-col gap-2 py-10 px-5'>
-        <h3>Activity</h3>
-        {activities.map(item => (
-          <section className=' flex flex-col gap-2 ' key={item.id}>
-            <div className=' flex w-fullg-amber-300  gap-2 items-center '>
-              <p className=' p-1.5 py-2 rounded-lg bg-gray-200 flex justify-center items-center'>
-                {findIcon(item.type)}
-              </p>
-              <p className=' text-sm font-IBM '>{item.message}</p>
-            </div>
-            <div className='flex w-full border-l-3 h-9 ml-3 border-gray-300 pl-5 gap-3 items-start'>
-              <p className='text-xs  font-IBM  '>{formatDate(item.timeline)}</p>
-            </div>
-          </section>
-        ))}
+    <section className=' w-full h-[70%]  pt-0 py-10 px-5'>
+      <h3 className=' text-gray-600 font-semibold font-IBM border-b pb-2'>
+        Activity Log
+      </h3>
+
+      <section className=' w-full  h-full py-5 overflow-y-auto overflow-x-clip [scrollbar-width:thin]'>
+        <section className=' flex flex-col gap-2 '>
+          {activities.reverse().map(item => (
+            <section className=' flex flex-col gap-2' key={item.id}>
+              <div className=' flex w-fullg-amber-300  gap-2 items-center '>
+                <p className=' p-1.5 py-2 rounded-lg bg-gray-200 flex justify-center items-center'>
+                  {findIcon(item.type)}
+                </p>
+                <p className=' text-sm font-IBM '>{item.message}</p>
+              </div>
+              <div className='flex w-full border-l-3 h-9 ml-3 border-gray-300 pl-5 gap-3 items-start'>
+                <p className='text-xs  font-IBM  '>
+                  {formatDate(item.timeline)}
+                </p>
+              </div>
+            </section>
+          ))}
+        </section>
       </section>
     </section>
   )

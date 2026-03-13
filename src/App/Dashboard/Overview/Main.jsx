@@ -56,17 +56,17 @@ export default function Main () {
   }
 
   return (
-    <section className='flex flex-col pl-5 gap-0 pt-0'>
+    <section className='flex flex-col pl-5  gap-0 pt-0'>
       <div className='px-5 '>
         <div className='w-full flex  justify-between items-center  '>
           <h2 className=' w-full text-2xl font-IBM'>{headerText}</h2>
 
-          <div className=' flex w-full items-center gap-5'>
+          <div className=' flex w-full  items-center  gap-5'>
             <button
               onClick={() => {
                 openFolderModal()
               }}
-              className=' text-xs font-satoshi flex gap-2 bg-orange-400 hover:bg-amber-600 px-4 w-max cursor-pointer py-3 text-white items-center h-full rounded-xl'
+              className=' text-xs font-satoshi flex gap-2 shadow-sm shadow-black/40 bg-orange-400 hover:bg-amber-600 px-4 w-max cursor-pointer py-3 text-white items-center h-full rounded-xl'
             >
               <FolderCodeIcon className=' w-4 h-4' />
               New Folder
@@ -75,7 +75,7 @@ export default function Main () {
               onClick={() => {
                 openFileModal()
               }}
-              className=' text-xs font-satoshi w-max  px-4 flex gap-2 bg-orange-400 hover:bg-amber-600 cursor-pointer py-3 text-white items-center h-full rounded-xl'
+              className=' text-xs font-satoshi w-max  px-4 shadow-sm shadow-black/40 flex gap-2 bg-orange-400 hover:bg-amber-600 cursor-pointer py-3 text-white items-center h-full rounded-xl'
             >
               <FilePlusCornerIcon className=' w-4 h-4' />
               Add File
@@ -114,7 +114,12 @@ export default function Main () {
         </div>
       </div>
 
-      <section className='flex mt-0  relative justify-start  pt-5 pl-10 gap-y-5 overflow-y-scroll h-70 [scrollbar-width:thin] py-15 w-full gap-15 flex-wrap'>
+      <section
+        className={`flex mt-0  relative justify-start  pt-5 pl-10 gap-y-5 overflow-y-scroll ${
+          actualPath == 'overview' ? 'h-75' : 'h-130'
+        }  [scrollbar-width:thin] py-15 w-full gap-15 flex-wrap`}
+      >
+        {/* specific files in an opened folder  */}
         {openedFolder && (
           <section className=' flex w-full gap-10'>
             {openedFolder.files.map(item => (
@@ -132,6 +137,7 @@ export default function Main () {
           <div className='custom-loader absolute bottom-0  top-0 left-0 right-0 w-full '></div>
         )}
 
+        {/* All folders and files in overview and resumes */}
         {!loader &&
           !id &&
           programs.map(item =>

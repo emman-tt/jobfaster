@@ -28,23 +28,29 @@ export default function Dashboard () {
       <section className='w-full h-full '>
         <Outlet />
       </section>
-      <section className=' flex gap-5  '>
-        {!showRightbar ? (
-          <PanelRightOpenIcon
-            onClick={() => {
-              openRightbar()
-            }}
-            className={`w-5 cursor-pointer h-5 mt-5 mr-7   `}
-          />
-        ) : (
-          <PanelLeftOpenIcon
-            onClick={() => {
-              closeRightbar()
-            }}
-            className={`w-5 cursor-pointer h-5 mt-5 `}
+      <section className=' flex gap-4  pt-3 pr-3 pb-3'>
+        <div className=''>
+          {!showRightbar ? (
+            <PanelRightOpenIcon
+              onClick={() => {
+                openRightbar()
+              }}
+              className={`w-6  cursor-pointer h-6 mt-5 mr-7   `}
+            />
+          ) : (
+            <PanelLeftOpenIcon
+              onClick={() => {
+                closeRightbar()
+              }}
+              className={`w-6 cursor-pointer h-6 mt-5 `}
+            />
+          )}
+        </div>
+        {showRightbar && (
+          <Rightbar
+            className={'w-80  rounded-xl shadow-[#23232389] shadow-sm '}
           />
         )}
-        {showRightbar && <Rightbar className={'w-80'} />}
       </section>
 
       {modals.resume && (
