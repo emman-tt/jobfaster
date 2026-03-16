@@ -4,7 +4,7 @@ import Records from './Records'
 export default function Rightbar ({ className }) {
   return (
     <section className={`bg-white flex flex-col pt-20 h-full ${className}`}>
-      <Records />
+      <Records  percentage={50}/>
       <Activity />
     </section>
   )

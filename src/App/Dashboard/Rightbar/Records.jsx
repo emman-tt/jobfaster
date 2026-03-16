@@ -1,11 +1,7 @@
 import { Cell, Pie, PieChart } from 'recharts'
 
-export default function Records () {
-  const percentage = 80
-  const data = [
-    { name: 'Progress', value: percentage },
-    { name: 'Remaining', value: 100 - percentage }
-  ]
+export default function Records ({percentage}) {
+
 
   return (
     <div className='relative flex items-center h-40 justify-center '>

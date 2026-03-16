@@ -70,7 +70,6 @@ const initialState = {
           name: 'Kali server application',
           size: 0.5,
           content: ResumeHtml[7].content
-
         },
         {
           id: 2,
@@ -102,5 +101,12 @@ const initialState = {
 }
 export const filesSlice = createSlice({
   name: 'files',
-  initialState
+  initialState,
+  reducers: {
+    uploadResume: (state, action) => {
+      state.programs.push(action.payload)
+    }
+  }
 })
+
+export const { uploadResume } = filesSlice.actions

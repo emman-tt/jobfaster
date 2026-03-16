@@ -7,15 +7,16 @@ export const FullPreview = ({ scale = 1, className, content }) => {
             transform: `scale(${scale})`,
             transformOrigin: 'top center',
             width: '800px',
-            height: '1352px',
-            margin: '0 auto'
+            minHeight: '1352px',
+            margin: '0 auto',
+            
           }}
-          className='bg-white shadow-xl mx-auto'
+          className=' shadow-xl mx-auto'
         >
           <iframe
             srcDoc={content}
             title='Resume Preview'
-            className='w-full h-full border-0'
+            className='w-full h-400  border-0'
             scrolling='no'
           />
         </div>

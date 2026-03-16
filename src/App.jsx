@@ -8,11 +8,14 @@ import Dashboard from './Pages/Dashboard'
 import Overview from './App/Dashboard/Overview/Overview'
 import { FullPreview } from './App/Dashboard/Resume/FullPreview'
 import Resume from './App/Dashboard/Resume/Resume'
+import Correction from './Pages/Correction'
 function App () {
   return (
     <BrowserRouter>
       <Routes>
         <Route path='/' element={<Navigate to={'/onboarding/personal'} />} />
+        <Route path='/correction' element={<Correction />} />
+
         <Route path='/onboarding' element={<Onboarding />}>
           <Route path='personal' element={<Personal />} />
           <Route path='job' element={<Jobs />} />

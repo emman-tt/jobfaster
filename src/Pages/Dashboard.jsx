@@ -48,7 +48,9 @@ export default function Dashboard () {
         </div>
         {showRightbar && (
           <Rightbar
-            className={'w-80  rounded-xl shadow-[#23232389] shadow-sm '}
+            className={
+              'w-80 transition-all duration-200 transform-gpu ease-linear  rounded-xl shadow-[#23232389] shadow-sm '
+            }
           />
         )}
       </section>

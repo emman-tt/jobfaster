@@ -6,6 +6,7 @@ import { experienceSlice } from './experienceSlice'
 import { filesSlice } from './filesSlice'
 import { modalSlice } from './modalSlice'
 import { dashboardSlice } from './dashboardSlice'
+import { aiSlice } from './aiSlice'
 export const store = configureStore({
   reducer: {
     job: jobSlice.reducer,
@@ -14,6 +15,7 @@ export const store = configureStore({
     experience: experienceSlice.reducer,
     files: filesSlice.reducer,
     modal: modalSlice.reducer,
-    dashboard: dashboardSlice.reducer
+    dashboard: dashboardSlice.reducer,
+    ai: aiSlice.reducer
   }
 })
