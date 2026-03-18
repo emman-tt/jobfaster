@@ -4,7 +4,7 @@ export default async function Upload (formData) {
   try {
     const response = await api.post('/file/resume', formData, {
       headers: {
-        'Content-Type': ',multipart/form-data'
+        'Content-Type': 'multipart/form-data'
       }
     })
 

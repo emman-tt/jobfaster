@@ -20,7 +20,9 @@ import { useLocation } from 'react-router-dom'
 export default function Sidebar ({ className }) {
   const pathname = useLocation().pathname
   const actualPath = pathname.split('/').at(-1)
-  const isActive = processes.find(item => item.href === actualPath)?.id
+  const isActive =
+    processes.find(item => item.href.includes(actualPath))?.id ||
+    tools.find(item => item.href.includes(actualPath))?.id
   return (
     <section className={`$ flex flex-col h-full justify-between  ${className}`}>
       <div>
@@ -54,10 +56,17 @@ export default function Sidebar ({ className }) {
         </section>
         <section className='flex flex-col w-full border-t border-gray-700 pt-7 p-2 mt-5 gap-5'>
           {tools.map(item => (
-            <div key={item.id} className='flex gap-3 items-center'>
+            <NavLink
+              style={{
+                backgroundColor: item.id === isActive ? '#e6e8ec' : 'inherit'
+              }}
+              to={item.href}
+              key={item.id}
+              className='flex gap-3 p-2 rounded-xl items-center'
+            >
               <span>{item.icon}</span>
               <p className='text-sm font-IBM text-[12px]'>{item.name}</p>
-            </div>
+            </NavLink>
           ))}
         </section>
       </div>
@@ -116,11 +125,22 @@ const processes = [
 ]
 
 const tools = [
-  { id: 1, name: 'Integrate Mail', icon: <Mail className='w-4 h-4' /> },
-  { id: 2, name: 'Create Resume', icon: <PlusCircle className='w-4 h-4' /> },
   {
-    id: 3,
+    id: 5,
+    name: 'Integrate Mail',
+    icon: <Mail className='w-4 h-4' />,
+    href: 'email'
+  },
+  {
+    id: 6,
+    name: 'Create Resume',
+    icon: <PlusCircle className='w-4 h-4' />,
+    href: 'create/resume/select'
+  },
+  {
+    id: 7,
     name: 'Generate Cover Letter',
+    href: 'cover',
     icon: <NotebookPenIcon className='w-4 h-4' />
   }
 ]

@@ -82,7 +82,6 @@ export default function UploadResume () {
   }
 
   function TailorResume () {
-    console.log(file)
     if (!file || !file.file) {
       return console.log('no file exists')
     }
@@ -118,16 +117,19 @@ export default function UploadResume () {
   }
 
   useEffect(() => {
-    const timeout = setTimeout(() => {
-      aiMode.count = aiMode.count + 1
-      setAiMode({
-        ...aiMode,
-        message: Messages[aiMode.count].message
-      })
-    }, 5000)
+    if (aiMode.active == true) {
+      const timeout = setTimeout(() => {
+        aiMode.count = aiMode.count + 1
+        setAiMode({
+          ...aiMode,
+          active: true,
+          message: Messages[aiMode.count].message
+        })
+      }, 5000)
 
-    if (aiMode.count == Messages.length - 1) {
-      clearTimeout(timeout)
+      if (aiMode.count == Messages.length - 1) {
+        return clearTimeout(timeout)
+      }
     }
   }, [aiMode])
 

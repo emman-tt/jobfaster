@@ -9,6 +9,9 @@ import Overview from './App/Dashboard/Overview/Overview'
 import { FullPreview } from './App/Dashboard/Resume/FullPreview'
 import Resume from './App/Dashboard/Resume/Resume'
 import Correction from './Pages/Correction'
+import CreateResume from './App/Dashboard/CreateResume/page'
+import Select from './App/Dashboard/CreateResume/Select'
+import Examples from './App/Dashboard/CreateResume/examples'
 function App () {
   return (
     <BrowserRouter>
@@ -28,6 +31,11 @@ function App () {
           <Route path='resumes' element={<Overview />} />
           <Route path='folder/:id' element={<Overview />} />
           <Route path='file' element={<Resume />} />
+
+          <Route path='create/resume' element={<CreateResume />}>
+            <Route path='select' element={<Select />} />
+            <Route path='examples' element={<Examples />} />
+          </Route>
         </Route>
       </Routes>
     </BrowserRouter>

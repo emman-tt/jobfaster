@@ -6,7 +6,8 @@ const initialState = {
     cover: false,
     uploadResume: false,
     uploadFile: false,
-    folder:false
+    folder:false,
+    correction:false
   }
 }
 export const modalSlice = createSlice({

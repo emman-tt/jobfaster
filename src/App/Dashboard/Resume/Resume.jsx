@@ -28,12 +28,7 @@ export default function Resume () {
   return (
     <section className=' w-full h-screen relative '>
       <section className=' absolute top-[10%] font-IBM text-sm flex gap-4 flex-col left-10'>
-        <div
-          onClick={() => {
-            navigate(-1)
-          }}
-          className=' flex gap-2 border-b-2  border-white hover:border-black cursor-pointer '
-        >
+        <div onClick={() => {navigate(-1)}} className=' flex gap-2 border-b-2  border-white hover:border-black cursor-pointer '>
           <Undo2 className='w-4 h-4' />
           <p>Back</p>
         </div>
