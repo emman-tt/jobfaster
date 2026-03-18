@@ -22,7 +22,6 @@ export default function BulletPoints () {
     return ' '
   }
 
-  //   In the points always include metrics(time,values,percentages,amounts) in the bulet points to make it catchy
 
   return (
     <section className='mt-15'>

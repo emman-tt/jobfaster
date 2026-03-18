@@ -1,9 +1,3 @@
-// ClassicResumetw.jsx
-// Classic / Chronological resume layout built with Tailwind CSS.
-// Single-column, serif typography, left-aligned section rules.
-// ATS-friendly structure — the most universally accepted resume format.
-
-// ─── Default sample data ──────────────────────────────────────────────────────
 const DEFAULT_RESUME = {
   name: 'John Smith',
   title: 'Senior Software Engineer',
@@ -53,8 +47,6 @@ const DEFAULT_RESUME = {
   ],
   skills: ['React', 'Node.js', 'Python', 'AWS', 'SQL', 'TypeScript', 'GraphQL']
 }
-
-// ─── Sub-components ───────────────────────────────────────────────────────────
 
 function SectionHeading ({ children }) {
   return (
@@ -148,24 +140,6 @@ function SkillsRow ({ skills }) {
   )
 }
 
-// ─── Main Component ───────────────────────────────────────────────────────────
-
-/**
- * ClassicResumeTw
- *
- * Props:
- *   data – resume data object (defaults to sample data)
- *
- * Data shape:
- * {
- *   name: string,
- *   title: string,
- *   contact: { email, phone, location },
- *   experience: [{ id, company, role, startDate, endDate, location, bullets[] }],
- *   education:  [{ id, school, degree, startDate, endDate, detail? }],
- *   skills:     string[],
- * }
- */
 export default function Default ({ data = DEFAULT_RESUME, userData }) {
   return (
     <div className='bg-white max-w-3xl mx-auto shadow-lg border-t-4 border-slate-800 font-serif'>
@@ -190,8 +164,17 @@ export default function Default ({ data = DEFAULT_RESUME, userData }) {
         </p>
       </header>
 
-      {/* ── Body ── */}
+          {/* Summary */}
       <div className='px-10 pt-6 pb-10 space-y-6'>
+        {userData?.summary?.length > 0 && (
+          <div>
+            <SectionHeading label='Summary' >Summary</SectionHeading>
+            <p className='text-[12px] text-slate-600 leading-relaxed'>
+              {userData.summary}
+            </p>
+          </div>
+        )}
+
         {/* Work Experience */}
         {data.experience?.length > 0 && (
           <section>

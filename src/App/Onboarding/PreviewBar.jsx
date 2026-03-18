@@ -34,7 +34,7 @@ const views = [
 ]
 export default function PreviewBar () {
   const { layoutId } = useSelector(state => state.ai)
-  const { contactDetails, education, kindsOfWork, skillsAndTools } =
+  const { contactDetails, education, kindsOfWork, skillsAndTools, summary } =
     useSelector(state => state.personal)
   const userData = {
     name: contactDetails.fullName,
@@ -44,7 +44,8 @@ export default function PreviewBar () {
     jobTitle: contactDetails.jobTitle,
     education: education,
     skills: skillsAndTools,
-    kindsOfWork:kindsOfWork
+    kindsOfWork: kindsOfWork,
+    summary: summary
   }
 
   return (

@@ -10,7 +10,8 @@ const initialState = {
   },
   skillsAndTools: [],
   kindsOfWork: [],
-  summaryType: 'Professional',
+  summaryType: 'No summary',
+  summary: '',
   education: [
     {
       id: 1,
@@ -34,6 +35,9 @@ export const personalSlice = createSlice({
     },
     selectSummaryType: (state, action) => {
       state.summaryType = action.payload
+    },
+    saveSummary: (state, action) => {
+      state.summary = action.payload
     },
     saveSkillsAndTools: (state, action) => {
       state.skillsAndTools.push(action.payload)
@@ -87,5 +91,7 @@ export const {
   clearErrors,
   addEducationField,
   removeEducationField,
-  deleteSkillsAndTools,selectSummaryType
+  deleteSkillsAndTools,
+  selectSummaryType,
+  saveSummary
 } = personalSlice.actions

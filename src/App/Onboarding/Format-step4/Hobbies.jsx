@@ -21,6 +21,7 @@ export default function Hobbies () {
       {/* <section className='flex w-[80%] mt-8 px-10 gap-5'>
         <TwoButtonsAnswer defaultSelect='Yes' options={['Yes', 'No']} />
       </section> */}
+      
 
       <div className='w-[70%] px-10 flex items-center gap-7 mt-6'>
         <textarea
