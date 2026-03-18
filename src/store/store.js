@@ -7,6 +7,8 @@ import { filesSlice } from './filesSlice'
 import { modalSlice } from './modalSlice'
 import { dashboardSlice } from './dashboardSlice'
 import { aiSlice } from './aiSlice'
+import { previewSlice } from './previewSlice'
+
 export const store = configureStore({
   reducer: {
     job: jobSlice.reducer,
@@ -16,6 +18,7 @@ export const store = configureStore({
     files: filesSlice.reducer,
     modal: modalSlice.reducer,
     dashboard: dashboardSlice.reducer,
-    ai: aiSlice.reducer
+    ai: aiSlice.reducer,
+    preview: previewSlice.reducer
   }
 })

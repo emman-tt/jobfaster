@@ -1,6 +1,6 @@
 export function validateContact (data) {
   const { fullName, phone, location, email } = data.contactDetails
-  const skills = data.skillsAndTools
+  // const skills = data.skillsAndTools
   const education = data.education
 
   const errors = {}
@@ -14,15 +14,15 @@ export function validateContact (data) {
     hasError = true
   }
 
-  const phoneRegex = /^\+?[\d\s\-()]{7,15}$/
+  // const phoneRegex = /^\+?[\d\s\-()]{7,15}$/
   if (!phone.trim()) {
     errors.phone = 'Phone number is required.'
     hasError = true
   }
-  if (!phoneRegex.test(phone)) {
-    errors.phone = 'Use an international format'
-    hasError = true
-  }
+  // if (!phoneRegex.test(phone)) {
+  //   errors.phone = 'Use an international format'
+  //   hasError = true
+  // }
 
   if (!location.trim()) {
     errors.location = 'Location is required.'
@@ -43,15 +43,21 @@ export function validateContact (data) {
     hasError = true
   }
 
-  if (skills.length < 3 || !skills) {
-    hasError = true
-    errors.skillsAndTools = 'Must have  at least three (3)'
-  }
+  // if (skills.length < 3 || !skills) {
+  //   hasError = true
+  //   errors.skillsAndTools = 'Must have  at least three (3)'
+  // }
 
   const atLeastOneFilled = education.find(item => {
-    const { level, instituition, degree, year } = item
+    const { level, instituition, degree, startYear, endYear } = item
 
-    return level.trim() || instituition.trim() || degree.trim() || year.trim()
+    return (
+      level.trim() ||
+      instituition.trim() ||
+      degree.trim() ||
+      startYear.trim() ||
+      endYear.trim()
+    )
   })
 
   if (!atLeastOneFilled) {

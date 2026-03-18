@@ -46,7 +46,7 @@ const initialState = {
     }
   ],
   correctionsAnswers: [],
-  layoutId: 1
+  layoutId: 2
 }
 export const aiSlice = createSlice({
   name: 'ai',

@@ -45,9 +45,10 @@ const DEFAULT_RESUME = {
       id: 'edu-1',
       school: 'Stanford University',
       degree: 'B.S. Computer Science',
-      startDate: '2015',
-      endDate: '2019',
-      detail: 'GPA: 3.8'
+      startYear: '2015',
+      endYear: '2019',
+      gpa: 'GPA: 3.8',
+      level: 200
     }
   ],
   skills: ['React', 'Node.js', 'Python', 'AWS', 'SQL', 'TypeScript', 'GraphQL']
@@ -75,7 +76,7 @@ function ExperienceEntry ({ entry }) {
           {entry.company}
         </span>
         <span className='text-[11px] text-slate-400 italic tabular-nums'>
-          {entry.startDate} – {entry.endDate}
+          {entry.startDate} - {entry.endDate}
         </span>
       </div>
 
@@ -107,10 +108,10 @@ function EducationEntry ({ entry }) {
       {/* School + dates */}
       <div className='flex justify-between items-baseline mb-0.5'>
         <span className='text-[12px] font-bold tracking-[0.08em] uppercase text-slate-800'>
-          {entry.school}
+          {entry.instituition}
         </span>
         <span className='text-[11px] text-slate-400 italic tabular-nums'>
-          {entry.startDate} – {entry.endDate}
+          {entry.startYear} - {entry.endYear}
         </span>
       </div>
 
@@ -119,8 +120,13 @@ function EducationEntry ({ entry }) {
         <span className='text-[12px] italic text-slate-500'>
           {entry.degree}
         </span>
-        {entry.detail && (
-          <span className='text-[11px] text-slate-400'>{entry.detail}</span>
+        {entry.level && (
+          <span className='text-[11px] text-slate-400'>
+            level {entry.level}
+          </span>
+        )}
+        {entry.gpa && (
+          <span className='text-[11px] text-slate-400'>Grade: {entry.gpa}</span>
         )}
       </div>
     </div>
@@ -160,17 +166,25 @@ function SkillsRow ({ skills }) {
  *   skills:     string[],
  * }
  */
-export default function Default ({ data = DEFAULT_RESUME }) {
+export default function Default ({ data = DEFAULT_RESUME, userData }) {
   return (
     <div className='bg-white max-w-3xl mx-auto shadow-lg border-t-4 border-slate-800 font-serif'>
       {/* ── Header ── */}
       <header className='text-center px-10 pt-9 pb-6 border-b border-slate-300'>
         <h1 className='text-2xl font-bold tracking-[0.14em] uppercase text-slate-800 mb-1'>
-          {data.name}
+          {userData?.name?.length > 0 ? userData.name : data.name}
         </h1>
-        <p className='text-sm italic text-slate-500 mb-1.5'>{data.title}</p>
+        <p className='text-sm italic text-slate-500 mb-1.5'>
+          {userData?.jobTitle?.length > 0 ? userData.jobTitle : data.title}
+        </p>
         <p className='text-xs text-slate-400 tracking-wide'>
-          {[data.contact.email, data.contact.phone, data.contact.location]
+          {[
+            userData?.email?.length > 0 ? userData.email : data.contact.email,
+            userData?.phone?.length > 0 ? userData.phone : data.contact.phone,
+            userData?.location?.length > 0
+              ? userData.location
+              : data.contact.location
+          ]
             .filter(Boolean)
             .join('  |  ')}
         </p>
@@ -189,7 +203,17 @@ export default function Default ({ data = DEFAULT_RESUME }) {
         )}
 
         {/* Education */}
-        {data.education?.length > 0 && (
+
+        {userData?.education[0].institution ||
+        userData?.education[0].level ||
+        userData?.education[0].degree ? (
+          <section>
+            <SectionHeading>Education</SectionHeading>
+            {userData.education.map(edu => (
+              <EducationEntry key={edu.id} entry={edu} />
+            ))}
+          </section>
+        ) : (
           <section>
             <SectionHeading>Education</SectionHeading>
             {data.education.map(edu => (
@@ -202,7 +226,11 @@ export default function Default ({ data = DEFAULT_RESUME }) {
         {data.skills?.length > 0 && (
           <section>
             <SectionHeading>Skills</SectionHeading>
-            <SkillsRow skills={data.skills} />
+            <SkillsRow
+              skills={
+                userData?.skills?.length > 0 ? userData.skills : data.skills
+              }
+            />
           </section>
         )}
       </div>

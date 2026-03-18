@@ -1,10 +1,11 @@
 import { useState } from 'react'
 import { QuestionHeader } from '../../../components/QuestionHeader'
-import { selectSummaryType } from '../../../store/formatSlice'
+import { selectSummaryType } from '../../../store/personalSlice'
 import { useDispatch } from 'react-redux'
 const summaryType = [
   { id: 1, selected: true, name: 'Professional summary' },
-  { id: 2, selected: false, name: 'Objectives summary' }
+  { id: 2, selected: false, name: 'Objectives summary' },
+  { id: 3, selected: false, name: 'No summary' }
 ]
 
 export default function SummaryType () {
@@ -30,7 +31,7 @@ export default function SummaryType () {
         is standard and hooks the recruiter to your resume.
       </QuestionHeader>
 
-      <ul className='grid w-[70%] grid-cols-2 gap-3 mt-5 px-10'>
+      <ul className='grid w-full grid-cols-3 gap-3 mt-5 px-10'>
         {summary.map(item => (
           <li
             key={item.id}

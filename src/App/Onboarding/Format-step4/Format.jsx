@@ -2,7 +2,7 @@ import { QuestionHeader } from '../../../components/QuestionHeader'
 import { BackNext } from '../../../components/BackNext'
 import { TwoButtonsAnswer } from '../../../components/TwoButtonsAnswer'
 import FileType from './fileType'
-import SummaryType from './SummaryType'
+import SummaryType from '../Peronal-step1/SummaryType'
 import OnlineLinks from './OnlineLinks'
 import BulletPoints from './BulletPoinst'
 import Hobbies from './Hobbies'
@@ -12,7 +12,7 @@ import BodyStyles from './BodyStyles'
 import { ValidateFormat } from '../Validators/format'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
-import { saveErrors, selectSummaryType } from '../../../store/formatSlice'
+import { saveErrors } from '../../../store/formatSlice'
 
 export default function Format () {
   const dispatch = useDispatch()
@@ -34,7 +34,7 @@ export default function Format () {
   }
 
   function saveSummaryType (item) {
-    dispatch(selectSummaryType(item))
+    // dispatch(selectSummaryType(item))
   }
 
   return (

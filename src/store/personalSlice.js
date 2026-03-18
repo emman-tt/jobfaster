@@ -4,12 +4,24 @@ const initialState = {
   contactDetails: {
     fullName: '',
     email: '',
-    phone: 0,
-    location: ''
+    phone: '',
+    location: '',
+    jobTitle: ''
   },
   skillsAndTools: [],
   kindsOfWork: [],
-  education: [],
+  summaryType: 'Professional',
+  education: [
+    {
+      id: 1,
+      level: '',
+      instituition: '',
+      degree: '',
+      startYear: '',
+      endYear: '',
+      gpa: ''
+    }
+  ],
   errors: {}
 }
 export const personalSlice = createSlice({
@@ -17,16 +29,48 @@ export const personalSlice = createSlice({
   initialState,
   reducers: {
     saveContactDetails: (state, action) => {
-      state.contactDetails = { ...state.contactDetails, ...action.payload }
+      const { name, value } = action.payload
+      state.contactDetails[name] = value
+    },
+    selectSummaryType: (state, action) => {
+      state.summaryType = action.payload
     },
     saveSkillsAndTools: (state, action) => {
-      state.skillsAndTools = action.payload
+      state.skillsAndTools.push(action.payload)
+    },
+    deleteSkillsAndTools: (state, action) => {
+      state.skillsAndTools = state.skillsAndTools.filter(
+        item => item.toLowerCase() !== action.payload.toLowerCase()
+      )
     },
     saveKindsOfWorks: (state, action) => {
       state.kindsOfWork = action.payload
     },
     saveEducation: (state, action) => {
-      state.education = action.payload
+      const { name, value, id } = action.payload
+      const found = state.education.find(item => item.id == id)
+
+      if (found) {
+        found[name] = value
+      }
+    },
+    removeEducationField: (state, action) => {
+      state.education = state.education.filter(
+        item => item.id != action.payload
+      )
+    },
+    addEducationField: state => {
+      const newField = {
+        id: crypto.randomUUID(),
+        level: '',
+        instituition: '',
+        degree: '',
+        startYear: '',
+        endYear: '',
+        gpa: ''
+      }
+
+      state.education.push(newField)
     },
     saveErrors: (state, action) => {
       state.errors = action.payload
@@ -40,5 +84,8 @@ export const {
   saveKindsOfWorks,
   saveEducation,
   saveErrors,
-  clearErrors
+  clearErrors,
+  addEducationField,
+  removeEducationField,
+  deleteSkillsAndTools,selectSummaryType
 } = personalSlice.actions

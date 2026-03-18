@@ -3,7 +3,7 @@ import { createSlice } from '@reduxjs/toolkit'
 const initialState = {
   showEducationDates: false,
   onlineLinks: [],
-  summaryType: 'Professional',
+
   fileType: 'PDF',
   relevantBulletCount: 4,
   lessRelevantBulletCount: 2,
@@ -36,9 +36,6 @@ export const formatSlice = createSlice({
   name: 'format',
   initialState,
   reducers: {
-    selectSummaryType: (state, action) => {
-      state.summaryType = action.payload
-    },
     selectFileType: (state, action) => {
       state.fileType = action.payload
     },
@@ -75,7 +72,6 @@ export const formatSlice = createSlice({
 
 export const {
   selectFileType,
-  selectSummaryType,
   saveBulletCount,
   toggleEducationDatesShow,
   saveOnlineLinks,

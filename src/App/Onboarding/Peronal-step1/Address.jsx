@@ -1,35 +1,37 @@
-import { useEffect, useState } from 'react'
 import { QuestionHeader } from '../../../components/QuestionHeader'
 import { saveContactDetails } from '../../../store/personalSlice'
 import { useDispatch, useSelector } from 'react-redux'
 export default function Address () {
   const dispatch = useDispatch()
-  const [formData, setFormData] = useState({
-    fullName: '',
-    phone: '',
-    location: '',
-    email: ''
-  })
-  const { errors } = useSelector(state => state.personal)
+  const { errors, contactDetails } = useSelector(state => state.personal)
 
   const handleChange = e => {
     const { name, value } = e.target
-    setFormData({
-      ...formData,
-      [name]: value
-    })
+    dispatch(
+      saveContactDetails({
+        name: name,
+        value: value
+      })
+    )
   }
-
-  useEffect(() => {
-    const delayDebounce = setTimeout(() => {
-      dispatch(saveContactDetails(formData))
-    }, 500)
-
-    return () => clearTimeout(delayDebounce)
-  }, [formData, dispatch])
 
   return (
     <section className='mt-15 '>
+      <QuestionHeader question="What's your primary or major job title ? ">
+        In the world of Applicant Tracking Systems (ATS) and 6-second recruiter
+        scans, titles are arguably the most important part of your resume.
+      </QuestionHeader>
+      <div className=' w-full px-10 mt-2 mb-10 h-15'>
+        <input
+          value={contactDetails.jobTitle}
+          name='jobTitle'
+          onChange={handleChange}
+          type='text'
+          className=' w-full h-full px-10   rounded-xl border'
+          placeholder='Software Engineer'
+        />
+      </div>
+
       <QuestionHeader question=' Fill in your contact details'>
         It must be ATS standard, you do not need your street address for privacy
         reasons, phone number should follow international format (e.g.,
@@ -42,6 +44,7 @@ export default function Address () {
             {errors.fullName?.length > 0 && errors.fullName}
           </p>
           <input
+            value={contactDetails.fullName}
             type='text'
             required
             name='fullName'
@@ -56,7 +59,8 @@ export default function Address () {
             {errors.phone?.length > 0 && errors.phone}
           </p>
           <input
-            type='tel'
+            value={contactDetails.phone}
+            type='text'
             required
             name='phone'
             onChange={handleChange}
@@ -72,6 +76,7 @@ export default function Address () {
             {errors.location?.length > 0 && errors.location}
           </p>
           <input
+            value={contactDetails.location}
             name='location'
             type='text'
             required
@@ -86,6 +91,7 @@ export default function Address () {
             {errors.email?.length > 0 && errors.email}
           </p>
           <input
+            value={contactDetails.email}
             name='email'
             required
             onChange={handleChange}

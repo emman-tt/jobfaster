@@ -9,6 +9,7 @@ import { validateContact } from '../Validators/personal'
 import { saveErrors } from '../../../store/personalSlice'
 import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
+import SummaryType from './SummaryType'
 export const Personal = () => {
   const dispatch = useDispatch()
   const personalData = useSelector(state => state.personal)
@@ -28,7 +29,7 @@ export const Personal = () => {
   return (
     <section className=' w-full pb-20  h-full p-10 px-15 flex flex-col pt-5 rounded-2xl bg-white'>
       <Address />
-      <KindOfWork />
+      <SummaryType />
       <ToolsAndSkills />
       <Education />
       <BackNext

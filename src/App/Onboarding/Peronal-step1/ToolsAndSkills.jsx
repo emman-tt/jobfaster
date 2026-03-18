@@ -1,13 +1,16 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useMemo, useState } from 'react'
 import { skills_and_tools } from '../../../utils/PersonalSkills'
 import { QuestionHeader } from '../../../components/QuestionHeader'
 import { Search, X } from 'lucide-react'
 import { useDispatch, useSelector } from 'react-redux'
-import { saveSkillsAndTools } from '../../../store/personalSlice'
+import {
+  deleteSkillsAndTools,
+  saveSkillsAndTools
+} from '../../../store/personalSlice'
 import useClickOutside from '../../../hooks/useClick'
 export default function ToolsAndSkills () {
   const [searchInput, setSearchInput] = useState('')
-  const [selectedSkills, setSelectedSkills] = useState([])
+  const { skillsAndTools } = useSelector(state => state.personal)
 
   const [isOpen, setIsOpen] = useState(false)
   const error = useSelector(state => state.personal.errors.skillsAndTools)
@@ -24,22 +27,17 @@ export default function ToolsAndSkills () {
     })
   }, [searchInput])
   function removeSkills (input) {
-    setSelectedSkills(prev => prev.filter(item => item != input))
+    dispatch(deleteSkillsAndTools(input))
   }
   function addToSkills (input) {
     const query = input.toLowerCase()
-
-    const found = selectedSkills.find(item => item.toLowerCase() === query)
+    const found = skillsAndTools.find(item => item.toLowerCase() === query)
     if (found) {
       return
     }
-
-    setSelectedSkills(prev => [...prev, input])
+    dispatch(saveSkillsAndTools(input))
   }
 
-  useEffect(() => {
-    dispatch(saveSkillsAndTools(selectedSkills))
-  }, [selectedSkills, dispatch])
   return (
     <section className='flex mt-15 flex-col'>
       <div className='w-full flex items-center'>
@@ -99,7 +97,7 @@ export default function ToolsAndSkills () {
           isOpen ? 'w-[60%]' : 'w-full'
         } flex gap-3 flex-wrap px-10 pt-5 `}
       >
-        {selectedSkills.map(item => (
+        {skillsAndTools.map(item => (
           <div
             key={item}
             className='w-max flex gap-4 bg-gray-100 rounded-2xl p-2 text-xs font-semibold'

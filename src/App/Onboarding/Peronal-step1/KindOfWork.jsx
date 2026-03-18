@@ -1,10 +1,11 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { workType } from '../../../utils/WorkType'
 import { QuestionHeader } from '../../../components/QuestionHeader'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { saveKindsOfWorks } from '../../../store/personalSlice'
 export default function KindOfWork () {
   const [works, setWorks] = useState(workType)
+  const { kindsOfWork } = useSelector(state => state.personal)
   const dispatch = useDispatch()
   function selector (id) {
     setWorks(prev =>
@@ -12,21 +13,26 @@ export default function KindOfWork () {
         item.id === id ? { ...item, selected: !item.selected } : item
       )
     )
+
+    selectWork()
   }
 
-  useEffect(() => {
-    const selectedWorks = works
-      .filter(item => item.selected)
-      .map(({ id, name, category, examples, source }) => ({
-        id,
-        name,
-        category,
-        examples,
-        source
-      }))
+  function selectWork () {
+    setTimeout(() => {
+      const selectedWorks = works
+        .filter(item => item.selected)
+        .map(({ id, name, category, examples, source }) => ({
+          id,
+          name,
+          category,
+          examples,
+          source
+        }))
 
-    dispatch(saveKindsOfWorks(selectedWorks))
-  }, [works, dispatch])
+      dispatch(saveKindsOfWorks(selectedWorks))
+    }, 400)
+  }
+
   return (
     <section className='mt-15'>
       <QuestionHeader question='What kind of work do you do ?'>
@@ -36,7 +42,7 @@ export default function KindOfWork () {
       </QuestionHeader>
 
       <section className='grid grid-cols-2 p-6 gap-x-2 w-full gap-y-2'>
-        {works.map(item => (
+        {kindsOfWork.map(item => (
           <div
             key={item.id}
             onClick={() => {

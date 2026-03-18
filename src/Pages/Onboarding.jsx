@@ -1,4 +1,3 @@
-import Steps from '../App/Onboarding/Steps'
 import { Outlet } from 'react-router-dom'
 import ProgressBar from '../App/Onboarding/ProgressBar'
 import PreviewBar from '../App/Onboarding/PreviewBar'

@@ -1,48 +1,30 @@
-import { useEffect, useState } from 'react'
 import { QuestionHeader } from '../../../components/QuestionHeader'
 import { Plus, Trash2 } from 'lucide-react'
 import { useDispatch, useSelector } from 'react-redux'
-import { saveEducation } from '../../../store/personalSlice'
+import {
+  saveEducation,
+  addEducationField,
+  removeEducationField
+} from '../../../store/personalSlice'
 
 export default function Education () {
-  const [edu, setEdu] = useState([
-    {
-      id: 1,
-      level: '',
-      instituition: '',
-      degree: '',
-      year: ''
-    }
-  ])
   const error = useSelector(state => state.personal.errors.education)
+  const { education } = useSelector(state => state.personal)
 
   const dispatch = useDispatch()
+
   function removeEducation (id) {
-    setEdu(prev => prev.filter(item => item.id != id))
+    dispatch(removeEducationField(id))
   }
   function addNewEducation () {
-    const newField = {
-      id: crypto.randomUUID(),
-      level: '',
-      instituition: '',
-      degree: '',
-      year: ''
-    }
-
-    setEdu([...edu, newField])
+    dispatch(addEducationField())
   }
 
   function handleChange (e, id) {
     const { value, name } = e.target
 
-    setEdu(prev =>
-      prev.map(item => (item.id === id ? { ...item, [name]: value } : item))
-    )
+    dispatch(saveEducation({ name: name, value: value, id: id }))
   }
-
-  useEffect(() => {
-    dispatch(saveEducation(edu))
-  }, [edu, dispatch])
 
   return (
     <section className='w-full mt-20'>
@@ -54,7 +36,7 @@ export default function Education () {
         recent academic achievement.
       </QuestionHeader>
       <section className='flex flex-col  gap-0'>
-        {edu.map((item, i) => (
+        {education.map((item, i) => (
           <section
             key={item.id}
             className='grid grid-cols-2 gap-2 mt-0 pt-5 p-6'
@@ -70,32 +52,57 @@ export default function Education () {
                 <Trash2 className='w-3 text-red-500 h-3' />
               </button>
             </div>
+
             <input
               name='level'
+              value={education[i]?.level}
               onChange={e => handleChange(e, item.id)}
               className='w-full border text-sm border-slate-300 rounded-xl text-black outline-0 py-3 pl-10 pr-3'
-              placeholder={'level'}
+              placeholder={'level / education point'}
             />
             <input
               name='instituition'
+              value={education[i]?.instituition}
               onChange={e => handleChange(e, item.id)}
               className='w-full border text-sm border-slate-300 rounded-xl text-black outline-0 py-3 pl-10 pr-3'
               placeholder={'instituition'}
             />
-            <input
-              name='degree'
-              type='text'
-              onChange={e => handleChange(e, item.id)}
-              className='w-full border text-sm border-slate-300 rounded-xl text-black outline-0 py-3 pl-10 pr-3'
-              placeholder={'degree'}
-            />
-            <input
-              name='year'
-              type='number'
-              onChange={e => handleChange(e, item.id)}
-              className='w-full border text-sm border-slate-300 rounded-xl text-black outline-0 py-3 pl-10 pr-3'
-              placeholder={'year'}
-            />
+            <div className='w-full flex gap-3 border-0 text-sm border-slate-300 rounded-xl text-black outline-0'>
+              <input
+                value={education[i].degree}
+                name='degree'
+                type='text'
+                onChange={e => handleChange(e, item.id)}
+                className='w-full border text-sm border-slate-300 rounded-xl text-black outline-0 py-3 pl-10 pr-3'
+                placeholder={'degree / course'}
+              />
+              <input
+                name='gpa'
+                value={education[i].gpa}
+                type='number'
+                onChange={e => handleChange(e, item.id)}
+                className='w-full border text-sm border-slate-300 rounded-xl text-black outline-0 py-3 pl-10 pr-3'
+                placeholder={'gpa / grade'}
+              />
+            </div>
+            <div className='w-full flex gap-3 border-0 text-sm border-slate-300 rounded-xl text-black outline-0 '>
+              <input
+                value={education[i].startYear}
+                name='startYear'
+                type='number'
+                onChange={e => handleChange(e, item.id)}
+                className='w-full border text-sm border-slate-300 rounded-xl text-black outline-0 py-3 pl-10 pr-3'
+                placeholder={'Start Year'}
+              />
+              <input
+                value={education[i].endYear}
+                name='endYear'
+                type='number'
+                onChange={e => handleChange(e, item.id)}
+                className='w-full border text-sm border-slate-300 rounded-xl text-black outline-0 py-3 pl-10 pr-3'
+                placeholder={'End Year'}
+              />
+            </div>
           </section>
         ))}
       </section>
