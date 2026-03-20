@@ -60,7 +60,7 @@ export const personalSlice = createSlice({
     },
     removeEducationField: (state, action) => {
       state.education = state.education.filter(
-        item => item.id != action.payload
+        item => item.id !== action.payload
       )
     },
     addEducationField: state => {

@@ -4,21 +4,14 @@ const initialState = {
   experience: [
     {
       id: 1,
-      summary: '',
-      toolsAndSoftware: '',
-      metricsAndValues: '',
-      majorChallengeSolved: '',
-      teamAbilities: '',
-      finalResult: ''
-    },
-    {
-      id: 2,
-      summary: '',
-      toolsAndSoftware: '',
-      metricsAndValues: '',
-      majorChallengeSolved: '',
-      teamAbilities: '',
-      finalResult: ''
+      jobTitle: '',
+      startMonth: null,
+      startYear: null,
+      endMonth: null,
+      endYear: null,
+      points: [],
+      location: '',
+      company: ''
     }
   ],
   errors: []
@@ -28,15 +21,27 @@ export const experienceSlice = createSlice({
   initialState,
   reducers: {
     saveExperience: (state, action) => {
-      const { id, value, name } = action.payload
-
-      const section = state.experience.find(item => item.id === id)
-      if (section) {
-        section[name] = value
+      const { id, value, option } = action.payload
+      const found = state.experience.find(item => item.id == id)
+      if (found) {
+        found[option] = value
+      }
+    },
+    saveExperiencePoints: (state, action) => {
+      const { id, value } = action.payload
+      const found = state.experience.find(item => item.id == id)
+      if (found) {
+        found.points = value
       }
     },
     addExtraField: (state, action) => {
       state.experience = [...state.experience, action.payload]
+    },
+    removeField: (state, action) => {
+      console.log(action.payload)
+      state.experience = state.experience.filter(
+        item => item.id !== action.payload
+      )
     },
     saveErrors: (state, action) => {
       state.errors = action.payload
@@ -44,5 +49,10 @@ export const experienceSlice = createSlice({
   }
 })
 
-export const { saveExperience, addExtraField, saveErrors } =
-  experienceSlice.actions
+export const {
+  saveExperience,
+  saveExperiencePoints,
+  addExtraField,
+  saveErrors,
+  removeField
+} = experienceSlice.actions

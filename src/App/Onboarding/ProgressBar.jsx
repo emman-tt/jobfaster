@@ -15,13 +15,13 @@ export default function ProgressBar () {
       </div>
       {navi.map(item => (
         <div>
-          {item.id !== isActive ? (
+          {item.id > isActive ? (
             <div className='  text-sm rounded-full px-2.5 bg-white py-1  flex justify-center items-center'>
               {item.id}
             </div>
           ) : (
             <div>
-              <CheckCircle color=' green' />
+              <CheckCircle color='green' />
             </div>
           )}
         </div>
@@ -32,7 +32,7 @@ export default function ProgressBar () {
 
 const navi = [
   { id: 1, name: 'personal' },
-  { id: 2, name: 'job' },
-  { id: 3, name: 'experience' },
+  { id: 2, name: 'experience' },
+  { id: 3, name: 'job' },
   { id: 4, name: 'format' }
 ]

@@ -34,8 +34,15 @@ const views = [
 ]
 export default function PreviewBar () {
   const { layoutId } = useSelector(state => state.ai)
-  const { contactDetails, education, kindsOfWork, skillsAndTools, summary } =
-    useSelector(state => state.personal)
+  const {
+    contactDetails,
+    education,
+    kindsOfWork,
+    skillsAndTools,
+    summary,
+    summaryType
+  } = useSelector(state => state.personal)
+  const { experience } = useSelector(state => state.experience)
   const userData = {
     name: contactDetails.fullName,
     email: contactDetails.email,
@@ -45,7 +52,9 @@ export default function PreviewBar () {
     education: education,
     skills: skillsAndTools,
     kindsOfWork: kindsOfWork,
-    summary: summary
+    summary: summary,
+    showSummary: summaryType !== 'No summary',
+    experience: experience
   }
 
   return (
@@ -55,13 +64,13 @@ export default function PreviewBar () {
           className={` ${
             layoutId == 1 || layoutId == 3
               ? '-translate-y-10  scale-75'
-              : '-translate-y-20 scale-65'
+              : '-translate-y-10 scale-65'
           } `}
         >
           {layoutId == 1 ? (
             <Default userData={userData} />
           ) : layoutId == 2 ? (
-            <LeftAlligned />
+            <LeftAlligned userData={userData} />
           ) : layoutId == 3 ? (
             <TwoColumnResume />
           ) : layoutId == 4 ? (

@@ -73,23 +73,34 @@ function SectionHeading({ children }) {
 function ExperienceEntry({ entry }) {
   return (
     <div className="mb-4 last:mb-0">
-      <div className="flex justify-between items-baseline">
+      <div className="flex justify-between items-center min-h-[17px] mb-0.5">
         <span className="text-[11px] font-bold tracking-widest uppercase text-slate-800">
-          {entry.company}
+          {entry.company || <span className="inline-block h-2 w-28 bg-slate-200 rounded animate-pulse"></span>}
         </span>
-        <span className="text-[10px] text-slate-400 italic shrink-0 ml-1">
-          {entry.startDate}–{entry.endDate}
+        <span className="text-[10px] text-slate-400 italic shrink-0 ml-1 flex items-center gap-1">
+          {entry.startYear || entry.startDate || <span className="inline-block h-1.5 w-8 bg-slate-200 rounded animate-pulse"></span>}–{entry.endYear || entry.endDate || <span className="inline-block h-1.5 w-8 bg-slate-200 rounded animate-pulse"></span>}
         </span>
       </div>
-      <p className="text-[11px] italic text-slate-500 mb-1.5">{entry.role}</p>
-      <ul className="space-y-1">
-        {entry.bullets.map((b, i) => (
-          <li key={i} className="flex gap-1.5 text-[11px] text-slate-600 leading-snug">
-            <span className="text-slate-800 shrink-0 mt-px">•</span>
-            <span>{b}</span>
-          </li>
-        ))}
-      </ul>
+      <div className="flex items-center min-h-[16px] mb-1.5">
+        <p className="text-[11px] italic text-slate-500">
+          {entry.jobTitle || entry.role || <span className="inline-block h-1.5 w-24 bg-slate-200 rounded animate-pulse"></span>}
+        </p>
+      </div>
+      {entry.points?.length > 0 || entry.bullets?.length > 0 ? (
+        <ul className="space-y-1">
+          {(entry.points || entry.bullets).map((b, i) => (
+            <li key={i} className="flex gap-1.5 text-[11px] text-slate-600 leading-snug items-start mt-1">
+              <span className="text-slate-800 shrink-0 mt-px">•</span>
+              <span className="flex-1 mt-0.5">{b || <span className="inline-block h-1.5 w-full bg-slate-200 rounded animate-pulse mt-0.5"></span>}</span>
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <div className="space-y-1.5 mt-1">
+          <div className="h-1.5 w-full bg-slate-200 rounded animate-pulse"></div>
+          <div className="h-1.5 w-5/6 bg-slate-200 rounded animate-pulse"></div>
+        </div>
+      )}
     </div>
   );
 }
@@ -97,29 +108,48 @@ function ExperienceEntry({ entry }) {
 function EducationEntry({ entry }) {
   return (
     <div className="mb-4 last:mb-0">
-      <div className="flex justify-between items-baseline">
+      <div className="flex justify-between items-center min-h-[17px] mb-0.5">
         <span className="text-[11px] font-bold tracking-widest uppercase text-slate-800 leading-tight">
-          {entry.school}
+          {entry.instituition || entry.school || <span className="inline-block h-2 w-28 bg-slate-200 rounded animate-pulse"></span>}
         </span>
-        <span className="text-[10px] text-slate-400 italic shrink-0 ml-1">
-          {entry.startDate}–{entry.endDate}
+        <span className="text-[10px] text-slate-400 italic shrink-0 ml-1 flex items-center gap-1">
+          {entry.startYear || entry.startDate || <span className="inline-block h-1.5 w-8 bg-slate-200 rounded animate-pulse"></span>}–{entry.endYear || entry.endDate || <span className="inline-block h-1.5 w-8 bg-slate-200 rounded animate-pulse"></span>}
         </span>
       </div>
-      <p className="text-[11px] italic text-slate-500">{entry.degree}</p>
-      {entry.detail && (
-        <p className="text-[11px] text-slate-500">{entry.detail}</p>
+      <div className="flex items-center min-h-[16px] mb-0.5">
+        <p className="text-[11px] italic text-slate-500">
+          {entry.degree || <span className="inline-block h-1.5 w-24 bg-slate-200 rounded animate-pulse"></span>}
+        </p>
+      </div>
+      {(entry.detail || entry.gpa || entry.level) ? (
+        <p className="text-[11px] text-slate-500 flex items-center min-h-[16px]">
+          {entry.detail || [entry.level ? `level ${entry.level}` : '', entry.gpa ? `Grade: ${entry.gpa}` : ''].filter(Boolean).join(', ')}
+        </p>
+      ) : (
+        <div className="min-h-[16px] flex items-center">
+          <span className="inline-block h-1.5 w-20 bg-slate-200 rounded animate-pulse"></span>
+        </div>
       )}
     </div>
   );
 }
 
 function BulletList({ items }) {
+  if (!items || items.length === 0) {
+    return (
+      <div className="space-y-1.5 mt-1">
+        <div className="h-1.5 w-full bg-slate-200 rounded animate-pulse"></div>
+        <div className="h-1.5 w-5/6 bg-slate-200 rounded animate-pulse"></div>
+      </div>
+    );
+  }
+
   return (
     <ul className="space-y-1">
       {items.map((item, i) => (
-        <li key={i} className="flex gap-1.5 text-[11px] text-slate-600 leading-snug">
-          <span className="text-slate-800 shrink-0">•</span>
-          <span>{item}</span>
+        <li key={i} className="flex gap-1.5 text-[11px] text-slate-600 leading-snug items-start mt-1">
+          <span className="text-slate-800 shrink-0 mt-px">•</span>
+          <span className="flex-1 mt-0.5">{item || <span className="inline-block h-1.5 w-full bg-slate-200 rounded animate-pulse mt-0.5"></span>}</span>
         </li>
       ))}
     </ul>
@@ -127,14 +157,30 @@ function BulletList({ items }) {
 }
 
 function SkillChips({ skills }) {
+  if (!skills || skills.length === 0) {
+    return (
+      <div className="flex flex-wrap gap-1.5">
+        <div className="h-5 w-16 bg-slate-200 rounded-sm animate-pulse"></div>
+        <div className="h-5 w-20 bg-slate-200 rounded-sm animate-pulse"></div>
+        <div className="h-5 w-14 bg-slate-200 rounded-sm animate-pulse"></div>
+        <div className="h-5 w-24 bg-slate-200 rounded-sm animate-pulse"></div>
+      </div>
+    );
+  }
+
+  let flatSkills = skills;
+  if (skills.length > 0 && Array.isArray(skills[0])) {
+    flatSkills = skills.flat();
+  }
+
   return (
     <div className="flex flex-wrap gap-1.5">
-      {skills.map((skill, i) => (
+      {flatSkills.map((skill, i) => (
         <span
           key={i}
-          className="text-[10.5px] text-slate-600 border border-slate-200 rounded-sm px-2 py-0.5 bg-slate-50"
+          className="text-[10.5px] text-slate-600 border border-slate-200 rounded-sm px-2 py-0.5 bg-slate-50 flex items-center min-h-[22px]"
         >
-          {skill}
+          {skill || <span className="inline-block h-1.5 w-10 bg-slate-300 rounded animate-pulse"></span>}
         </span>
       ))}
     </div>
@@ -142,12 +188,35 @@ function SkillChips({ skills }) {
 }
 
 function CertificationList({ certifications }) {
+  if (!certifications || certifications.length === 0) {
+    return (
+      <div className="space-y-3">
+        <div>
+          <div className="h-2 w-32 bg-slate-200 rounded animate-pulse mb-1"></div>
+          <div className="h-1.5 w-12 bg-slate-200 rounded animate-pulse"></div>
+        </div>
+        <div>
+          <div className="h-2 w-28 bg-slate-200 rounded animate-pulse mb-1"></div>
+          <div className="h-1.5 w-12 bg-slate-200 rounded animate-pulse"></div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <ul className="space-y-2">
       {certifications.map((cert) => (
         <li key={cert.id}>
-          <p className="text-[11px] font-medium text-slate-700 leading-snug">{cert.name}</p>
-          <p className="text-[10px] text-slate-400">{cert.year}</p>
+          <div className="flex items-center min-h-[16px] mb-0.5">
+            <p className="text-[11px] font-medium text-slate-700 leading-snug">
+              {cert.name || <span className="inline-block h-2 w-32 bg-slate-200 rounded animate-pulse"></span>}
+            </p>
+          </div>
+          <div className="flex items-center min-h-[14px]">
+            <p className="text-[10px] text-slate-400">
+              {cert.year || <span className="inline-block h-1.5 w-12 bg-slate-200 rounded animate-pulse"></span>}
+            </p>
+          </div>
         </li>
       ))}
     </ul>
@@ -174,26 +243,34 @@ function CertificationList({ certifications }) {
  *   certifications: [{ id, name, year }],
  * }
  */
-export default function TwoColumnResume({ data = DEFAULT_RESUME ,}) {
+export default function TwoColumnResume({ data = DEFAULT_RESUME, userData }) {
   return (
     // Outer page shell — A4-ish proportions, printable
     <div className="bg-white max-w-3xl mx-auto shadow-lg border-t-4 border-slate-800 font-serif">
 
       {/* ── Header ── */}
-      <header className="text-center px-10 pt-9 pb-6 border-b border-slate-300">
-        <h1 className="text-2xl font-bold tracking-[0.14em] uppercase text-slate-800 mb-1">
-          {data.name}
+      <header className="text-center min-h-[120px] flex flex-col items-center justify-center px-10 pt-9 pb-6 border-b border-slate-300">
+        <h1 className="text-2xl font-bold tracking-[0.14em] uppercase text-slate-800 mb-1 flex items-center min-h-[32px]">
+          {userData?.name || <span className="inline-block h-4 w-48 bg-slate-200 rounded animate-pulse"></span>}
         </h1>
-        <p className="text-sm italic text-slate-500 mb-1.5">{data.title}</p>
-        <p className="text-xs text-slate-400 tracking-wide">
-          {[data.contact.email, data.contact.phone, data.contact.location]
+        <p className="text-sm italic text-slate-500 mb-1.5 flex items-center min-h-[20px]">
+          {userData?.jobTitle || <span className="inline-block h-2 w-32 bg-slate-200 rounded animate-pulse"></span>}
+        </p>
+        <p className="text-xs text-slate-400 tracking-wide flex items-center justify-center min-h-[16px]">
+          {[userData?.email, userData?.phone, userData?.location]
             .filter(Boolean)
-            .join("  |  ")}
+            .join("  |  ") || (
+              <span className="flex items-center gap-4">
+                <span className="inline-block h-1.5 w-24 bg-slate-200 rounded animate-pulse"></span>
+                <span className="inline-block h-1.5 w-20 bg-slate-200 rounded animate-pulse"></span>
+                <span className="inline-block h-1.5 w-24 bg-slate-200 rounded animate-pulse"></span>
+              </span>
+            )}
         </p>
       </header>
 
       {/* ── Two-column grid ── */}
-      <div className="grid grid-cols-2 divide-x divide-slate-200">
+      <div className="grid grid-cols-2 divide-x divide-slate-200 min-h-[300px]">
 
         {/* ── LEFT column ── */}
         <div className="divide-y divide-slate-200">
@@ -201,15 +278,35 @@ export default function TwoColumnResume({ data = DEFAULT_RESUME ,}) {
           {/* Work Experience */}
           <div className="px-6 py-5">
             <SectionHeading>Work Experience</SectionHeading>
-            {data.experience.map((exp) => (
-              <ExperienceEntry key={exp.id} entry={exp} />
+            {userData?.experience?.length > 0 ? (
+              userData.experience.map((exp) => (
+                <ExperienceEntry key={exp.id} entry={exp} />
+              ))
+            ) : (userData ? (
+              <div className="mb-4">
+                <div className="flex justify-between items-center min-h-[17px] mb-0.5">
+                  <span className="inline-block h-2 w-28 bg-slate-200 rounded animate-pulse"></span>
+                  <span className="inline-block h-1.5 w-16 bg-slate-200 rounded animate-pulse"></span>
+                </div>
+                <div className="flex items-center min-h-[16px] mb-1.5">
+                  <span className="inline-block h-1.5 w-24 bg-slate-200 rounded animate-pulse"></span>
+                </div>
+                <div className="space-y-1.5 mt-1">
+                  <div className="h-1.5 w-full bg-slate-200 rounded animate-pulse"></div>
+                  <div className="h-1.5 w-5/6 bg-slate-200 rounded animate-pulse"></div>
+                </div>
+              </div>
+            ) : (
+              data.experience.map((exp) => (
+                <ExperienceEntry key={exp.id} entry={exp} />
+              ))
             ))}
           </div>
 
           {/* Skills */}
           <div className="px-6 py-5">
             <SectionHeading>Skills</SectionHeading>
-            <SkillChips skills={data.skills} />
+            <SkillChips skills={userData?.skills?.length > 0 ? userData.skills : (userData ? [] : data.skills)} />
           </div>
 
         </div>
@@ -217,29 +314,64 @@ export default function TwoColumnResume({ data = DEFAULT_RESUME ,}) {
         {/* ── RIGHT column ── */}
         <div className="divide-y divide-slate-200">
 
-          {/* Education */}
+          {/* Summary / Education */}
           <div className="px-6 py-5">
+            {userData?.showSummary !== false && (
+              <div className="mb-6">
+                <SectionHeading>Summary</SectionHeading>
+                <p className="text-[11.5px] text-slate-600 leading-relaxed min-h-[20px] flex items-center">
+                  {userData?.summary || (
+                    <span className="w-full flex flex-col gap-1.5 mt-1">
+                      <span className="h-1.5 w-full bg-slate-200 rounded animate-pulse"></span>
+                      <span className="h-1.5 w-5/6 bg-slate-200 rounded animate-pulse"></span>
+                    </span>
+                  )}
+                </p>
+              </div>
+            )}
+
             <SectionHeading>Education</SectionHeading>
-            {data.education.map((edu) => (
-              <EducationEntry key={edu.id} entry={edu} />
+            {userData?.education?.length > 0 ? (
+              userData.education.map((edu) => (
+                <EducationEntry key={edu.id} entry={edu} />
+              ))
+            ) : (userData ? (
+              <div className="mb-4">
+                <div className="flex justify-between items-center min-h-[17px] mb-0.5">
+                  <span className="inline-block h-2 w-28 bg-slate-200 rounded animate-pulse"></span>
+                  <span className="inline-block h-1.5 w-16 bg-slate-200 rounded animate-pulse"></span>
+                </div>
+                <div className="flex items-center min-h-[16px] mb-0.5">
+                  <span className="inline-block h-1.5 w-24 bg-slate-200 rounded animate-pulse"></span>
+                </div>
+                <div className="min-h-[16px] flex items-center">
+                  <span className="inline-block h-1.5 w-20 bg-slate-200 rounded animate-pulse"></span>
+                </div>
+              </div>
+            ) : (
+              data.education.map((edu) => (
+                <EducationEntry key={edu.id} entry={edu} />
+              ))
             ))}
 
             {/* Courses */}
-            {data.courses?.length > 0 && (
+            {((userData?.courses && userData.courses.length > 0) || (!userData && data.courses?.length > 0)) && (
               <div className="mt-4">
                 <p className="text-[10px] font-bold tracking-[0.14em] uppercase text-slate-500 mb-1.5">
                   Relevant Courses
                 </p>
-                <BulletList items={data.courses} />
+                <BulletList items={userData?.courses?.length > 0 ? userData.courses : data.courses} />
               </div>
             )}
           </div>
 
           {/* Certifications */}
-          <div className="px-6 py-5">
-            <SectionHeading>Certifications</SectionHeading>
-            <CertificationList certifications={data.certifications} />
-          </div>
+          {((userData?.certifications && userData.certifications.length > 0) || (!userData && data.certifications?.length > 0)) && (
+            <div className="px-6 py-5">
+              <SectionHeading>Certifications</SectionHeading>
+              <CertificationList certifications={userData?.certifications?.length > 0 ? userData.certifications : data.certifications} />
+            </div>
+          )}
 
         </div>
       </div>

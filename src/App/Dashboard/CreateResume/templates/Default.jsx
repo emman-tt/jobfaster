@@ -63,74 +63,135 @@ function ExperienceEntry ({ entry }) {
   return (
     <div className='mb-5 last:mb-0'>
       {/* Company + date */}
-      <div className='flex justify-between items-baseline mb-0.5'>
+      <div className='flex justify-between items-center mb-0.5 min-h-4.5'>
         <span className='text-[12px] font-bold tracking-[0.08em] uppercase text-slate-800'>
-          {entry.company}
+          {entry.company || (
+            <span className='inline-block h-2 w-32 bg-slate-200 rounded animate-pulse'></span>
+          )}
         </span>
-        <span className='text-[11px] text-slate-400 italic tabular-nums'>
-          {entry.startDate} - {entry.endDate}
+        <span className='text-[11px] text-slate-400 italic tabular-nums flex items-center gap-1'>
+          {entry.startYear || (
+            <span className='inline-block h-1.5 w-8 bg-slate-200 rounded animate-pulse'></span>
+          )}{' '}
+          -{' '}
+          {entry.endYear || (
+            <span className='inline-block h-1.5 w-8 bg-slate-200 rounded animate-pulse'></span>
+          )}
         </span>
       </div>
 
       {/* Role + location */}
-      <div className='flex justify-between items-baseline mb-2'>
-        <span className='text-[12px] italic text-slate-500'>{entry.role}</span>
-        <span className='text-[11px] text-slate-400'>{entry.location}</span>
+      <div className='flex justify-between items-center mb-2 min-h-4.5'>
+        <span className='text-[12px] italic text-slate-500'>
+          {entry.jobTitle || (
+            <span className='inline-block h-1.5 w-24 bg-slate-200 rounded animate-pulse'></span>
+          )}
+        </span>
+        <span className='text-[11px] text-slate-400 flex items-center'>
+          {entry.location || (
+            <span className='inline-block h-1.5 w-20 bg-slate-200 rounded animate-pulse'></span>
+          )}
+        </span>
       </div>
 
       {/* Bullets */}
-      <ul className='space-y-1'>
-        {entry.bullets.map((b, i) => (
-          <li
-            key={i}
-            className='flex gap-2 text-[12px] text-slate-600 leading-snug'
-          >
-            <span className='text-slate-700 shrink-0 mt-px'>•</span>
-            <span>{b}</span>
-          </li>
-        ))}
-      </ul>
+      {entry.points?.length > 0 ? (
+        <ul className='space-y-1'>
+          {entry.points.map((b, i) => (
+            <li
+              key={i}
+              className='flex gap-2 text-[12px] text-slate-600 leading-snug items-start'
+            >
+              <span className='text-slate-700 shrink-0 mt-px'>•</span>
+              <span className='flex-1 mt-0.5'>
+                {b || (
+                  <span className='inline-block h-1.5 w-full bg-slate-200 rounded animate-pulse'></span>
+                )}
+              </span>
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <div className='space-y-1.5 mt-1'>
+          <div className='h-1.5 w-full bg-slate-200 rounded animate-pulse'></div>
+          <div className='h-1.5 w-5/6 bg-slate-200 rounded animate-pulse'></div>
+        </div>
+      )}
     </div>
   )
 }
 
 function EducationEntry ({ entry }) {
   return (
-    <div className='mb-4 last:mb-0'>
+    <div className='mb-4 last:mb-0 '>
       {/* School + dates */}
-      <div className='flex justify-between items-baseline mb-0.5'>
+      <div className='flex justify-between items-center mb-0.5 min-h-4.5'>
         <span className='text-[12px] font-bold tracking-[0.08em] uppercase text-slate-800'>
-          {entry.instituition}
+          {entry.instituition || (
+            <span className='inline-block h-2 w-32 bg-slate-200 rounded animate-pulse'></span>
+          )}
         </span>
-        <span className='text-[11px] text-slate-400 italic tabular-nums'>
-          {entry.startYear} - {entry.endYear}
+        <span className='text-[11px] text-slate-400 italic tabular-nums flex items-center gap-1'>
+          {entry.startYear || (
+            <span className='inline-block h-1.5 w-8 bg-slate-200 rounded animate-pulse'></span>
+          )}{' '}
+          -{' '}
+          {entry.endYear || (
+            <span className='inline-block h-1.5 w-8 bg-slate-200 rounded animate-pulse'></span>
+          )}
         </span>
       </div>
 
       {/* Degree + detail */}
-      <div className='flex justify-between items-baseline'>
+      <div className='flex justify-between items-center min-h-4.5'>
         <span className='text-[12px] italic text-slate-500'>
-          {entry.degree}
+          {entry.degree || (
+            <span className='inline-block h-1.5 w-24 bg-slate-200 rounded animate-pulse'></span>
+          )}
         </span>
-        {entry.level && (
-          <span className='text-[11px] text-slate-400'>
-            level {entry.level}
-          </span>
-        )}
-        {entry.gpa && (
-          <span className='text-[11px] text-slate-400'>Grade: {entry.gpa}</span>
-        )}
+        <div className='flex gap-3'>
+          {entry.level || entry.gpa ? (
+            <>
+              {entry.level && (
+                <span className='text-[11px] text-slate-400'>
+                  level {entry.level}
+                </span>
+              )}
+              {entry.gpa && (
+                <span className='text-[11px] text-slate-400'>
+                  Grade: {entry.gpa}
+                </span>
+              )}
+            </>
+          ) : (
+            <span className='inline-block h-1.5 w-20 bg-slate-200 rounded animate-pulse mt-0.5'></span>
+          )}
+        </div>
       </div>
     </div>
   )
 }
 
 function SkillsRow ({ skills }) {
+  if (!skills || skills.length === 0) {
+    return (
+      <div className='flex gap-2 flex-wrap mt-1'>
+        <div className='h-1.5 w-16 bg-slate-200 rounded animate-pulse'></div>
+        <div className='h-1.5 w-20 bg-slate-200 rounded animate-pulse'></div>
+        <div className='h-1.5 w-12 bg-slate-200 rounded animate-pulse'></div>
+        <div className='h-1.5 w-24 bg-slate-200 rounded animate-pulse'></div>
+        <div className='h-1.5 w-16 bg-slate-200 rounded animate-pulse'></div>
+      </div>
+    )
+  }
+
   return (
-    <p className='text-[12px] flex flex-wrap text-slate-600'>
+    <p className='text-[12px] flex flex-wrap text-slate-600 items-center min-h-4.5'>
       {skills.map((skill, i) => (
-        <span key={i}>
-          {skill}
+        <span key={i} className='flex items-center'>
+          {skill || (
+            <span className='inline-block h-1.5 w-12 bg-slate-200 rounded animate-pulse'></span>
+          )}
           {i < skills.length - 1 && (
             <span className='text-slate-300 mx-2'>•</span>
           )}
@@ -142,80 +203,111 @@ function SkillsRow ({ skills }) {
 
 export default function Default ({ data = DEFAULT_RESUME, userData }) {
   return (
-    <div className='bg-white max-w-3xl mx-auto shadow-lg border-t-4 border-slate-800 font-serif'>
+    <div className='bg-white max-w-3xl  mx-auto shadow-lg border-t-4 border-slate-800 font-serif'>
       {/* ── Header ── */}
-      <header className='text-center px-10 pt-9 pb-6 border-b border-slate-300'>
-        <h1 className='text-2xl font-bold tracking-[0.14em] uppercase text-slate-800 mb-1'>
-          {userData?.name?.length > 0 ? userData.name : data.name}
+      <header className='text-center min-h-30 flex flex-col items-center justify-center px-10 pt-9 pb-6 border-b border-slate-300'>
+        <h1 className='text-2xl font-bold tracking-[0.14em] uppercase text-slate-800 mb-1 flex items-center min-h-8'>
+          {/* {userData?.name?.length > 0 ? userData.name : data.name} */}
+
+          {userData?.name || (
+            <span className='inline-block h-4 w-48 bg-slate-200 rounded animate-pulse'></span>
+          )}
         </h1>
-        <p className='text-sm italic text-slate-500 mb-1.5'>
-          {userData?.jobTitle?.length > 0 ? userData.jobTitle : data.title}
+        <p className='text-sm italic text-slate-500 mb-1.5 flex items-center min-h-5'>
+          {/* {userData?.jobTitle?.length > 0 ? userData.jobTitle : data.title} */}
+          {userData?.jobTitle || (
+            <span className='inline-block h-2 w-32 bg-slate-200 rounded animate-pulse'></span>
+          )}
         </p>
-        <p className='text-xs text-slate-400 tracking-wide'>
-          {[
-            userData?.email?.length > 0 ? userData.email : data.contact.email,
-            userData?.phone?.length > 0 ? userData.phone : data.contact.phone,
-            userData?.location?.length > 0
-              ? userData.location
-              : data.contact.location
-          ]
+        <p className='text-xs text-slate-400 tracking-wide flex items-center justify-center min-h-4'>
+          {[userData?.email, userData?.phone, userData?.location]
             .filter(Boolean)
-            .join('  |  ')}
+            .join('  |  ') || (
+            <span className='flex items-center gap-4'>
+              <span className='inline-block h-1.5 w-24 bg-slate-200 rounded animate-pulse'></span>
+              <span className='inline-block h-1.5 w-20 bg-slate-200 rounded animate-pulse'></span>
+              <span className='inline-block h-1.5 w-24 bg-slate-200 rounded animate-pulse'></span>
+            </span>
+          )}
         </p>
       </header>
 
-          {/* Summary */}
-      <div className='px-10 pt-6 pb-10 space-y-6'>
-        {userData?.summary?.length > 0 && (
-          <div>
-            <SectionHeading label='Summary' >Summary</SectionHeading>
-            <p className='text-[12px] text-slate-600 leading-relaxed'>
-              {userData.summary}
-            </p>
-          </div>
-        )}
+      {/* Summary */}
+      <div className='px-10 pt-6 pb-10   space-y-6'>
+        {userData?.showSummary &&
+          (userData?.summary.length > 0 ? (
+            <div className=' min-h-10'>
+              <SectionHeading>Summary</SectionHeading>
+              <p className='text-[12px] text-slate-600 leading-relaxed min-h-5 flex items-center'>
+                {userData?.summary || (
+                  <span className='w-full flex flex-col gap-1.5 mt-1'>
+                    <span className='h-1.5 w-full bg-slate-200 rounded animate-pulse'></span>
+                    <span className='h-1.5 w-5/6 bg-slate-200 rounded animate-pulse'></span>
+                  </span>
+                )}
+              </p>
+            </div>
+          ) : (
+            <div className='min-h-10'>
+              <SectionHeading>Summary</SectionHeading>
+              <div className='flex flex-col gap-1.5 mt-2'>
+                <span className='h-1.5 w-full bg-slate-200 rounded animate-pulse'></span>
+                <span className='h-1.5 w-5/6 bg-slate-200 rounded animate-pulse'></span>
+              </div>
+            </div>
+          ))}
 
         {/* Work Experience */}
-        {data.experience?.length > 0 && (
-          <section>
-            <SectionHeading>Work Experience</SectionHeading>
-            {data.experience.map(exp => (
+        <section className={`min-h-20`}>
+          <SectionHeading>Work Experience</SectionHeading>
+          {userData?.experience?.length > 0 ? (
+            userData.experience.map(exp => (
               <ExperienceEntry key={exp.id} entry={exp} />
-            ))}
-          </section>
-        )}
+            ))
+          ) : (
+            <div className='mb-5'>
+              <div className='flex justify-between items-center mb-0.5 min-h-4.5'>
+                <span className='inline-block h-2 w-32 bg-slate-200 rounded animate-pulse'></span>
+                <span className='inline-block h-1.5 w-16 bg-slate-200 rounded animate-pulse'></span>
+              </div>
+              <div className='flex justify-between items-center mb-2 min-h-4.5'>
+                <span className='inline-block h-1.5 w-24 bg-slate-200 rounded animate-pulse'></span>
+                <span className='inline-block h-1.5 w-20 bg-slate-200 rounded animate-pulse'></span>
+              </div>
+              <div className='space-y-1.5 mt-2'>
+                <div className='h-1.5 w-full bg-slate-200 rounded animate-pulse'></div>
+                <div className='h-1.5 w-5/6 bg-slate-200 rounded animate-pulse'></div>
+              </div>
+            </div>
+          )}
+        </section>
 
         {/* Education */}
-
-        {userData?.education[0].institution ||
-        userData?.education[0].level ||
-        userData?.education[0].degree ? (
-          <section>
-            <SectionHeading>Education</SectionHeading>
-            {userData.education.map(edu => (
+        <section className=' min-h-20'>
+          <SectionHeading>Education</SectionHeading>
+          {userData?.education?.length > 0 ? (
+            userData.education.map(edu => (
               <EducationEntry key={edu.id} entry={edu} />
-            ))}
-          </section>
-        ) : (
-          <section>
-            <SectionHeading>Education</SectionHeading>
-            {data.education.map(edu => (
-              <EducationEntry key={edu.id} entry={edu} />
-            ))}
-          </section>
-        )}
+            ))
+          ) : (
+            <div className='mb-4'>
+              <div className='flex justify-between items-center mb-0.5 min-h-4.5'>
+                <span className='inline-block h-2 w-32 bg-slate-200 rounded animate-pulse'></span>
+                <span className='inline-block h-1.5 w-16 bg-slate-200 rounded animate-pulse'></span>
+              </div>
+              <div className='flex justify-between items-center min-h-4.5'>
+                <span className='inline-block h-1.5 w-24 bg-slate-200 rounded animate-pulse'></span>
+                <span className='inline-block h-1.5 w-20 bg-slate-200 rounded animate-pulse'></span>
+              </div>
+            </div>
+          )}
+        </section>
 
         {/* Skills */}
-        {data.skills?.length > 0 && (
-          <section>
-            <SectionHeading>Skills</SectionHeading>
-            <SkillsRow
-              skills={
-                userData?.skills?.length > 0 ? userData.skills : data.skills
-              }
-            />
-          </section>
-        )}
+        <section className=' min-h-20'>
+          <SectionHeading>Skills</SectionHeading>
+          <SkillsRow skills={userData?.skills} />
+        </section>
       </div>
     </div>
   )
