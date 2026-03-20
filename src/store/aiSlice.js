@@ -39,14 +39,14 @@ const initialState = {
     {
       id: 9,
       suggestion:
-        'Provide specific start and end dates (e.g., Month Year – Month Year) for your internship roles to provide a clear timeline of your professional development.',
+        'Provide specific start and end dates (e.g., Month Year - Month Year) for your internship roles to provide a clear timeline of your professional development.',
       fixContext: 'Frontend Developer Intern — XAVS LABS',
       fixLocation:
         'Work Experience - Frontend Developer Intern role at XAVS LABS'
     }
   ],
   correctionsAnswers: [],
-  layoutId: 2
+  layoutId: 5
 }
 export const aiSlice = createSlice({
   name: 'ai',

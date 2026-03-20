@@ -5,33 +5,6 @@ import DividedResume from '../../App/Dashboard/CreateResume/templates/Divided'
 import Default from '../../App/Dashboard/CreateResume/templates/Default'
 import { useSelector } from 'react-redux'
 
-const views = [
-  {
-    id: 1,
-    name: 'Default Classic Layout',
-    Comp: <Default />
-  },
-  {
-    id: 2,
-    name: 'Left Aligned Layout',
-    Comp: <LeftAlligned />
-  },
-  {
-    id: 3,
-    name: 'Two Column Layout',
-    Comp: <TwoColumnResume />
-  },
-  {
-    id: 4,
-    name: 'Skills First Layout',
-    Comp: <SkillsFirstResume />
-  },
-  {
-    id: 5,
-    name: 'Divided Sections Layout',
-    Comp: <DividedResume />
-  }
-]
 export default function PreviewBar () {
   const { layoutId } = useSelector(state => state.ai)
   const {
@@ -72,11 +45,11 @@ export default function PreviewBar () {
           ) : layoutId == 2 ? (
             <LeftAlligned userData={userData} />
           ) : layoutId == 3 ? (
-            <TwoColumnResume />
+            <TwoColumnResume userData={userData} />
           ) : layoutId == 4 ? (
-            <SkillsFirstResume />
+            <SkillsFirstResume userData={userData} />
           ) : (
-            <DividedResume />
+            <DividedResume userData={userData} />
           )}
         </div>
       }

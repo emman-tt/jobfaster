@@ -61,52 +61,7 @@ const DEFAULT_RESUME = {
   ]
 }
 
-const icons = {
-  location: (
-    <svg
-      viewBox='0 0 16 16'
-      fill='none'
-      className='w-3 h-3 shrink-0 mt-px'
-      stroke='currentColor'
-      strokeWidth='1.5'
-    >
-      <path d='M8 1.5C5.515 1.5 3.5 3.515 3.5 6c0 3.75 4.5 8.5 4.5 8.5s4.5-4.75 4.5-8.5c0-2.485-2.015-4.5-4.5-4.5z' />
-      <circle cx='8' cy='6' r='1.5' />
-    </svg>
-  ),
-  email: (
-    <svg
-      viewBox='0 0 16 16'
-      fill='none'
-      className='w-3 h-3 shrink-0 mt-px'
-      stroke='currentColor'
-      strokeWidth='1.5'
-    >
-      <rect x='1.5' y='3.5' width='13' height='9' rx='1' />
-      <path d='M1.5 4.5l6.5 5 6.5-5' />
-    </svg>
-  ),
-  phone: (
-    <svg
-      viewBox='0 0 16 16'
-      fill='none'
-      className='w-3 h-3 shrink-0 mt-px'
-      stroke='currentColor'
-      strokeWidth='1.5'
-    >
-      <path d='M3 2h3l1.5 3.5-1.75 1.25C6.5 8.5 7.5 9.5 9.25 10.25L10.5 8.5 14 10v3c0 .55-.45 1-1 1C5.16 14 2 10.84 2 3c0-.55.45-1 1-1z' />
-    </svg>
-  ),
-  linkedin: (
-    <svg
-      viewBox='0 0 16 16'
-      fill='currentColor'
-      className='w-3 h-3 shrink-0 mt-px'
-    >
-      <path d='M2.5 1A1.5 1.5 0 1 0 2.5 4 1.5 1.5 0 0 0 2.5 1zM1 5.5h3V14H1zM5.5 5.5H8v1.17C8.46 5.9 9.3 5.3 10.5 5.3c2.2 0 3.5 1.45 3.5 4.1V14h-3v-4.25c0-1.01-.36-1.7-1.26-1.7-.69 0-1.1.46-1.28.91-.07.16-.08.39-.08.62V14H5.5z' />
-    </svg>
-  )
-}
+
 
 function SectionRule ({ label }) {
   return (
@@ -141,7 +96,7 @@ function ContactRow ({ value, href }) {
   )
 }
 
-function TimelineEntry ({ entry, isEducation = false }) {
+function ExperienceEntry ({ entry }) {
   return (
     <div
       className='grid gap-x-5 mb-5 last:mb-0'
@@ -164,27 +119,83 @@ function TimelineEntry ({ entry, isEducation = false }) {
       <div>
         <div className='min-h-4.5 mb-0.5 flex items-center'>
           <p className='text-[11.5px] font-bold tracking-widest uppercase text-slate-800'>
-            {isEducation
-              ? entry.degree || (
-                  <span className='inline-block h-2 w-24 bg-slate-200 rounded animate-pulse'></span>
-                )
-              : entry.jobTitle || (
-                  <span className='inline-block h-2 w-24 bg-slate-200 rounded animate-pulse'></span>
-                )}
+            {entry.jobTitle || (
+              <span className='inline-block h-2 w-24 bg-slate-200 rounded animate-pulse'></span>
+            )}
           </p>
         </div>
         <div className='min-h-4.25 mb-2 flex items-center'>
           <p className='text-[11px] text-slate-500 italic'>
-            {isEducation ? (
-              entry.instituition ? (
-                `${entry.instituition}${
-                  entry.level ? `, level ${entry.level}` : ''
-                }${entry.gpa ? `, Grade: ${entry.gpa}` : ''}`
-              ) : (
-                <span className='inline-block h-1.5 w-32 bg-slate-200 rounded animate-pulse'></span>
-              )
-            ) : entry.company ? (
+            {entry.company ? (
               `${entry.company}${entry.location ? `, ${entry.location}` : ''}`
+            ) : (
+              <span className='inline-block h-1.5 w-32 bg-slate-200 rounded animate-pulse'></span>
+            )}
+          </p>
+        </div>
+
+        {/* Bullets */}
+        {entry.points?.length > 0 ? (
+          <ul className='space-y-1'>
+            {entry.points.map((b, i) => (
+              <li
+                key={i}
+                className='flex gap-2 text-[12px] text-slate-600 leading-snug items-start'
+              >
+                <span className='text-slate-700 shrink-0 mt-px'>•</span>
+                <span className='flex-1 mt-0.5'>
+                  {b || (
+                    <span className='inline-block h-1.5 w-full bg-slate-200 rounded animate-pulse'></span>
+                  )}
+                </span>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <div className='space-y-1.5 mt-1'>
+            <div className='h-1.5 w-full bg-slate-200 rounded animate-pulse'></div>
+            <div className='h-1.5 w-5/6 bg-slate-200 rounded animate-pulse'></div>
+          </div>
+        )}
+      </div>
+    </div>
+  )
+}
+
+function EducationEntry ({ entry }) {
+  return (
+    <div
+      className='grid gap-x-5 mb-5 last:mb-0'
+      style={{ gridTemplateColumns: '80px 1fr' }}
+    >
+      {/* Date column */}
+      <div className='text-right pt-px'>
+        <span className='text-[10px] text-slate-400 tabular-nums leading-tight block min-h-7.5'>
+          {entry.startYear || (
+            <span className='inline-block h-1.5 w-6 bg-slate-200 rounded animate-pulse'></span>
+          )}
+          -<br />
+          {entry.endYear || (
+            <span className='inline-block h-1.5 w-6 bg-slate-200 rounded animate-pulse mt-1'></span>
+          )}
+        </span>
+      </div>
+
+      {/* Content column */}
+      <div>
+        <div className='min-h-4.5 mb-0.5 flex items-center'>
+          <p className='text-[11.5px] font-bold tracking-widest uppercase text-slate-800'>
+            {entry.degree || (
+              <span className='inline-block h-2 w-24 bg-slate-200 rounded animate-pulse'></span>
+            )}
+          </p>
+        </div>
+        <div className='min-h-4.25 mb-2 flex items-center'>
+          <p className='text-[11px] text-slate-500 italic'>
+            {entry.instituition ? (
+              `${entry.instituition}${
+                entry.level ? `, level ${entry.level}` : ''
+              }${entry.gpa ? `, Grade: ${entry.gpa}` : ''}`
             ) : (
               <span className='inline-block h-1.5 w-32 bg-slate-200 rounded animate-pulse'></span>
             )}
@@ -195,7 +206,7 @@ function TimelineEntry ({ entry, isEducation = false }) {
   )
 }
 
-export default function LeftAlligned ({ data = DEFAULT_RESUME, userData }) {
+export default function LeftAlligned ({  userData }) {
   return (
     <div className='bg-white max-w-2xl mx-auto shadow-md font-sans'>
       {/* ── Header — left-aligned, no border accent ── */}
@@ -279,7 +290,7 @@ export default function LeftAlligned ({ data = DEFAULT_RESUME, userData }) {
           <SectionRule label='Experience' />
           {userData?.experience?.length > 0 ? (
             userData?.experience.map(exp => (
-              <TimelineEntry key={exp.id} entry={exp} />
+              <ExperienceEntry key={exp.id} entry={exp} />
             ))
           ) : (
             <div
@@ -306,7 +317,7 @@ export default function LeftAlligned ({ data = DEFAULT_RESUME, userData }) {
           <SectionRule label='Education' />
           {userData?.education?.length > 0 ? (
             userData?.education.map(edu => (
-              <TimelineEntry key={edu.id} entry={edu} isEducation />
+              <EducationEntry key={edu.id} entry={edu} />
             ))
           ) : (
             <div

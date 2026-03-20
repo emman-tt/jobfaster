@@ -201,20 +201,17 @@ function SkillsRow ({ skills }) {
   )
 }
 
-export default function Default ({ data = DEFAULT_RESUME, userData }) {
+export default function Default ({ userData }) {
   return (
     <div className='bg-white max-w-3xl  mx-auto shadow-lg border-t-4 border-slate-800 font-serif'>
       {/* ── Header ── */}
       <header className='text-center min-h-30 flex flex-col items-center justify-center px-10 pt-9 pb-6 border-b border-slate-300'>
         <h1 className='text-2xl font-bold tracking-[0.14em] uppercase text-slate-800 mb-1 flex items-center min-h-8'>
-          {/* {userData?.name?.length > 0 ? userData.name : data.name} */}
-
           {userData?.name || (
             <span className='inline-block h-4 w-48 bg-slate-200 rounded animate-pulse'></span>
           )}
         </h1>
         <p className='text-sm italic text-slate-500 mb-1.5 flex items-center min-h-5'>
-          {/* {userData?.jobTitle?.length > 0 ? userData.jobTitle : data.title} */}
           {userData?.jobTitle || (
             <span className='inline-block h-2 w-32 bg-slate-200 rounded animate-pulse'></span>
           )}
