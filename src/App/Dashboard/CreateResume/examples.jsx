@@ -7,31 +7,31 @@ import Default from './templates/Default'
 import { changeLayout } from '../../../store/aiSlice'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
- const views = [
+const views = [
   {
     id: 1,
     name: 'Default Classic Layout',
-    Comp: <Default />
+    Comp: Default
   },
   {
     id: 2,
     name: 'Left Aligned Layout',
-    Comp: <LeftAlligned />
+    Comp: LeftAlligned
   },
   {
     id: 3,
     name: 'Two Column Layout',
-    Comp: <TwoColumnResume />
+    Comp: TwoColumnResume
   },
   {
     id: 4,
     name: 'Skills First Layout',
-    Comp: <SkillsFirstResume />
+    Comp: SkillsFirstResume
   },
   {
     id: 5,
     name: 'Divided Sections Layout',
-    Comp: <DividedResume />
+    Comp: DividedResume
   }
 ]
 export default function Examples () {
@@ -64,36 +64,23 @@ export default function Examples () {
           <ArrowRight />
         </button>
       </div>
-      <section className=' grid grid-cols-3 gap-9 mt-4'>
-        {views.map(item => (
-          <div
-            onClick={() => dispatch(changeLayout(item.id))}
-            className={` ${
-              item.id == layoutId && 'border-2 border-orange-400'
-            } group relative cursor-pointer pb-5 flex flex-col gap-10 shadow-xl h-110 w-full min-w-45  rounded-xl`}
-          >
-            <div className=' h-full w-full rounded-xl overflow-scroll  [scrollbar-width:thin] relative'>
-              {item.Comp}
+      <section className=' grid grid-cols-4 gap-9 mt-4'>
+        {views.map(item => {
+          const Component = item.Comp
+          return (
+            <div
+              onClick={() => dispatch(changeLayout(item.id))}
+              className={` ${
+                item.id == layoutId && 'border-2 border-orange-400'
+              } group relative cursor-pointer pb-2 flex  flex-col gap-5 shadow-md h-70 w-full min-w-45  rounded-xl`}
+            >
+              <div className=' h-full w-full rounded-xl overflow-y-scroll overflow-hidden  [scrollbar-width:none] relative'>
+                <Component className={'scale-100'} />
+              </div>
+              <p className=' text-md  font-satoshi text-center '>{item.name}</p>
             </div>
-            <p className=' font-semibold text-lg font-satoshi text-center '>
-              {item.name}
-            </p>
-
-            <div className=' group-hover:flex absolute hidden bottom-15 cursor-pointer self-center   gap-3 w-full px-2 mb-2'>
-              <button
-                onClick={() => dispatch(changeLayout(item.id))}
-                className=' rounded-4xl gap-2 flex w-full py-3 justify-center items-center  text-sm font-satoshi bg-orange-600 text-white  '
-              >
-                <CheckCheckIcon className=' w-3 h-3' />
-                {layoutId == item.id ? 'Selected' : 'Select'}
-              </button>
-              <button className=' rounded-4xl gap-2 flex w-full py-3 justify-center items-center  text-sm font-satoshi text-white bg-orange-600  '>
-                <View className=' w-3 h-3' />
-                Preview
-              </button>
-            </div>
-          </div>
-        ))}
+          )
+        })}
       </section>
     </section>
   )

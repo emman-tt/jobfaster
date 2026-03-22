@@ -3,12 +3,15 @@ import { BackNext } from '../../../components/BackNext'
 import { TwoButtonsAnswer } from '../../../components/TwoButtonsAnswer'
 import FileType from './fileType'
 import SummaryType from '../Peronal-step1/SummaryType'
-import OnlineLinks from './OnlineLinks'
+import OnlineLinks from '../Peronal-step1/OnlineLinks'
 import BulletPoints from './BulletPoinst'
 import Hobbies from './Hobbies'
-import HeaderStyles from './HeaderStyles'
-import BulletStyles from './BulletStyles'
+import NameStyles from './NameStyles'
+import SectionHeaderStyles from './SectionHeaderStyles'
+import CompanyStyles from './CompanyStyles'
+import JobTitleStyles from './JobTitleStyles'
 import BodyStyles from './BodyStyles'
+import DateContactStyles from './DateContactStyles'
 import { ValidateFormat } from '../Validators/format'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
@@ -40,28 +43,12 @@ export default function Format () {
   return (
     <section className=' w-full pb-20  h-full p-10 px-15 flex flex-col pt-5 rounded-2xl bg-white'>
       <FileType />
-      <SummaryType />
-      <OnlineLinks />
-      <section className='mt-15'>
-        <QuestionHeader question='Should you include dates for education and certifications?'>
-          For professionals with 20+ years of experience, removing the
-          graduation year from a degree obtained in the early 2000s can help
-          prevent "age-guessing" by recruiters.
-        </QuestionHeader>
-        <section className='flex w-[80%] mt-8 px-10 gap-5'>
-          <TwoButtonsAnswer
-            callbackHook={() => saveSummaryType()}
-            defaultSelect='No'
-            options={['Yes', 'No']}
-          />
-        </section>
-      </section>
-
-      <BulletPoints />
-      <Hobbies />
-      <HeaderStyles />
-      <BulletStyles />
+      <NameStyles />
+      <SectionHeaderStyles />
+      <CompanyStyles />
+      <JobTitleStyles />
       <BodyStyles />
+      <DateContactStyles />
       <BackNext
         className={'mt-15'}
         onClick={() => navigateNext()}

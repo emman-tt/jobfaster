@@ -64,12 +64,18 @@ const DEFAULT_RESUME = {
   ]
 }
 
-
-function CenteredDivider ({ label }) {
+function CenteredDivider ({ label, section }) {
   return (
     <div className='flex items-center gap-3 my-5'>
       <div className='flex-1 h-px bg-slate-300' />
-      <span className='text-[9.5px] font-bold tracking-[0.22em] uppercase text-slate-500 whitespace-nowrap'>
+      <span
+        style={{
+          letterSpacing: section?.spacing,
+          textTransform: section?.case,
+          fontSize: section?.size
+        }}
+        className={`${section?.weight} ${section?.style} text-slate-500 whitespace-nowrap`}
+      >
         {label}
       </span>
       <div className='flex-1 h-px bg-slate-300' />
@@ -77,12 +83,25 @@ function CenteredDivider ({ label }) {
   )
 }
 
-function ExperienceEntry ({ entry }) {
+function ExperienceEntry ({
+  entry,
+  companyStyles,
+  jobStyles,
+  bulletStyles,
+  metaStyles
+}) {
   return (
     <div className='mb-5 last:mb-0'>
       {/* Company + location */}
       <div className='flex items-center min-h-4.5 mb-0.5'>
-        <p className='text-[12px] font-bold tracking-[0.06em] uppercase text-slate-800 flex items-center gap-1'>
+        <p
+          style={{
+            fontSize: companyStyles?.size,
+            letterSpacing: companyStyles?.spacing,
+            textTransform: companyStyles?.case
+          }}
+          className={`${companyStyles?.weight} text-slate-800 flex items-center gap-1`}
+        >
           {entry.company || (
             <span className='inline-block h-2 w-32 bg-slate-200 rounded animate-pulse'></span>
           )}
@@ -98,19 +117,31 @@ function ExperienceEntry ({ entry }) {
 
       {/* Role + dates */}
       <div className='flex items-center min-h-4.25 mb-2'>
-        <p className='text-[11.5px] italic text-slate-500 flex items-center gap-1'>
-          {entry.jobTitle || entry.role || (
-            <span className='inline-block h-1.5 w-24 bg-slate-200 rounded animate-pulse'></span>
-          )}{' '}
-          <span className='not-italic text-slate-400 text-[10.5px] flex items-center gap-1'>
+        <p
+          style={{
+            fontSize: jobStyles?.size,
+            textTransform: jobStyles?.case
+          }}
+          className={`${jobStyles?.style} text-slate-500 flex items-center gap-1`}
+        >
+          {entry.jobTitle ||
+            entry.role || (
+              <span className='inline-block h-1.5 w-24 bg-slate-200 rounded animate-pulse'></span>
+            )}{' '}
+          <span
+            style={{ fontSize: metaStyles?.size }}
+            className='not-italic text-slate-400 flex items-center gap-1'
+          >
             (
-            {entry.startYear || entry.startDate || (
-              <span className='inline-block h-1.5 w-8 bg-slate-200 rounded animate-pulse'></span>
-            )}
+            {entry.startYear ||
+              entry.startDate || (
+                <span className='inline-block h-1.5 w-8 bg-slate-200 rounded animate-pulse'></span>
+              )}
             –
-            {entry.endYear || entry.endDate || (
-              <span className='inline-block h-1.5 w-8 bg-slate-200 rounded animate-pulse'></span>
-            )}
+            {entry.endYear ||
+              entry.endDate || (
+                <span className='inline-block h-1.5 w-8 bg-slate-200 rounded animate-pulse'></span>
+              )}
             )
           </span>
         </p>
@@ -122,7 +153,11 @@ function ExperienceEntry ({ entry }) {
           {(entry.points || entry.bullets).map((b, i) => (
             <li
               key={i}
-              className='flex gap-2 text-[11.5px] text-slate-600 leading-snug items-start mt-1'
+              style={{
+                fontSize: bulletStyles?.size,
+                textTransform: bulletStyles?.case
+              }}
+              className={`${bulletStyles?.style} flex gap-2 text-slate-600 leading-snug items-start mt-1`}
             >
               <span className='text-slate-700 shrink-0 mt-px'>•</span>
               <span className='flex-1 mt-0.5'>
@@ -143,14 +178,27 @@ function ExperienceEntry ({ entry }) {
   )
 }
 
-function EducationEntry ({ entry }) {
+function EducationEntry ({
+  entry,
+  eduStyles,
+  metaStyles,
+  bodyStyles
+}) {
   return (
     <div className='mb-3 last:mb-0'>
       <div className='min-h-4.5 mb-0.5 flex items-center'>
-        <p className='text-[12px] font-bold tracking-[0.06em] uppercase text-slate-800 flex items-center gap-1'>
-          {entry.instituition || entry.school || (
-            <span className='inline-block h-2 w-32 bg-slate-200 rounded animate-pulse'></span>
-          )}
+        <p
+          style={{
+            fontSize: eduStyles?.size,
+            letterSpacing: eduStyles?.spacing,
+            textTransform: eduStyles?.case
+          }}
+          className={`${eduStyles?.weight} text-slate-800 flex items-center gap-1`}
+        >
+          {entry.instituition ||
+            entry.school || (
+              <span className='inline-block h-2 w-32 bg-slate-200 rounded animate-pulse'></span>
+            )}
           <span className='font-normal text-slate-400 tracking-normal normal-case flex items-center gap-1'>
             {' '}
             —{' '}
@@ -161,19 +209,32 @@ function EducationEntry ({ entry }) {
         </p>
       </div>
       <div className='min-h-4.25 flex items-center'>
-        <p className='text-[11.5px] italic text-slate-500 flex items-center gap-1'>
+        <p
+          style={{
+            fontSize: bodyStyles?.size,
+            textTransform: bodyStyles?.case
+          }}
+          className={`${bodyStyles?.style} text-slate-500 flex items-center gap-1`}
+        >
           {entry.degree || (
             <span className='inline-block h-1.5 w-24 bg-slate-200 rounded animate-pulse'></span>
           )}{' '}
-          <span className='not-italic text-slate-400 text-[10.5px] flex items-center gap-1'>
+          <span
+            style={{ fontSize: metaStyles?.size }}
+            className='not-italic text-slate-400 flex items-center gap-1'
+          >
             (
-            {entry.endYear || entry.year || (
-              <span className='inline-block h-1.5 w-8 bg-slate-200 rounded animate-pulse'></span>
-            )}
+            {entry.endYear ||
+              entry.year || (
+                <span className='inline-block h-1.5 w-8 bg-slate-200 rounded animate-pulse'></span>
+              )}
             )
           </span>
           {entry.detail || entry.gpa || entry.level ? (
-            <span className='not-italic text-slate-500 flex items-center gap-1'>
+            <span
+              style={{ fontSize: metaStyles?.size }}
+              className='not-italic text-slate-500 flex items-center gap-1'
+            >
               {' '}
               <span className='text-slate-300 mx-1'>•</span>
               {entry.detail ||
@@ -196,7 +257,7 @@ function EducationEntry ({ entry }) {
   )
 }
 
-function SkillRows ({ rows }) {
+function SkillRows ({ rows, skillsStyles }) {
   if (!rows || rows.length === 0) {
     return (
       <div className='flex gap-2 flex-wrap mt-1 justify-center'>
@@ -219,7 +280,11 @@ function SkillRows ({ rows }) {
       {parsedRows.map((row, ri) => (
         <p
           key={ri}
-          className='text-[11.5px] text-slate-600 flex flex-wrap justify-center items-center min-h-4.5'
+          style={{
+            fontSize: skillsStyles?.size,
+            textTransform: skillsStyles?.case
+          }}
+          className={`${skillsStyles?.style} text-slate-600 flex flex-wrap justify-center items-center min-h-4.5`}
         >
           {row.map((skill, si) => (
             <span key={si} className='flex items-center'>
@@ -237,12 +302,27 @@ function SkillRows ({ rows }) {
   )
 }
 
-export default function DividedResume ({ userData }) {
+export default function DividedResume ({ userData, className }) {
+  const styles = userData?.styles
+  const sectionHeaderStyles = styles?.sectionHeader
+  const nameStyles = styles?.name
+  const metaDataStyles = styles?.metadata
+  const jobTitleStyles = styles?.jobTitle
+  const companyStyles = styles?.company
+  const bodyTextStyles = styles?.bodyText
+
   return (
-    <div className='bg-white max-w-2xl mx-auto shadow-lg border-t-4 border-slate-800 font-serif'>
+    <div
+      className={`bg-white max-w-2xl mx-auto shadow-lg  border-slate-800 font-serif ${className}`}
+    >
       {/* ── Header ── */}
       <header className='text-center min-h-30 flex flex-col items-center justify-center px-10 pt-9 pb-5 border-b border-slate-200'>
-        <h1 className='text-[24px] font-bold tracking-[0.14em] uppercase text-slate-900 mb-1 flex items-center justify-center min-h-9'>
+        <h1
+          style={{
+            fontSize: nameStyles?.size
+          }}
+          className={`${nameStyles?.weight} tracking-[${nameStyles?.spacing}px] uppercase text-slate-900 mb-1 flex items-center justify-center min-h-9`}
+        >
           {userData?.name || (
             <span className='inline-block h-4 w-48 bg-slate-200 rounded animate-pulse'></span>
           )}
@@ -271,9 +351,18 @@ export default function DividedResume ({ userData }) {
         {userData?.showSummary &&
           (userData?.summary.length > 0 ? (
             <>
-              <CenteredDivider label='Professional Summary' />
-              <div className='text-[12px] text-slate-600 leading-relaxed flex-wrap text-center min-h-5 flex items-center justify-center'>
-                <p className='text-[12px] text-slate-600 leading-relaxed min-h-5 flex items-center'>
+              <CenteredDivider
+                section={sectionHeaderStyles}
+                label='Professional Summary'
+              />
+              <div
+                style={{
+                  fontSize: bodyTextStyles?.size,
+                  textTransform: bodyTextStyles?.case
+                }}
+                className={`${bodyTextStyles?.style} text-slate-600 leading-relaxed flex-wrap text-center min-h-5 flex items-center justify-center`}
+              >
+                <p className='leading-relaxed min-h-5 flex items-center'>
                   {userData?.summary || (
                     <span className='w-full flex flex-col gap-1.5 mt-1'>
                       <span className='h-1.5 w-full bg-slate-200 rounded animate-pulse'></span>
@@ -285,7 +374,10 @@ export default function DividedResume ({ userData }) {
             </>
           ) : (
             <>
-              <CenteredDivider label='Professional Summary' />
+              <CenteredDivider
+                section={sectionHeaderStyles}
+                label='Professional Summary'
+              />
               <div className='flex flex-col items-center gap-1.5 mt-2'>
                 <span className='h-1.5 w-full bg-slate-200 rounded animate-pulse'></span>
                 <span className='h-1.5 w-5/6 bg-slate-200 rounded animate-pulse'></span>
@@ -295,10 +387,20 @@ export default function DividedResume ({ userData }) {
 
         {/* Experience */}
         <>
-          <CenteredDivider label='Work Experience' />
+          <CenteredDivider
+            section={sectionHeaderStyles}
+            label='Work Experience'
+          />
           {userData?.experience?.length > 0 ? (
             userData.experience.map(exp => (
-              <ExperienceEntry key={exp.id} entry={exp} />
+              <ExperienceEntry
+                key={exp.id}
+                entry={exp}
+                companyStyles={companyStyles}
+                jobStyles={jobTitleStyles}
+                bulletStyles={bodyTextStyles}
+                metaStyles={metaDataStyles}
+              />
             ))
           ) : (
             <div className='mb-5'>
@@ -320,10 +422,16 @@ export default function DividedResume ({ userData }) {
 
         {/* Education */}
         <>
-          <CenteredDivider label='Education' />
+          <CenteredDivider section={sectionHeaderStyles} label='Education' />
           {userData?.education?.length > 0 ? (
             userData.education.map(edu => (
-              <EducationEntry key={edu.id} entry={edu} />
+              <EducationEntry
+                key={edu.id}
+                entry={edu}
+                eduStyles={companyStyles}
+                metaStyles={metaDataStyles}
+                bodyStyles={bodyTextStyles}
+              />
             ))
           ) : (
             <div className='mb-3'>
@@ -341,8 +449,8 @@ export default function DividedResume ({ userData }) {
 
         {/* Skills */}
         <>
-          <CenteredDivider label='Skills' />
-          <SkillRows rows={userData?.skills} />
+          <CenteredDivider section={sectionHeaderStyles} label='Skills' />
+          <SkillRows rows={userData?.skills} skillsStyles={bodyTextStyles} />
         </>
       </div>
     </div>

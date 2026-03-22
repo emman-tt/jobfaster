@@ -5,29 +5,29 @@ import useClickOutside from '../../../hooks/useClick'
 import { useDispatch, useSelector } from 'react-redux'
 import { updateGroupStyle } from '../../../store/formatSlice'
 
-export default function BodyStyles () {
+export default function CompanyStyles () {
   const dispatch = useDispatch()
-  const styles = useSelector(state => state.format.styless.bodyText)
+  const styles = useSelector(state => state.format.styless.company)
 
   const [toggles, setToggles] = useState({
     size: false,
     weight: false,
-    style: false,
-    case: false
+    case: false,
+    spacing: false
   })
 
-  const closeAll = () => setToggles({ size: false, weight: false, style: false, case: false })
+  const closeAll = () => setToggles({ size: false, weight: false, case: false, spacing: false })
   const ref = useClickOutside(closeAll)
 
   const handleUpdate = (field, value) => {
-    dispatch(updateGroupStyle({ category: 'bodyText', field, value }))
+    dispatch(updateGroupStyle({ category: 'company', field, value }))
     closeAll()
   }
 
   return (
     <section className='px-5 mt-15 flex flex-col'>
-      <QuestionHeader question="Customize your Body Text.">
-        This is the main content of your resume, including descriptions and summaries.
+      <QuestionHeader question="Style your Company and School names.">
+        These usually appear alongside your job titles or degrees. A clean, bold look is often preferred.
       </QuestionHeader>
 
       <section ref={ref} className='grid grid-cols-2 lg:grid-cols-4 w-full px-3 mt-5 gap-3'>
@@ -39,7 +39,7 @@ export default function BodyStyles () {
           </div>
           {toggles.size && (
             <ul className='absolute z-10 bg-white flex flex-col p-4 gap-2 mt-2 w-full text-black rounded-xl shadow-lg'>
-              {[10, 11, 12, 13].map(s => (
+              {[11, 12, 13, 14].map(s => (
                 <li key={s} onClick={() => handleUpdate('size', s)} className='text-sm cursor-pointer hover:text-blue-600 font-medium'>{s}px</li>
               ))}
             </ul>
@@ -60,20 +60,6 @@ export default function BodyStyles () {
           )}
         </div>
 
-        {/* Style */}
-        <div className='relative w-full'>
-          <div onClick={() => setToggles({ ...toggles, style: !toggles.style })} className='w-full cursor-pointer rounded-2xl shadow py-4 px-6 text-sm font-semibold flex justify-between bg-white'>
-            {styles.style === 'italic' ? 'Italic' : 'Normal'}
-            <ChevronDown className={`h-5 transition-transform ${toggles.style ? 'rotate-180' : ''}`} />
-          </div>
-          {toggles.style && (
-            <ul className='absolute z-10 bg-white flex flex-col p-4 gap-2 mt-2 w-full text-black rounded-xl shadow-lg'>
-              <li onClick={() => handleUpdate('style', 'normal')} className='text-sm cursor-pointer hover:text-blue-600 font-medium'>Normal</li>
-              <li onClick={() => handleUpdate('style', 'italic')} className='text-sm cursor-pointer hover:text-blue-600 font-medium'>Italic</li>
-            </ul>
-          )}
-        </div>
-
         {/* Case */}
         <div className='relative w-full'>
           <div onClick={() => setToggles({ ...toggles, case: !toggles.case })} className='w-full cursor-pointer rounded-2xl shadow py-4 px-6 text-sm font-semibold flex justify-between bg-white'>
@@ -87,19 +73,34 @@ export default function BodyStyles () {
             </ul>
           )}
         </div>
+
+        {/* Spacing */}
+        <div className='relative w-full'>
+          <div onClick={() => setToggles({ ...toggles, spacing: !toggles.spacing })} className='w-full cursor-pointer rounded-2xl shadow py-4 px-6 text-sm font-semibold flex justify-between bg-white'>
+            Spacing: {styles.spacing}px
+            <ChevronDown className={`h-5 transition-transform ${toggles.spacing ? 'rotate-180' : ''}`} />
+          </div>
+          {toggles.spacing && (
+            <ul className='absolute z-10 bg-white flex flex-col p-4 gap-2 mt-2 w-full text-black rounded-xl shadow-lg'>
+              {[0, 1, 2, 3].map(s => (
+                <li key={s} onClick={() => handleUpdate('spacing', s)} className='text-sm cursor-pointer hover:text-blue-600 font-medium'>{s}px</li>
+              ))}
+            </ul>
+          )}
+        </div>
       </section>
 
       {/* <p className='mt-10 font-semibold text-sm text-center w-full'>Preview</p>
-      <div className='rounded-2xl bg-[#f3f5f7] mt-5 p-8'>
+      <div className='rounded-2xl bg-[#f3f5f7] mt-5 p-8 flex items-center justify-center min-h-[100px]'>
          <p 
            style={{ 
              fontSize: `${styles.size}px`, 
-             textTransform: styles.case
+             textTransform: styles.case,
+             letterSpacing: `${styles.spacing}px`
            }}
-           className={`${styles.weight} ${styles.style} text-slate-600 leading-relaxed`}
+           className={`${styles.weight} text-slate-800`}
          >
-           Developed and maintained scalable web applications using React and Node.js. 
-           Collaborated with cross-functional teams to deliver high-quality software solutions.
+           Google Inc. / Stanford University
          </p>
       </div> */}
     </section>

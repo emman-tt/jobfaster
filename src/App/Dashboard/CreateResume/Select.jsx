@@ -1,6 +1,8 @@
 import { ArrowRight, CheckCircle } from 'lucide-react'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import cv from '../../../assets/img/cv.jpg'
+import cv1 from '../../../assets/img/cv1.jpg'
 
 export default function Select () {
   const [select, setSelect] = useState('creative')
@@ -22,7 +24,17 @@ export default function Select () {
           }}
           className=' cursor-pointer flex flex-col items-center gap-5'
         >
-          <div className=' h-70 w-60 bg-gray-50 rounded-xl'></div>
+          <div
+            className={`h-90 ${
+              select == 'classic' && 'border border-orange-400'
+            } w-80 bg-gray-50 rounded-xl`}
+          >
+            <img
+              src={cv1}
+              className=' h-full w-full object-fill rounded-[inherit]'
+              alt='cv'
+            />
+          </div>
           <div className=' flex gap-5 items-center'>
             <p className=' '>Classic Resume </p>
             {select == 'classic' && (
@@ -48,7 +60,17 @@ export default function Select () {
           }}
           className=' cursor-pointer flex flex-col items-center gap-5'
         >
-          <div className=' h-70 w-60 bg-gray-100 rounded-xl'></div>
+          <div
+            className={`h-90 ${
+              select == 'creative' && 'border border-orange-400'
+            } w-80 bg-gray-50 rounded-xl`}
+          >
+            <img
+              src={cv}
+              className=' h-full w-full object-cover rounded-[inherit]'
+              alt='cv'
+            />
+          </div>
           <div className=' flex gap-5 items-center'>
             <p className=' '>Creative Resume </p>
             {select == 'creative' && (

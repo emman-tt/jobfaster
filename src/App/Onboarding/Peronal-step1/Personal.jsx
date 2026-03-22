@@ -10,6 +10,7 @@ import { saveErrors } from '../../../store/personalSlice'
 import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import SummaryType from './SummaryType'
+import OnlineLinks from './OnlineLinks'
 export const Personal = () => {
   const dispatch = useDispatch()
   const personalData = useSelector(state => state.personal)
@@ -31,12 +32,13 @@ export const Personal = () => {
       <Address />
       <SummaryType />
       <ToolsAndSkills />
+      <OnlineLinks/>
       <Education />
       <BackNext
         onClick={() => {
           navigateNext()
         }}
-        nextLink='/onboarding/experience'
+       previousLink={-1}
         className={'mt-25 px-10'}
       />
     </section>

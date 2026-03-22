@@ -30,6 +30,75 @@ const initialState = {
       align: 'left'
     }
   },
+  styless: {
+    name: {
+      size: 24, // 24px
+      weight: 'font-bold',
+      style: 'normal',
+      case: 'none',
+      spacing: 10,
+      color: 'text-slate-800'
+    },
+
+    // Group 2: Section Headers
+    sectionHeader: {
+      size: 11, // 11px
+      weight: 'font-bold',
+      style: 'normal',
+      case: 'uppercase',
+      spacing: 2,
+      color: 'text-slate-800'
+    },
+
+    // Group 3a: Company/School (Bold)
+    company: {
+      size: 12, // 12px
+      weight: 'font-bold',
+      style: 'normal',
+      case: 'none',
+      color: 'text-slate-800',
+      spacing: 0
+    },
+
+    // Group 3b: Job Title/Role (Italic)
+    jobTitle: {
+      size: 12, // 12px
+      weight: 'font-normal',
+      style: 'italic',
+      case: 'none',
+      color: 'text-slate-500',
+      spacing: 1
+    },
+
+    // Group 4: Bullets & Skills & Degree (Regular)
+    bodyText: {
+      size: 12, // 12px
+      weight: 'font-normal',
+      style: 'normal',
+      case: 'none',
+      spacing: 0,
+       color: 'text-slate-600'
+    },
+
+    // Group 5: Dates
+    dateStyles: {
+      size: 11, // 11px
+      weight: 'font-normal',
+      style: 'italic',
+      case: 'none',
+      spacing: 0,
+      color: 'text-slate-400'
+    },
+    // Group 6: Contact Info (Location, Phone, Email)
+    contactStyles: {
+      size: 11, // 11px
+      weight: 'font-normal',
+      style: 'normal',
+      case: 'none',
+      spacing: 0,
+      color: 'text-slate-400'
+    }
+  },
   errors: {}
 }
 export const formatSlice = createSlice({
@@ -66,6 +135,12 @@ export const formatSlice = createSlice({
       } else {
         state.styles.bodyStyles = value
       }
+    },
+    updateGroupStyle: (state, action) => {
+      const { category, field, value } = action.payload
+      if (state.styless[category]) {
+        state.styless[category][field] = value
+      }
     }
   }
 })
@@ -77,5 +152,6 @@ export const {
   saveOnlineLinks,
   saveErrors,
   saveStyles,
-  saveHobbies
+  saveHobbies,
+  updateGroupStyle
 } = formatSlice.actions

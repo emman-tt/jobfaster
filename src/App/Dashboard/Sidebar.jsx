@@ -39,7 +39,7 @@ export default function Sidebar ({ className }) {
           <PanelLeftClose className='w-5 h-5' />
         </section>
 
-        <section className='flex flex-col w-full p-2 mt-5 gap-3'>
+        <section className='flex flex-col w-full p-2 mt-5 gap-2'>
           {processes.map(item => (
             <NavLink
               to={item.href}
@@ -54,7 +54,7 @@ export default function Sidebar ({ className }) {
             </NavLink>
           ))}
         </section>
-        <section className='flex flex-col w-full border-t border-gray-700 pt-7 p-2 mt-5 gap-5'>
+        <section className='flex flex-col w-full border-t border-gray-700 pt-7 p-2 mt-5 gap-2'>
           {tools.map(item => (
             <NavLink
               style={{

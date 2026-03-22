@@ -48,10 +48,13 @@ const DEFAULT_RESUME = {
   skills: ['React', 'Node.js', 'Python', 'AWS', 'SQL', 'TypeScript', 'GraphQL']
 }
 
-function SectionHeading ({ children }) {
+function SectionHeading ({ children, section }) {
   return (
     <div className='mb-3'>
-      <h2 className='text-[10px] font-bold tracking-[0.18em] uppercase text-slate-800 mb-1.5'>
+      <h2
+        style={{ letterSpacing: section.spacing, textTransform: section.case }}
+        className={`text-[${section.size}px] ${section.weight} ${section.style}  text-slate-800 mb-1.5`}
+      >
         {children}
       </h2>
       <div className='h-px bg-slate-300' />
@@ -59,17 +62,33 @@ function SectionHeading ({ children }) {
   )
 }
 
-function ExperienceEntry ({ entry }) {
+function ExperienceEntry ({
+  companyStyles,
+  entry,
+  jobStyles,
+  bulletStyles,
+  metaStyles
+}) {
   return (
     <div className='mb-5 last:mb-0'>
       {/* Company + date */}
       <div className='flex justify-between items-center mb-0.5 min-h-4.5'>
-        <span className='text-[12px] font-bold tracking-[0.08em] uppercase text-slate-800'>
+        <span
+          style={{
+            fontSize: companyStyles.size,
+            letterSpacing: companyStyles.spacing,
+            textTransform: companyStyles.case
+          }}
+          className={` ${companyStyles.weight} ${companyStyles.case}    font-[${companyStyles.weight}]    text-slate-800`}
+        >
           {entry.company || (
             <span className='inline-block h-2 w-32 bg-slate-200 rounded animate-pulse'></span>
           )}
         </span>
-        <span className='text-[11px] text-slate-400 italic tabular-nums flex items-center gap-1'>
+        <span
+          style={{ fontSize: metaStyles.size }}
+          className=' text-slate-400 italic tabular-nums flex items-center gap-1'
+        >
           {entry.startYear || (
             <span className='inline-block h-1.5 w-8 bg-slate-200 rounded animate-pulse'></span>
           )}{' '}
@@ -82,7 +101,13 @@ function ExperienceEntry ({ entry }) {
 
       {/* Role + location */}
       <div className='flex justify-between items-center mb-2 min-h-4.5'>
-        <span className='text-[12px] italic text-slate-500'>
+        <span
+          style={{
+            fontSize: jobStyles.size,
+            textTransform: jobStyles.case
+          }}
+          className={` ${jobStyles.style}  text-slate-500`}
+        >
           {entry.jobTitle || (
             <span className='inline-block h-1.5 w-24 bg-slate-200 rounded animate-pulse'></span>
           )}
@@ -100,7 +125,11 @@ function ExperienceEntry ({ entry }) {
           {entry.points.map((b, i) => (
             <li
               key={i}
-              className='flex gap-2 text-[12px] text-slate-600 leading-snug items-start'
+              style={{
+                fontSize: bulletStyles.size,
+                textTransform: bulletStyles.case
+              }}
+              className={`flex gap-2  ${jobStyles.style} text-slate-600 leading-snug items-start`}
             >
               <span className='text-slate-700 shrink-0 mt-px'>•</span>
               <span className='flex-1 mt-0.5'>
@@ -121,17 +150,27 @@ function ExperienceEntry ({ entry }) {
   )
 }
 
-function EducationEntry ({ entry }) {
+function EducationEntry ({ eduStyles, entry, metaStyles, bodyStyles }) {
   return (
     <div className='mb-4 last:mb-0 '>
       {/* School + dates */}
       <div className='flex justify-between items-center mb-0.5 min-h-4.5'>
-        <span className='text-[12px] font-bold tracking-[0.08em] uppercase text-slate-800'>
+        <span
+          style={{
+            fontSize: eduStyles.size,
+            letterSpacing: eduStyles.spacing,
+            textTransform: eduStyles.case
+          }}
+          className={`text-[12px] font-bold ${eduStyles.weight} ${eduStyles.case}    font-[${eduStyles.weight}]  tracking-[0.08em] uppercase text-slate-800`}
+        >
           {entry.instituition || (
             <span className='inline-block h-2 w-32 bg-slate-200 rounded animate-pulse'></span>
           )}
         </span>
-        <span className='text-[11px] text-slate-400 italic tabular-nums flex items-center gap-1'>
+        <span
+          style={{ fontSize: metaStyles.size }}
+          className={` ${metaStyles.style} ${metaStyles.weight} text-slate-400  tabular-nums flex items-center gap-1`}
+        >
           {entry.startYear || (
             <span className='inline-block h-1.5 w-8 bg-slate-200 rounded animate-pulse'></span>
           )}{' '}
@@ -144,24 +183,22 @@ function EducationEntry ({ entry }) {
 
       {/* Degree + detail */}
       <div className='flex justify-between items-center min-h-4.5'>
-        <span className='text-[12px] italic text-slate-500'>
+        <span
+          style={{ fontSize: bodyStyles.size }}
+          className=' italic text-slate-500'
+        >
           {entry.degree || (
             <span className='inline-block h-1.5 w-24 bg-slate-200 rounded animate-pulse'></span>
           )}
         </span>
-        <div className='flex gap-3'>
+        <div
+          style={{ fontSize: metaStyles.size }}
+          className={`flex gap-3 text-slate-400 `}
+        >
           {entry.level || entry.gpa ? (
             <>
-              {entry.level && (
-                <span className='text-[11px] text-slate-400'>
-                  level {entry.level}
-                </span>
-              )}
-              {entry.gpa && (
-                <span className='text-[11px] text-slate-400'>
-                  Grade: {entry.gpa}
-                </span>
-              )}
+              {entry.level && <span className=' '>level {entry.level}</span>}
+              {entry.gpa && <span className=' '>Grade: {entry.gpa}</span>}
             </>
           ) : (
             <span className='inline-block h-1.5 w-20 bg-slate-200 rounded animate-pulse mt-0.5'></span>
@@ -172,7 +209,7 @@ function EducationEntry ({ entry }) {
   )
 }
 
-function SkillsRow ({ skills }) {
+function SkillsRow ({ skills, skillsStyles }) {
   if (!skills || skills.length === 0) {
     return (
       <div className='flex gap-2 flex-wrap mt-1'>
@@ -186,7 +223,13 @@ function SkillsRow ({ skills }) {
   }
 
   return (
-    <p className='text-[12px] flex flex-wrap text-slate-600 items-center min-h-4.5'>
+    <p
+      style={{
+        fontSize: skillsStyles.size,
+        textTransform: skillsStyles.case
+      }}
+      className={`${skillsStyles.style}  flex flex-wrap text-slate-600 items-center min-h-4.5`}
+    >
       {skills.map((skill, i) => (
         <span key={i} className='flex items-center'>
           {skill || (
@@ -201,14 +244,31 @@ function SkillsRow ({ skills }) {
   )
 }
 
-export default function Default ({ userData }) {
+export default function Default ({ userData, className }) {
+  const styles = userData?.styles
+  const sectionHeaderStyles = styles?.sectionHeader
+  const nameStyles = styles?.name
+  const metaDataStyles = styles?.metadata
+  const jobTitleStyles = styles?.jobTitle
+  const companyStyles = styles?.company
+  const bodyTextStyles = styles?.bodyText
+
   return (
-    <div className='bg-white max-w-3xl  mx-auto shadow-lg border-t-4 border-slate-800 font-serif'>
+    <div
+      className={`bg-white max-w-3xl  mx-auto shadow-lg  border-slate-800 font-serif ${className}`}
+    >
       {/* ── Header ── */}
-      <header className='text-center min-h-30 flex flex-col items-center justify-center px-10 pt-9 pb-6 border-b border-slate-300'>
-        <h1 className='text-2xl font-bold tracking-[0.14em] uppercase text-slate-800 mb-1 flex items-center min-h-8'>
+      <header className='text-center  min-h-30 flex flex-col items-center justify-center px-10 pt-9 pb-6 border-b border-slate-300'>
+        <h1
+          style={{
+            fontSize: nameStyles.size
+          }}
+          className={`  ${nameStyles.weight}  tracking-[${nameStyles.spacing}px] uppercase text-slate-800 mb-1 flex items-center min-h-8`}
+        >
           {userData?.name || (
-            <span className='inline-block h-4 w-48 bg-slate-200 rounded animate-pulse'></span>
+            <span
+              className={`inline-block h-4 w-48 bg-slate-200 rounded animate-pulse`}
+            ></span>
           )}
         </h1>
         <p className='text-sm italic text-slate-500 mb-1.5 flex items-center min-h-5'>
@@ -234,7 +294,9 @@ export default function Default ({ userData }) {
         {userData?.showSummary &&
           (userData?.summary.length > 0 ? (
             <div className=' min-h-10'>
-              <SectionHeading>Summary</SectionHeading>
+              <SectionHeading section={sectionHeaderStyles}>
+                Summary
+              </SectionHeading>
               <p className='text-[12px] text-slate-600 leading-relaxed min-h-5 flex items-center'>
                 {userData?.summary || (
                   <span className='w-full flex flex-col gap-1.5 mt-1'>
@@ -246,7 +308,9 @@ export default function Default ({ userData }) {
             </div>
           ) : (
             <div className='min-h-10'>
-              <SectionHeading>Summary</SectionHeading>
+              <SectionHeading section={sectionHeaderStyles}>
+                Summary
+              </SectionHeading>
               <div className='flex flex-col gap-1.5 mt-2'>
                 <span className='h-1.5 w-full bg-slate-200 rounded animate-pulse'></span>
                 <span className='h-1.5 w-5/6 bg-slate-200 rounded animate-pulse'></span>
@@ -256,10 +320,19 @@ export default function Default ({ userData }) {
 
         {/* Work Experience */}
         <section className={`min-h-20`}>
-          <SectionHeading>Work Experience</SectionHeading>
+          <SectionHeading section={sectionHeaderStyles}>
+            Work Experience
+          </SectionHeading>
           {userData?.experience?.length > 0 ? (
             userData.experience.map(exp => (
-              <ExperienceEntry key={exp.id} entry={exp} />
+              <ExperienceEntry
+                metaStyles={metaDataStyles}
+                bulletStyles={bodyTextStyles}
+                jobStyles={jobTitleStyles}
+                companyStyles={companyStyles}
+                key={exp.id}
+                entry={exp}
+              />
             ))
           ) : (
             <div className='mb-5'>
@@ -281,10 +354,18 @@ export default function Default ({ userData }) {
 
         {/* Education */}
         <section className=' min-h-20'>
-          <SectionHeading>Education</SectionHeading>
+          <SectionHeading section={sectionHeaderStyles}>
+            Education
+          </SectionHeading>
           {userData?.education?.length > 0 ? (
             userData.education.map(edu => (
-              <EducationEntry key={edu.id} entry={edu} />
+              <EducationEntry
+                bodyStyles={bodyTextStyles}
+                metaStyles={metaDataStyles}
+                eduStyles={companyStyles}
+                key={edu.id}
+                entry={edu}
+              />
             ))
           ) : (
             <div className='mb-4'>
@@ -302,8 +383,8 @@ export default function Default ({ userData }) {
 
         {/* Skills */}
         <section className=' min-h-20'>
-          <SectionHeading>Skills</SectionHeading>
-          <SkillsRow skills={userData?.skills} />
+          <SectionHeading section={sectionHeaderStyles}>Skills</SectionHeading>
+          <SkillsRow skillsStyles={bodyTextStyles} skills={userData?.skills} />
         </section>
       </div>
     </div>

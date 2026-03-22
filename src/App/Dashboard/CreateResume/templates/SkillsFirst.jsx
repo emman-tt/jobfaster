@@ -55,10 +55,13 @@ const DEFAULT_RESUME = {
   ]
 }
 
-function SectionHeading ({ children }) {
+function SectionHeading ({ children, section }) {
   return (
     <div className='mb-3'>
-      <h2 className='text-[10px] font-bold tracking-[0.18em] uppercase text-slate-800 mb-1.5'>
+      <h2
+        style={{ letterSpacing: section?.spacing, textTransform: section?.case }}
+        className={`text-[${section?.size}px] ${section?.weight} ${section?.style} text-slate-800 mb-1.5`}
+      >
         {children}
       </h2>
       <div className='h-px bg-slate-300' />
@@ -66,11 +69,11 @@ function SectionHeading ({ children }) {
   )
 }
 
-function Summary ({ text, showSummary }) {
+function Summary ({ text, showSummary, section, bodyStyles }) {
   if (showSummary === false) {
     return (
       <section className='mb-5'>
-        <SectionHeading>Professional Summary</SectionHeading>
+        <SectionHeading section={section}>Professional Summary</SectionHeading>
         <div className='flex flex-col gap-1.5 mt-2'>
           <span className='h-1.5 w-full bg-slate-200 rounded animate-pulse'></span>
           <span className='h-1.5 w-5/6 bg-slate-200 rounded animate-pulse'></span>
@@ -81,8 +84,14 @@ function Summary ({ text, showSummary }) {
 
   return (
     <section className='mb-5'>
-      <SectionHeading>Professional Summary</SectionHeading>
-      <p className='text-[12px] text-slate-600 leading-relaxed min-h-5 flex items-center'>
+      <SectionHeading section={section}>Professional Summary</SectionHeading>
+      <p
+        style={{
+          fontSize: bodyStyles?.size,
+          textTransform: bodyStyles?.case
+        }}
+        className={`${bodyStyles?.style} text-slate-600 leading-relaxed min-h-5 flex items-center`}
+      >
         {text || (
           <span className='w-full flex flex-col gap-1.5 mt-1'>
             <span className='h-1.5 w-full bg-slate-200 rounded animate-pulse'></span>
@@ -94,11 +103,11 @@ function Summary ({ text, showSummary }) {
   )
 }
 
-function Skills ({ items }) {
+function Skills ({ items, section, skillsStyles }) {
   if (!items || items.length === 0) {
     return (
       <section className='mb-5'>
-        <SectionHeading>Core Skills</SectionHeading>
+        <SectionHeading section={section}>Core Skills</SectionHeading>
         <div className='border border-slate-200 rounded-sm overflow-hidden'>
           <div className='grid grid-cols-3 divide-x divide-slate-200'>
             <div className='px-4 py-3 min-h-9.5 flex items-center'>
@@ -123,7 +132,7 @@ function Skills ({ items }) {
   }
   return (
     <section className='mb-5'>
-      <SectionHeading>Core Skills</SectionHeading>
+      <SectionHeading section={section}>Core Skills</SectionHeading>
       <div className='border border-slate-200 rounded-sm overflow-hidden'>
         {rows.map((row, ri) => (
           <div
@@ -137,10 +146,17 @@ function Skills ({ items }) {
                 key={item.id || i}
                 className='px-4 py-3 min-h-9.5 flex items-center'
               >
-                <p className='text-[11px] font-semibold text-slate-700 leading-snug w-full'>
-                  {item.label || item || (
-                    <span className='inline-block h-1.5 w-20 bg-slate-200 rounded animate-pulse'></span>
-                  )}
+                <p
+                  style={{
+                    fontSize: skillsStyles?.size,
+                    textTransform: skillsStyles?.case
+                  }}
+                  className={`${skillsStyles?.style} font-semibold text-slate-700 leading-snug w-full`}
+                >
+                  {item.label ||
+                    item || (
+                      <span className='inline-block h-1.5 w-20 bg-slate-200 rounded animate-pulse'></span>
+                    )}
                 </p>
               </div>
             ))}
@@ -156,11 +172,11 @@ function Skills ({ items }) {
   )
 }
 
-function Achievements ({ items }) {
+function Achievements ({ items, section, bodyStyles }) {
   if (!items || items.length === 0) {
     return (
       <section className='mb-5'>
-        <SectionHeading>Key Achievements</SectionHeading>
+        <SectionHeading section={section}>Key Achievements</SectionHeading>
         <div className='space-y-1.5 mt-1'>
           <div className='h-1.5 w-full bg-slate-200 rounded animate-pulse'></div>
           <div className='h-1.5 w-5/6 bg-slate-200 rounded animate-pulse'></div>
@@ -171,12 +187,16 @@ function Achievements ({ items }) {
 
   return (
     <section className='mb-5'>
-      <SectionHeading>Key Achievements</SectionHeading>
+      <SectionHeading section={section}>Key Achievements</SectionHeading>
       <ul className='space-y-1.5'>
         {items.map((item, i) => (
           <li
             key={i}
-            className='flex gap-2 text-[12px] text-slate-600 leading-snug items-start mt-1'
+            style={{
+              fontSize: bodyStyles?.size,
+              textTransform: bodyStyles?.case
+            }}
+            className={`${bodyStyles?.style} flex gap-2 text-slate-600 leading-snug items-start mt-1`}
           >
             <span className='text-slate-800 shrink-0 mt-px font-bold'>•</span>
             <span className='flex-1 mt-0.5'>
@@ -191,11 +211,18 @@ function Achievements ({ items }) {
   )
 }
 
-function Experience ({ items }) {
+function Experience ({
+  items,
+  section,
+  companyStyles,
+  jobStyles,
+  metaStyles,
+  bulletStyles
+}) {
   if (!items || items.length === 0) {
     return (
       <section className='mb-5'>
-        <SectionHeading>Work History</SectionHeading>
+        <SectionHeading section={section}>Work History</SectionHeading>
         <div className='space-y-2'>
           <div
             className='grid text-[11.5px] items-center min-h-5.5'
@@ -220,39 +247,63 @@ function Experience ({ items }) {
 
   return (
     <section className='mb-5'>
-      <SectionHeading>Work History</SectionHeading>
+      <SectionHeading section={section}>Work History</SectionHeading>
       <div className='space-y-1'>
         {items.map(entry => (
-          <div
-            key={entry.id}
-            className='grid text-[11.5px] items-center min-h-5.5'
-            style={{ gridTemplateColumns: '1fr auto auto' }}
-          >
-            <span className='text-slate-600 italic'>
-              {entry.jobTitle || entry.role || (
-                <span className='inline-block h-1.5 w-24 bg-slate-200 rounded animate-pulse'></span>
-              )}
-            </span>
-            <span className='font-bold tracking-widest uppercase text-slate-800 text-[10.5px] px-4 border-l border-r border-slate-200 mx-3 py-0.5'>
-              {entry.company || (
-                <span className='inline-block h-1.5 w-20 bg-slate-200 rounded animate-pulse mt-0.5'></span>
-              )}
-            </span>
-            <span className='text-slate-400 text-[10.5px] tabular-nums flex items-center gap-1'>
-              {entry.startYear || entry.startDate || (
-                <span className='inline-block h-1.5 w-8 bg-slate-200 rounded animate-pulse'></span>
-              )}
-              -
-              {entry.endYear || entry.endDate || (
-                <span className='inline-block h-1.5 w-8 bg-slate-200 rounded animate-pulse'></span>
-              )}
-            </span>
+          <div key={entry.id}>
+            <div
+              className='grid items-center min-h-5.5'
+              style={{ gridTemplateColumns: '1fr auto auto' }}
+            >
+              <span
+                style={{
+                  fontSize: jobStyles?.size,
+                  textTransform: jobStyles?.case
+                }}
+                className={`${jobStyles?.style} text-slate-600 italic`}
+              >
+                {entry.jobTitle ||
+                  entry.role || (
+                    <span className='inline-block h-1.5 w-24 bg-slate-200 rounded animate-pulse'></span>
+                  )}
+              </span>
+              <span
+                style={{
+                  fontSize: companyStyles?.size,
+                  letterSpacing: companyStyles?.spacing,
+                  textTransform: companyStyles?.case
+                }}
+                className={`${companyStyles?.weight} tracking-widest uppercase text-slate-800 px-4 border-l border-r border-slate-200 mx-3 py-0.5`}
+              >
+                {entry.company || (
+                  <span className='inline-block h-1.5 w-20 bg-slate-200 rounded animate-pulse mt-0.5'></span>
+                )}
+              </span>
+              <span
+                style={{ fontSize: metaStyles?.size }}
+                className='text-slate-400 tabular-nums flex items-center gap-1'
+              >
+                {entry.startYear ||
+                  entry.startDate || (
+                    <span className='inline-block h-1.5 w-8 bg-slate-200 rounded animate-pulse'></span>
+                  )}
+                -
+                {entry.endYear ||
+                  entry.endDate || (
+                    <span className='inline-block h-1.5 w-8 bg-slate-200 rounded animate-pulse'></span>
+                  )}
+              </span>
+            </div>
             {entry.points?.length > 0 ? (
-              <ul className='space-y-1'>
+              <ul className='space-y-1 mt-1'>
                 {entry.points.map((b, i) => (
                   <li
                     key={i}
-                    className='flex gap-2 text-[12px] text-slate-600 leading-snug items-start'
+                    style={{
+                      fontSize: bulletStyles?.size,
+                      textTransform: bulletStyles?.case
+                    }}
+                    className={`${bulletStyles?.style} flex gap-2 text-slate-600 leading-snug items-start`}
                   >
                     <span className='text-slate-700 shrink-0 mt-px'>•</span>
                     <span className='flex-1 mt-0.5'>
@@ -263,12 +314,12 @@ function Experience ({ items }) {
                   </li>
                 ))}
               </ul>
-            ) : (
+            ) : entry.points ? (
               <div className='space-y-1.5 mt-1'>
                 <div className='h-1.5 w-full bg-slate-200 rounded animate-pulse'></div>
                 <div className='h-1.5 w-5/6 bg-slate-200 rounded animate-pulse'></div>
               </div>
-            )}
+            ) : null}
           </div>
         ))}
       </div>
@@ -276,11 +327,11 @@ function Experience ({ items }) {
   )
 }
 
-function Education ({ items }) {
+function Education ({ items, section, eduStyles, metaStyles, bodyStyles }) {
   if (!items || items.length === 0) {
     return (
       <section>
-        <SectionHeading>Education</SectionHeading>
+        <SectionHeading section={section}>Education</SectionHeading>
         <div className='min-h-4.5 flex items-center'>
           <span className='inline-block h-2 w-32 bg-slate-200 rounded animate-pulse'></span>
           <span className='mx-2 text-slate-400'>—</span>
@@ -292,17 +343,29 @@ function Education ({ items }) {
 
   return (
     <section>
-      <SectionHeading>Education</SectionHeading>
+      <SectionHeading section={section}>Education</SectionHeading>
       <ul className='space-y-1'>
         {items.map(edu => (
           <li
             key={edu.id}
-            className='text-[12px] text-slate-600 flex items-center min-h-4.5 flex-wrap gap-x-1'
+            style={{
+              fontSize: bodyStyles?.size,
+              textTransform: bodyStyles?.case
+            }}
+            className={`${bodyStyles?.style} text-slate-600 flex items-center min-h-4.5 flex-wrap gap-x-1`}
           >
-            <span className='font-semibold text-slate-800'>
-              {edu.instituition || edu.school || (
-                <span className='inline-block h-2 w-32 bg-slate-200 rounded animate-pulse'></span>
-              )}
+            <span
+              style={{
+                fontSize: eduStyles?.size,
+                letterSpacing: eduStyles?.spacing,
+                textTransform: eduStyles?.case
+              }}
+              className={`${eduStyles?.weight} text-slate-800`}
+            >
+              {edu.instituition ||
+                edu.school || (
+                  <span className='inline-block h-2 w-32 bg-slate-200 rounded animate-pulse'></span>
+                )}
             </span>
             <span>—</span>
             <span>
@@ -311,7 +374,10 @@ function Education ({ items }) {
               )}
             </span>
             {(edu.endYear || edu.year) && (
-              <span className='text-slate-400 ml-1'>
+              <span
+                style={{ fontSize: metaStyles?.size }}
+                className='text-slate-400 ml-1'
+              >
                 ({edu.endYear || edu.year})
               </span>
             )}
@@ -322,12 +388,27 @@ function Education ({ items }) {
   )
 }
 
-export default function SkillsFirstResume ({ userData }) {
+export default function SkillsFirstResume ({ userData, className }) {
+  const styles = userData?.styles
+  const sectionHeaderStyles = styles?.sectionHeader
+  const nameStyles = styles?.name
+  const metaDataStyles = styles?.metadata
+  const jobTitleStyles = styles?.jobTitle
+  const companyStyles = styles?.company
+  const bodyTextStyles = styles?.bodyText
+
   return (
-    <div className='bg-white max-w-3xl mx-auto shadow-lg border-t-4 border-slate-800 font-serif'>
+    <div
+      className={`bg-white max-w-3xl mx-auto shadow-lg  border-slate-800 font-serif ${className}`}
+    >
       {/* ── Header ── */}
       <header className='text-center min-h-30 flex flex-col items-center justify-center px-10 pt-9 pb-6 border-b border-slate-300'>
-        <h1 className='text-2xl font-bold tracking-[0.14em] uppercase text-slate-800 mb-1 flex items-center min-h-8'>
+        <h1
+          style={{
+            fontSize: nameStyles?.size
+          }}
+          className={`${nameStyles?.weight} tracking-[${nameStyles?.spacing}px] uppercase text-slate-800 mb-1 flex items-center min-h-8`}
+        >
           {userData?.name || (
             <span className='inline-block h-4 w-48 bg-slate-200 rounded animate-pulse'></span>
           )}
@@ -354,15 +435,34 @@ export default function SkillsFirstResume ({ userData }) {
       <div className='px-10 pt-6 pb-8'>
         {userData?.showSummary && (
           <Summary
+            section={sectionHeaderStyles}
+            bodyStyles={bodyTextStyles}
             text={userData?.summary}
             showSummary={userData?.summary.length > 0}
           />
         )}
 
-        <Skills items={userData?.skills} />
+        <Skills
+          section={sectionHeaderStyles}
+          skillsStyles={bodyTextStyles}
+          items={userData?.skills}
+        />
 
-        <Experience items={userData?.experience} />
-        <Education items={userData?.education} />
+        <Experience
+          section={sectionHeaderStyles}
+          companyStyles={companyStyles}
+          jobStyles={jobTitleStyles}
+          bulletStyles={bodyTextStyles}
+          metaStyles={metaDataStyles}
+          items={userData?.experience}
+        />
+        <Education
+          section={sectionHeaderStyles}
+          eduStyles={companyStyles}
+          metaStyles={metaDataStyles}
+          bodyStyles={bodyTextStyles}
+          items={userData?.education}
+        />
       </div>
     </div>
   )

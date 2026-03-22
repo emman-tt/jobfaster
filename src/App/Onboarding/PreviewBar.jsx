@@ -4,7 +4,8 @@ import SkillsFirstResume from '../../App/Dashboard/CreateResume/templates/Skills
 import DividedResume from '../../App/Dashboard/CreateResume/templates/Divided'
 import Default from '../../App/Dashboard/CreateResume/templates/Default'
 import { useSelector } from 'react-redux'
-
+import Draggable from 'react-draggable'
+import { useRef } from 'react'
 export default function PreviewBar () {
   const { layoutId } = useSelector(state => state.ai)
   const {
@@ -16,6 +17,10 @@ export default function PreviewBar () {
     summaryType
   } = useSelector(state => state.personal)
   const { experience } = useSelector(state => state.experience)
+
+  const { styless } = useSelector(state => state.format)
+
+  // console.log(styless)
   const userData = {
     name: contactDetails.fullName,
     email: contactDetails.email,
@@ -27,13 +32,16 @@ export default function PreviewBar () {
     kindsOfWork: kindsOfWork,
     summary: summary,
     showSummary: summaryType !== 'No summary',
-    experience: experience
+    experience: experience,
+    styles: styless
   }
+  const nodeRef = useRef(null)
 
   return (
     <section className=' fixed top-0 right-0 w-[30%] '>
-      {
+      <Draggable nodeRef={nodeRef}>
         <div
+          ref={nodeRef}
           className={` ${
             layoutId == 1 || layoutId == 3
               ? '-translate-y-10  scale-75'
@@ -52,7 +60,11 @@ export default function PreviewBar () {
             <DividedResume userData={userData} />
           )}
         </div>
-      }
+      </Draggable>
+
+      <button className=' bg-blue-400   rounded-xl flex justify-center items-center text-sm'>
+        Change template
+      </button>
     </section>
   )
 }
