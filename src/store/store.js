@@ -8,6 +8,8 @@ import { modalSlice } from './modalSlice'
 import { dashboardSlice } from './dashboardSlice'
 import { aiSlice } from './aiSlice'
 import { previewSlice } from './previewSlice'
+import { onboardingSlice } from './onboardingSlice'
+import { notificationSlice } from './notificationSlice'
 
 export const store = configureStore({
   reducer: {
@@ -19,6 +21,8 @@ export const store = configureStore({
     modal: modalSlice.reducer,
     dashboard: dashboardSlice.reducer,
     ai: aiSlice.reducer,
-    preview: previewSlice.reducer
+    preview: previewSlice.reducer,
+    onboarding: onboardingSlice.reducer,
+    notification: notificationSlice.reducer
   }
 })

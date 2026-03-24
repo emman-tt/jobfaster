@@ -156,20 +156,6 @@ export default function NameStyles () {
           )}
         </div>
       </section>
-
-      {/* <p className='mt-10 font-semibold text-sm text-center w-full'>Preview</p>
-      <div className='rounded-2xl bg-[#f3f5f7] mt-5 p-8 flex items-center justify-center min-h-[120px]'>
-         <h1 
-           style={{ 
-             fontSize: `${nameStyles.size}px`, 
-             textTransform: nameStyles.case,
-             letterSpacing: `${nameStyles.spacing}px`
-           }}
-           className={`${nameStyles.weight} text-slate-800`}
-         >
-           EMMANUEL ACQUAH
-         </h1>
-      </div> */}
     </section>
   )
 }

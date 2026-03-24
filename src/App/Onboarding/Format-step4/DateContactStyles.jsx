@@ -7,8 +7,8 @@ import { updateGroupStyle } from '../../../store/formatSlice'
 
 export default function DateContactStyles () {
   const dispatch = useDispatch()
-  const dateStyles = useSelector(state => state.format.styless.dateStyles)
-  const contactStyles = useSelector(state => state.format.styless.contactStyles)
+  const dateStyles = useSelector(state => state.format.styless.date)
+  const contactStyles = useSelector(state => state.format.styless.contact)
 
   const [toggles, setToggles] = useState({
     dateSize: false,
@@ -21,7 +21,7 @@ export default function DateContactStyles () {
   const ref = useClickOutside(closeAll)
 
   const handleUpdateDate = (field, value) => {
-    dispatch(updateGroupStyle({ category: 'dateStyles', field, value }))
+    dispatch(updateGroupStyle({ category: 'date', field, value }))
     // If contact size is "linked" (Same as Dates), update it too?
     // User request says "contactSize: Same as Dates, Smaller".
     // I'll check the current contact size vs date size to determine state.
@@ -151,26 +151,6 @@ export default function DateContactStyles () {
           )}
         </div>
       </section>
-
-      {/* <p className='mt-10 font-semibold text-sm text-center w-full'>Preview</p> */}
-      {/* <div className='rounded-2xl bg-[#f3f5f7] mt-5 p-8 flex flex-col gap-2 items-center'>
-         <p 
-           style={{ 
-             fontSize: `${contactStyles.size}px`
-           }}
-           className='text-slate-400'
-         >
-           astroverse@gmail.com | Ghana, Accra
-         </p>
-         <p 
-           style={{ 
-             fontSize: `${dateStyles.size}px`
-           }}
-           className={`${dateStyles.style} text-slate-400`}
-         >
-           Jan 2020 - Present
-         </p>
-      </div> */}
     </section>
   )
 }

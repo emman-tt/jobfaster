@@ -12,7 +12,7 @@ export default function Select () {
     navigate('/dashboard/create/resume/examples')
   }
   return (
-    <section className=' custom-pattern flex w-full h-full px-10 justify-center items-center gap-10 flex-col'>
+    <section className='  flex w-full h-full px-10 justify-center items-center gap-10 flex-col'>
       <h2 className=' font-semibold text-3xl font-IBM'>
         Choose your type of Resume
       </h2>

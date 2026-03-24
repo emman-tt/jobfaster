@@ -1,59 +1,13 @@
-const DEFAULT_RESUME = {
-  name: 'John Smith',
-  title: 'Senior Software Engineer',
-  contact: {
-    email: 'john.smith@email.com',
-    phone: '(555) 123-4567',
-    location: 'San Francisco, CA'
-  },
-  experience: [
-    {
-      id: 'exp-1',
-      company: 'Tech Corp',
-      role: 'Senior Developer',
-      startDate: '2022',
-      endDate: 'Present',
-      location: 'San Francisco, CA',
-      bullets: [
-        'Led team of 5 engineers delivering 3 major projects on schedule',
-        'Improved application performance by 40% through architectural refactoring',
-        'Mentored 3 junior developers, all promoted within 12 months'
-      ]
-    },
-    {
-      id: 'exp-2',
-      company: 'Innovate Inc',
-      role: 'Software Engineer',
-      startDate: '2019',
-      endDate: '2022',
-      location: 'Seattle, WA',
-      bullets: [
-        'Built 3 customer-facing features used by 50k+ active users',
-        'Reduced bug reports by 25% through comprehensive testing coverage',
-        'Collaborated with cross-functional teams across 4 departments'
-      ]
-    }
-  ],
-  education: [
-    {
-      id: 'edu-1',
-      school: 'Stanford University',
-      degree: 'B.S. Computer Science',
-      startYear: '2015',
-      endYear: '2019',
-      gpa: 'GPA: 3.8',
-      level: 200
-    }
-  ],
-  skills: ['React', 'Node.js', 'Python', 'AWS', 'SQL', 'TypeScript', 'GraphQL']
-}
-
 function SectionHeading ({ children, section }) {
   return (
     <div className='mb-3'>
       <h2
-        style={{ letterSpacing: section.spacing, textTransform: section.case }}
-        className={`text-[${section.size}px] ${section.weight} ${section.style}  text-slate-800 mb-1.5`}
+        style={{
+          letterSpacing: section.spacing,
+          textTransform: section.case,
+          fontSize: `${section.size}pt`
+        }}
+        className={` ${section.weight} ${section.style}  text-slate-800 mb-1.5`}
       >
         {children}
       </h2>
@@ -75,26 +29,26 @@ function ExperienceEntry ({
       <div className='flex justify-between items-center mb-0.5 min-h-4.5'>
         <span
           style={{
-            fontSize: companyStyles.size,
+            fontSize: `${companyStyles.size}pt`,
             letterSpacing: companyStyles.spacing,
             textTransform: companyStyles.case
           }}
           className={` ${companyStyles.weight} ${companyStyles.case}    font-[${companyStyles.weight}]    text-slate-800`}
         >
           {entry.company || (
-            <span className='inline-block h-2 w-32 bg-slate-200 rounded animate-pulse'></span>
+            <span className='inline-block h-8 w-40 bg-slate-200 rounded animate-pulse'></span>
           )}
         </span>
         <span
-          style={{ fontSize: metaStyles.size }}
+          style={{ fontSize: `${metaStyles.size}pt` }}
           className=' text-slate-400 italic tabular-nums flex items-center gap-1'
         >
           {entry.startYear || (
-            <span className='inline-block h-1.5 w-8 bg-slate-200 rounded animate-pulse'></span>
+            <span className='inline-block h-5 w-10 bg-slate-200 rounded animate-pulse'></span>
           )}{' '}
           -{' '}
           {entry.endYear || (
-            <span className='inline-block h-1.5 w-8 bg-slate-200 rounded animate-pulse'></span>
+            <span className='inline-block h-5 w-10 bg-slate-200 rounded animate-pulse'></span>
           )}
         </span>
       </div>
@@ -103,18 +57,18 @@ function ExperienceEntry ({
       <div className='flex justify-between items-center mb-2 min-h-4.5'>
         <span
           style={{
-            fontSize: jobStyles.size,
+            fontSize: `${jobStyles.size}pt`,
             textTransform: jobStyles.case
           }}
           className={` ${jobStyles.style}  text-slate-500`}
         >
           {entry.jobTitle || (
-            <span className='inline-block h-1.5 w-24 bg-slate-200 rounded animate-pulse'></span>
+            <span className='inline-block h-5 w-32 bg-slate-200 rounded animate-pulse'></span>
           )}
         </span>
-        <span className='text-[11px] text-slate-400 flex items-center'>
+        <span className='text-[10pt] text-slate-400 flex items-center'>
           {entry.location || (
-            <span className='inline-block h-1.5 w-20 bg-slate-200 rounded animate-pulse'></span>
+            <span className='inline-block h-5 w-24 bg-slate-200 rounded animate-pulse'></span>
           )}
         </span>
       </div>
@@ -126,25 +80,33 @@ function ExperienceEntry ({
             <li
               key={i}
               style={{
-                fontSize: bulletStyles.size,
+                fontSize: `${bulletStyles.size}pt`,
                 textTransform: bulletStyles.case
               }}
-              className={`flex gap-2  ${jobStyles.style} text-slate-600 leading-snug items-start`}
+              className={`flex gap-2  ${jobStyles.style} text-slate-900 leading-snug items-start`}
             >
               <span className='text-slate-700 shrink-0 mt-px'>•</span>
               <span className='flex-1 mt-0.5'>
                 {b || (
-                  <span className='inline-block h-1.5 w-full bg-slate-200 rounded animate-pulse'></span>
+                  <span className='inline-block h-6 w-full bg-slate-200 rounded animate-pulse'></span>
                 )}
               </span>
             </li>
           ))}
         </ul>
       ) : (
-        <div className='space-y-1.5 mt-1'>
-          <div className='h-1.5 w-full bg-slate-200 rounded animate-pulse'></div>
-          <div className='h-1.5 w-5/6 bg-slate-200 rounded animate-pulse'></div>
-        </div>
+        <>
+          <div className='space-y-4 mt-2.5'>
+            <div className='h-6 w-full bg-slate-200 rounded animate-pulse'></div>
+            <div className='h-6 w-5/6 bg-slate-200 rounded animate-pulse'></div>
+            <div className='h-6 w-11/12 bg-slate-200 rounded animate-pulse'></div>
+            <div className='h-6 w-4/6 bg-slate-200 rounded animate-pulse'></div>
+          </div>
+          <div className='space-y-4 mt-2.5'>
+            <div className='h-6 w-full bg-slate-200 rounded animate-pulse'></div>
+            <div className='h-6 w-5/6 bg-slate-200 rounded animate-pulse'></div>
+          </div>
+        </>
       )}
     </div>
   )
@@ -157,26 +119,26 @@ function EducationEntry ({ eduStyles, entry, metaStyles, bodyStyles }) {
       <div className='flex justify-between items-center mb-0.5 min-h-4.5'>
         <span
           style={{
-            fontSize: eduStyles.size,
+            fontSize: `${eduStyles.size}pt`,
             letterSpacing: eduStyles.spacing,
             textTransform: eduStyles.case
           }}
-          className={`text-[12px] font-bold ${eduStyles.weight} ${eduStyles.case}    font-[${eduStyles.weight}]  tracking-[0.08em] uppercase text-slate-800`}
+          className={` font-bold ${eduStyles.weight} ${eduStyles.case}    font-[${eduStyles.weight}]  tracking-[0.08em] uppercase text-slate-800`}
         >
-          {entry.instituition || (
-            <span className='inline-block h-2 w-32 bg-slate-200 rounded animate-pulse'></span>
+          {entry.instituition || entry.school || (
+            <span className='inline-block h-8 w-100 bg-slate-200 rounded animate-pulse'></span>
           )}
         </span>
         <span
-          style={{ fontSize: metaStyles.size }}
+          style={{ fontSize: `${metaStyles.size}pt` }}
           className={` ${metaStyles.style} ${metaStyles.weight} text-slate-400  tabular-nums flex items-center gap-1`}
         >
           {entry.startYear || (
-            <span className='inline-block h-1.5 w-8 bg-slate-200 rounded animate-pulse'></span>
+            <span className='inline-block h-5 w-25 bg-slate-200 rounded animate-pulse'></span>
           )}{' '}
           -{' '}
-          {entry.endYear || (
-            <span className='inline-block h-1.5 w-8 bg-slate-200 rounded animate-pulse'></span>
+          {entry.endYear || entry.year || (
+            <span className='inline-block h-5 w-25 bg-slate-200 rounded animate-pulse'></span>
           )}
         </span>
       </div>
@@ -184,15 +146,15 @@ function EducationEntry ({ eduStyles, entry, metaStyles, bodyStyles }) {
       {/* Degree + detail */}
       <div className='flex justify-between items-center min-h-4.5'>
         <span
-          style={{ fontSize: bodyStyles.size }}
-          className=' italic text-slate-500'
+          style={{ fontSize: `${bodyStyles.size}pt` }}
+          className=' italic text-slate-700'
         >
           {entry.degree || (
-            <span className='inline-block h-1.5 w-24 bg-slate-200 rounded animate-pulse'></span>
+            <span className='inline-block h-5 w-80 bg-slate-200 rounded animate-pulse'></span>
           )}
         </span>
         <div
-          style={{ fontSize: metaStyles.size }}
+          style={{ fontSize: `${metaStyles.size}pt` }}
           className={`flex gap-3 text-slate-400 `}
         >
           {entry.level || entry.gpa ? (
@@ -201,7 +163,7 @@ function EducationEntry ({ eduStyles, entry, metaStyles, bodyStyles }) {
               {entry.gpa && <span className=' '>Grade: {entry.gpa}</span>}
             </>
           ) : (
-            <span className='inline-block h-1.5 w-20 bg-slate-200 rounded animate-pulse mt-0.5'></span>
+            <span className='inline-block h-5 w-60 bg-slate-200 rounded animate-pulse mt-0.5'></span>
           )}
         </div>
       </div>
@@ -212,12 +174,14 @@ function EducationEntry ({ eduStyles, entry, metaStyles, bodyStyles }) {
 function SkillsRow ({ skills, skillsStyles }) {
   if (!skills || skills.length === 0) {
     return (
-      <div className='flex gap-2 flex-wrap mt-1'>
-        <div className='h-1.5 w-16 bg-slate-200 rounded animate-pulse'></div>
-        <div className='h-1.5 w-20 bg-slate-200 rounded animate-pulse'></div>
-        <div className='h-1.5 w-12 bg-slate-200 rounded animate-pulse'></div>
-        <div className='h-1.5 w-24 bg-slate-200 rounded animate-pulse'></div>
-        <div className='h-1.5 w-16 bg-slate-200 rounded animate-pulse'></div>
+      <div className='flex gap-2 flex-wrap mt-2'>
+        <div className='h-5 w-20 bg-slate-200 rounded animate-pulse'></div>
+        <div className='h-5 w-24 bg-slate-200 rounded animate-pulse'></div>
+        <div className='h-5 w-16 bg-slate-200 rounded animate-pulse'></div>
+        <div className='h-5 w-28 bg-slate-200 rounded animate-pulse'></div>
+        <div className='h-5 w-20 bg-slate-200 rounded animate-pulse'></div>
+        <div className='h-5 w-14 bg-slate-200 rounded animate-pulse'></div>
+        <div className='h-5 w-22 bg-slate-200 rounded animate-pulse'></div>
       </div>
     )
   }
@@ -225,7 +189,7 @@ function SkillsRow ({ skills, skillsStyles }) {
   return (
     <p
       style={{
-        fontSize: skillsStyles.size,
+        fontSize: `${skillsStyles.size}pt`,
         textTransform: skillsStyles.case
       }}
       className={`${skillsStyles.style}  flex flex-wrap text-slate-600 items-center min-h-4.5`}
@@ -233,7 +197,7 @@ function SkillsRow ({ skills, skillsStyles }) {
       {skills.map((skill, i) => (
         <span key={i} className='flex items-center'>
           {skill || (
-            <span className='inline-block h-1.5 w-12 bg-slate-200 rounded animate-pulse'></span>
+            <span className='inline-block h-5 w-14 bg-slate-200 rounded animate-pulse'></span>
           )}
           {i < skills.length - 1 && (
             <span className='text-slate-300 mx-2'>•</span>
@@ -248,42 +212,52 @@ export default function Default ({ userData, className }) {
   const styles = userData?.styles
   const sectionHeaderStyles = styles?.sectionHeader
   const nameStyles = styles?.name
-  const metaDataStyles = styles?.metadata
+  // const metaDataStyles = styles?.metadata
+  const dateStyles = styles?.date
+  const contactStyles = styles?.contact
   const jobTitleStyles = styles?.jobTitle
   const companyStyles = styles?.company
   const bodyTextStyles = styles?.bodyText
 
   return (
+    // Add 'print:shadow-none' and 'print:p-0' so it looks like a document on paper
     <div
-      className={`bg-white max-w-3xl  mx-auto shadow-lg  border-slate-800 font-serif ${className}`}
+      className={`bg-white  mx-auto shadow-lg print:shadow-none print:m-0 font-serif ${className}`}
     >
       {/* ── Header ── */}
       <header className='text-center  min-h-30 flex flex-col items-center justify-center px-10 pt-9 pb-6 border-b border-slate-300'>
         <h1
           style={{
-            fontSize: nameStyles.size
+            fontSize: `${nameStyles.size}pt`,
+            letterSpacing: nameStyles.spacing
           }}
-          className={`  ${nameStyles.weight}  tracking-[${nameStyles.spacing}px] uppercase text-slate-800 mb-1 flex items-center min-h-8`}
+          className={`  ${nameStyles.weight}   uppercase text-slate-800 mb-1 flex items-center min-h-8`}
         >
           {userData?.name || (
             <span
-              className={`inline-block h-4 w-48 bg-slate-200 rounded animate-pulse`}
+              className={`inline-block h-10 w-48 bg-slate-200 rounded animate-pulse`}
             ></span>
           )}
         </h1>
         <p className='text-sm italic text-slate-500 mb-1.5 flex items-center min-h-5'>
           {userData?.jobTitle || (
-            <span className='inline-block h-2 w-32 bg-slate-200 rounded animate-pulse'></span>
+            <span className='inline-block h-5 w-32 bg-slate-200 rounded animate-pulse'></span>
           )}
         </p>
-        <p className='text-xs text-slate-400 tracking-wide flex items-center justify-center min-h-4'>
+        <p
+          style={{
+            fontSize: contactStyles.size,
+            fontStyle: companyStyles.style
+          }}
+          className={` text-slate-900 ${contactStyles.weight}   flex items-center justify-center min-h-4`}
+        >
           {[userData?.email, userData?.phone, userData?.location]
             .filter(Boolean)
             .join('  |  ') || (
             <span className='flex items-center gap-4'>
-              <span className='inline-block h-1.5 w-24 bg-slate-200 rounded animate-pulse'></span>
-              <span className='inline-block h-1.5 w-20 bg-slate-200 rounded animate-pulse'></span>
-              <span className='inline-block h-1.5 w-24 bg-slate-200 rounded animate-pulse'></span>
+              <span className='inline-block h-5.5 w-24 bg-slate-200 rounded animate-pulse'></span>
+              <span className='inline-block h-5.5 w-20 bg-slate-200 rounded animate-pulse'></span>
+              <span className='inline-block h-5.5 w-24 bg-slate-200 rounded animate-pulse'></span>
             </span>
           )}
         </p>
@@ -297,11 +271,13 @@ export default function Default ({ userData, className }) {
               <SectionHeading section={sectionHeaderStyles}>
                 Summary
               </SectionHeading>
-              <p className='text-[12px] text-slate-600 leading-relaxed min-h-5 flex items-center'>
+              <p className='text-[10pt] text-slate-600 leading-relaxed min-h-5 flex items-center'>
                 {userData?.summary || (
-                  <span className='w-full flex flex-col gap-1.5 mt-1'>
-                    <span className='h-1.5 w-full bg-slate-200 rounded animate-pulse'></span>
-                    <span className='h-1.5 w-5/6 bg-slate-200 rounded animate-pulse'></span>
+                  <span className='w-full flex flex-col gap-4 mt-2.5'>
+                    <span className='h-6 w-full bg-slate-200 rounded animate-pulse'></span>
+                    <span className='h-6 w-11/12 bg-slate-200 rounded animate-pulse'></span>
+                    <span className='h-6 w-full bg-slate-200 rounded animate-pulse'></span>
+                    <span className='h-6 w-4/5 bg-slate-200 rounded animate-pulse'></span>
                   </span>
                 )}
               </p>
@@ -326,7 +302,7 @@ export default function Default ({ userData, className }) {
           {userData?.experience?.length > 0 ? (
             userData.experience.map(exp => (
               <ExperienceEntry
-                metaStyles={metaDataStyles}
+                metaStyles={dateStyles}
                 bulletStyles={bodyTextStyles}
                 jobStyles={jobTitleStyles}
                 companyStyles={companyStyles}
@@ -361,7 +337,7 @@ export default function Default ({ userData, className }) {
             userData.education.map(edu => (
               <EducationEntry
                 bodyStyles={bodyTextStyles}
-                metaStyles={metaDataStyles}
+                metaStyles={dateStyles}
                 eduStyles={companyStyles}
                 key={edu.id}
                 entry={edu}

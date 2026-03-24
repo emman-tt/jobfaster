@@ -32,7 +32,7 @@ const initialState = {
   },
   styless: {
     name: {
-      size: 24, // 24px
+      size: 24,
       weight: 'font-bold',
       style: 'normal',
       case: 'none',
@@ -42,7 +42,7 @@ const initialState = {
 
     // Group 2: Section Headers
     sectionHeader: {
-      size: 11, // 11px
+      size: 13,
       weight: 'font-bold',
       style: 'normal',
       case: 'uppercase',
@@ -62,9 +62,9 @@ const initialState = {
 
     // Group 3b: Job Title/Role (Italic)
     jobTitle: {
-      size: 12, // 12px
+      size: 12,
       weight: 'font-normal',
-      style: 'italic',
+      style: 'normal',
       case: 'none',
       color: 'text-slate-500',
       spacing: 1
@@ -72,17 +72,17 @@ const initialState = {
 
     // Group 4: Bullets & Skills & Degree (Regular)
     bodyText: {
-      size: 12, // 12px
+      size: 12,
       weight: 'font-normal',
       style: 'normal',
       case: 'none',
       spacing: 0,
-       color: 'text-slate-600'
+      color: 'text-slate-600'
     },
 
     // Group 5: Dates
-    dateStyles: {
-      size: 11, // 11px
+    date: {
+      size: 11,
       weight: 'font-normal',
       style: 'italic',
       case: 'none',
@@ -90,8 +90,8 @@ const initialState = {
       color: 'text-slate-400'
     },
     // Group 6: Contact Info (Location, Phone, Email)
-    contactStyles: {
-      size: 11, // 11px
+    contact: {
+      size: 12,
       weight: 'font-normal',
       style: 'normal',
       case: 'none',
@@ -126,16 +126,7 @@ export const formatSlice = createSlice({
     saveHobbies: (state, action) => {
       state.hobbies = action.payload
     },
-    saveStyles: (state, action) => {
-      const { category, value } = action.payload
-      if (category === 'header') {
-        state.styles.headerStyles = value
-      } else if (category === 'bullet') {
-        state.styles.bulletStyles = value
-      } else {
-        state.styles.bodyStyles = value
-      }
-    },
+
     updateGroupStyle: (state, action) => {
       const { category, field, value } = action.payload
       if (state.styless[category]) {
@@ -151,7 +142,6 @@ export const {
   toggleEducationDatesShow,
   saveOnlineLinks,
   saveErrors,
-  saveStyles,
   saveHobbies,
   updateGroupStyle
 } = formatSlice.actions

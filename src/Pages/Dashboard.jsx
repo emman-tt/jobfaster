@@ -8,11 +8,17 @@ import UploadResume from '../App/Dashboard/Overview/Modals/UploadResume'
 import UploadFile from '../App/Dashboard/Overview/Modals/UploadFile'
 import Folder from '../App/Dashboard/Overview/Modals/Folder'
 import Rightbar from '../App/Dashboard/Rightbar/Rightbar'
-import { PanelLeftOpenIcon, PanelRightOpenIcon } from 'lucide-react'
+import { FileIcon, PanelLeftOpenIcon, PanelRightOpenIcon } from 'lucide-react'
 import { useDispatch } from 'react-redux'
+import { useEffect } from 'react'
+import { toast } from 'sonner'
+import { toastPresets } from '../components/toasters'
+import { toggleNotification } from '../store/notificationSlice'
 export default function Dashboard () {
   const { modals } = useSelector(state => state.modal)
   const { showRightbar } = useSelector(state => state.dashboard)
+  const { showNotification } = useSelector(state => state.notification)
+  const { tailor } = showNotification
   const dispatch = useDispatch()
 
   function openRightbar () {
@@ -21,6 +27,47 @@ export default function Dashboard () {
   function closeRightbar () {
     dispatch(toggleRightbar(false))
   }
+
+  useEffect(() => {
+    let toastId = null
+    dispatch(toggleNotification({ category: 'tailor', value: true }))
+
+    if (tailor) {
+      toastId = toast.loading('Parsing and rewriting Resume...', {
+        style: {
+          background: '#f1b672',
+          color: 'white',
+          fontSize: 14,
+          fontWeight: 'bold',
+          boxShadow: '2px 2px 10px solid black'
+        },
+        description:
+          'Ai proccessing takes 20s - 40s, you would be notified on completion',
+        position: 'top-center',
+        // duration: 1000,
+        id: 'tailor-loading'
+      })
+    }
+
+    // if (tailor && toastId) {
+    //   toast.success('Resume optimized!', {
+    //     id: toastId,
+    //     duration: 3000,
+    //     style: {
+    //       background: 'black',
+    //       color: 'white'
+    //     }
+    //   })
+    //   toastId = null
+    // }
+
+    return () => {
+      setTimeout(() => {
+        toast.dismiss(toastId)
+        dispatch(toggleNotification({ category: 'tailor', value: false }))
+      }, 10000)
+    }
+  }, [tailor, dispatch])
 
   return (
     <section className='flex relative overflow-hidden  w-full h-screen '>

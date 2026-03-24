@@ -1,4 +1,4 @@
-import { CheckCircle, Library } from 'lucide-react'
+import { CheckCircle, Library, ScanSearch, ZoomIn } from 'lucide-react'
 import { useLocation } from 'react-router-dom'
 
 export default function ProgressBar () {
@@ -26,6 +26,10 @@ export default function ProgressBar () {
           )}
         </div>
       ))}
+
+      <div className=' bg-white rounded-xl p-3'>
+        <ZoomIn />
+      </div>
     </section>
   )
 }

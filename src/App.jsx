@@ -12,18 +12,31 @@ import Correction from './Pages/Correction'
 import CreateResume from './App/Dashboard/CreateResume/page'
 import Select from './App/Dashboard/CreateResume/Select'
 import Examples from './App/Dashboard/CreateResume/examples'
+import Finale from './App/Onboarding/Finale'
+import QuickAction from './Pages/QuickActions'
+import { Toaster } from 'sonner'
 function App () {
   return (
     <BrowserRouter>
+      <Toaster
+        position='top-center'
+        richColors
+        toastOptions={{
+          style: {
+            fontSize: 15
+          }
+        }}
+      />
       <Routes>
         <Route path='/' element={<Navigate to={'/onboarding/personal'} />} />
         <Route path='/correction' element={<Correction />} />
-
+        <Route path='/quick/actions' element={<QuickAction />} />
         <Route path='/onboarding' element={<Onboarding />}>
           <Route path='personal' element={<Personal />} />
           <Route path='job' element={<Jobs />} />
           <Route path='experience' element={<Experience />} />
           <Route path='format' element={<Format />} />
+          {/* <Route path='finale' element={<Finale />} /> */}
         </Route>
         <Route path='/dashboard' element={<Dashboard />}>
           <Route index element={<Navigate to={'/dashboard/overview'} />} />

@@ -1,9 +1,5 @@
-import { QuestionHeader } from '../../../components/QuestionHeader'
 import { BackNext } from '../../../components/BackNext'
-import { TwoButtonsAnswer } from '../../../components/TwoButtonsAnswer'
 import FileType from './fileType'
-import SummaryType from '../Peronal-step1/SummaryType'
-import OnlineLinks from '../Peronal-step1/OnlineLinks'
 import BulletPoints from './BulletPoinst'
 import Hobbies from './Hobbies'
 import NameStyles from './NameStyles'
@@ -12,32 +8,20 @@ import CompanyStyles from './CompanyStyles'
 import JobTitleStyles from './JobTitleStyles'
 import BodyStyles from './BodyStyles'
 import DateContactStyles from './DateContactStyles'
-import { ValidateFormat } from '../Validators/format'
-import { useDispatch, useSelector } from 'react-redux'
-import { useNavigate } from 'react-router-dom'
-import { saveErrors } from '../../../store/formatSlice'
+import { toggleFinale } from '../../../store/onboardingSlice'
+
+import { useDispatch } from 'react-redux'
 
 export default function Format () {
+  
   const dispatch = useDispatch()
-  const navigate = useNavigate()
-  const data = useSelector(state => state.format)
 
   function navigateNext () {
     try {
-      const { hasError, error } = ValidateFormat(data)
-
-      dispatch(saveErrors(error))
-      if (hasError) {
-        return
-      }
-      navigate('/onboarding/job')
+      dispatch(toggleFinale(true))
     } catch (err) {
       console.error('Validation failed to execute:', err)
     }
-  }
-
-  function saveSummaryType (item) {
-    // dispatch(selectSummaryType(item))
   }
 
   return (

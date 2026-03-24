@@ -56,8 +56,12 @@ function SectionHeading ({ children, section }) {
   return (
     <div className='mb-3'>
       <h2
-        style={{ letterSpacing: section?.spacing, textTransform: section?.case }}
-        className={`text-[${section?.size}px] ${section?.weight} ${section?.style} text-slate-800 mb-1.5`}
+        style={{
+          letterSpacing: section?.spacing,
+          textTransform: section?.case,
+          fontSize: `${section?.size}pt`
+        }}
+        className={`${section?.weight} ${section?.style} text-slate-800 mb-1.5`}
       >
         {children}
       </h2>
@@ -78,43 +82,40 @@ function ExperienceEntry ({
       <div className='flex justify-between items-center min-h-4.25 mb-0.5'>
         <span
           style={{
-            fontSize: companyStyles?.size,
+            fontSize: `${companyStyles?.size}pt`,
             letterSpacing: companyStyles?.spacing,
             textTransform: companyStyles?.case
           }}
-          className={`${companyStyles?.weight} tracking-widest uppercase text-slate-800`}
+          className={`${companyStyles?.weight} uppercase text-slate-800`}
         >
           {entry.company || (
-            <span className='inline-block h-2 w-28 bg-slate-200 rounded animate-pulse'></span>
+            <span className='inline-block h-8 w-40 bg-slate-200 rounded animate-pulse'></span>
           )}
         </span>
         <span
-          style={{ fontSize: metaStyles?.size }}
+          style={{ fontSize: `${metaStyles?.size}pt` }}
           className='text-slate-400 italic shrink-0 ml-1 flex items-center gap-1'
         >
-          {entry.startYear ||
-            entry.startDate || (
-              <span className='inline-block h-1.5 w-8 bg-slate-200 rounded animate-pulse'></span>
-            )}
+          {entry.startYear || entry.startDate || (
+            <span className='inline-block h-1.5 w-8 bg-slate-200 rounded animate-pulse'></span>
+          )}
           -
-          {entry.endYear ||
-            entry.endDate || (
-              <span className='inline-block h-1.5 w-8 bg-slate-200 rounded animate-pulse'></span>
-            )}
+          {entry.endYear || entry.endDate || (
+            <span className='inline-block h-1.5 w-8 bg-slate-200 rounded animate-pulse'></span>
+          )}
         </span>
       </div>
       <div className='flex items-center min-h-4 mb-1.5'>
         <p
           style={{
-            fontSize: jobStyles?.size,
+            fontSize: `${jobStyles?.size}pt`,
             textTransform: jobStyles?.case
           }}
-          className={`${jobStyles?.style} text-slate-500`}
+          className={`${jobStyles?.style} text-slate-700`}
         >
-          {entry.jobTitle ||
-            entry.role || (
-              <span className='inline-block h-1.5 w-24 bg-slate-200 rounded animate-pulse'></span>
-            )}
+          {entry.jobTitle || entry.role || (
+            <span className='inline-block h-5 w-32 bg-slate-200 rounded animate-pulse'></span>
+          )}
         </p>
       </div>
       {entry.points?.length > 0 || entry.bullets?.length > 0 ? (
@@ -123,24 +124,25 @@ function ExperienceEntry ({
             <li
               key={i}
               style={{
-                fontSize: bulletStyles?.size,
+                fontSize: `${bulletStyles?.size}pt`,
                 textTransform: bulletStyles?.case
               }}
-              className={`${bulletStyles?.style} flex gap-1.5 text-slate-600 leading-snug items-start mt-1`}
+              className={`${bulletStyles?.style} flex gap-1.5 text-slate-900 leading-snug items-start mt-1`}
             >
               <span className='text-slate-800 shrink-0 mt-px'>•</span>
               <span className='flex-1 mt-0.5'>
                 {b || (
-                  <span className='inline-block h-1.5 w-full bg-slate-200 rounded animate-pulse mt-0.5'></span>
+                  <span className='inline-block h-6 w-full bg-slate-200 rounded animate-pulse mt-0.5'></span>
                 )}
               </span>
             </li>
           ))}
         </ul>
       ) : (
-        <div className='space-y-1.5 mt-1'>
-          <div className='h-1.5 w-full bg-slate-200 rounded animate-pulse'></div>
-          <div className='h-1.5 w-5/6 bg-slate-200 rounded animate-pulse'></div>
+        <div className='space-y-4 mt-2.5'>
+          <div className='h-6 w-full bg-slate-200 rounded animate-pulse'></div>
+          <div className='h-6 w-5/6 bg-slate-200 rounded animate-pulse'></div>
+          <div className='h-6 w-full bg-slate-200 rounded animate-pulse'></div>
         </div>
       )}
     </div>
@@ -153,50 +155,49 @@ function EducationEntry ({ entry, eduStyles, bodyStyles, metaStyles }) {
       <div className='flex justify-between items-center min-h-4.25 mb-0.5'>
         <span
           style={{
-            fontSize: eduStyles?.size,
+            fontSize: `${eduStyles?.size}pt`,
             letterSpacing: eduStyles?.spacing,
             textTransform: eduStyles?.case
           }}
-          className={`${eduStyles?.weight} tracking-widest uppercase text-slate-800 leading-tight`}
+          className={`${eduStyles?.weight} uppercase text-slate-800 leading-tight`}
         >
-          {entry.instituition ||
-            entry.school || (
-              <span className='inline-block h-2 w-28 bg-slate-200 rounded animate-pulse'></span>
-            )}
+          {entry.instituition || entry.school || (
+            <span className='inline-block h-8 w-40 bg-slate-200 rounded animate-pulse'></span>
+          )}
         </span>
         <span
-          style={{ fontSize: metaStyles?.size }}
+          style={{ fontSize: `${metaStyles?.size}pt` }}
           className='text-slate-400 italic shrink-0 ml-1 flex items-center gap-1'
         >
-          {entry.startYear ||
-            entry.startDate || (
-              <span className='inline-block h-1.5 w-8 bg-slate-200 rounded animate-pulse'></span>
-            )}
+          {entry.startYear || entry.startDate || (
+            <span className='inline-block h-5 w-15 bg-slate-200 rounded animate-pulse'></span>
+          )}
           -
-          {entry.endYear ||
-            entry.endDate || (
-              <span className='inline-block h-1.5 w-8 bg-slate-200 rounded animate-pulse'></span>
-            )}
+          {entry.endYear || entry.endDate || (
+            <span className='inline-block h-5 w-15 bg-slate-200 rounded animate-pulse'></span>
+          )}
         </span>
       </div>
       <div className='flex items-center min-h-4 mb-0.5'>
         <p
           style={{
-            fontSize: bodyStyles?.size,
+            fontSize: `${bodyStyles?.size}pt`,
             textTransform: bodyStyles?.case
           }}
-          className={`${bodyStyles?.style} text-slate-500`}
+          className={`${bodyStyles?.style} text-slate-700`}
         >
           {entry.degree || (
-            <span className='inline-block h-1.5 w-24 bg-slate-200 rounded animate-pulse'></span>
+            <span className='inline-block h-5 w-60 bg-slate-200 rounded animate-pulse'></span>
           )}
         </p>
       </div>
       {entry.detail || entry.gpa || entry.level ? (
         <p
-          style={{ fontSize: metaStyles?.size }}
+          style={{ fontSize: `${metaStyles?.size}pt` }}
           className='text-slate-500 flex items-center min-h-4'
         >
+          # EducationEntry shimmer update for Grade/Level would follow but I'll
+          group if possible.
           {entry.detail ||
             [
               entry.level ? `level ${entry.level}` : '',
@@ -207,7 +208,9 @@ function EducationEntry ({ entry, eduStyles, bodyStyles, metaStyles }) {
         </p>
       ) : (
         <div className='min-h-4 flex items-center'>
-          <span className='inline-block h-1.5 w-20 bg-slate-200 rounded animate-pulse'></span>
+          <span className='inline-block h-5 w-70 bg-slate-200 rounded animate-pulse'></span>
+          <span className='inline-block h-5 w-70 bg-slate-200 rounded animate-pulse'></span>
+          <span className='inline-block h-5 w-70 bg-slate-200 rounded animate-pulse'></span>
         </div>
       )}
     </div>
@@ -217,9 +220,9 @@ function EducationEntry ({ entry, eduStyles, bodyStyles, metaStyles }) {
 function BulletList ({ items, bodyStyles }) {
   if (!items || items.length === 0) {
     return (
-      <div className='space-y-1.5 mt-1'>
-        <div className='h-1.5 w-full bg-slate-200 rounded animate-pulse'></div>
-        <div className='h-1.5 w-5/6 bg-slate-200 rounded animate-pulse'></div>
+      <div className='space-y-4 mt-2.5'>
+        <div className='h-6 w-full bg-slate-200 rounded animate-pulse'></div>
+        <div className='h-6 w-5/6 bg-slate-200 rounded animate-pulse'></div>
       </div>
     )
   }
@@ -230,15 +233,15 @@ function BulletList ({ items, bodyStyles }) {
         <li
           key={i}
           style={{
-            fontSize: bodyStyles?.size,
+            fontSize: `${bodyStyles?.size}pt`,
             textTransform: bodyStyles?.case
           }}
-          className={`${bodyStyles?.style} flex gap-1.5 text-slate-600 leading-snug items-start mt-1`}
+          className={`${bodyStyles?.style} flex gap-1.5 text-slate-900 leading-snug items-start mt-1`}
         >
           <span className='text-slate-800 shrink-0 mt-px'>•</span>
           <span className='flex-1 mt-0.5'>
             {item || (
-              <span className='inline-block h-1.5 w-full bg-slate-200 rounded animate-pulse mt-0.5'></span>
+              <span className='inline-block h-6 w-full bg-slate-200 rounded animate-pulse mt-0.5'></span>
             )}
           </span>
         </li>
@@ -270,13 +273,13 @@ function SkillChips ({ skills, skillsStyles }) {
         <span
           key={i}
           style={{
-            fontSize: skillsStyles?.size,
+            fontSize: `${skillsStyles?.size}pt`,
             textTransform: skillsStyles?.case
           }}
-          className={`${skillsStyles?.style} text-slate-600 border border-slate-200 rounded-sm px-2 py-0.5 bg-slate-50 flex items-center min-h-5.5`}
+          className={`${skillsStyles?.style} text-slate-900 border border-slate-200 rounded-sm px-2 py-0.5 bg-slate-50 flex items-center min-h-5.5`}
         >
           {skill || (
-            <span className='inline-block h-1.5 w-10 bg-slate-300 rounded animate-pulse'></span>
+            <span className='inline-block h-5 w-14 bg-slate-300 rounded animate-pulse'></span>
           )}
         </span>
       ))}
@@ -328,7 +331,8 @@ export default function TwoColumnResume ({ userData, className }) {
   const styles = userData?.styles
   const sectionHeaderStyles = styles?.sectionHeader
   const nameStyles = styles?.name
-  const metaDataStyles = styles?.metadata
+  const dateStyles = styles?.date
+  const contactStyles = styles?.contact
   const jobTitleStyles = styles?.jobTitle
   const companyStyles = styles?.company
   const bodyTextStyles = styles?.bodyText
@@ -341,27 +345,35 @@ export default function TwoColumnResume ({ userData, className }) {
       <header className='text-center min-h-30 flex flex-col items-center justify-center px-10 pt-9 pb-6 border-b border-slate-300'>
         <h1
           style={{
-            fontSize: nameStyles?.size
+            fontSize: `${nameStyles?.size}pt`,
+            letterSpacing: nameStyles?.spacing
           }}
-          className={`${nameStyles?.weight} tracking-[${nameStyles?.spacing}px] uppercase text-slate-800 mb-1 flex items-center min-h-8`}
+          className={`${nameStyles?.weight} uppercase text-slate-800 mb-1 flex items-center min-h-8`}
         >
           {userData?.name || (
-            <span className='inline-block h-4 w-48 bg-slate-200 rounded animate-pulse'></span>
+            <span className='inline-block h-10 w-48 bg-slate-200 rounded animate-pulse'></span>
           )}
         </h1>
-        <p className='text-sm italic text-slate-500 mb-1.5 flex items-center min-h-5'>
+        <p className='text-[10pt] italic text-slate-500 mb-1.5 flex items-center min-h-5'>
           {userData?.jobTitle || (
-            <span className='inline-block h-2 w-32 bg-slate-200 rounded animate-pulse'></span>
+            <span className='inline-block h-6 w-32 bg-slate-200 rounded animate-pulse'></span>
           )}
         </p>
-        <p className='text-xs text-slate-400 tracking-wide flex items-center justify-center min-h-4'>
+        <p
+          style={{
+            fontSize: `${contactStyles?.size}pt`,
+            fontWeight:
+              contactStyles?.weight === 'font-bold' ? 'bold' : 'normal'
+          }}
+          className='text-slate-900 tracking-wide flex items-center justify-center min-h-4'
+        >
           {[userData?.email, userData?.phone, userData?.location]
             .filter(Boolean)
             .join('  |  ') || (
             <span className='flex items-center gap-4'>
-              <span className='inline-block h-1.5 w-24 bg-slate-200 rounded animate-pulse'></span>
-              <span className='inline-block h-1.5 w-20 bg-slate-200 rounded animate-pulse'></span>
-              <span className='inline-block h-1.5 w-24 bg-slate-200 rounded animate-pulse'></span>
+              <span className='inline-block h-5 w-24 bg-slate-200 rounded animate-pulse'></span>
+              <span className='inline-block h-5 w-20 bg-slate-200 rounded animate-pulse'></span>
+              <span className='inline-block h-5 w-24 bg-slate-200 rounded animate-pulse'></span>
             </span>
           )}
         </p>
@@ -382,7 +394,7 @@ export default function TwoColumnResume ({ userData, className }) {
                   entry={exp}
                   companyStyles={companyStyles}
                   jobStyles={jobTitleStyles}
-                  metaStyles={metaDataStyles}
+                  metaStyles={dateStyles}
                   bulletStyles={bodyTextStyles}
                 />
               ))
@@ -426,17 +438,17 @@ export default function TwoColumnResume ({ userData, className }) {
                 </SectionHeading>
                 <p
                   style={{
-                    fontSize: bodyTextStyles?.size,
+                    fontSize: `${bodyTextStyles?.size}pt`,
                     textTransform: bodyTextStyles?.case
                   }}
-                  className={`${bodyTextStyles?.style} text-slate-600 leading-relaxed min-h-5 flex items-center`}
+                  className={`${bodyTextStyles?.style} text-slate-800 leading-relaxed min-h-5 flex items-center`}
                 >
                   {userData?.summary || (
-                    <span className='w-full flex flex-col gap-1.5 mt-1'>
-                      <span className='h-1.5 w-full bg-slate-200 rounded animate-pulse'></span>
-                      <span className='h-1.5 w-5/6 bg-slate-200 rounded animate-pulse'></span>
-                      <span className='h-1.5 w-5/6 bg-slate-200 rounded animate-pulse'></span>
-                      <span className='h-1.5 w-5/6 bg-slate-200 rounded animate-pulse'></span>
+                    <span className='w-full flex flex-col gap-4 mt-2.5'>
+                      <span className='h-6 w-full bg-slate-200 rounded animate-pulse'></span>
+                      <span className='h-6 w-11/12 bg-slate-200 rounded animate-pulse'></span>
+                      <span className='h-6 w-full bg-slate-200 rounded animate-pulse'></span>
+                      <span className='h-6 w-4/5 bg-slate-200 rounded animate-pulse'></span>
                     </span>
                   )}
                 </p>
@@ -453,7 +465,7 @@ export default function TwoColumnResume ({ userData, className }) {
                   entry={edu}
                   eduStyles={companyStyles}
                   bodyStyles={bodyTextStyles}
-                  metaStyles={metaDataStyles}
+                  metaStyles={dateStyles}
                 />
               ))
             ) : (
