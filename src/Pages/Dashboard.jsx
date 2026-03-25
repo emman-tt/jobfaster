@@ -1,10 +1,9 @@
-import { Outlet } from 'react-router-dom'
+import { Outlet, useLocation } from 'react-router-dom'
 import Sidebar from '../App/Dashboard/Sidebar'
 import { useSelector } from 'react-redux'
 import Overlay from '../components/Overlay'
 import Resume from '../App/Dashboard/Overview/Modals/Resume'
 import { toggleRightbar } from '../store/dashboardSlice'
-import UploadResume from '../App/Dashboard/Overview/Modals/UploadResume'
 import UploadFile from '../App/Dashboard/Overview/Modals/UploadFile'
 import Folder from '../App/Dashboard/Overview/Modals/Folder'
 import Rightbar from '../App/Dashboard/Rightbar/Rightbar'
@@ -12,14 +11,24 @@ import { FileIcon, PanelLeftOpenIcon, PanelRightOpenIcon } from 'lucide-react'
 import { useDispatch } from 'react-redux'
 import { useEffect } from 'react'
 import { toast } from 'sonner'
-import { toastPresets } from '../components/toasters'
 import { toggleNotification } from '../store/notificationSlice'
+import SelectResume from '../App/Dashboard/Overview/Modals/SelectResume'
+import { toggleModals } from '../store/modalSlice'
+
 export default function Dashboard () {
   const { modals } = useSelector(state => state.modal)
   const { showRightbar } = useSelector(state => state.dashboard)
   const { showNotification } = useSelector(state => state.notification)
   const { tailor } = showNotification
   const dispatch = useDispatch()
+  const location = useLocation()
+  const actualPath = location.pathname.split('/').at(-1)
+
+  useEffect(() => {
+    if (actualPath == 'job') {
+      dispatch(toggleModals('selectResume'))
+    }
+  }, [actualPath, dispatch, location])
 
   function openRightbar () {
     dispatch(toggleRightbar(true))
@@ -28,9 +37,10 @@ export default function Dashboard () {
     dispatch(toggleRightbar(false))
   }
 
+    // dispatch(toggleNotification({ category: 'tailor', value: true }))
+
   useEffect(() => {
     let toastId = null
-    dispatch(toggleNotification({ category: 'tailor', value: true }))
 
     if (tailor) {
       toastId = toast.loading('Parsing and rewriting Resume...', {
@@ -42,9 +52,8 @@ export default function Dashboard () {
           boxShadow: '2px 2px 10px solid black'
         },
         description:
-          'Ai proccessing takes 20s - 40s, you would be notified on completion',
+          'Ai proccessing takes 20s - 40s, you would be redirected to the resume  on completion',
         position: 'top-center',
-        // duration: 1000,
         id: 'tailor-loading'
       })
     }
@@ -102,6 +111,12 @@ export default function Dashboard () {
         )}
       </section>
 
+      {modals.selectResume && (
+        <>
+          <Overlay className={'bg-[#e0e4e582] backdrop-blur-sm'} />
+          <SelectResume />
+        </>
+      )}
       {modals.resume && (
         <>
           <Overlay className={'bg-[#e0e4e582] backdrop-blur-sm'} />
@@ -112,12 +127,6 @@ export default function Dashboard () {
         <>
           <Overlay className={'bg-[#e0e4e582] backdrop-blur-sm'} />
           <UploadFile />
-        </>
-      )}
-      {modals.uploadResume && (
-        <>
-          <Overlay className={'bg-[#e0e4e582] backdrop-blur-sm'} />
-          <UploadResume />
         </>
       )}
       {modals.folder && (

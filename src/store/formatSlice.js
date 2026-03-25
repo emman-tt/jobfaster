@@ -13,23 +13,7 @@ const initialState = {
     italic: true
   },
   hobbies: '',
-  styles: {
-    headerStyles: {
-      font: 'Inter',
-      size: 20,
-      align: 'center'
-    },
-    bulletStyles: {
-      font: 'Inter',
-      size: 14,
-      bulletingType: 'disc'
-    },
-    bodyStyles: {
-      font: 'Inter',
-      size: 11,
-      align: 'left'
-    }
-  },
+
   styless: {
     name: {
       size: 24,

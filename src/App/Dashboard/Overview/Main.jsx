@@ -5,11 +5,12 @@ import {
   Search
 } from 'lucide-react'
 import Folder from '../../../components/Folder'
-import { PaperFile } from './Paper'
+
 import { useDispatch, useSelector } from 'react-redux'
 import { useEffect, useState } from 'react'
 import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import { toggleModals } from '../../../store/modalSlice'
+import FilePreview from './FilePreview'
 export default function Main () {
   const { programs } = useSelector(state => state.files)
   const { id } = useParams()
@@ -22,7 +23,6 @@ export default function Main () {
   const location = useLocation()
   const actualPath = location.pathname.split('/').at(-1)
   const [loader, showLoader] = useState(true)
-
   const headerText =
     actualPath !== 'overview' ? 'Saved Resumes' : 'Recently Opened'
 
@@ -41,7 +41,6 @@ export default function Main () {
 
   function openFolder (item) {
     showLoader(true)
-
     setTimeout(() => {
       showLoader(false)
     }, 400)
@@ -104,7 +103,6 @@ export default function Main () {
           >
             Home
           </p>
-
           {id && (
             <>
               <ChevronRight className=' w-4 h-4' />{' '}
@@ -121,15 +119,39 @@ export default function Main () {
       >
         {/* specific files in an opened folder  */}
         {openedFolder && (
-          <section className=' flex w-full gap-10'>
+          <section className=' cursor-pointer flex w-full gap-10'>
             {openedFolder.files.map(item => (
-              <PaperFile
-                key={item.id}
+              <section
                 onClick={() => {
                   openFile(openedFolder.id, item.id)
                 }}
-                item={item}
-              />
+                className=' pl-2 gap-2 h-33 w-35 flex flex-col items-start  '
+              >
+                <div className='bg-[#c4c7cc15] shadow-sm  rounded-xl w-full h-full flex'>
+                  <div className=' mt-5'>
+                    {item.extension == 'pdf' ? (
+                      <img
+                        width='23'
+                        height='23'
+                        src='https://img.icons8.com/color/48/pdf-2--v1.png'
+                        alt='pdf-2--v1'
+                      />
+                    ) : (
+                      <img
+                        width='23'
+                        height='23'
+                        src='https://img.icons8.com/color/48/microsoft-word-2019--v2.png'
+                        alt='microsoft-word-2019--v2'
+                      />
+                    )}
+                  </div>
+                  <FilePreview data={item.content} layoutId={item.layoutId} />
+                </div>
+                <div className='flex w-[90%]  mt-1 pl-2 items-center text-[10px] text-gray-700 justify-center font-semibold gap-1'>
+                  <p className=' truncate'>{item.name}.pdf</p>
+                  <p className=' whitespace-nowrap'>{item.size}mb</p>
+                </div>
+              </section>
             ))}
           </section>
         )}
@@ -156,13 +178,37 @@ export default function Main () {
                 </div>
               </div>
             ) : (
-              <PaperFile
+              <section
                 onClick={() => {
-                  openFile(0, item.id)
+                  openFile(null, item.id)
                 }}
-                key={item.id}
-                item={item}
-              />
+                className=' cursor-pointer pl-2 gap-2 h-33 w-35 flex flex-col items-start  '
+              >
+                <div className='bg-[#c4c7cc15] shadow-sm  rounded-xl w-full h-full flex'>
+                  <div className=' mt-5'>
+                    {item.extension == 'pdf' ? (
+                      <img
+                        width='23'
+                        height='23'
+                        src='https://img.icons8.com/color/48/pdf-2--v1.png'
+                        alt='pdf-2--v1'
+                      />
+                    ) : (
+                      <img
+                        width='23'
+                        height='23'
+                        src='https://img.icons8.com/color/48/microsoft-word-2019--v2.png'
+                        alt='microsoft-word-2019--v2'
+                      />
+                    )}
+                  </div>
+                  <FilePreview data={item.content} layoutId={item.layoutId} />
+                </div>
+                <div className='flex w-[90%]  mt-1 pl-2 items-center text-[10px] text-gray-700 justify-center font-semibold gap-1'>
+                  <p className=' truncate'>{item.name}.pdf</p>
+                  <p className=' whitespace-nowrap'>{item.size}mb</p>
+                </div>
+              </section>
             )
           )}
       </section>

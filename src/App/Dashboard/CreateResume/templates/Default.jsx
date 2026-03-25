@@ -119,11 +119,11 @@ function EducationEntry ({ eduStyles, entry, metaStyles, bodyStyles }) {
       <div className='flex justify-between items-center mb-0.5 min-h-4.5'>
         <span
           style={{
-            fontSize: `${eduStyles.size}pt`,
-            letterSpacing: eduStyles.spacing,
-            textTransform: eduStyles.case
+            fontSize: `${eduStyles?.size}pt`,
+            letterSpacing: eduStyles?.spacing,
+            textTransform: eduStyles?.case
           }}
-          className={` font-bold ${eduStyles.weight} ${eduStyles.case}    font-[${eduStyles.weight}]  tracking-[0.08em] uppercase text-slate-800`}
+          className={` font-bold ${eduStyles?.weight} ${eduStyles.case}    font-[${eduStyles.weight}]  tracking-[0.08em] uppercase text-slate-800`}
         >
           {entry.instituition || entry.school || (
             <span className='inline-block h-8 w-100 bg-slate-200 rounded animate-pulse'></span>

@@ -6,7 +6,6 @@ import Format from './App/Onboarding/Format-step4/Format'
 import Experience from './App/Onboarding/Experience-step2/Experience'
 import Dashboard from './Pages/Dashboard'
 import Overview from './App/Dashboard/Overview/Overview'
-import { FullPreview } from './App/Dashboard/Resume/FullPreview'
 import Resume from './App/Dashboard/Resume/Resume'
 import Correction from './Pages/Correction'
 import CreateResume from './App/Dashboard/CreateResume/page'
@@ -15,6 +14,7 @@ import Examples from './App/Dashboard/CreateResume/examples'
 import Finale from './App/Onboarding/Finale'
 import QuickAction from './Pages/QuickActions'
 import { Toaster } from 'sonner'
+import Job from './App/Dashboard/Job/Job'
 function App () {
   return (
     <BrowserRouter>
@@ -44,6 +44,8 @@ function App () {
           <Route path='resumes' element={<Overview />} />
           <Route path='folder/:id' element={<Overview />} />
           <Route path='file' element={<Resume />} />
+
+          <Route path='job' element={<Job />} />
 
           <Route path='create/resume' element={<CreateResume />}>
             <Route path='select' element={<Select />} />

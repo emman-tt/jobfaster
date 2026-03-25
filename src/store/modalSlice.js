@@ -8,7 +8,8 @@ const initialState = {
     uploadFile: false,
     folder: false,
     correction: false,
-    saveResume: false
+    saveResume: false,
+    selectResume: false
   }
 }
 export const modalSlice = createSlice({

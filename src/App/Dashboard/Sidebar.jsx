@@ -120,7 +120,7 @@ const processes = [
     id: 4,
     name: 'Apply for  job',
     icon: <BadgePlus className='w-4 h-4' />,
-    href: 'jobs'
+    href: 'job'
   }
 ]
 
