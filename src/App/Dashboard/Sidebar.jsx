@@ -2,13 +2,11 @@ import {
   ArrowUpDown,
   BadgePlus,
   Blocks,
-  Circle,
   CircleEllipsis,
   IceCream2Icon,
   Layers,
   Mail,
   Newspaper,
-  NotebookPenIcon,
   PanelLeftClose,
   PlusCircle,
   Settings,
@@ -127,22 +125,10 @@ const processes = [
 const tools = [
   {
     id: 5,
-    name: 'Integrate Mail',
-    icon: <Mail className='w-4 h-4' />,
-    href: 'email'
-  },
-  {
-    id: 6,
     name: 'Create Resume',
     icon: <PlusCircle className='w-4 h-4' />,
-    href: 'create/resume/select'
+    href: 'create/resume/examples'
   }
-  // {
-  //   id: 7,
-  //   name: 'Generate Cover Letter',
-  //   href: 'cover',
-  //   icon: <NotebookPenIcon className='w-4 h-4' />
-  // }
 ]
 
 const bottom = [

@@ -39,11 +39,11 @@ export default function Dashboard () {
       if (status == true) {
         const parsed = JSON.parse(response)
         const match = allFilesOnly.find(item => item.id == fileId)
-
+        const splitted = jobId.split('-')[0]
         const tobeSaved = {
           ...match,
-          id: jobId,
-          name: `${match.name}-${jobId}`,
+          id: splitted,
+          name: `${match.name}-${splitted}`,
           content: parsed,
           createdAt: timestamp
         }
@@ -55,32 +55,32 @@ export default function Dashboard () {
   }, [dispatch, allFilesOnly])
   // dispatch(toggleNotification({ category: 'tailor', value: true }))
 
-  useEffect(() => {
-    let toastId = null
+  // useEffect(() => {
+  //   let toastId = null
 
-    if (tailor) {
-      toastId = toast.loading('Parsing and rewriting Resume...', {
-        style: {
-          background: '#f1b672',
-          color: 'white',
-          fontSize: 14,
-          fontWeight: 'bold',
-          boxShadow: '2px 2px 10px solid black'
-        },
-        description:
-          'Ai proccessing takes 20s - 40s, you would be redirected to the resume  on completion',
-        position: 'top-center',
-        id: 'tailor-loading'
-      })
-    }
+  //   if (tailor) {
+  //     toastId = toast.loading('Parsing and rewriting Resume...', {
+  //       style: {
+  //         background: '#f1b672',
+  //         color: 'white',
+  //         fontSize: 14,
+  //         fontWeight: 'bold',
+  //         boxShadow: '2px 2px 10px solid black'
+  //       },
+  //       description:
+  //         'Ai proccessing takes 20s - 40s, you would be redirected to the resume  on completion',
+  //       position: 'top-center',
+  //       id: 'tailor-loading'
+  //     })
+  //   }
 
-    return () => {
-      setTimeout(() => {
-        toast.dismiss(toastId)
-        dispatch(toggleNotification({ category: 'tailor', value: false }))
-      }, 10000)
-    }
-  }, [tailor, dispatch])
+  //   return () => {
+  //     setTimeout(() => {
+  //       toast.dismiss(toastId)
+  //       dispatch(toggleNotification({ category: 'tailor', value: false }))
+  //     }, 10000)
+  //   }
+  // }, [tailor, dispatch])
 
   return (
     <section className='flex relative overflow-hidden  w-full h-screen '>

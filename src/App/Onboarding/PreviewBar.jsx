@@ -57,7 +57,7 @@ export default function PreviewBar () {
   }
 
   return (
-    <section className=' fixed top-0 bottom-0 right-0 w-[30%] '>
+    <section className=' bg-none fixed top-0 bottom-0 right-0 w-[32%] '>
       {showFinale && <Overlay className={' absolute bg-black/50 inset-0'} />}
       {showFinale && (
         <div

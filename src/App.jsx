@@ -15,6 +15,7 @@ import Finale from './App/Onboarding/Finale'
 import QuickAction from './Pages/QuickActions'
 import { Toaster } from 'sonner'
 import Job from './App/Dashboard/Job/Job'
+import Finalize from './App/Dashboard/Job/Finalize'
 function App () {
   return (
     <BrowserRouter>
@@ -46,9 +47,10 @@ function App () {
           <Route path='file' element={<Resume />} />
 
           <Route path='job' element={<Job />} />
+          <Route path='finalize' element={<Finalize />} />
 
           <Route path='create/resume' element={<CreateResume />}>
-            <Route path='select' element={<Select />} />
+            {/* <Route path='select' element={<Select />} /> */}
             <Route path='examples' element={<Examples />} />
           </Route>
         </Route>

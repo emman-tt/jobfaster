@@ -14,6 +14,7 @@ export default function Resume () {
     if (selected === 2) {
       dispatch(toggleModals('resume'))
       dispatch(toggleModals('uploadResume'))
+      navigate('/dashboard/create/resume/examples')
     }
   }
 
@@ -44,7 +45,7 @@ export default function Resume () {
           select from the three whats best for your conditions
         </p>
 
-        <section className=' h-[80%] flex flex-col mt-2 overflow-auto py-5  [scrollbar-width:thin] gap-2'>
+        <section className=' h-[80%] flex flex-col mt-2  py-5  gap-2'>
           {processes.map(item => (
             <div
               onClick={() => setSelected(item.id)}
@@ -81,10 +82,10 @@ export default function Resume () {
           ))}
         </section>
       </section>
-      <section className='h-full  flex w-full justify-between'>
+      <section className='h-full items-center  flex w-full justify-between'>
         <button
           onClick={() => closeModal()}
-          className='border flex justify-center items-center font-semibold text-sm font-satoshi p-3 py-1 rounded-xl'
+          className='border flex justify-center items-center font-semibold text-sm font-satoshi p-3 py-3 rounded-xl'
         >
           Cancel
         </button>
@@ -117,13 +118,5 @@ const processes = [
       'Upload your resume, answer 5-7 targeted questions about missing elements, get AI-enhanced version in 3-5 minutes.',
     perfectFor: 'Experienced professionals',
     icon: <Sparkles className='w-4 h-4' />
-  },
-  {
-    id: 3,
-    header: 'Fast Polish',
-    description: 'Confident of your Resume?',
-    whatToExpect: 'Submit your resume and start applying immediately',
-    perfectFor: 'Busy professionals',
-    icon: <Zap className='w-4 h-4' />
   }
 ]

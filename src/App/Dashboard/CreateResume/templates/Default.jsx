@@ -3,11 +3,11 @@ function SectionHeading ({ children, section }) {
     <div className='mb-3'>
       <h2
         style={{
-          letterSpacing: section.spacing,
-          textTransform: section.case,
-          fontSize: `${section.size}pt`
+          letterSpacing: section?.spacing,
+          textTransform: section?.case,
+          fontSize: `${section?.size}pt`
         }}
-        className={` ${section.weight} ${section.style}  text-slate-800 mb-1.5`}
+        className={` ${section?.weight} ${section?.style}  text-slate-800 mb-1.5`}
       >
         {children}
       </h2>
@@ -29,25 +29,25 @@ function ExperienceEntry ({
       <div className='flex justify-between items-center mb-0.5 min-h-4.5'>
         <span
           style={{
-            fontSize: `${companyStyles.size}pt`,
-            letterSpacing: companyStyles.spacing,
-            textTransform: companyStyles.case
+            fontSize: `${companyStyles?.size}pt`,
+            letterSpacing: companyStyles?.spacing,
+            textTransform: companyStyles?.case
           }}
-          className={` ${companyStyles.weight} ${companyStyles.case}    font-[${companyStyles.weight}]    text-slate-800`}
+          className={` ${companyStyles?.weight} ${companyStyles?.case}    font-[${companyStyles?.weight}]    text-slate-800`}
         >
           {entry.company || (
             <span className='inline-block h-8 w-40 bg-slate-200 rounded animate-pulse'></span>
           )}
         </span>
         <span
-          style={{ fontSize: `${metaStyles.size}pt` }}
+          style={{ fontSize: `${metaStyles?.size}pt` }}
           className=' text-slate-400 italic tabular-nums flex items-center gap-1'
         >
-          {entry.startYear || (
+          {entry?.startYear || (
             <span className='inline-block h-5 w-10 bg-slate-200 rounded animate-pulse'></span>
           )}{' '}
           -{' '}
-          {entry.endYear || (
+          {entry?.endYear || (
             <span className='inline-block h-5 w-10 bg-slate-200 rounded animate-pulse'></span>
           )}
         </span>
@@ -57,33 +57,33 @@ function ExperienceEntry ({
       <div className='flex justify-between items-center mb-2 min-h-4.5'>
         <span
           style={{
-            fontSize: `${jobStyles.size}pt`,
-            textTransform: jobStyles.case
+            fontSize: `${jobStyles?.size}pt`,
+            textTransform: jobStyles?.case
           }}
-          className={` ${jobStyles.style}  text-slate-500`}
+          className={` ${jobStyles?.style}  text-slate-500`}
         >
-          {entry.jobTitle || (
+          {entry?.jobTitle || (
             <span className='inline-block h-5 w-32 bg-slate-200 rounded animate-pulse'></span>
           )}
         </span>
         <span className='text-[10pt] text-slate-400 flex items-center'>
-          {entry.location || (
+          {entry?.location || (
             <span className='inline-block h-5 w-24 bg-slate-200 rounded animate-pulse'></span>
           )}
         </span>
       </div>
 
       {/* Bullets */}
-      {entry.points?.length > 0 ? (
+      {entry?.points?.length > 0 ? (
         <ul className='space-y-1'>
           {entry.points.map((b, i) => (
             <li
               key={i}
               style={{
-                fontSize: `${bulletStyles.size}pt`,
-                textTransform: bulletStyles.case
+                fontSize: `${bulletStyles?.size}pt`,
+                textTransform: bulletStyles?.case
               }}
-              className={`flex gap-2  ${jobStyles.style} text-slate-900 leading-snug items-start`}
+              className={`flex gap-2  ${jobStyles?.style} text-slate-900 leading-snug items-start`}
             >
               <span className='text-slate-700 shrink-0 mt-px'>•</span>
               <span className='flex-1 mt-0.5'>
@@ -123,21 +123,21 @@ function EducationEntry ({ eduStyles, entry, metaStyles, bodyStyles }) {
             letterSpacing: eduStyles?.spacing,
             textTransform: eduStyles?.case
           }}
-          className={` font-bold ${eduStyles?.weight} ${eduStyles.case}    font-[${eduStyles.weight}]  tracking-[0.08em] uppercase text-slate-800`}
+          className={` font-bold ${eduStyles?.weight} ${eduStyles?.case}    font-[${eduStyles?.weight}]  tracking-[0.08em] uppercase text-slate-800`}
         >
-          {entry.instituition || entry.school || (
+          {entry?.instituition || entry?.school || (
             <span className='inline-block h-8 w-100 bg-slate-200 rounded animate-pulse'></span>
           )}
         </span>
         <span
-          style={{ fontSize: `${metaStyles.size}pt` }}
-          className={` ${metaStyles.style} ${metaStyles.weight} text-slate-400  tabular-nums flex items-center gap-1`}
+          style={{ fontSize: `${metaStyles?.size}pt` }}
+          className={` ${metaStyles?.style} ${metaStyles?.weight} text-slate-400  tabular-nums flex items-center gap-1`}
         >
-          {entry.startYear || (
+          {entry?.startYear || (
             <span className='inline-block h-5 w-25 bg-slate-200 rounded animate-pulse'></span>
           )}{' '}
           -{' '}
-          {entry.endYear || entry.year || (
+          {entry?.endYear || entry?.year || (
             <span className='inline-block h-5 w-25 bg-slate-200 rounded animate-pulse'></span>
           )}
         </span>
@@ -146,18 +146,18 @@ function EducationEntry ({ eduStyles, entry, metaStyles, bodyStyles }) {
       {/* Degree + detail */}
       <div className='flex justify-between items-center min-h-4.5'>
         <span
-          style={{ fontSize: `${bodyStyles.size}pt` }}
+          style={{ fontSize: `${bodyStyles?.size}pt` }}
           className=' italic text-slate-700'
         >
-          {entry.degree || (
+          {entry?.degree || (
             <span className='inline-block h-5 w-80 bg-slate-200 rounded animate-pulse'></span>
           )}
         </span>
         <div
-          style={{ fontSize: `${metaStyles.size}pt` }}
+          style={{ fontSize: `${metaStyles?.size}pt` }}
           className={`flex gap-3 text-slate-400 `}
         >
-          {entry.level || entry.gpa ? (
+          {entry?.level || entry?.gpa ? (
             <>
               {entry.level && <span className=' '>level {entry.level}</span>}
               {entry.gpa && <span className=' '>Grade: {entry.gpa}</span>}
@@ -189,12 +189,12 @@ function SkillsRow ({ skills, skillsStyles }) {
   return (
     <p
       style={{
-        fontSize: `${skillsStyles.size}pt`,
-        textTransform: skillsStyles.case
+        fontSize: `${skillsStyles?.size}pt`,
+        textTransform: skillsStyles?.case
       }}
-      className={`${skillsStyles.style}  flex flex-wrap text-slate-600 items-center min-h-4.5`}
+      className={`${skillsStyles?.style}  flex flex-wrap text-slate-600 items-center min-h-4.5`}
     >
-      {skills.map((skill, i) => (
+      {skills?.map((skill, i) => (
         <span key={i} className='flex items-center'>
           {skill || (
             <span className='inline-block h-5 w-14 bg-slate-200 rounded animate-pulse'></span>
@@ -228,10 +228,10 @@ export default function Default ({ userData, className }) {
       <header className='text-center  min-h-30 flex flex-col items-center justify-center px-10 pt-9 pb-6 border-b border-slate-300'>
         <h1
           style={{
-            fontSize: `${nameStyles.size}pt`,
-            letterSpacing: nameStyles.spacing
+            fontSize: `${nameStyles?.size}pt`,
+            letterSpacing: nameStyles?.spacing
           }}
-          className={`  ${nameStyles.weight}   uppercase text-slate-800 mb-1 flex items-center min-h-8`}
+          className={`  ${nameStyles?.weight}   uppercase text-slate-800 mb-1 flex items-center min-h-8`}
         >
           {userData?.name || (
             <span
@@ -246,10 +246,10 @@ export default function Default ({ userData, className }) {
         </p>
         <p
           style={{
-            fontSize: contactStyles.size,
-            fontStyle: companyStyles.style
+            fontSize: contactStyles?.size,
+            fontStyle: companyStyles?.style
           }}
-          className={` text-slate-900 ${contactStyles.weight}   flex items-center justify-center min-h-4`}
+          className={` text-slate-900 ${contactStyles?.weight}   flex items-center justify-center min-h-4`}
         >
           {[userData?.email, userData?.phone, userData?.location]
             .filter(Boolean)

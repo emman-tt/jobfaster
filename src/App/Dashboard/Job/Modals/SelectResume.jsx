@@ -86,13 +86,14 @@ export default function SelectResume () {
         style: {
           background: '#f1b672',
           color: 'white',
-          fontSize: 14,
+          fontSize: 12,
           fontWeight: 'bold',
           boxShadow: '2px 2px 10px solid black'
         },
         description:
           'Ai proccessing takes 20s - 40s, you would be redirected to your resume  on completion',
-        position: 'top-center',
+        position: 'top-right',
+        duration: 5000,
         id: 'tailor-loading'
       })
       closeModal()
