@@ -1,18 +1,12 @@
 import { api } from '../libs/axios'
 
-export default async function Upload (formData) {
+export async function tailorResume ( data ) {
   try {
-    const response = await api.post('/file/resume', formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data'
-      }
-    })
-
-    const raw = response.data.data.aiResponse
-    const result = JSON.parse(raw)
-    console.log(result)
-
-    return result
+    const resumeData = data
+    console.log(resumeData)
+    const res = await api.post('/ai/tailor/resume', resumeData)
+    const response = res.data
+    return response
   } catch (error) {
     console.log(error)
   }

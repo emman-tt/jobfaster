@@ -69,7 +69,7 @@ function ExperienceEntry ({
             {entry.startYear || entry.startDate || (
               <span className='inline-block h-5 w-10 bg-slate-200 rounded animate-pulse'></span>
             )}
-            –
+            -
             {entry.endYear || entry.endDate || (
               <span className='inline-block h-5 w-10 bg-slate-200 rounded animate-pulse'></span>
             )}
@@ -129,7 +129,7 @@ function EducationEntry ({ entry, eduStyles, metaStyles, bodyStyles }) {
           <span className='font-normal text-slate-400 tracking-normal normal-case flex items-center gap-1'>
             {' '}
             —{' '}
-            {entry.location || (
+            {entry.startYear || (
               <span className='inline-block h-5 w-60 bg-slate-200 rounded animate-pulse'></span>
             )}
           </span>

@@ -136,13 +136,13 @@ const tools = [
     name: 'Create Resume',
     icon: <PlusCircle className='w-4 h-4' />,
     href: 'create/resume/select'
-  },
-  {
-    id: 7,
-    name: 'Generate Cover Letter',
-    href: 'cover',
-    icon: <NotebookPenIcon className='w-4 h-4' />
   }
+  // {
+  //   id: 7,
+  //   name: 'Generate Cover Letter',
+  //   href: 'cover',
+  //   icon: <NotebookPenIcon className='w-4 h-4' />
+  // }
 ]
 
 const bottom = [

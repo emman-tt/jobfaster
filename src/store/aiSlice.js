@@ -46,7 +46,9 @@ const initialState = {
     }
   ],
   correctionsAnswers: [],
-  layoutId: 2
+  layoutId: 2,
+  jobDescription:
+    'jobTitle: Senior Frontend Developer,company: TechCorp Solutions,location: San Francisco, CA (Remote), email: hiring@techcorp.com, description: We are looking for a Senior Frontend Developer to join our product team. You will be responsible for building responsive web applications using React, TypeScript, and modern CSS frameworks.Requirements:5+ years of experience with React and modern JavaScript,Strong understanding of responsive design and cross-browser compatibility,Experience with state management (Redux, Zustand, or Context API),Familiarity with REST APIs and GraphQL,Experience with performance optimization and web vitals Excellent communication and collaboration skills.Nice to have:Experience with Next.js,Knowledge of Node.js,Open source contributions'
 }
 export const aiSlice = createSlice({
   name: 'ai',

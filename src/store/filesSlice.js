@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit'
 import { ResumeHtml } from '../assets/templates/ResumeHtml'
-import { roughData } from '../utils/roughData'
+import { roughData, frontendResumeData } from '../utils/roughData'
 const initialState = {
   programs: [
     {
@@ -13,7 +13,7 @@ const initialState = {
           id: 101,
           type: 'file',
           extension: 'pdf',
-          name: 'Google_Senior_Developer.pdf',
+          name: 'Google_Senior_Developer',
           size: 0.8,
           content: roughData,
           layoutId: 3,
@@ -23,7 +23,7 @@ const initialState = {
           id: 102,
           type: 'file',
           extension: 'pdf',
-          name: 'Microsoft_Frontend_Lead.pdf',
+          name: 'Microsoft_Frontend_Lead',
           size: 0.7,
           content: roughData,
           layoutId: 1,
@@ -33,7 +33,7 @@ const initialState = {
           id: 103,
           type: 'file',
           extension: 'docx',
-          name: 'Amazon_Technical_Resume.docx',
+          name: 'Amazon_Technical_Resume',
           size: 1.2,
           content: roughData,
           layoutId: 3,
@@ -52,7 +52,7 @@ const initialState = {
           id: 201,
           type: 'file',
           extension: 'pdf',
-          name: 'Stripe_Product_Manager.pdf',
+          name: 'Stripe_Product_Manager',
           size: 0.6,
           content: roughData,
           layoutId: 2,
@@ -62,7 +62,7 @@ const initialState = {
           id: 202,
           type: 'file',
           extension: 'pdf',
-          name: 'Notion_Growth_Lead.pdf',
+          name: 'Notion_Growth_Lead',
           size: 0.9,
           content: roughData,
           layoutId: 4,
@@ -81,20 +81,20 @@ const initialState = {
           id: 301,
           type: 'file',
           extension: 'docx',
-          name: 'Google_Cover_Letter.docx',
+          name: 'Google_Cover_Letter',
           size: 0.3,
           content: roughData,
-          layoutId: null,
+          layoutId: 1,
           createdAt: '2025-03-20T12:00:00Z'
         },
         {
           id: 302,
           type: 'file',
           extension: 'docx',
-          name: 'Microsoft_Cover_Letter.docx',
+          name: 'Microsoft_Cover_Letter',
           size: 0.3,
           content: roughData,
-          layoutId: null,
+          layoutId: 3,
           createdAt: '2025-03-18T10:30:00Z'
         }
       ]
@@ -113,9 +113,9 @@ const initialState = {
       id: 501,
       type: 'file',
       extension: 'pdf',
-      name: 'Sarah_Johnson_Master_Resume.pdf',
+      name: 'Senior Frontend developer',
       size: 1.4,
-      content: roughData,
+      content: frontendResumeData,
       layoutId: 5,
       createdAt: '2025-03-24T09:30:00Z'
     },
@@ -123,7 +123,7 @@ const initialState = {
       id: 502,
       type: 'file',
       extension: 'pdf',
-      name: 'Product_Manager_Tech_Resume.pdf',
+      name: 'Product_Manager_Tech_Resume',
       size: 1.1,
       content: roughData,
       layoutId: 1,
@@ -133,7 +133,7 @@ const initialState = {
       id: 503,
       type: 'file',
       extension: 'docx',
-      name: 'Executive_Bio.docx',
+      name: 'Executive_Bio',
       size: 0.5,
       content: roughData,
       layoutId: 2,
@@ -143,7 +143,7 @@ const initialState = {
       id: 504,
       type: 'file',
       extension: 'pdf',
-      name: 'RudyAI_Technical_Resume.pdf',
+      name: 'RudyAI_Technical_Resume',
       size: 0.8,
       content: roughData,
       layoutId: 3,
@@ -153,7 +153,7 @@ const initialState = {
       id: 505,
       type: 'file',
       extension: 'pdf',
-      name: 'MTN_Product_Lead.pdf',
+      name: 'MTN_Product_Lead',
       size: 1.2,
       content: roughData,
       layoutId: 4,
@@ -163,7 +163,7 @@ const initialState = {
       id: 506,
       type: 'file',
       extension: 'word',
-      name: 'Tilios_Application_Letter.docx',
+      name: 'Tilios_Application_Letter',
       size: 0.6,
       content: roughData,
       layoutId: 3,
@@ -175,10 +175,10 @@ export const filesSlice = createSlice({
   name: 'files',
   initialState,
   reducers: {
-    uploadResume: (state, action) => {
+    saveResume: (state, action) => {
       state.programs.push(action.payload)
     }
   }
 })
 
-export const { uploadResume } = filesSlice.actions
+export const { saveResume } = filesSlice.actions

@@ -36,8 +36,6 @@ export const roughData = {
     'Product Launch'
   ],
 
-  kindsOfWork: ['B2B SaaS', 'Consumer Mobile Apps', 'E-commerce Platforms'],
-
   summary:
     'Results-driven Product Manager with 8+ years of experience in B2B SaaS and consumer applications. Proven track record of launching products that drive $50M+ in revenue. Expert in translating complex customer needs into actionable product roadmaps. Passionate about data-driven decision making and building high-performing cross-functional teams.',
 
@@ -152,3 +150,153 @@ export const roughData = {
     }
   }
 }
+
+
+
+  export const frontendResumeData = {
+  name: 'Michael Chen',
+  email: 'michael.chen@email.com',
+  phone: '(415) 555-8923',
+  location: 'San Francisco, CA',
+  jobTitle: 'Senior Frontend Developer',
+  education: [
+    {
+      id: 1,
+      level: "Bachelor's",
+      instituition: 'University of Washington',
+      degree: 'B.S. Computer Science',
+      startYear: '2012',
+      endYear: '2016',
+      gpa: '3.7'
+    }
+  ],
+
+  skills: [
+    'React',
+    'TypeScript',
+    'Next.js',
+    'Tailwind CSS',
+    'Redux Toolkit',
+    'GraphQL',
+    'Jest',
+    'React Testing Library',
+    'Webpack',
+    'Git/GitHub',
+    'Figma'
+  ],
+
+  summary:
+    'Frontend Engineer with 8+ years of experience building high-performance, scalable web applications. Specializes in React, TypeScript, and modern frontend architecture. Passionate about creating intuitive user experiences and mentoring junior developers.',
+
+  showSummary: true,
+
+  experience: [
+    {
+      id: 1,
+      jobTitle: 'Senior Frontend Developer',
+      company: 'Stripe',
+      startMonth: 'March',
+      startYear: '2022',
+      endMonth: 'Present',
+      endYear: 2026,
+      location: 'San Francisco, CA',
+      points: [
+        'Led migration of legacy dashboard from JavaScript to TypeScript, reducing runtime errors by 65% and improving developer experience',
+        'Built reusable component library used across 8 product teams, cutting development time by 40%',
+        'Optimized bundle size by 35% through code splitting and lazy loading, improving Core Web Vitals from 78 to 94',
+        'Mentored 4 junior developers, 3 promoted to mid-level roles within 12 months'
+      ]
+    },
+    {
+      id: 2,
+      jobTitle: 'Frontend Developer',
+      company: 'Shopify',
+      startMonth: 'July',
+      startYear: '2019',
+      endMonth: 'February',
+      endYear: '2022',
+      location: 'Toronto, Canada',
+      points: [
+        'Developed and maintained merchant dashboard serving 500,000+ monthly active users',
+        'Implemented real-time data visualization features using React and D3, increasing user engagement by 28%',
+        'Reduced page load time by 50% through image optimization and code splitting',
+        'Collaborated with UX team to implement design system, ensuring consistent experience across 20+ features'
+      ]
+    },
+    {
+      id: 3,
+      jobTitle: 'Junior Frontend Developer',
+      company: 'Hootsuite',
+      startMonth: 'August',
+      startYear: '2016',
+      endMonth: 'June',
+      endYear: '2019',
+      location: 'Vancouver, Canada',
+      points: [
+        'Built responsive components for social media management platform used by 10,000+ businesses',
+        'Implemented automated testing with Jest and React Testing Library, achieving 85% code coverage',
+        'Fixed 200+ accessibility issues, improving WCAG 2.1 AA compliance from 65% to 95%',
+        'Participated in code reviews and contributed to technical documentation'
+      ]
+    }
+  ],
+
+  styles: {
+    name: {
+      size: 28,
+      weight: 'font-bold',
+      style: 'normal',
+      case: 'none',
+      spacing: 2,
+      color: 'text-slate-800'
+    },
+    sectionHeader: {
+      size: 13,
+      weight: 'font-bold',
+      style: 'normal',
+      case: 'uppercase',
+      spacing: 2,
+      color: 'text-slate-800'
+    },
+    company: {
+      size: 12,
+      weight: 'font-bold',
+      style: 'normal',
+      case: 'none',
+      color: 'text-slate-800',
+      spacing: 0
+    },
+    jobTitle: {
+      size: 12,
+      weight: 'font-normal',
+      style: 'normal',
+      case: 'none',
+      color: 'text-slate-500',
+      spacing: 1
+    },
+    bodyText: {
+      size: 12,
+      weight: 'font-normal',
+      style: 'normal',
+      case: 'none',
+      spacing: 0,
+      color: 'text-slate-600'
+    },
+    date: {
+      size: 11,
+      weight: 'font-normal',
+      style: 'italic',
+      case: 'none',
+      spacing: 0,
+      color: 'text-slate-400'
+    },
+    contact: {
+      size: 11,
+      weight: 'font-normal',
+      style: 'normal',
+      case: 'none',
+      spacing: 0,
+      color: 'text-slate-400'
+    }
+  }
+};

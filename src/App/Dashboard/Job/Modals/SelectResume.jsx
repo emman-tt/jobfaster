@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import {
   FileText,
   Folder,
@@ -13,12 +13,15 @@ import {
 } from 'lucide-react'
 import { useDispatch, useSelector } from 'react-redux'
 import { toggleModals } from '../../../../store/modalSlice'
-import UploadResume from './UploadResume'
-import Upload from '../../../../services/ai'
+import UploadResume from '../../Overview/Modals/UploadResume'
+import { Upload } from '../../../../services/upload'
 import { saveCorrections } from '../../../../store/aiSlice'
 import { toggleNotification } from '../../../../store/notificationSlice'
 import { useNavigate } from 'react-router-dom'
 import { GetFileIcon } from '../../../../components/getFileIcon'
+
+import { sendMessage } from '../../../../hooks/useSocket'
+import { toast } from 'sonner'
 
 export default function SelectResume () {
   const [activeTab, setActiveTab] = useState('recent')
@@ -27,7 +30,8 @@ export default function SelectResume () {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const { programs } = useSelector(state => state.files)
-
+  const { jobDescription } = useSelector(state => state.ai)
+  const [selected, setSelected] = useState(null)
   const closeModal = () => {
     dispatch(toggleModals('selectResume'))
   }
@@ -48,10 +52,49 @@ export default function SelectResume () {
         }
       })
     } else {
-      console.log(
-        'Selecting resume:',
-        activeTab === 'recent' ? 'from recent' : 'from all'
-      )
+      if (!selected) {
+        return console.log('nothing selected')
+      }
+      const all = getAllFiles(programs)
+
+      const found = all.find(item => item.id == selected)
+
+      if (!found) {
+        throw new Error('no data as such found')
+      }
+
+      const use = found.content
+
+      const data = {
+        jobDescription: jobDescription,
+        name: use.name,
+        email: use.email,
+        phone: use.phone,
+        location: use.location,
+        jobTitle: use.jobTitle,
+        education: use.education,
+        skills: use.skills,
+        kindsOfWork: use.kindsOfWork,
+        summary: use.summary,
+        showSummary: use.showSummary,
+        experience: use.experience,
+        fileId: found.id
+      }
+
+      sendMessage('tailor', data)
+      toast.loading('Tailoring and rewriting Resume...', {
+        style: {
+          background: '#f1b672',
+          color: 'white',
+          fontSize: 14,
+          fontWeight: 'bold',
+          boxShadow: '2px 2px 10px solid black'
+        },
+        description:
+          'Ai proccessing takes 20s - 40s, you would be redirected to your resume  on completion',
+        position: 'top-center',
+        id: 'tailor-loading'
+      })
       closeModal()
     }
   }
@@ -165,12 +208,14 @@ export default function SelectResume () {
 
       {/* Active View */}
 
-      {activeTab == 'recent' ? (
-        <RecentFiles filteredRecent={filteredRecent} />
-      ) : activeTab == 'all' ? (
-        <AllFiles filteredAll={filteredAll} />
-      ) : (
+      {activeTab == 'upload' ? (
         <UploadResume file={uploadedFile} setFile={setUploadedFile} />
+      ) : (
+        <Files
+          selected={selected}
+          setSelected={setSelected}
+          data={activeTab == 'recent' ? filteredRecent : filteredAll}
+        />
       )}
 
       {/* Footer */}
@@ -193,17 +238,22 @@ export default function SelectResume () {
   )
 }
 
-function RecentFiles ({ filteredRecent }) {
+function Files ({ data, setSelected, selected }) {
   return (
     <div className='space-y-1 max-h-60 py-5  overflow-y-auto px-1 [scrollbar-width:thin]'>
-      {filteredRecent.length > 0 ? (
-        filteredRecent.map(resume => (
+      {data.length > 0 ? (
+        data.map(resume => (
           <div
             key={resume.id}
-            className='group flex items-center justify-between p-3 py-4 rounded-2xl hover:bg-slate-50 border-b border-gray-50 last:border-0 transition-all cursor-pointer'
+            onClick={() => {
+              setSelected(resume.id)
+            }}
+            className={`group flex items-center justify-between ${
+              resume.id == selected ? 'bg-orange-400 ' : 'hover:bg-slate-50'
+            } p-3 py-4 rounded-2xl  border-b border-gray-50 last:border-0 transition-all cursor-pointer`}
           >
             <div className='flex items-center gap-4'>
-              <div className='w-10 h-10 rounded-xl flex items-center justify-center group-hover:bg-white border  transition-all'>
+              <div className='w-10 h-10 rounded-xl flex items-center justify-center bg-gray-200  border-0  transition-all'>
                 {<GetFileIcon extension={resume.extension} />}
               </div>
               <div>
@@ -226,58 +276,7 @@ function RecentFiles ({ filteredRecent }) {
                 </div>
               ) : (
                 <div className='px-2 py-1 border border-gray-200 text-gray-600 text-[10px] font-bold rounded bg-white'>
-                  {resume.size}
-                </div>
-              )}
-              <button className='p-1 hover:bg-gray-200 rounded-lg transition-colors'>
-                <MoreVertical className='w-4 h-4 text-gray-400' />
-              </button>
-            </div>
-          </div>
-        ))
-      ) : (
-        <div className='text-center py-10'>
-          <p className='text-gray-400 text-sm'>No resumes found</p>
-        </div>
-      )}
-    </div>
-  )
-}
-
-function AllFiles ({ filteredAll }) {
-  return (
-    <div className='space-y-1 max-h-60 py-5 overflow-y-auto px-1 [scrollbar-width:thin]'>
-      {filteredAll.length > 0 ? (
-        filteredAll.map(resume => (
-          <div
-            key={resume.id}
-            className='group flex items-center justify-between p-3 py-4 rounded-2xl hover:bg-slate-50 border-b border-gray-50 last:border-0 transition-all cursor-pointer'
-          >
-            <div className='flex items-center gap-4'>
-              <div className='w-10 h-10 rounded-xl flex items-center justify-center group-hover:bg-white border  transition-all'>
-                {<GetFileIcon extension={resume.extension} />}
-              </div>
-              <div>
-                <h3 className='text-sm font-bold text-slate-900 truncate max-w-45'>
-                  {resume.name}
-                </h3>
-                <p className='text-[11px] text-gray-500 font-medium'>
-                  {resume.time}
-                </p>
-              </div>
-            </div>
-
-            <div className='flex items-center gap-3'>
-              {resume.status === 'error' ? (
-                <div className='flex items-center gap-2'>
-                  <RotateCcw className='w-4 h-4 text-red-500 cursor-pointer hover:rotate-45 transition-transform' />
-                  <div className='px-2 py-0.5 border border-red-200 bg-red-50 text-red-600 text-[10px] font-bold rounded flex items-center'>
-                    Error
-                  </div>
-                </div>
-              ) : (
-                <div className='px-2 py-1 border border-gray-200 text-gray-600 text-[10px] font-bold rounded bg-white'>
-                  {resume.size}
+                  {resume.size}mb
                 </div>
               )}
               <button className='p-1 hover:bg-gray-200 rounded-lg transition-colors'>

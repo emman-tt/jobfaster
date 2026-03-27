@@ -25,7 +25,6 @@ export default function Resume () {
 
   const Template = TEMPLATES[resume.layoutId]
 
-  // Handle missing template
   if (!Template) {
     return (
       <div className='flex flex-col items-center justify-center min-h-screen'>

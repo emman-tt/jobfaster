@@ -1,4 +1,4 @@
-import { Outlet, useLocation } from 'react-router-dom'
+import { Outlet } from 'react-router-dom'
 import Sidebar from '../App/Dashboard/Sidebar'
 import { useSelector } from 'react-redux'
 import Overlay from '../components/Overlay'
@@ -7,28 +7,24 @@ import { toggleRightbar } from '../store/dashboardSlice'
 import UploadFile from '../App/Dashboard/Overview/Modals/UploadFile'
 import Folder from '../App/Dashboard/Overview/Modals/Folder'
 import Rightbar from '../App/Dashboard/Rightbar/Rightbar'
-import { FileIcon, PanelLeftOpenIcon, PanelRightOpenIcon } from 'lucide-react'
+import { PanelLeftOpenIcon, PanelRightOpenIcon } from 'lucide-react'
 import { useDispatch } from 'react-redux'
 import { useEffect } from 'react'
 import { toast } from 'sonner'
 import { toggleNotification } from '../store/notificationSlice'
-import SelectResume from '../App/Dashboard/Overview/Modals/SelectResume'
-import { toggleModals } from '../store/modalSlice'
+import SelectResume from '../App/Dashboard/Job/Modals/SelectResume'
+import { setCallback } from '../hooks/useSocket'
+import { saveResume } from '../store/filesSlice'
+import { getAllFiles } from '../utils/getAllFiles'
 
 export default function Dashboard () {
   const { modals } = useSelector(state => state.modal)
   const { showRightbar } = useSelector(state => state.dashboard)
   const { showNotification } = useSelector(state => state.notification)
+  const { programs } = useSelector(state => state.files)
+  const allFilesOnly = getAllFiles(programs)
   const { tailor } = showNotification
   const dispatch = useDispatch()
-  const location = useLocation()
-  const actualPath = location.pathname.split('/').at(-1)
-
-  useEffect(() => {
-    if (actualPath == 'job') {
-      dispatch(toggleModals('selectResume'))
-    }
-  }, [actualPath, dispatch, location])
 
   function openRightbar () {
     dispatch(toggleRightbar(true))
@@ -36,8 +32,28 @@ export default function Dashboard () {
   function closeRightbar () {
     dispatch(toggleRightbar(false))
   }
+  useEffect(() => {
+    setCallback(data => {
+      const { status, response, jobId, timestamp, fileId } = data
 
-    // dispatch(toggleNotification({ category: 'tailor', value: true }))
+      if (status == true) {
+        const parsed = JSON.parse(response)
+        const match = allFilesOnly.find(item => item.id == fileId)
+
+        const tobeSaved = {
+          ...match,
+          id: jobId,
+          name: `${match.name}-${jobId}`,
+          content: parsed,
+          createdAt: timestamp
+        }
+        dispatch(saveResume(tobeSaved))
+
+        return
+      }
+    })
+  }, [dispatch, allFilesOnly])
+  // dispatch(toggleNotification({ category: 'tailor', value: true }))
 
   useEffect(() => {
     let toastId = null
@@ -57,18 +73,6 @@ export default function Dashboard () {
         id: 'tailor-loading'
       })
     }
-
-    // if (tailor && toastId) {
-    //   toast.success('Resume optimized!', {
-    //     id: toastId,
-    //     duration: 3000,
-    //     style: {
-    //       background: 'black',
-    //       color: 'white'
-    //     }
-    //   })
-    //   toastId = null
-    // }
 
     return () => {
       setTimeout(() => {
