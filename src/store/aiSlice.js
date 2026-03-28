@@ -25,7 +25,7 @@ export const aiSlice = createSlice({
     },
     saveJobDetails (state, action) {
       const { category, value } = action.payload
-      console.log(category,value)
+      console.log(category, value)
       state.job[category] = value
     },
     saveCorrectionAnswers: (state, action) => {

@@ -30,7 +30,7 @@ export default function SelectResume () {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const { programs } = useSelector(state => state.files)
-  const { jobDescription } = useSelector(state => state.ai)
+  const { job } = useSelector(state => state.ai)
   const [selected, setSelected] = useState(null)
   const closeModal = () => {
     dispatch(toggleModals('selectResume'))
@@ -66,7 +66,9 @@ export default function SelectResume () {
       const use = found.content
 
       const data = {
-        jobDescription: jobDescription,
+        job: {
+          ...job
+        },
         name: use.name,
         email: use.email,
         phone: use.phone,

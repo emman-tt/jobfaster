@@ -20,18 +20,6 @@ import { saveJobDetails } from '../../../store/aiSlice'
 export default function Job () {
   const { job } = useSelector(state => state.ai)
 
-  // const [job, setjob] = useState({
-  //   jobTitle: '',
-  //   company: '',
-  //   location: '',
-  //   description: '',
-  //   email: '',
-  //   hiringManager: '',
-  //   jobSource: '',
-  //   tone: 'formal',
-  //   includeCover: false
-  // })
-
   const [toggles, setToggles] = useState({
     tone: false
   })
@@ -51,18 +39,22 @@ export default function Job () {
   }
 
   function saveTone (value) {
-    saveJobDetails({
-      category: 'tone',
-      value: value
-    })
+    dispatch(
+      saveJobDetails({
+        category: 'tone',
+        value: value
+      })
+    )
     closeAll()
   }
 
   function toggleCoverLetter (value) {
-    saveJobDetails({
-      category: 'includeCoverLetter',
-      value: value
-    })
+    dispatch(
+      saveJobDetails({
+        category: 'includeCoverLetter',
+        value: value
+      })
+    )
   }
 
   const handleSubmit = e => {
@@ -72,7 +64,7 @@ export default function Job () {
 
   return (
     <div className='w-full h-screen overflow-y-scroll [scrollbar-width:none] flex justify-center p-6 font-satoshi'>
-      <div className='w-full max-w-2xl bg-white h-max my-20 p-10 space-y-8 rounded-3xl shadow-xs'>
+      <div className='w-full max-w-2xl bg-white h-max my-10 p-10 space-y-8 rounded-3xl shadow-xs'>
         {/* Header */}
         <div className='space-y-2'>
           <h1 className='text-2xl font-bold text-slate-900 font-IBM flex items-center gap-3'>
@@ -89,7 +81,7 @@ export default function Job () {
             {/* Job Title */}
             <div className='space-y-2'>
               <label
-                htmlFor='jobTitle'
+                htmlFor='title'
                 className='block text-sm font-bold text-slate-700 ml-1'
               >
                 Job Title <span className='text-orange-500'>*</span>
@@ -103,7 +95,7 @@ export default function Job () {
                   id='title'
                   name='title'
                   required
-                  value={job.jobTitle}
+                  value={job.title}
                   onChange={handleChange}
                   placeholder='e.g. Senior Frontend Developer'
                   className='w-full pl-11 pr-4 py-3.5 border border-gray-200 focus:border-orange-400 focus:bg-white rounded-2xl outline-none transition-all text-sm font-medium'
@@ -178,7 +170,7 @@ export default function Job () {
                   type='text'
                   id='source'
                   name='source'
-                  value={job.jobSource}
+                  value={job.source}
                   onChange={handleChange}
                   placeholder='e.g. LinkedIn'
                   className='w-full pl-11 pr-4 py-3.5 border border-gray-200 focus:border-orange-400 focus:bg-white rounded-2xl outline-none transition-all text-sm font-medium'
@@ -222,7 +214,9 @@ export default function Job () {
               >
                 <div className='flex items-center gap-2'>
                   <MessageSquare className='w-4 h-4 text-slate-400' />
-                  {job.tone.toLowerCase() === 'formal' ? 'Formal' : 'Conversational'}
+                  {job.tone.toLowerCase() === 'formal'
+                    ? 'Formal'
+                    : 'Conversational'}
                 </div>
                 <ChevronDown
                   className={`h-4 w-4 transition-transform text-slate-400 ${
@@ -313,42 +307,42 @@ export default function Job () {
             </label>
             <ul className='grid grid-cols-2 gap-4'>
               <li
-                onClick={() => setjob(p => ({ ...p, includeCover: true }))}
+                onClick={() => toggleCoverLetter(true)}
                 className={`flex gap-4 w-full border cursor-pointer rounded-2xl py-4 px-6 transition-all duration-200 ease items-center ${
-                  job.includeCover
+                  job.includeCoverLetter
                     ? 'border-orange-400  shadow-md translate-y-0.5'
                     : 'border-slate-100 bg-white hover:border-orange-200'
                 }`}
               >
                 <div
                   className={`border transition-all ${
-                    job.includeCover ? 'border-[5px]' : 'border'
+                    job.includeCoverLetter ? 'border-[5px]' : 'border'
                   } border-[#f17e27] inline-block w-4 h-4 rounded-full`}
                 ></div>
                 <div
                   className={`text-sm font-bold ${
-                    job.includeCover ? '' : 'text-slate-600'
+                    job.includeCoverLetter ? '' : 'text-slate-600'
                   }`}
                 >
                   Yes, include it
                 </div>
               </li>
               <li
-                onClick={() => setjob(p => ({ ...p, includeCover: false }))}
+                onClick={() => toggleCoverLetter(false)}
                 className={`flex gap-4 w-full border cursor-pointer rounded-2xl py-4 px-6 transition-all duration-200 ease items-center ${
-                  !job.includeCover
+                  !job.includeCoverLetter
                     ? 'border-orange-400  shadow-md translate-y-0.5'
                     : 'border-slate-100 bg-white hover:border-orange-200'
                 }`}
               >
                 <div
                   className={`border transition-all ${
-                    !job.includeCover ? 'border-[5px]' : 'border'
+                    !job.includeCoverLetter ? 'border-[5px]' : 'border'
                   } border-[#f17e27] inline-block w-4 h-4 rounded-full`}
                 ></div>
                 <div
                   className={`text-sm font-bold ${
-                    !job.includeCover ? '' : 'text-slate-600'
+                    !job.includeCoverLetter ? '' : 'text-slate-600'
                   }`}
                 >
                   No, just resume
@@ -361,19 +355,6 @@ export default function Job () {
           <div className='flex items-center justify-between pt-6 border-t border-slate-100'>
             <button
               type='button'
-              onClick={() =>
-                setjob({
-                  jobTitle: '',
-                  company: '',
-                  location: '',
-                  description: '',
-                  email: '',
-                  hiringManager: '',
-                  jobSource: '',
-                  tone: 'formal',
-                  includeCover: false
-                })
-              }
               className='px-8 py-3 text-sm font-bold text-slate-500 hover:text-slate-800 transition-colors'
             >
               Reset Form
