@@ -57,9 +57,9 @@ export default function Finalize () {
                 Your Email <span className='text-orange-500'>*</span>
               </label>
               <div className='relative'>
-                <div className='absolute left-4 top-1/2 -translate-y-1/2 text-slate-400'>
+                {/* <div className='absolute left-4 top-1/2 -translate-y-1/2 text-slate-400'>
                   <Mail className='w-4 h-4' />
-                </div>
+                </div> */}
                 <input
                   type='email'
                   name='userEmail'
@@ -77,9 +77,9 @@ export default function Finalize () {
                 Display Name <span className='text-orange-500'>*</span>
               </label>
               <div className='relative'>
-                <div className='absolute left-4 top-1/2 -translate-y-1/2 text-slate-400'>
+                {/* <div className='absolute left-4 top-1/2 -translate-y-1/2 text-slate-400'>
                   <User className='w-4 h-4' />
-                </div>
+                </div> */}
                 <input
                   type='text'
                   name='userName'
@@ -102,9 +102,9 @@ export default function Finalize () {
                 To:
               </label>
               <div className='relative'>
-                <div className='absolute left-4 top-1/2 -translate-y-1/2 text-slate-400'>
+                {/* <div className='absolute left-4 top-1/2 -translate-y-1/2 text-slate-400'>
                   <Mail className='w-4 h-4' />
-                </div>
+                </div> */}
                 <input
                   type='email'
                   id='email'
@@ -133,9 +133,9 @@ export default function Finalize () {
                 Subject:
               </label>
               <div className='relative'>
-                <div className='absolute left-4 top-1/2 -translate-y-1/2 text-slate-400'>
+                {/* <div className='absolute left-4 top-1/2 -translate-y-1/2 text-slate-400'>
                   <Type className='w-4 h-4' />
-                </div>
+                </div> */}
                 <input
                   type='text'
                   id='subjectLine'

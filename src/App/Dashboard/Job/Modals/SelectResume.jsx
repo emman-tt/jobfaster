@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import React, {  useState } from 'react'
 import {
   FileText,
   Folder,
@@ -21,7 +21,8 @@ import { useNavigate } from 'react-router-dom'
 import { GetFileIcon } from '../../../../components/getFileIcon'
 
 import { sendMessage } from '../../../../hooks/useSocket'
-import { toast } from 'sonner'
+
+import { getAllFiles } from '../../../../utils/getAllFiles'
 
 export default function SelectResume () {
   const [activeTab, setActiveTab] = useState('recent')
@@ -84,7 +85,7 @@ export default function SelectResume () {
       }
 
       sendMessage('tailor', data)
-     
+
       closeModal()
     }
   }
@@ -102,21 +103,6 @@ export default function SelectResume () {
     return allFiles
       .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
       .slice(0, limit)
-  }
-  const getAllFiles = programs => {
-    const allFiles = []
-    programs.forEach(item => {
-      if (item.type === 'file') {
-        allFiles.push(item)
-      } else if (item.type === 'folder' && item.files) {
-        allFiles.push(...item.files)
-      }
-    })
-
-    return allFiles
-    // .sort(
-    //   (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
-    // )
   }
 
   const filteredRecent = getRecentFiles(programs).filter(resume =>
@@ -145,16 +131,7 @@ export default function SelectResume () {
         {/* Toggle */}
         <div className='flex items-center justify-between mb-6'>
           <div className='flex bg-gray-100 p-1 rounded-full gap-1'>
-            <button
-              onClick={() => setActiveTab('upload')}
-              className={`px-6 py-2 rounded-full text-sm font-semibold transition-all ${
-                activeTab === 'upload'
-                  ? 'bg-black text-white shadow-md'
-                  : 'text-gray-500 hover:text-slate-700'
-              }`}
-            >
-              New Upload
-            </button>
+           
             <button
               onClick={() => setActiveTab('recent')}
               className={`px-6 py-2 rounded-full text-sm font-semibold transition-all ${

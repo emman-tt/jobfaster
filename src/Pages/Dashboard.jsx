@@ -15,7 +15,7 @@ import SelectResume from '../App/Dashboard/Job/Modals/SelectResume'
 import { setCallback } from '../hooks/useSocket'
 import { saveResume } from '../store/filesSlice'
 import { getAllFiles } from '../utils/getAllFiles'
-import { dumpEmailDetails, saveEmailDetails } from '../store/emailSlice'
+import { dumpEmailDetails } from '../store/emailSlice'
 import { toast } from 'sonner'
 import { toastPresets } from '../components/toasters'
 
@@ -40,10 +40,10 @@ export default function Dashboard () {
     console.log('🔵 useEffect running - setting callback')
 
     setCallback(raw => {
-      toast.dismiss('ai-processing')
-
       const data = JSON.parse(raw)
       if (data) {
+        toast.dismiss('ai-processing')
+
         const status = data.status
         const response = data.response
         const jobId = data.jobId

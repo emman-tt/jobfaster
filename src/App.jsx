@@ -16,6 +16,7 @@ import QuickAction from './Pages/QuickActions'
 import { Toaster } from 'sonner'
 import Job from './App/Dashboard/Job/Job'
 import Finalize from './App/Dashboard/Job/Finalize'
+import Auth from './Pages/Auth'
 function App () {
   return (
     <BrowserRouter>
@@ -26,7 +27,7 @@ function App () {
         toastOptions={{
           style: {
             fontSize: '14px',
-            borderRadius: '1.25rem',
+            borderRadius: '1.25rem'
           }
         }}
       />
@@ -34,25 +35,25 @@ function App () {
         <Route path='/' element={<Navigate to={'/onboarding/personal'} />} />
         <Route path='/correction' element={<Correction />} />
         <Route path='/quick/actions' element={<QuickAction />} />
+        <Route path='/auth' element={<Auth />} />
+
         <Route path='/onboarding' element={<Onboarding />}>
           <Route path='personal' element={<Personal />} />
           <Route path='job' element={<Jobs />} />
           <Route path='experience' element={<Experience />} />
           <Route path='format' element={<Format />} />
-          {/* <Route path='finale' element={<Finale />} /> */}
         </Route>
+
         <Route path='/dashboard' element={<Dashboard />}>
           <Route index element={<Navigate to={'/dashboard/overview'} />} />
           <Route path='overview' element={<Overview />} />
           <Route path='resumes' element={<Overview />} />
           <Route path='folder/:id' element={<Overview />} />
           <Route path='file' element={<Resume />} />
-
           <Route path='job' element={<Job />} />
           <Route path='finalize' element={<Finalize />} />
 
           <Route path='create/resume' element={<CreateResume />}>
-            {/* <Route path='select' element={<Select />} /> */}
             <Route path='examples' element={<Examples />} />
           </Route>
         </Route>

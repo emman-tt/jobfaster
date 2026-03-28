@@ -1,4 +1,3 @@
-import React from 'react'
 import { Home, Briefcase, FileText, Zap, ChevronRight } from 'lucide-react'
 import { NavLink } from 'react-router-dom'
 

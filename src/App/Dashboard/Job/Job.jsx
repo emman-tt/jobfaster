@@ -64,7 +64,7 @@ export default function Job () {
 
   return (
     <div className='w-full h-screen overflow-y-scroll [scrollbar-width:none] flex justify-center p-6 font-satoshi'>
-      <div className='w-full max-w-2xl bg-white h-max my-10 p-10 space-y-8 rounded-3xl shadow-xs'>
+      <div className='w-full max-w-3xl bg-white h-max my-10 p-10 space-y-8 rounded-3xl shadow-xs'>
         {/* Header */}
         <div className='space-y-2'>
           <h1 className='text-2xl font-bold text-slate-900 font-IBM flex items-center gap-3'>
@@ -87,9 +87,9 @@ export default function Job () {
                 Job Title <span className='text-orange-500'>*</span>
               </label>
               <div className='relative'>
-                <div className='absolute left-4 top-1/2 -translate-y-1/2 text-slate-400'>
+                {/* <div className='absolute left-4 top-1/2 -translate-y-1/2 text-slate-400'>
                   <Briefcase className='w-4 h-4' />
-                </div>
+                </div> */}
                 <input
                   type='text'
                   id='title'
@@ -98,7 +98,7 @@ export default function Job () {
                   value={job.title}
                   onChange={handleChange}
                   placeholder='e.g. Senior Frontend Developer'
-                  className='w-full pl-11 pr-4 py-3.5 border border-gray-200 focus:border-orange-400 focus:bg-white rounded-2xl outline-none transition-all text-sm font-medium'
+                  className='w-full pl-5 pr-4 py-3.5 border border-gray-200 focus:border-orange-400 focus:bg-white rounded-2xl outline-none transition-all text-sm font-medium'
                 />
               </div>
             </div>
@@ -112,9 +112,9 @@ export default function Job () {
                 Company <span className='text-orange-500'>*</span>
               </label>
               <div className='relative'>
-                <div className='absolute left-4 top-1/2 -translate-y-1/2 text-slate-400'>
+                {/* <div className='absolute left-4 top-1/2 -translate-y-1/2 text-slate-400'>
                   <Building2 className='w-4 h-4' />
-                </div>
+                </div> */}
                 <input
                   type='text'
                   id='company'
@@ -123,7 +123,7 @@ export default function Job () {
                   value={job.company}
                   onChange={handleChange}
                   placeholder='e.g. TechCorp Inc.'
-                  className='w-full pl-11 pr-4 py-3.5 border border-gray-200 focus:border-orange-400 focus:bg-white rounded-2xl outline-none transition-all text-sm font-medium'
+                  className='w-full pl-5 pr-4 py-3.5 border border-gray-200 focus:border-orange-400 focus:bg-white rounded-2xl outline-none transition-all text-sm font-medium'
                 />
               </div>
             </div>
@@ -139,9 +139,9 @@ export default function Job () {
                 Hiring Manager Name
               </label>
               <div className='relative'>
-                <div className='absolute left-4 top-1/2 -translate-y-1/2 text-slate-400'>
+                {/* <div className='absolute left-4 top-1/2 -translate-y-1/2 text-slate-400'>
                   <User className='w-4 h-4' />
-                </div>
+                </div> */}
                 <input
                   type='text'
                   id='hiringManager'
@@ -149,7 +149,7 @@ export default function Job () {
                   value={job.hiringManager}
                   onChange={handleChange}
                   placeholder='e.g. Jane Smith'
-                  className='w-full pl-11 pr-4 py-3.5 border border-gray-200 focus:border-orange-400 focus:bg-white rounded-2xl outline-none transition-all text-sm font-medium'
+                  className='w-full pl-5 pr-4 py-3.5 border border-gray-200 focus:border-orange-400 focus:bg-white rounded-2xl outline-none transition-all text-sm font-medium'
                 />
               </div>
             </div>
@@ -163,9 +163,9 @@ export default function Job () {
                 Job Source
               </label>
               <div className='relative'>
-                <div className='absolute left-4 top-1/2 -translate-y-1/2 text-slate-400'>
+                {/* <div className='absolute left-4 top-1/2 -translate-y-1/2 text-slate-400'>
                   <Globe className='w-4 h-4' />
-                </div>
+                </div> */}
                 <input
                   type='text'
                   id='source'
@@ -173,7 +173,7 @@ export default function Job () {
                   value={job.source}
                   onChange={handleChange}
                   placeholder='e.g. LinkedIn'
-                  className='w-full pl-11 pr-4 py-3.5 border border-gray-200 focus:border-orange-400 focus:bg-white rounded-2xl outline-none transition-all text-sm font-medium'
+                  className='w-full pl-5 pr-4 py-3.5 border border-gray-200 focus:border-orange-400 focus:bg-white rounded-2xl outline-none transition-all text-sm font-medium'
                 />
               </div>
             </div>
@@ -189,9 +189,9 @@ export default function Job () {
                 Location
               </label>
               <div className='relative'>
-                <div className='absolute left-4 top-1/2 -translate-y-1/2 text-slate-400'>
+                {/* <div className='absolute left-4 top-1/2 -translate-y-1/2 text-slate-400'>
                   <MapPin className='w-4 h-4' />
-                </div>
+                </div> */}
                 <input
                   type='text'
                   id='location'
@@ -199,7 +199,7 @@ export default function Job () {
                   value={job.location}
                   onChange={handleChange}
                   placeholder='e.g. San Francisco (Remote)'
-                  className='w-full pl-11 pr-4 py-3.5 border border-gray-200 focus:border-orange-400 focus:bg-white rounded-2xl outline-none transition-all text-sm font-medium'
+                  className='w-full pl-5 pr-4 py-3.5 border border-gray-200 focus:border-orange-400 focus:bg-white rounded-2xl outline-none transition-all text-sm font-medium'
                 />
               </div>
             </div>
@@ -213,7 +213,7 @@ export default function Job () {
                 className='w-full cursor-pointer rounded-2xl border border-gray-200 py-3.5 px-6 text-sm font-semibold flex justify-between items-center bg-white transition-all hover:border-orange-200'
               >
                 <div className='flex items-center gap-2'>
-                  <MessageSquare className='w-4 h-4 text-slate-400' />
+                 
                   {job.tone.toLowerCase() === 'formal'
                     ? 'Formal'
                     : 'Conversational'}
@@ -285,9 +285,7 @@ export default function Job () {
               Hiring Contact Email<span className='text-orange-500'>*</span>
             </label>
             <div className='relative'>
-              <div className='absolute left-4 top-1/2 -translate-y-1/2 text-slate-400'>
-                <Mail className='w-4 h-4' />
-              </div>
+           
               <input
                 type='email'
                 id='email'
@@ -295,7 +293,7 @@ export default function Job () {
                 value={job.email}
                 onChange={handleChange}
                 placeholder='hiring@techcorp.com'
-                className='w-full pl-11 pr-4 py-3.5 border border-gray-200 focus:border-orange-400 focus:bg-white rounded-2xl outline-none transition-all text-sm font-medium'
+                className='w-full pl-5 pr-4 py-3.5 border border-gray-200 focus:border-orange-400 focus:bg-white rounded-2xl outline-none transition-all text-sm font-medium'
               />
             </div>
           </div>
