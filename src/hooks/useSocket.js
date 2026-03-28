@@ -32,20 +32,7 @@ export function connector () {
   ws.onmessage = event => {
     const data = event.data
 
-    toast.dismiss('ai-processing')
-    const status = data.status
-    if (status == false) {
-      return toast.error('Ai tailoring error', toastPresets.aiError())
-    }
-    if (status == true) {
-      return toast.success('Ready!', {
-        ...toastPresets.aiSuccess(
-          'Resume processed successfully! Redirecting you to your tailored resume...'
-        ),
-        id: 'ai-success',
-        position: 'top-right'
-      })
-    }
+
 
     if (messageCallback) {
       messageCallback(data)

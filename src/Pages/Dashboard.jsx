@@ -15,7 +15,9 @@ import SelectResume from '../App/Dashboard/Job/Modals/SelectResume'
 import { setCallback } from '../hooks/useSocket'
 import { saveResume } from '../store/filesSlice'
 import { getAllFiles } from '../utils/getAllFiles'
-import { saveEmailDetails } from '../store/emailSlice'
+import { dumpEmailDetails, saveEmailDetails } from '../store/emailSlice'
+import { toast } from 'sonner'
+import { toastPresets } from '../components/toasters'
 
 export default function Dashboard () {
   const { modals } = useSelector(state => state.modal)
@@ -38,7 +40,7 @@ export default function Dashboard () {
     console.log('🔵 useEffect running - setting callback')
 
     setCallback(raw => {
-      console.log('🟢 CALLBACK RECEIVED DATA:', raw)
+      toast.dismiss('ai-processing')
 
       const data = JSON.parse(raw)
       if (data) {
@@ -48,14 +50,17 @@ export default function Dashboard () {
         const timestamp = data.timestamp
         const fileId = data.fileId
 
-        console.log(status)
         if (status == true) {
-          console.log('✅ Status true, processing...')
-          console.log('response:', response)
+          toast.success('Ready!', {
+            ...toastPresets.aiSuccess(
+              'Resume processed successfully! Redirecting you to your tailored resume...'
+            ),
+            id: 'ai-success',
+            position: 'top-right'
+          })
 
           const content = response.resume
           const match = allFilesOnlyRef.current.find(item => item.id == fileId)
-          console.log('🔍 Found match:', match)
 
           const splitted = jobId.split('-')[0]
           const tobeSaved = {
@@ -66,22 +71,16 @@ export default function Dashboard () {
             createdAt: timestamp
           }
 
-          console.log('💾 Saving resume:', tobeSaved)
           dispatch(saveResume(tobeSaved))
-          dispatch(saveEmailDetails(response.email))
-
-          console.log(
-            '🚀 Navigating to:',
-            `/dashboard/file/?resumeID=${splitted}`
-          )
+          dispatch(dumpEmailDetails(response.email))
           navigate(`/dashboard/file/?resumeID=${splitted}`)
         } else {
-          console.log('❌ Status false or not true')
+          toastPresets.aiError()
+          navigate('/dashboard/job')
+          console.log(' Status false or not true')
         }
       }
     })
-
-    console.log('✅ Callback set')
   }, [dispatch, navigate, allFilesOnly])
 
   return (

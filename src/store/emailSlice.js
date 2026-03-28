@@ -1,19 +1,21 @@
 import { createSlice } from '@reduxjs/toolkit'
+import { Dumbbell } from 'lucide-react'
 
 const initialState = {
-    emailDetails:{
-
-    }
+  emailDetails: {}
 }
 export const emailSlice = createSlice({
   name: 'email',
   initialState,
   reducers: {
     saveEmailDetails (state, action) {
-        state.emailDetails = action.payload
+      const { category, value } = action.payload
+      state.emailDetails[category] = value
+    },
+    dumpEmailDetails (state, action) {
+      state.emailDetails = action.payload
     }
   }
 })
 
-
-export const {saveEmailDetails} = emailSlice.actions
+export const { saveEmailDetails ,dumpEmailDetails} = emailSlice.actions
