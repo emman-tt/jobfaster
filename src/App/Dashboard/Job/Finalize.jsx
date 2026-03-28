@@ -1,19 +1,10 @@
-import React, { useState } from 'react'
-import {
-  Mail,
-  User,
-  Send,
-  Lock,
-  Unlock,
-  Type,
-  AlignLeft,
-  ChevronRight
-} from 'lucide-react'
-
+import { useState } from 'react'
+import { Mail, User, Send, Lock, Type, AlignLeft } from 'lucide-react'
+import { useSelector } from 'react-redux'
 export default function Finalize () {
   const [isEmailLocked, setIsEmailLocked] = useState(true)
   const [isNameLocked, setIsNameLocked] = useState(true)
-  
+const {emailDetails} = useSelector(state => state.email)
   const [formData, setFormData] = useState({
     userEmail: 'user@example.com',
     userName: 'John Doe',
@@ -22,19 +13,26 @@ export default function Finalize () {
     message: `Dear Recruiter,\n\nI am writing to express my strong interest in the [Job Title] position. With my background in [Your Field], I am confident in my ability to contribute effectively to your team.\n\nMy name is John Doe, and I have attached my resume for your review.\n\nBest regards,\nJohn Doe`
   })
 
-  const handleChange = (e) => {
+  const handleChange = e => {
     const { name, value } = e.target
     setFormData(prev => ({ ...prev, [name]: value }))
   }
 
-  const handleNameChange = (e) => {
+  const handleNameChange = e => {
     const newName = e.target.value
     setFormData(prev => ({
       ...prev,
       userName: newName,
-      message: prev.message.replace(prev.userName, newName) 
+      message: prev.message.replace(prev.userName, newName)
     }))
   }
+
+  //   subjectLine(pin):"Application for UI/UX Designer - Sarah Johnson"
+  // greeting(pin):"Dear Phil Harrington,"
+  // body(pin):"I am applying for the UI/UX Designer position at Hubtel, following a referral to your team. At TechCorp, I led the design strategy for an enterprise SaaS platform that drove a 45% increase in revenue and a 35% boost in user engagement. My experience conducting over 100 user interviews and managing high-traffic mobile applications aligns directly with Hubtel’s commitment to building world-class user experiences."
+  // callToAction(pin):"I look forward to discussing how my background in scalable design systems and data-driven optimization can contribute to Hubtel's growth."
+  // signOff(pin):"Best regards,"
+  // attachmentNote(pin):"Please find my CV attached."
 
   return (
     <div className='flex items-center w-full pt-30  justify-center h-screen [scrollbar-width:none] overflow-y-scroll p-6 font-satoshi'>
@@ -42,7 +40,6 @@ export default function Finalize () {
         {/* Header */}
         <div className='space-y-2'>
           <h1 className='text-2xl font-bold text-slate-900 font-IBM flex items-center gap-3'>
-     
             Send Application
           </h1>
           <p className='text-slate-500 text-sm ml-1'>
@@ -59,7 +56,11 @@ export default function Finalize () {
             <div className='relative flex gap-3'>
               <div className='relative flex-1'>
                 <div className='absolute left-4 top-1/2 -translate-y-1/2 text-slate-400'>
-                  {isEmailLocked ? <Lock className='w-4 h-4' /> : <Mail className='w-4 h-4' />}
+                  {isEmailLocked ? (
+                    <Lock className='w-4 h-4' />
+                  ) : (
+                    <Mail className='w-4 h-4' />
+                  )}
                 </div>
                 <input
                   type='email'
@@ -68,8 +69,8 @@ export default function Finalize () {
                   value={formData.userEmail}
                   onChange={handleChange}
                   className={`w-full pl-11 pr-4 py-3.5 border rounded-2xl outline-none transition-all text-sm font-medium ${
-                    isEmailLocked 
-                      ? 'bg-slate-50 border-gray-100 text-slate-500 cursor-not-allowed' 
+                    isEmailLocked
+                      ? 'bg-slate-50 border-gray-100 text-slate-500 cursor-not-allowed'
                       : 'border-orange-200 focus:border-orange-400 bg-white text-slate-900 shadow-sm'
                   }`}
                 />
@@ -92,7 +93,11 @@ export default function Finalize () {
             <div className='relative flex gap-3'>
               <div className='relative flex-1'>
                 <div className='absolute left-4 top-1/2 -translate-y-1/2 text-slate-400'>
-                  {isNameLocked ? <Lock className='w-4 h-4' /> : <User className='w-4 h-4' />}
+                  {isNameLocked ? (
+                    <Lock className='w-4 h-4' />
+                  ) : (
+                    <User className='w-4 h-4' />
+                  )}
                 </div>
                 <input
                   type='text'
@@ -101,8 +106,8 @@ export default function Finalize () {
                   value={formData.userName}
                   onChange={handleNameChange}
                   className={`w-full pl-11 pr-4 py-3.5 border rounded-2xl outline-none transition-all text-sm font-medium ${
-                    isNameLocked 
-                      ? 'bg-slate-50 border-gray-100 text-slate-500 cursor-not-allowed' 
+                    isNameLocked
+                      ? 'bg-slate-50 border-gray-100 text-slate-500 cursor-not-allowed'
                       : 'border-orange-200 focus:border-orange-400 bg-white text-slate-900 shadow-sm'
                   }`}
                 />
@@ -121,7 +126,10 @@ export default function Finalize () {
 
           {/* Recruiter Email */}
           <div className='space-y-2'>
-            <label htmlFor='recruiterEmail' className='block text-sm font-bold text-slate-700 ml-1'>
+            <label
+              htmlFor='recruiterEmail'
+              className='block text-sm font-bold text-slate-700 ml-1'
+            >
               To:
             </label>
             <div className='relative'>
@@ -142,7 +150,10 @@ export default function Finalize () {
 
           {/* Subject */}
           <div className='space-y-2'>
-            <label htmlFor='subject' className='block text-sm font-bold text-slate-700 ml-1'>
+            <label
+              htmlFor='subject'
+              className='block text-sm font-bold text-slate-700 ml-1'
+            >
               Subject:
             </label>
             <div className='relative'>
@@ -163,7 +174,10 @@ export default function Finalize () {
 
           {/* Message Textarea */}
           <div className='space-y-2'>
-            <label htmlFor='message' className='block text-sm font-bold text-slate-700 ml-1'>
+            <label
+              htmlFor='message'
+              className='block text-sm font-bold text-slate-700 ml-1'
+            >
               Message Body
             </label>
             <div className='relative'>

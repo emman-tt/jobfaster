@@ -37,42 +37,47 @@ export default function Dashboard () {
   useEffect(() => {
     console.log('🔵 useEffect running - setting callback')
 
-    setCallback(data => {
-      console.log('🟢 CALLBACK RECEIVED DATA:', data)
+    setCallback(raw => {
+      console.log('🟢 CALLBACK RECEIVED DATA:', raw)
 
-      const status = data.status
-      const response = data.response
-      const jobId = data.jobId
-      const timestamp = data.timestamp
-      const fileId = data.fileId
-      if (status == true) {
-        console.log('✅ Status true, processing...')
-        console.log('response:', response)
+      const data = JSON.parse(raw)
+      if (data) {
+        const status = data.status
+        const response = data.response
+        const jobId = data.jobId
+        const timestamp = data.timestamp
+        const fileId = data.fileId
 
-        const content = response.resume
-        const match = allFilesOnlyRef.current.find(item => item.id == fileId)
-        console.log('🔍 Found match:', match)
+        console.log(status)
+        if (status == true) {
+          console.log('✅ Status true, processing...')
+          console.log('response:', response)
 
-        const splitted = jobId.split('-')[0]
-        const tobeSaved = {
-          ...match,
-          id: splitted,
-          name: `${match.name}-${splitted}`,
-          content: content,
-          createdAt: timestamp
+          const content = response.resume
+          const match = allFilesOnlyRef.current.find(item => item.id == fileId)
+          console.log('🔍 Found match:', match)
+
+          const splitted = jobId.split('-')[0]
+          const tobeSaved = {
+            ...match,
+            id: splitted,
+            name: `${match.name}-${splitted}`,
+            content: content,
+            createdAt: timestamp
+          }
+
+          console.log('💾 Saving resume:', tobeSaved)
+          dispatch(saveResume(tobeSaved))
+          dispatch(saveEmailDetails(response.email))
+
+          console.log(
+            '🚀 Navigating to:',
+            `/dashboard/file/?resumeID=${splitted}`
+          )
+          navigate(`/dashboard/file/?resumeID=${splitted}`)
+        } else {
+          console.log('❌ Status false or not true')
         }
-
-        console.log('💾 Saving resume:', tobeSaved)
-        dispatch(saveResume(tobeSaved))
-        dispatch(saveEmailDetails(response.email))
-
-        console.log(
-          '🚀 Navigating to:',
-          `/dashboard/file/?resumeID=${splitted}`
-        )
-        navigate(`/dashboard/file/?resumeID=${splitted}`)
-      } else {
-        console.log('❌ Status false or not true')
       }
     })
 

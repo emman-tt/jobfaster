@@ -18,18 +18,18 @@ export default function Resume () {
       }
     }
 
-    return programs.find(item => item.id === Number(resumeId))
+    return programs.find(item => item.id == resumeId)
   }
 
   const resume = findResume()
 
-  const Template = TEMPLATES[resume.layoutId]
+  const Template = TEMPLATES[resume?.layoutId]
 
   if (!Template) {
     return (
       <div className='flex flex-col items-center justify-center min-h-screen'>
         <h2 className='text-xl font-semibold'>Template not found</h2>
-        <p>Layout ID: {resume.layoutId}</p>
+        <p>Layout ID: {resume?.layoutId}</p>
       </div>
     )
   }
