@@ -20,11 +20,13 @@ function App () {
   return (
     <BrowserRouter>
       <Toaster
-        position='top-center'
+        position='top-right'
         richColors
+        expand={true}
         toastOptions={{
           style: {
-            fontSize: 15
+            fontSize: '14px',
+            borderRadius: '1.25rem',
           }
         }}
       />

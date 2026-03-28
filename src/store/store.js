@@ -10,6 +10,7 @@ import { aiSlice } from './aiSlice'
 import { previewSlice } from './previewSlice'
 import { onboardingSlice } from './onboardingSlice'
 import { notificationSlice } from './notificationSlice'
+import { emailSlice } from './emailSlice'
 
 export const store = configureStore({
   reducer: {
@@ -23,6 +24,7 @@ export const store = configureStore({
     ai: aiSlice.reducer,
     preview: previewSlice.reducer,
     onboarding: onboardingSlice.reducer,
-    notification: notificationSlice.reducer
+    notification: notificationSlice.reducer,
+    email: emailSlice.reducer
   }
 })

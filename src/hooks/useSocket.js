@@ -1,28 +1,26 @@
-// services/websocket.js
+import { toast } from 'sonner'
+import { toastPresets } from '../components/toasters'
+
 let ws = null
 let messageCallback = null
-let isConnecting = false // Prevent multiple connection attempts
+let isConnecting = false
 
 export function connector () {
-  // Check if already connected
   if (ws && ws.readyState === WebSocket.OPEN) {
     console.log('Already connected')
     return
   }
 
-  // Check if currently connecting
   if (ws && ws.readyState === WebSocket.CONNECTING) {
     console.log('Already connecting...')
     return
   }
 
-  // Check if connection exists but is closed
   if (ws && ws.readyState === WebSocket.CLOSED) {
     console.log('Connection was closed, reconnecting...')
     ws = null
   }
 
-  // Create new connection
   console.log('Creating new connection...')
   ws = new WebSocket('ws://localhost:3000')
 
@@ -32,7 +30,22 @@ export function connector () {
   }
 
   ws.onmessage = event => {
-    const data = JSON.parse(event.data)
+    const data = event.data
+
+    toast.dismiss('ai-processing')
+    const status = data.status
+    if (status == false) {
+      return toast.error('Ai tailoring error', toastPresets.aiError())
+    }
+    if (status == true) {
+      return toast.success('Ready!', {
+        ...toastPresets.aiSuccess(
+          'Resume processed successfully! Redirecting you to your tailored resume...'
+        ),
+        id: 'ai-success',
+        position: 'top-right'
+      })
+    }
 
     if (messageCallback) {
       messageCallback(data)
@@ -41,6 +54,8 @@ export function connector () {
 
   ws.onerror = error => {
     console.error('Error:', error)
+    toast.dismiss('ai-processing')
+    toast.error('AI Error', toastPresets.aiError())
   }
 
   ws.onclose = () => {
@@ -50,10 +65,28 @@ export function connector () {
 }
 
 export function sendMessage (type, data) {
+  if (ws && ws.readyState === WebSocket.CLOSED) {
+    console.log('reconnecting')
+  }
+
   if (!ws || ws.readyState !== WebSocket.OPEN) {
+    toast.error('Connection Lost', {
+      ...toastPresets.aiError(
+        "We couldn't start the process. Please check your connection and try again."
+      ),
+      id: 'ai-error',
+      position: 'top-right'
+    })
     console.error('Not connected', ws?.readyState)
     return false
   }
+
+  toast.loading('AI Processing', {
+    ...toastPresets.aiProcessing(),
+    id: 'ai-processing',
+    position: 'top-right'
+  })
+
   ws.send(JSON.stringify({ type, data }))
   return true
 }

@@ -1,4 +1,4 @@
-import { Outlet } from 'react-router-dom'
+import { Outlet, useNavigate } from 'react-router-dom'
 import Sidebar from '../App/Dashboard/Sidebar'
 import { useSelector } from 'react-redux'
 import Overlay from '../components/Overlay'
@@ -9,21 +9,22 @@ import Folder from '../App/Dashboard/Overview/Modals/Folder'
 import Rightbar from '../App/Dashboard/Rightbar/Rightbar'
 import { PanelLeftOpenIcon, PanelRightOpenIcon } from 'lucide-react'
 import { useDispatch } from 'react-redux'
-import { useEffect } from 'react'
-import { toast } from 'sonner'
-import { toggleNotification } from '../store/notificationSlice'
+import { useEffect, useRef } from 'react'
+
 import SelectResume from '../App/Dashboard/Job/Modals/SelectResume'
 import { setCallback } from '../hooks/useSocket'
 import { saveResume } from '../store/filesSlice'
 import { getAllFiles } from '../utils/getAllFiles'
+import { saveEmailDetails } from '../store/emailSlice'
 
 export default function Dashboard () {
   const { modals } = useSelector(state => state.modal)
   const { showRightbar } = useSelector(state => state.dashboard)
-  const { showNotification } = useSelector(state => state.notification)
   const { programs } = useSelector(state => state.files)
   const allFilesOnly = getAllFiles(programs)
-  const { tailor } = showNotification
+  const allFilesOnlyRef = useRef(allFilesOnly)
+
+  const navigate = useNavigate()
   const dispatch = useDispatch()
 
   function openRightbar () {
@@ -32,27 +33,51 @@ export default function Dashboard () {
   function closeRightbar () {
     dispatch(toggleRightbar(false))
   }
-  useEffect(() => {
-    setCallback(data => {
-      const { status, response, jobId, timestamp, fileId } = data
 
+  useEffect(() => {
+    console.log('🔵 useEffect running - setting callback')
+
+    setCallback(data => {
+      console.log('🟢 CALLBACK RECEIVED DATA:', data)
+
+      const status = data.status
+      const response = data.response
+      const jobId = data.jobId
+      const timestamp = data.timestamp
+      const fileId = data.fileId
       if (status == true) {
-        const parsed = JSON.parse(response)
-        const match = allFilesOnly.find(item => item.id == fileId)
+        console.log('✅ Status true, processing...')
+        console.log('response:', response)
+
+        const content = response.resume
+        const match = allFilesOnlyRef.current.find(item => item.id == fileId)
+        console.log('🔍 Found match:', match)
+
         const splitted = jobId.split('-')[0]
         const tobeSaved = {
           ...match,
           id: splitted,
           name: `${match.name}-${splitted}`,
-          content: parsed,
+          content: content,
           createdAt: timestamp
         }
-        dispatch(saveResume(tobeSaved))
 
-        return
+        console.log('💾 Saving resume:', tobeSaved)
+        dispatch(saveResume(tobeSaved))
+        dispatch(saveEmailDetails(response.email))
+
+        console.log(
+          '🚀 Navigating to:',
+          `/dashboard/file/?resumeID=${splitted}`
+        )
+        navigate(`/dashboard/file/?resumeID=${splitted}`)
+      } else {
+        console.log('❌ Status false or not true')
       }
     })
-  }, [dispatch, allFilesOnly])
+
+    console.log('✅ Callback set')
+  }, [dispatch, navigate, allFilesOnly])
 
   return (
     <section className='flex relative overflow-hidden  w-full h-screen '>
