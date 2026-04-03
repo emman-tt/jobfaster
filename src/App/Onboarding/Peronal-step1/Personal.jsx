@@ -4,24 +4,15 @@ import Address from './Address'
 import KindOfWork from './KindOfWork'
 import Education from './Education'
 import ToolsAndSkills from './ToolsAndSkills'
-// import { useSelector } from 'react-redux'
-// import { validateContact } from '../Validators/personal'
-// import { saveErrors } from '../../../store/personalSlice'
-// import { useDispatch } from 'react-redux'
+
 import { useNavigate } from 'react-router-dom'
 import SummaryType from './SummaryType'
 import OnlineLinks from './OnlineLinks'
+import Language from './Language'
 export const Personal = () => {
-  // const dispatch = useDispatch()
-  // const personalData = useSelector(state => state.personal)
   const navigate = useNavigate()
   function navigateNext () {
     try {
-      // const { hasError, errors } = validateContact(personalData)
-      // dispatch(saveErrors(errors))
-      // if (hasError) {
-      //   return
-      // }
       navigate('/onboarding/experience')
     } catch (err) {
       console.error('Validation failed to execute:', err)
@@ -32,6 +23,7 @@ export const Personal = () => {
       <Address />
       <SummaryType />
       <ToolsAndSkills />
+      <Language />
       <OnlineLinks />
       <Education />
       <BackNext

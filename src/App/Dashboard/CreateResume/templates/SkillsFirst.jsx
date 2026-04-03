@@ -109,11 +109,11 @@ function Summary ({ text, showSummary, section, bodyStyles }) {
   )
 }
 
-function Skills ({ items, section, skillsStyles }) {
+function Skills ({ items, section, skillsStyles, title = 'Core Skills' }) {
   if (!items || items.length === 0) {
     return (
       <section className='mb-5'>
-        <SectionHeading section={section}>Core Skills</SectionHeading>
+        <SectionHeading section={section}>{title}</SectionHeading>
         <div className='border border-slate-200 rounded-sm overflow-hidden'>
           <div className='grid grid-cols-3 divide-x divide-slate-200'>
             <div className='px-4 py-3 min-h-9.5 flex items-center'>
@@ -138,7 +138,7 @@ function Skills ({ items, section, skillsStyles }) {
   }
   return (
     <section className='mb-5'>
-      <SectionHeading section={section}>Core Skills</SectionHeading>
+      <SectionHeading section={section}>{title}</SectionHeading>
       <div className='border border-slate-200 rounded-sm overflow-hidden'>
         {rows.map((row, ri) => (
           <div
@@ -475,6 +475,16 @@ export default function SkillsFirstResume ({ userData, className }) {
           bodyStyles={bodyTextStyles}
           items={userData?.education}
         />
+        
+        {/* Languages */}
+        {userData?.showLanguages && (
+          <Skills
+            title="Languages"
+            section={sectionHeaderStyles}
+            skillsStyles={bodyTextStyles}
+            items={userData.languages}
+          />
+        )}
       </div>
     </div>
   )

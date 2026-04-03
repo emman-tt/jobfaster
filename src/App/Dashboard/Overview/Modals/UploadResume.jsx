@@ -81,7 +81,7 @@ export default function UploadResume ({ onFileSelect, file, setFile }) {
   }
 
   return (
-    <div className='flex flex-col gap-4 p-6 pt-2'>
+    <div className='flex flex-col gap-4 p-6  pt-2'>
         <div className='flex flex-col gap-1 mb-2'>
             <h2 className='text-base font-bold font-IBM text-slate-800'>
               Upload and attach file
@@ -126,7 +126,7 @@ export default function UploadResume ({ onFileSelect, file, setFile }) {
         />
       </div>
 
-      {file.file && (
+      {file?.file && (
         <div className='flex flex-col gap-2'>
           <p className='text-[11px] font-bold text-slate-500 uppercase tracking-wider'>
             Uploaded file

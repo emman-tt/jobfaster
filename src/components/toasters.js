@@ -1,10 +1,4 @@
-import {
-  FileEditIcon,
-  Sparkles,
-  CheckCircle2,
-  XCircle,
-  Loader2
-} from 'lucide-react'
+
 
 export const toastPresets = {
   aiProcessing: () => ({
@@ -46,6 +40,22 @@ export const toastPresets = {
     description:
       detail ||
       'Something went wrong with the AI processing. Please check your connection and try again',
+    duration: 6000,
+    style: {
+      background: 'rgba(15, 23, 42, 0.95)',
+      backdropFilter: 'blur(8px)',
+      color: 'white',
+      border: '1px solid rgba(251, 113, 133, 0.3)',
+      borderRadius: '1.25rem',
+      padding: '16px',
+      fontSize: '14px'
+    },
+    className: 'font-satoshi shadow-2xl shadow-rose-900/10'
+  }),
+  authError: detail => ({
+    description:
+      detail ||
+      'Something went wrong . Please check your connection and try again',
     duration: 6000,
     style: {
       background: 'rgba(15, 23, 42, 0.95)',

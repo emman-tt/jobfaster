@@ -22,7 +22,7 @@ export function connector () {
   }
 
   console.log('Creating new connection...')
-  ws = new WebSocket('ws://localhost:3000')
+  ws = new WebSocket('ws://localhost:5000')
 
   ws.onopen = () => {
     console.log('Connected')

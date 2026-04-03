@@ -1,8 +1,8 @@
 import { Route, Routes, BrowserRouter, Navigate } from 'react-router-dom'
 import Onboarding from './Pages/Onboarding'
 import { Personal } from './App/Onboarding/Peronal-step1/Personal'
-import Jobs from './App/Onboarding/Job-step3/Job'
-import Format from './App/Onboarding/Format-step4/Format'
+import Jobs from './App/Onboarding/Job-step4/Job'
+import Format from './App/Onboarding/Format-step5/Format'
 import Experience from './App/Onboarding/Experience-step2/Experience'
 import Dashboard from './Pages/Dashboard'
 import Overview from './App/Dashboard/Overview/Overview'
@@ -17,6 +17,7 @@ import { Toaster } from 'sonner'
 import Job from './App/Dashboard/Job/Job'
 import Finalize from './App/Dashboard/Job/Finalize'
 import Auth from './Pages/Auth'
+import Additional from './App/Onboarding/Additional-step3/Additional'
 function App () {
   return (
     <BrowserRouter>
@@ -41,6 +42,7 @@ function App () {
           <Route path='personal' element={<Personal />} />
           <Route path='job' element={<Jobs />} />
           <Route path='experience' element={<Experience />} />
+          <Route path='additional' element={<Additional />} />
           <Route path='format' element={<Format />} />
         </Route>
 

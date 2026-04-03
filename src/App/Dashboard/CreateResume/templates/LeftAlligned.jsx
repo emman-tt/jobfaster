@@ -405,6 +405,19 @@ export default function LeftAlligned ({ userData, className }) {
         <section className=' min-h-20'>
           <SkillsRow skills={userData?.skills} skillsStyles={bodyTextStyles} />
         </section>
+
+        {/* Languages */}
+        {userData?.showLanguages && (
+          <>
+            <SectionRule
+              section={sectionHeaderStyles}
+              label={'Languages'}
+            ></SectionRule>
+            <section className=' min-h-20'>
+              <SkillsRow skills={userData.languages} skillsStyles={bodyTextStyles} />
+            </section>
+          </>
+        )}
       </div>
     </div>
   )

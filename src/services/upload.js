@@ -7,12 +7,11 @@ export async function Upload (formData) {
         'Content-Type': 'multipart/form-data'
       }
     })
+    const raw = response.data
+    // const result = JSON.parse(raw)
+    console.log(raw)
 
-    const raw = response.data.data.aiResponse
-    const result = JSON.parse(raw)
-    console.log(result)
-
-    return result
+    // return result
   } catch (error) {
     console.log(error)
   }

@@ -38,7 +38,7 @@ export const experienceSlice = createSlice({
       state.experience = [...state.experience, action.payload]
     },
     removeField: (state, action) => {
-      console.log(action.payload)
+   
       state.experience = state.experience.filter(
         item => item.id !== action.payload
       )

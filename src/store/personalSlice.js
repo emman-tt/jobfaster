@@ -9,6 +9,8 @@ const initialState = {
     jobTitle: ''
   },
   skillsAndTools: [],
+  languages: [],
+  showLanguages: false,
   kindsOfWork: [],
   summaryType: 'No summary',
   summary: '',
@@ -46,6 +48,17 @@ export const personalSlice = createSlice({
       state.skillsAndTools = state.skillsAndTools.filter(
         item => item.toLowerCase() !== action.payload.toLowerCase()
       )
+    },
+    saveLanguages: (state, action) => {
+      state.languages.push(action.payload)
+    },
+    deleteLanguages: (state, action) => {
+      state.languages = state.languages.filter(
+        item => item.toLowerCase() !== action.payload.toLowerCase()
+      )
+    },
+    setShowLanguages: (state, action) => {
+      state.showLanguages = action.payload
     },
     saveKindsOfWorks: (state, action) => {
       state.kindsOfWork = action.payload
@@ -92,6 +105,9 @@ export const {
   addEducationField,
   removeEducationField,
   deleteSkillsAndTools,
+  saveLanguages,
+  deleteLanguages,
+  setShowLanguages,
   selectSummaryType,
   saveSummary
 } = personalSlice.actions

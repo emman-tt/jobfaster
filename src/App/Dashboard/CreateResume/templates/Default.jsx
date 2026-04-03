@@ -171,6 +171,94 @@ function EducationEntry ({ eduStyles, entry, metaStyles, bodyStyles }) {
   )
 }
 
+function ProjectEntry ({
+  companyStyles,
+  entry,
+  jobStyles,
+  bulletStyles,
+  metaStyles
+}) {
+  return (
+    <div className='mb-5 last:mb-0'>
+      {/* Project name + url */}
+      <div className='flex justify-between items-center mb-0.5 min-h-4.5'>
+        <span
+          style={{
+            fontSize: `${companyStyles?.size}pt`,
+            letterSpacing: companyStyles?.spacing,
+            textTransform: companyStyles?.case
+          }}
+          className={` ${companyStyles?.weight} ${companyStyles?.case}    font-[${companyStyles?.weight}]    text-slate-800`}
+        >
+          {entry.name || (
+            <span className='inline-block h-8 w-40 bg-slate-200 rounded animate-pulse'></span>
+          )}
+        </span>
+        <span
+          style={{ fontSize: `${metaStyles?.size}pt` }}
+          className=' text-slate-400 italic tabular-nums flex items-center gap-1'
+        >
+          {entry?.url || (
+            <span className='inline-block h-5 w-24 bg-slate-200 rounded animate-pulse'></span>
+          )}
+        </span>
+      </div>
+
+      {/* Description + tech stack */}
+      <div className='flex justify-between items-center mb-2 min-h-4.5'>
+        <span
+          style={{
+            fontSize: `${jobStyles?.size}pt`,
+            textTransform: jobStyles?.case
+          }}
+          className={` ${jobStyles?.style}  text-slate-500`}
+        >
+          {entry?.description || (
+            <span className='inline-block h-5 w-32 bg-slate-200 rounded animate-pulse'></span>
+          )}
+        </span>
+        <span className='text-[10pt] text-slate-400 flex items-center'>
+          {entry?.techStack || (
+            <span className='inline-block h-5 w-24 bg-slate-200 rounded animate-pulse'></span>
+          )}
+        </span>
+      </div>
+
+      {/* Bullets */}
+      {entry?.points?.length > 0 ? (
+        <ul className='space-y-1'>
+          {entry.points.map((b, i) => (
+            <li
+              key={i}
+              style={{
+                fontSize: `${bulletStyles?.size}pt`,
+                textTransform: bulletStyles?.case
+              }}
+              className={`flex gap-2  ${jobStyles?.style} text-slate-900 leading-snug items-start`}
+            >
+              <span className='text-slate-700 shrink-0 mt-px'>•</span>
+              <span className='flex-1 mt-0.5'>
+                {b || (
+                  <span className='inline-block h-6 w-full bg-slate-200 rounded animate-pulse'></span>
+                )}
+              </span>
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <>
+          <div className='space-y-4 mt-2.5'>
+            <div className='h-6 w-full bg-slate-200 rounded animate-pulse'></div>
+            <div className='h-6 w-5/6 bg-slate-200 rounded animate-pulse'></div>
+            <div className='h-6 w-11/12 bg-slate-200 rounded animate-pulse'></div>
+            <div className='h-6 w-4/6 bg-slate-200 rounded animate-pulse'></div>
+          </div>
+        </>
+      )}
+    </div>
+  )
+}
+
 function SkillsRow ({ skills, skillsStyles }) {
   if (!skills || skills.length === 0) {
     return (
@@ -362,6 +450,55 @@ export default function Default ({ userData, className }) {
           <SectionHeading section={sectionHeaderStyles}>Skills</SectionHeading>
           <SkillsRow skillsStyles={bodyTextStyles} skills={userData?.skills} />
         </section>
+
+        {/* Languages */}
+        {userData?.showLanguages && (
+          <section className=' min-h-20'>
+            <SectionHeading section={sectionHeaderStyles}>
+              Languages
+            </SectionHeading>
+            <SkillsRow
+              skillsStyles={bodyTextStyles}
+              skills={userData.languages}
+            />
+          </section>
+        )}
+
+        {/* Projects */}
+        {userData?.showProjects && (
+          <section className='min-h-20'>
+            <SectionHeading section={sectionHeaderStyles}>
+              Projects
+            </SectionHeading>
+            {userData?.projects?.length > 0 ? (
+              userData.projects.map(project => (
+                <ProjectEntry
+                  metaStyles={dateStyles}
+                  bulletStyles={bodyTextStyles}
+                  jobStyles={jobTitleStyles}
+                  companyStyles={companyStyles}
+                  key={project.id}
+                  entry={project}
+                />
+              ))
+            ) : (
+              <div className='mb-5'>
+                <div className='flex justify-between items-center mb-0.5 min-h-4.5'>
+                  <span className='inline-block h-2 w-32 bg-slate-200 rounded animate-pulse'></span>
+                  <span className='inline-block h-1.5 w-16 bg-slate-200 rounded animate-pulse'></span>
+                </div>
+                <div className='flex justify-between items-center mb-2 min-h-4.5'>
+                  <span className='inline-block h-1.5 w-24 bg-slate-200 rounded animate-pulse'></span>
+                  <span className='inline-block h-1.5 w-20 bg-slate-200 rounded animate-pulse'></span>
+                </div>
+                <div className='space-y-1.5 mt-2'>
+                  <div className='h-1.5 w-full bg-slate-200 rounded animate-pulse'></div>
+                  <div className='h-1.5 w-5/6 bg-slate-200 rounded animate-pulse'></div>
+                </div>
+              </div>
+            )}
+          </section>
+        )}
       </div>
     </div>
   )

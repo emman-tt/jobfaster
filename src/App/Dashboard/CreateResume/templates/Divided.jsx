@@ -388,6 +388,14 @@ export default function DividedResume ({ userData, className }) {
           <CenteredDivider section={sectionHeaderStyles} label='Skills' />
           <SkillRows rows={userData?.skills} skillsStyles={bodyTextStyles} />
         </>
+
+        {/* Languages */}
+        {userData?.showLanguages && (
+          <>
+            <CenteredDivider section={sectionHeaderStyles} label='Languages' />
+            <SkillRows rows={userData.languages} skillsStyles={bodyTextStyles} />
+          </>
+        )}
       </div>
     </div>
   )

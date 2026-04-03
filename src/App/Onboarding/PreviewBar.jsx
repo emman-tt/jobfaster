@@ -18,11 +18,14 @@ export default function PreviewBar () {
     kindsOfWork,
     skillsAndTools,
     summary,
-    summaryType
+    summaryType,
+    languages,
+    showLanguages
   } = useSelector(state => state.personal)
   const { experience } = useSelector(state => state.experience)
   const { styless } = useSelector(state => state.format)
   const { showFinale } = useSelector(state => state.onboarding)
+  const { showProjects, projects } = useSelector(state => state.additional)
   const dispatch = useDispatch()
   const userData = {
     name: contactDetails.fullName,
@@ -36,7 +39,11 @@ export default function PreviewBar () {
     summary: summary,
     showSummary: summaryType !== 'No summary',
     experience: experience,
-    styles: styless
+    styles: styless,
+    languages: languages,
+    showLanguages: showLanguages,
+    showProjects: showProjects,
+    projects: projects
   }
   const nodeRef = useRef(null)
 

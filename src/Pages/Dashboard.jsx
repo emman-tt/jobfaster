@@ -37,7 +37,7 @@ export default function Dashboard () {
   }
 
   useEffect(() => {
-    console.log('🔵 useEffect running - setting callback')
+
 
     setCallback(raw => {
       const data = JSON.parse(raw)

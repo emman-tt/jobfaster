@@ -504,6 +504,19 @@ export default function TwoColumnResume ({ userData, className }) {
               />
             </div>
           )} */}
+
+          {/* Languages */}
+          {userData?.showLanguages && (
+            <div className='px-6 py-5 border-t border-slate-200'>
+              <SectionHeading section={sectionHeaderStyles}>
+                Languages
+              </SectionHeading>
+              <SkillChips
+                skills={userData.languages}
+                skillsStyles={bodyTextStyles}
+              />
+            </div>
+          )}
         </div>
       </div>
     </div>

@@ -1,4 +1,3 @@
-import Question from './Question'
 import { AddNewButton } from '../../../components/AddNewButton'
 import { BackNext } from '../../../components/BackNext'
 import { PlusCircle, Trash2 } from 'lucide-react'
@@ -7,11 +6,10 @@ import { useDispatch, useSelector } from 'react-redux'
 import {
   saveExperience,
   addExtraField,
-  saveErrors,
+
   removeField,
   saveExperiencePoints
 } from '../../../store/experienceSlice'
-import { validateExperience } from '../Validators/experience'
 import { useNavigate } from 'react-router-dom'
 import { QuestionHeader } from '../../../components/QuestionHeader'
 // import YearsDrop from '../../../components/YearDropdown'
@@ -67,12 +65,7 @@ export default function Experience () {
 
   function navigateNext () {
     try {
-      // const { hasError, errors } = validateExperience(experience)
-      // dispatch(saveErrors(errors))
-      // if (hasError) {
-      //   return
-      // }
-      navigate('/onboarding/job')
+      navigate('/onboarding/additional')
     } catch (err) {
       console.error('Validation failed to execute:', err)
     }
