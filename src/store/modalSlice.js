@@ -9,7 +9,8 @@ const initialState = {
     folder: false,
     correction: false,
     saveResume: false,
-    selectResume: false
+    selectResume: false,
+    chooseTemplate: false
   }
 }
 export const modalSlice = createSlice({

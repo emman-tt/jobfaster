@@ -14,6 +14,10 @@ const initialState = {
     tone: 'Formal',
     email: '',
     includeCoverLetter: false
+  },
+  uploadedUserFileData: {
+    layoutId: 1,
+    data: {}
   }
 }
 export const aiSlice = createSlice({
@@ -33,6 +37,10 @@ export const aiSlice = createSlice({
     },
     changeLayout (state, action) {
       state.layoutId = action.payload
+    },
+    saveUserFileData (state, action) {
+      const { option, value } = action.payload
+      state.uploadedUserFileData[option] = value
     }
   }
 })
@@ -41,5 +49,6 @@ export const {
   saveCorrections,
   saveJobDetails,
   saveCorrectionAnswers,
-  changeLayout
+  changeLayout,
+  saveUserFileData
 } = aiSlice.actions

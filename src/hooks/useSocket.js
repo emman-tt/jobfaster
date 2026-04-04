@@ -2,8 +2,12 @@ import { toast } from 'sonner'
 import { toastPresets } from '../components/toasters'
 
 let ws = null
-let messageCallback = null
 let isConnecting = false
+
+const callbacks = {
+  JOB_APPLY: null,
+  RESUME_UPLOAD: null
+}
 
 export function connector () {
   if (ws && ws.readyState === WebSocket.OPEN) {
@@ -22,20 +26,26 @@ export function connector () {
   }
 
   console.log('Creating new connection...')
-  ws = new WebSocket('ws://localhost:5000')
+  ws = new WebSocket('ws://localhost:5000/')
 
   ws.onopen = () => {
     console.log('Connected')
-    isConnecting = false
+    isConnecting = true
   }
 
   ws.onmessage = event => {
-    const data = event.data
+    const res = JSON.parse(event.data)
 
+    const { type, data } = res
 
-
-    if (messageCallback) {
-      messageCallback(data)
+    if (type == 'JOB_APPLY' && callbacks.JOB_APPLY) {
+      return callbacks.JOB_APPLY(data)
+    } else if (type == 'RESUME_UPLOAD' && callbacks.RESUME_UPLOAD) {
+      return callbacks.RESUME_UPLOAD(data)
+    } else {
+      console.warn(
+        'No registered callback fot this process or callback wasnt called and added'
+      )
     }
   }
 
@@ -68,7 +78,7 @@ export function sendMessage (type, data) {
     return false
   }
 
-  toast.loading('AI Processing', {
+  toast.loading(type == 'JOB_APPLY' ? 'AI Processing' : 'Resume Processing', {
     ...toastPresets.aiProcessing(),
     id: 'ai-processing',
     position: 'top-right'
@@ -78,6 +88,10 @@ export function sendMessage (type, data) {
   return true
 }
 
-export function setCallback (callback) {
-  messageCallback = callback
+export function onJobApply (cb) {
+  callbacks.JOB_APPLY = cb
+}
+
+export function onResumeUpload (cb) {
+  callbacks.RESUME_UPLOAD = cb
 }

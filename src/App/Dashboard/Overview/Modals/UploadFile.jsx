@@ -6,10 +6,11 @@ import {
   UploadIcon,
   X
 } from 'lucide-react'
-import { useCallback, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { toggleModals } from '../../../../store/modalSlice'
 import { Upload } from '../../../../services/upload'
+import { sendMessage } from '../../../../hooks/useSocket'
 
 const ACCEPTED_FORMATS = [
   'image/jpeg',
@@ -37,7 +38,7 @@ export default function UploadFile () {
   const inputRef = useRef(null)
   const [dragging, setDragging] = useState(false)
   const [file, setFile] = useState({})
-
+  const [loading, setLoading] = useState(false)
   function addfile (incoming) {
     const fileItem = incoming[0]
     if (!fileItem) {
@@ -65,8 +66,6 @@ export default function UploadFile () {
         setFile({ ...fileobj, progress })
       }
     }, 300)
-
-    // if (onFileSelect) onFileSelect(fileobj)
   }
 
   const onDrop = e => {
@@ -86,10 +85,13 @@ export default function UploadFile () {
   }
 
   function navigateNext () {
-    Upload(file).then(res => {
-      console.log(res)
-    })
+    setLoading(true)
+    sendMessage('RESUME_UPLOAD', file)
   }
+
+  useEffect(() => {
+    
+  })
 
   function closeModal () {
     dispatch(toggleModals('uploadFile'))
@@ -236,6 +238,7 @@ export default function UploadFile () {
           Cancel
         </button>
         <button
+          disabled={loading}
           onClick={navigateNext}
           className='flex-1 bg-[#ff8904] text-white text-sm font-semibold font-satoshi py-4 rounded-xl  transition-colors'
         >

@@ -144,13 +144,7 @@ function ExperienceEntry ({
   )
 }
 
-function EducationEntry ({
-  entry,
-
-  metaStyles,
-  bodyStyles,
-  companyStyles
-}) {
+function EducationEntry ({ entry, metaStyles, bodyStyles, companyStyles }) {
   return (
     <div
       className='grid gap-x-5 mb-5 last:mb-0'
@@ -204,13 +198,13 @@ function EducationEntry ({
             {entry.level || entry.gpa ? (
               <>
                 {entry.level && (
-                  <span style={{ fontSize: metaStyles.size }} className=' '>
-                    level {entry.level}
+                  <span style={{ fontSize: metaStyles?.size }} className=' '>
+                    level {entry?.level}
                   </span>
                 )}
                 {entry.gpa && (
-                  <span style={{ fontSize: metaStyles.size }} className=' '>
-                    Grade: {entry.gpa}
+                  <span style={{ fontSize: metaStyles?.size }} className=' '>
+                    Grade: {entry?.gpa}
                   </span>
                 )}
               </>
@@ -414,7 +408,10 @@ export default function LeftAlligned ({ userData, className }) {
               label={'Languages'}
             ></SectionRule>
             <section className=' min-h-20'>
-              <SkillsRow skills={userData.languages} skillsStyles={bodyTextStyles} />
+              <SkillsRow
+                skills={userData.languages}
+                skillsStyles={bodyTextStyles}
+              />
             </section>
           </>
         )}
@@ -456,10 +453,7 @@ export default function LeftAlligned ({ userData, className }) {
             <SectionRule section={sectionHeaderStyles} label='Certifications' />
             {userData?.certificates?.length > 0 ? (
               userData.certificates.map(cert => (
-                <CertificateEntry
-                  key={cert.id}
-                  entry={cert}
-                />
+                <CertificateEntry key={cert.id} entry={cert} />
               ))
             ) : (
               <div className='mb-3'>
@@ -510,12 +504,7 @@ function SkillsRow ({ skills, skillsStyles }) {
   )
 }
 
-function ProjectEntry ({
-  entry,
-  companyStyles,
-  jobStyles,
-  bulletStyles
-}) {
+function ProjectEntry ({ entry, companyStyles, jobStyles, bulletStyles }) {
   return (
     <div className='mb-5 last:mb-0'>
       <div className='min-h-4.5 mb-0.5'>

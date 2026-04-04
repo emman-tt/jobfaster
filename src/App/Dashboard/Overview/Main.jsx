@@ -11,6 +11,7 @@ import { useEffect, useState } from 'react'
 import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import { toggleModals } from '../../../store/modalSlice'
 import FilePreview from './FilePreview'
+import { connector } from '../../../hooks/useSocket'
 export default function Main () {
   const { programs } = useSelector(state => state.files)
   const { id } = useParams()
@@ -48,6 +49,7 @@ export default function Main () {
   }
 
   function openFileModal () {
+    connector()
     dispatch(toggleModals('uploadFile'))
   }
   function openFolderModal () {

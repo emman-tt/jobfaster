@@ -5,7 +5,7 @@ import { useDispatch } from 'react-redux'
 import { useState } from 'react'
 import { saveCorrectionAnswers } from '../store/aiSlice'
 import { toggleModals } from '../store/modalSlice'
-import UploadResume from '../App/Dashboard/Overview/Modals/UploadResume'
+import UploadResume from '../App/Dashboard/Job/Modals/UploadResume'
 
 import { DotLottieReact } from '@lottiefiles/dotlottie-react'
 import Overlay from '../components/Overlay'

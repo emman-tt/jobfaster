@@ -170,14 +170,14 @@ export default function PreviewBar () {
         <div
           ref={nodeRef}
           className={`relative z-80 w-[180mm] h-[250mm] overflow-hidden ${
-            showFinale
-              ? 'overflow-y-scroll [scrollbar-width:thin]'
-              : ''
+            showFinale ? 'overflow-y-scroll [scrollbar-width:thin]' : ''
           }`}
         >
-          <div className={`w-[210mm] min-h-[297mm] scale-55 origin-top-left ${
-            layoutId == 2 ? 'absolute top-0 right-0' : ''
-          }`}>
+          <div
+            className={`w-[210mm] min-h-[297mm] scale-55 origin-top-left ${
+              layoutId == 2 ? 'absolute top-0 right-0' : ''
+            }`}
+          >
             {layoutId == 1 ? (
               <Default
                 className={'w-[210mm] min-h-[297mm]'}

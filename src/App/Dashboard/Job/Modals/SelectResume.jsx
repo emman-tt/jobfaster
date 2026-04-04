@@ -1,4 +1,4 @@
-import React, {  useState } from 'react'
+import React, { useState } from 'react'
 import {
   FileText,
   Folder,
@@ -13,15 +13,13 @@ import {
 } from 'lucide-react'
 import { useDispatch, useSelector } from 'react-redux'
 import { toggleModals } from '../../../../store/modalSlice'
-import UploadResume from '../../Overview/Modals/UploadResume'
+import UploadResume from './UploadResume'
 import { Upload } from '../../../../services/upload'
 import { saveCorrections } from '../../../../store/aiSlice'
 import { toggleNotification } from '../../../../store/notificationSlice'
 import { useNavigate } from 'react-router-dom'
 import { GetFileIcon } from '../../../../components/getFileIcon'
-
 import { sendMessage } from '../../../../hooks/useSocket'
-
 import { getAllFiles } from '../../../../utils/getAllFiles'
 
 export default function SelectResume () {
@@ -131,7 +129,6 @@ export default function SelectResume () {
         {/* Toggle */}
         <div className='flex items-center justify-between mb-6'>
           <div className='flex bg-gray-100 p-1 rounded-full gap-1'>
-           
             <button
               onClick={() => setActiveTab('recent')}
               className={`px-6 py-2 rounded-full text-sm font-semibold transition-all ${

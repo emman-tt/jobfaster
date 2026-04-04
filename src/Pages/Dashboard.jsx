@@ -1,4 +1,4 @@
-import { Outlet, useNavigate } from 'react-router-dom'
+import { data, Outlet, useNavigate } from 'react-router-dom'
 import Sidebar from '../App/Dashboard/Sidebar'
 import { useSelector } from 'react-redux'
 import Overlay from '../components/Overlay'
@@ -11,12 +11,14 @@ import { PanelLeftOpenIcon, PanelRightOpenIcon } from 'lucide-react'
 import { useDispatch } from 'react-redux'
 import { useEffect, useRef } from 'react'
 import SelectResume from '../App/Dashboard/Job/Modals/SelectResume'
-import { setCallback } from '../hooks/useSocket'
+import { onJobApply, onResumeUpload } from '../hooks/useSocket'
 import { saveResume } from '../store/filesSlice'
 import { getAllFiles } from '../utils/getAllFiles'
 import { dumpEmailDetails } from '../store/emailSlice'
 import { toast } from 'sonner'
 import { toastPresets } from '../components/toasters'
+import ChooseTemplate from '../App/Dashboard/Overview/Modals/ChooseTemplate'
+import { toggleModals } from '../store/modalSlice'
 
 export default function Dashboard () {
   const { modals } = useSelector(state => state.modal)
@@ -36,11 +38,18 @@ export default function Dashboard () {
   }
 
   useEffect(() => {
-    setCallback(raw => {
-      const data = JSON.parse(raw)
+    onResumeUpload(data => {
+      toggleModals('chooseTemplate')
+      if (data) {
+        console.log(data)
+      }
+    })
+  }, [])
+
+  useEffect(() => {
+    onJobApply(data => {
       if (data) {
         toast.dismiss('ai-processing')
-
         const status = data.status
         const response = data.response
         const jobId = data.jobId
@@ -135,6 +144,12 @@ export default function Dashboard () {
         <>
           <Overlay className={'bg-[#e0e4e582] backdrop-blur-sm'} />
           <Folder />
+        </>
+      )}
+      {modals.chooseTemplate && (
+        <>
+          <Overlay className={'bg-[#e0e4e582] backdrop-blur-sm'} />
+          <ChooseTemplate />
         </>
       )}
     </section>
