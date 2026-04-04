@@ -10,7 +10,6 @@ import Rightbar from '../App/Dashboard/Rightbar/Rightbar'
 import { PanelLeftOpenIcon, PanelRightOpenIcon } from 'lucide-react'
 import { useDispatch } from 'react-redux'
 import { useEffect, useRef } from 'react'
-
 import SelectResume from '../App/Dashboard/Job/Modals/SelectResume'
 import { setCallback } from '../hooks/useSocket'
 import { saveResume } from '../store/filesSlice'
@@ -37,8 +36,6 @@ export default function Dashboard () {
   }
 
   useEffect(() => {
-
-
     setCallback(raw => {
       const data = JSON.parse(raw)
       if (data) {
@@ -89,7 +86,7 @@ export default function Dashboard () {
       <section className='w-full h-full '>
         <Outlet />
       </section>
-      <section className=' flex gap-4  pt-3 pr-3 pb-3'>
+      <section className='flex gap-4  pt-3 pr-3 pb-3'>
         <div className=''>
           {!showRightbar ? (
             <PanelRightOpenIcon

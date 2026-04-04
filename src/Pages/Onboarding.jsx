@@ -8,11 +8,11 @@ import { useEffect, useRef } from 'react'
 import gsap from 'gsap'
 export default function Onboarding () {
   const { modals } = useSelector(state => state.modal)
-  const { showFinale } = useSelector(state => state.onboarding)
+  const { showFinale, zoom } = useSelector(state => state.onboarding)
   const outletRef = useRef(null)
 
   useEffect(() => {
-    if (!showFinale) {
+    if (!showFinale || !zoom.value) {
       return
     }
     gsap.to(outletRef.current, {
@@ -20,7 +20,7 @@ export default function Onboarding () {
       ease: 'sine',
       duration: 0.5
     })
-  }, [showFinale])
+  }, [showFinale, zoom.value])
 
   return (
     <section className='flex  w-full gap-10 px-0 p-5 items-center min-h-screen bg-[#f3f5f7]'>

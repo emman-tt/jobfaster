@@ -33,10 +33,12 @@ function ExperienceEntry ({
             letterSpacing: companyStyles?.spacing,
             textTransform: companyStyles?.case
           }}
-          className={` ${companyStyles?.weight} ${companyStyles?.case}    font-[${companyStyles?.weight}]    text-slate-800`}
+          className={` ${companyStyles?.weight} ${companyStyles?.case} font-[${companyStyles?.weight}]    text-slate-800`}
         >
           {entry.company || (
-            <span className='inline-block h-8 w-40 bg-slate-200 rounded animate-pulse'></span>
+            <>
+              <span className='inline-block h-8 w-40 bg-slate-200 rounded animate-pulse'></span>
+            </>
           )}
         </span>
         <span
@@ -96,6 +98,16 @@ function ExperienceEntry ({
         </ul>
       ) : (
         <>
+          <div className='space-y-4 mt-2.5'>
+            <div className='h-6 w-full bg-slate-200 rounded animate-pulse'></div>
+            <div className='h-6 w-5/6 bg-slate-200 rounded animate-pulse'></div>
+            <div className='h-6 w-11/12 bg-slate-200 rounded animate-pulse'></div>
+            <div className='h-6 w-4/6 bg-slate-200 rounded animate-pulse'></div>
+          </div>
+          <div className='space-y-4 mt-2.5'>
+            <div className='h-6 w-full bg-slate-200 rounded animate-pulse'></div>
+            <div className='h-6 w-5/6 bg-slate-200 rounded animate-pulse'></div>
+          </div>
           <div className='space-y-4 mt-2.5'>
             <div className='h-6 w-full bg-slate-200 rounded animate-pulse'></div>
             <div className='h-6 w-5/6 bg-slate-200 rounded animate-pulse'></div>
@@ -296,21 +308,29 @@ function SkillsRow ({ skills, skillsStyles }) {
   )
 }
 
+const fontFamilyMap = {
+  'calibri': 'font-[family-name:var(--font-calibri)]',
+  'arial': 'font-[family-name:var(--font-arial)]',
+  'times-new-roman': 'font-[family-name:var(--font-times-new-roman)]',
+  'georgia': 'font-[family-name:var(--font-georgia)]',
+  'garamond': 'font-[family-name:var(--font-garamond)]'
+}
+
 export default function Default ({ userData, className }) {
   const styles = userData?.styles
   const sectionHeaderStyles = styles?.sectionHeader
   const nameStyles = styles?.name
-  // const metaDataStyles = styles?.metadata
   const dateStyles = styles?.date
   const contactStyles = styles?.contact
   const jobTitleStyles = styles?.jobTitle
   const companyStyles = styles?.company
   const bodyTextStyles = styles?.bodyText
+  const fontType = styles?.fontType || 'calibri'
+  const fontFamilyClass = fontFamilyMap[fontType] || fontFamilyMap['calibri']
 
   return (
-    // Add 'print:shadow-none' and 'print:p-0' so it looks like a document on paper
     <div
-      className={`bg-white  mx-auto shadow-lg print:shadow-none print:m-0 font-serif ${className}`}
+      className={`bg-white mx-auto shadow-lg print:shadow-none print:m-0 ${fontFamilyClass} ${className}`}
     >
       {/* ── Header ── */}
       <header className='text-center  min-h-30 flex flex-col items-center justify-center px-10 pt-9 pb-6 border-b border-slate-300'>
@@ -399,20 +419,36 @@ export default function Default ({ userData, className }) {
               />
             ))
           ) : (
-            <div className='mb-5'>
-              <div className='flex justify-between items-center mb-0.5 min-h-4.5'>
-                <span className='inline-block h-2 w-32 bg-slate-200 rounded animate-pulse'></span>
-                <span className='inline-block h-1.5 w-16 bg-slate-200 rounded animate-pulse'></span>
+            <>
+              <div className='mb-5'>
+                <div className='flex justify-between items-center mb-0.5 min-h-4.5'>
+                  <span className='inline-block h-2 w-32 bg-slate-200 rounded animate-pulse'></span>
+                  <span className='inline-block h-1.5 w-16 bg-slate-200 rounded animate-pulse'></span>
+                </div>
+                <div className='flex justify-between items-center mb-2 min-h-4.5'>
+                  <span className='inline-block h-1.5 w-24 bg-slate-200 rounded animate-pulse'></span>
+                  <span className='inline-block h-1.5 w-20 bg-slate-200 rounded animate-pulse'></span>
+                </div>
+                <div className='space-y-1.5 mt-2'>
+                  <div className='h-1.5 w-full bg-slate-200 rounded animate-pulse'></div>
+                  <div className='h-1.5 w-5/6 bg-slate-200 rounded animate-pulse'></div>
+                </div>
               </div>
-              <div className='flex justify-between items-center mb-2 min-h-4.5'>
-                <span className='inline-block h-1.5 w-24 bg-slate-200 rounded animate-pulse'></span>
-                <span className='inline-block h-1.5 w-20 bg-slate-200 rounded animate-pulse'></span>
-              </div>
-              <div className='space-y-1.5 mt-2'>
-                <div className='h-1.5 w-full bg-slate-200 rounded animate-pulse'></div>
-                <div className='h-1.5 w-5/6 bg-slate-200 rounded animate-pulse'></div>
-              </div>
-            </div>
+              {/* <div className='mb-5'>
+                <div className='flex justify-between items-center mb-0.5 min-h-4.5'>
+                  <span className='inline-block h-2 w-32 bg-slate-200 rounded animate-pulse'></span>
+                  <span className='inline-block h-1.5 w-16 bg-slate-200 rounded animate-pulse'></span>
+                </div>
+                <div className='flex justify-between items-center mb-2 min-h-4.5'>
+                  <span className='inline-block h-1.5 w-24 bg-slate-200 rounded animate-pulse'></span>
+                  <span className='inline-block h-1.5 w-20 bg-slate-200 rounded animate-pulse'></span>
+                </div>
+                <div className='space-y-1.5 mt-2'>
+                  <div className='h-1.5 w-full bg-slate-200 rounded animate-pulse'></div>
+                  <div className='h-1.5 w-5/6 bg-slate-200 rounded animate-pulse'></div>
+                </div>
+              </div> */}
+            </>
           )}
         </section>
 

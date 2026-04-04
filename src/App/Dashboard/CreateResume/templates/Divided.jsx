@@ -228,6 +228,110 @@ function SkillRows ({ rows, skillsStyles }) {
   )
 }
 
+function ProjectEntry ({
+  entry,
+  companyStyles,
+  jobStyles,
+  bulletStyles
+}) {
+  return (
+    <div className='mb-5 last:mb-0'>
+      <div className='flex items-center min-h-4.5 mb-0.5'>
+        <p
+          style={{
+            fontSize: `${companyStyles?.size}pt`,
+            letterSpacing: companyStyles?.spacing,
+            textTransform: companyStyles?.case
+          }}
+          className={`${companyStyles?.weight} text-slate-800 flex items-center gap-1`}
+        >
+          {entry.name || (
+            <span className='inline-block h-8 w-40 bg-slate-200 rounded animate-pulse'></span>
+          )}
+          {entry.url && (
+            <span className='font-normal text-slate-400 tracking-normal normal-case flex items-center gap-1'>
+              {' '}
+              —{' '}
+              <span className='text-[10pt] italic'>{entry.url}</span>
+            </span>
+          )}
+        </p>
+      </div>
+
+      <div className='flex items-center min-h-4.25 mb-2'>
+        <p
+          style={{
+            fontSize: `${jobStyles?.size}pt`,
+            textTransform: jobStyles?.case
+          }}
+          className={`${jobStyles?.style} text-slate-500 flex items-center gap-1`}
+        >
+          {entry.description || entry.techStack || (
+            <span className='inline-block h-5 w-32 bg-slate-200 rounded animate-pulse'></span>
+          )}
+        </p>
+      </div>
+
+      {entry.points?.length > 0 ? (
+        <ul className='space-y-1'>
+          {entry.points.map((b, i) => (
+            <li
+              key={i}
+              style={{
+                fontSize: `${bulletStyles?.size}pt`,
+                textTransform: bulletStyles?.case
+              }}
+              className={`${bulletStyles?.style} flex gap-2 text-slate-900 leading-snug items-start mt-1`}
+            >
+              <span className='text-slate-700 shrink-0 mt-px'>•</span>
+              <span className='flex-1 mt-0.5'>
+                {b || (
+                  <span className='inline-block h-6 w-full bg-slate-200 rounded animate-pulse mt-1'></span>
+                )}
+              </span>
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <div className='space-y-4 mt-2.5'>
+          <div className='h-6 w-full bg-slate-200 rounded animate-pulse'></div>
+          <div className='h-6 w-5/6 bg-slate-200 rounded animate-pulse'></div>
+        </div>
+      )}
+    </div>
+  )
+}
+
+function CertificateEntry ({ entry, metaStyles }) {
+  return (
+    <div className='mb-3 last:mb-0'>
+      <div className='flex items-center min-h-4.5'>
+        <p className='text-[11pt] font-medium text-slate-700'>
+          {entry.name || (
+            <span className='inline-block h-5 w-40 bg-slate-200 rounded animate-pulse'></span>
+          )}
+          {entry.issuer && (
+            <span className='text-slate-400 font-normal ml-2'>
+              — {entry.issuer}
+            </span>
+          )}
+        </p>
+      </div>
+      {entry.year && (
+        <div className='flex items-center min-h-3.5'>
+          <span
+            style={{ fontSize: `${metaStyles?.size}pt` }}
+            className='text-slate-400 italic'
+          >
+            {entry.year}
+            {entry.url && <span className='ml-2 text-[10pt]'>{entry.url}</span>}
+          </span>
+        </div>
+      )}
+    </div>
+  )
+}
+
 export default function DividedResume ({ userData, className }) {
   const styles = userData?.styles
   const sectionHeaderStyles = styles?.sectionHeader
@@ -394,6 +498,59 @@ export default function DividedResume ({ userData, className }) {
           <>
             <CenteredDivider section={sectionHeaderStyles} label='Languages' />
             <SkillRows rows={userData.languages} skillsStyles={bodyTextStyles} />
+          </>
+        )}
+
+        {/* Projects */}
+        {userData?.showProjects && (
+          <>
+            <CenteredDivider section={sectionHeaderStyles} label='Projects' />
+            {userData?.projects?.length > 0 ? (
+              userData.projects.map(project => (
+                <ProjectEntry
+                  key={project.id}
+                  entry={project}
+                  companyStyles={companyStyles}
+                  jobStyles={jobTitleStyles}
+                  bulletStyles={bodyTextStyles}
+                />
+              ))
+            ) : (
+              <div className='mb-5'>
+                <div className='flex items-center mb-0.5 min-h-4.5'>
+                  <span className='inline-block h-2 w-32 bg-slate-200 rounded animate-pulse'></span>
+                </div>
+                <div className='flex items-center mb-2 min-h-4.25'>
+                  <span className='inline-block h-1.5 w-24 bg-slate-200 rounded animate-pulse'></span>
+                </div>
+                <div className='space-y-1.5 mt-2'>
+                  <div className='h-1.5 w-full bg-slate-200 rounded animate-pulse'></div>
+                  <div className='h-1.5 w-5/6 bg-slate-200 rounded animate-pulse'></div>
+                </div>
+              </div>
+            )}
+          </>
+        )}
+
+        {/* Certificates */}
+        {userData?.showCertificates && (
+          <>
+            <CenteredDivider section={sectionHeaderStyles} label='Certifications' />
+            {userData?.certificates?.length > 0 ? (
+              userData.certificates.map(cert => (
+                <CertificateEntry
+                  key={cert.id}
+                  entry={cert}
+                  metaStyles={dateStyles}
+                />
+              ))
+            ) : (
+              <div className='mb-3'>
+                <div className='flex items-center min-h-4.5'>
+                  <span className='inline-block h-5 w-40 bg-slate-200 rounded animate-pulse'></span>
+                </div>
+              </div>
+            )}
           </>
         )}
       </div>

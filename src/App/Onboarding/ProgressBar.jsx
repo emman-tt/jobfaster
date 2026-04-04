@@ -1,13 +1,20 @@
 import { CheckCircle, Library, ScanSearch, ZoomIn } from 'lucide-react'
 import { useLocation } from 'react-router-dom'
-
+import { useDispatch, useSelector } from 'react-redux'
+import { toggleZoom, controlZoom } from '../../store/onboardingSlice'
 export default function ProgressBar () {
+  const { zoom } = useSelector(state => state.onboarding)
+  const dispatch = useDispatch()
   const pathname = useLocation().pathname
   const actualPath = pathname.split('/').at(-1)
   const isActive = navi.find(item =>
     item.name.includes(actualPath.toLowerCase())
   )?.id
-  // tools.find(item => item.href.includes(actualPath))?.id
+
+  function toggler () {
+    dispatch(toggleZoom())
+  }
+
   return (
     <section className=' bg-orange-300 fixed flex flex-col items-center gap-5  pt-15  top-0 left-0 w-[6%] h-full '>
       <div>
@@ -27,7 +34,12 @@ export default function ProgressBar () {
         </div>
       ))}
 
-      <div className=' bg-white rounded-xl p-3'>
+      <div
+        onClick={() => {
+          toggler()
+        }}
+        className=' bg-white rounded-xl p-3'
+      >
         <ZoomIn />
       </div>
     </section>

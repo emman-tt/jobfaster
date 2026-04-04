@@ -327,6 +327,76 @@ function CertificationList ({ certifications }) {
   )
 }
 
+function ProjectEntry ({
+  entry,
+  companyStyles,
+  jobStyles,
+  bulletStyles
+}) {
+  return (
+    <div className='mb-4 last:mb-0'>
+      <div className='flex justify-between items-start min-h-4.25 mb-0.5'>
+        <span
+          style={{
+            fontSize: `${companyStyles?.size}pt`,
+            letterSpacing: companyStyles?.spacing,
+            textTransform: companyStyles?.case
+          }}
+          className={`${companyStyles?.weight} uppercase text-slate-800`}
+        >
+          {entry.name || (
+            <span className='inline-block h-8 w-32 bg-slate-200 rounded animate-pulse'></span>
+          )}
+        </span>
+        {entry.url && (
+          <span className='text-[10pt] text-slate-400 italic shrink-0 ml-1'>
+            {entry.url}
+          </span>
+        )}
+      </div>
+      <div className='flex items-center min-h-4 mb-1.5'>
+        <p
+          style={{
+            fontSize: `${jobStyles?.size}pt`,
+            textTransform: jobStyles?.case
+          }}
+          className={`${jobStyles?.style} text-slate-700`}
+        >
+          {entry.description || entry.techStack || (
+            <span className='inline-block h-5 w-32 bg-slate-200 rounded animate-pulse'></span>
+          )}
+        </p>
+      </div>
+      {entry.points?.length > 0 ? (
+        <ul className='space-y-1'>
+          {entry.points.map((b, i) => (
+            <li
+              key={i}
+              style={{
+                fontSize: `${bulletStyles?.size}pt`,
+                textTransform: bulletStyles?.case
+              }}
+              className={`${bulletStyles?.style} flex gap-1.5 text-slate-900 leading-snug items-start mt-1`}
+            >
+              <span className='text-slate-800 shrink-0 mt-px'>•</span>
+              <span className='flex-1 mt-0.5'>
+                {b || (
+                  <span className='inline-block h-6 w-full bg-slate-200 rounded animate-pulse mt-0.5'></span>
+                )}
+              </span>
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <div className='space-y-4 mt-2.5'>
+          <div className='h-6 w-full bg-slate-200 rounded animate-pulse'></div>
+          <div className='h-6 w-5/6 bg-slate-200 rounded animate-pulse'></div>
+        </div>
+      )}
+    </div>
+  )
+}
+
 export default function TwoColumnResume ({ userData, className }) {
   const styles = userData?.styles
   const sectionHeaderStyles = styles?.sectionHeader
@@ -425,6 +495,39 @@ export default function TwoColumnResume ({ userData, className }) {
               skillsStyles={bodyTextStyles}
             />
           </div>
+
+          {/* Projects */}
+          {userData?.showProjects && (
+            <div className='px-6 py-5'>
+              <SectionHeading section={sectionHeaderStyles}>
+                Projects
+              </SectionHeading>
+              {userData?.projects?.length > 0 ? (
+                userData.projects.map(project => (
+                  <ProjectEntry
+                    key={project.id}
+                    entry={project}
+                    companyStyles={companyStyles}
+                    jobStyles={jobTitleStyles}
+                    bulletStyles={bodyTextStyles}
+                  />
+                ))
+              ) : (
+                <div className='mb-4'>
+                  <div className='flex justify-between items-start min-h-4.25 mb-0.5'>
+                    <span className='inline-block h-2 w-28 bg-slate-200 rounded animate-pulse'></span>
+                  </div>
+                  <div className='flex items-center min-h-4 mb-1.5'>
+                    <span className='inline-block h-1.5 w-24 bg-slate-200 rounded animate-pulse'></span>
+                  </div>
+                  <div className='space-y-1.5 mt-1'>
+                    <div className='h-1.5 w-full bg-slate-200 rounded animate-pulse'></div>
+                    <div className='h-1.5 w-5/6 bg-slate-200 rounded animate-pulse'></div>
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
         </div>
 
         {/* ── RIGHT column ── */}
@@ -491,19 +594,14 @@ export default function TwoColumnResume ({ userData, className }) {
           </div>
 
           {/* Certifications */}
-          {/* {((userData?.certifications && userData.certifications.length > 0) ||
-            (!userData && data.certifications?.length > 0)) && (
+          {userData?.showCertificates && (
             <div className='px-6 py-5'>
-              <SectionHeading>Certifications</SectionHeading>
+              <SectionHeading section={sectionHeaderStyles}>Certifications</SectionHeading>
               <CertificationList
-                certifications={
-                  userData?.certifications?.length > 0
-                    ? userData.certifications
-                    : data.certifications
-                }
+                certifications={userData?.certificates}
               />
             </div>
-          )} */}
+          )}
 
           {/* Languages */}
           {userData?.showLanguages && (

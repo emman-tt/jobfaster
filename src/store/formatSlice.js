@@ -14,7 +14,9 @@ const initialState = {
   },
   hobbies: '',
 
+
   styless: {
+    fontType: 'calibri',
     name: {
       size: 24,
       weight: 'font-bold',
@@ -24,7 +26,7 @@ const initialState = {
       color: 'text-slate-800'
     },
 
-    // Group 2: Section Headers
+    // Section Headers
     sectionHeader: {
       size: 13,
       weight: 'font-bold',
@@ -34,7 +36,7 @@ const initialState = {
       color: 'text-slate-800'
     },
 
-    // Group 3a: Company/School (Bold)
+    //  Company/School (Bold)
     company: {
       size: 12, // 12px
       weight: 'font-bold',
@@ -44,7 +46,7 @@ const initialState = {
       spacing: 0
     },
 
-    // Group 3b: Job Title/Role (Italic)
+    //  Job Title/Role (Italic)
     jobTitle: {
       size: 12,
       weight: 'font-normal',
@@ -54,7 +56,7 @@ const initialState = {
       spacing: 1
     },
 
-    // Group 4: Bullets & Skills & Degree (Regular)
+    // Bullets & Skills & Degree (Regular)
     bodyText: {
       size: 12,
       weight: 'font-normal',
@@ -64,7 +66,7 @@ const initialState = {
       color: 'text-slate-600'
     },
 
-    // Group 5: Dates
+    // Dates
     date: {
       size: 11,
       weight: 'font-normal',
@@ -73,7 +75,7 @@ const initialState = {
       spacing: 0,
       color: 'text-slate-400'
     },
-    // Group 6: Contact Info (Location, Phone, Email)
+    //  Contact Info (Location, Phone, Email)
     contact: {
       size: 12,
       weight: 'font-normal',
@@ -91,6 +93,9 @@ export const formatSlice = createSlice({
   reducers: {
     selectFileType: (state, action) => {
       state.fileType = action.payload
+    },
+    selectFontType: (state, action) => {
+      state.styless.fontType = action.payload
     },
     toggleEducationDatesShow: (state, action) => {
       state.showEducationDates = action.payload
@@ -122,6 +127,7 @@ export const formatSlice = createSlice({
 
 export const {
   selectFileType,
+  selectFontType,
   saveBulletCount,
   toggleEducationDatesShow,
   saveOnlineLinks,

@@ -418,6 +418,56 @@ export default function LeftAlligned ({ userData, className }) {
             </section>
           </>
         )}
+
+        {/* Projects */}
+        {userData?.showProjects && (
+          <>
+            <SectionRule section={sectionHeaderStyles} label='Projects' />
+            {userData?.projects?.length > 0 ? (
+              userData.projects.map(project => (
+                <ProjectEntry
+                  key={project.id}
+                  entry={project}
+                  companyStyles={companyStyles}
+                  jobStyles={jobTitleStyles}
+                  bulletStyles={bodyTextStyles}
+                />
+              ))
+            ) : (
+              <div className='mb-5'>
+                <div className='min-h-4.5 mb-0.5'>
+                  <span className='inline-block h-2 w-32 bg-slate-200 rounded animate-pulse'></span>
+                </div>
+                <div className='min-h-4.25 mb-2'>
+                  <span className='inline-block h-1.5 w-24 bg-slate-200 rounded animate-pulse'></span>
+                </div>
+                <div className='space-y-1.5 mt-2'>
+                  <div className='h-1.5 w-full bg-slate-200 rounded animate-pulse'></div>
+                  <div className='h-1.5 w-5/6 bg-slate-200 rounded animate-pulse'></div>
+                </div>
+              </div>
+            )}
+          </>
+        )}
+
+        {/* Certificates */}
+        {userData?.showCertificates && (
+          <>
+            <SectionRule section={sectionHeaderStyles} label='Certifications' />
+            {userData?.certificates?.length > 0 ? (
+              userData.certificates.map(cert => (
+                <CertificateEntry
+                  key={cert.id}
+                  entry={cert}
+                />
+              ))
+            ) : (
+              <div className='mb-3'>
+                <span className='inline-block h-5 w-40 bg-slate-200 rounded animate-pulse'></span>
+              </div>
+            )}
+          </>
+        )}
       </div>
     </div>
   )
@@ -457,5 +507,94 @@ function SkillsRow ({ skills, skillsStyles }) {
         </span>
       ))}
     </p>
+  )
+}
+
+function ProjectEntry ({
+  entry,
+  companyStyles,
+  jobStyles,
+  bulletStyles
+}) {
+  return (
+    <div className='mb-5 last:mb-0'>
+      <div className='min-h-4.5 mb-0.5'>
+        <p
+          style={{
+            fontSize: `${companyStyles?.size}pt`,
+            letterSpacing: companyStyles?.spacing,
+            textTransform: companyStyles?.case
+          }}
+          className={`${companyStyles?.weight} text-slate-900`}
+        >
+          {entry.name || (
+            <span className='inline-block h-6 w-32 bg-slate-200 rounded animate-pulse'></span>
+          )}
+        </p>
+        {entry.url && (
+          <p className='text-[10pt] text-slate-400 italic mt-0.5'>
+            {entry.url}
+          </p>
+        )}
+      </div>
+
+      <div className='min-h-4.25 mb-2'>
+        <p
+          style={{
+            fontSize: `${jobStyles?.size}pt`,
+            textTransform: jobStyles?.case
+          }}
+          className={`${jobStyles?.style} text-slate-500`}
+        >
+          {entry.description || entry.techStack || (
+            <span className='inline-block h-5 w-32 bg-slate-200 rounded animate-pulse'></span>
+          )}
+        </p>
+      </div>
+
+      {entry.points?.length > 0 ? (
+        <ul className='space-y-1'>
+          {entry.points.map((b, i) => (
+            <li
+              key={i}
+              style={{
+                fontSize: `${bulletStyles?.size}pt`,
+                textTransform: bulletStyles?.case
+              }}
+              className={`${bulletStyles?.style} flex gap-2 text-slate-900 leading-snug items-start`}
+            >
+              <span className='text-slate-700 shrink-0 mt-px'>•</span>
+              <span className='flex-1 mt-0.5'>
+                {b || (
+                  <span className='inline-block h-6 w-full bg-slate-200 rounded animate-pulse mt-1'></span>
+                )}
+              </span>
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <div className='space-y-4 mt-2.5'>
+          <div className='h-6 w-full bg-slate-200 rounded animate-pulse'></div>
+          <div className='h-6 w-5/6 bg-slate-200 rounded animate-pulse'></div>
+        </div>
+      )}
+    </div>
+  )
+}
+
+function CertificateEntry ({ entry }) {
+  return (
+    <div className='mb-3 last:mb-0'>
+      <p className='text-[11pt] font-medium text-slate-700'>
+        {entry.name || (
+          <span className='inline-block h-5 w-40 bg-slate-200 rounded animate-pulse'></span>
+        )}
+      </p>
+      <p className='text-[10pt] text-slate-400 mt-0.5'>
+        {entry.issuer}
+        {entry.year && <span className='ml-2 italic'>({entry.year})</span>}
+        {entry.url && <span className='ml-2'>{entry.url}</span>}
+      </p>
+    </div>
   )
 }

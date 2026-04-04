@@ -1,7 +1,6 @@
 import { BackNext } from '../../../components/BackNext'
-import FileType from './fileType'
-import BulletPoints from './BulletPoinst'
-import Hobbies from './Hobbies'
+import FileType from './FileType'
+import FontType from './FontType'
 import NameStyles from './NameStyles'
 import SectionHeaderStyles from './SectionHeaderStyles'
 import CompanyStyles from './CompanyStyles'
@@ -27,6 +26,7 @@ export default function Format () {
   return (
     <section className=' w-full pb-20  h-full p-10 px-15 flex flex-col pt-5 rounded-2xl bg-white'>
       <FileType />
+      <FontType />
       <NameStyles />
       <SectionHeaderStyles />
       <CompanyStyles />
@@ -41,8 +41,3 @@ export default function Format () {
     </section>
   )
 }
-
-const Yes_and_no = [
-  { id: 1, selected: false, name: 'Yes' },
-  { id: 2, selected: true, name: 'No' }
-]

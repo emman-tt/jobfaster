@@ -1,6 +1,5 @@
 import { AddNewButton } from '../../../components/AddNewButton'
 import { PlusCircle, Trash2 } from 'lucide-react'
-import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import {
   saveCertificates,
@@ -17,11 +16,9 @@ const options = [
 
 export default function Certificates () {
   const dispatch = useDispatch()
-  const { certificates } = useSelector(state => state.additional)
-  const [selectedOption, setSelectedOption] = useState(null)
+  const { certificates, showCertificates } = useSelector(state => state.additional)
 
   function handleOptionSelect (name) {
-    setSelectedOption(name)
     dispatch(setShowCertificate(name === 'Yes'))
   }
 
@@ -29,8 +26,8 @@ export default function Certificates () {
     const { name, value } = e.target
     dispatch(
       saveCertificates({
-        id: id,
-        value: value,
+        id,
+        value,
         option: name
       })
     )
@@ -48,7 +45,7 @@ export default function Certificates () {
   }
 
   return (
-    <section className=''>
+    <section className='mt-20'>
       <div className='px-6'>
         <QuestionHeader question='Do you want to show certificates on your resume?'>
           Adding professional certifications can help validate your skills and
@@ -62,7 +59,8 @@ export default function Certificates () {
               onClick={() => handleOptionSelect(item.name)}
               className={`flex gap-5 w-full border cursor-pointer rounded-xl py-4 pl-5 hover:shadow-lg transition-all duration-200 ease items-center justify-center px-2  
                   ${
-                    item.name === selectedOption
+                    (item.name === 'Yes' && showCertificates) ||
+                    (item.name === 'No' && !showCertificates)
                       ? 'border-[#ec5b13]'
                       : 'border-slate-200'
                   }
@@ -70,7 +68,10 @@ export default function Certificates () {
             >
               <div
                 className={`border ${
-                  item.name === selectedOption && 'border-4'
+                  (item.name === 'Yes' && showCertificates) ||
+                  (item.name === 'No' && !showCertificates)
+                    ? 'border-4'
+                    : ''
                 } border-[#ec5b13] inline-block w-4 h-4 rounded-full`}
               ></div>
               <div className='text-sm font-semibold'>{item.name}</div>
@@ -79,7 +80,7 @@ export default function Certificates () {
         </ul>
       </div>
 
-      {selectedOption === 'Yes' && (
+      {showCertificates && (
         <div className='mt-10'>
           <section className='flex flex-col gap-24'>
             <section className='flex flex-col gap-0'>

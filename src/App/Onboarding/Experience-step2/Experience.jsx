@@ -6,10 +6,11 @@ import { useDispatch, useSelector } from 'react-redux'
 import {
   saveExperience,
   addExtraField,
-
+  saveErrors,
   removeField,
   saveExperiencePoints
 } from '../../../store/experienceSlice'
+import { validateExperience } from '../Validators/experience'
 import { useNavigate } from 'react-router-dom'
 import { QuestionHeader } from '../../../components/QuestionHeader'
 // import YearsDrop from '../../../components/YearDropdown'

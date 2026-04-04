@@ -3,7 +3,7 @@ import { createSlice } from '@reduxjs/toolkit'
 const initialState = {
   corrections: [],
   correctionsAnswers: [],
-  layoutId: 2,
+  layoutId: 1,
   job: {
     description: '',
     company: '',

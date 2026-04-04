@@ -485,6 +485,122 @@ export default function SkillsFirstResume ({ userData, className }) {
             items={userData.languages}
           />
         )}
+
+        {/* Projects */}
+        {userData?.showProjects && (
+          <section className='mb-5'>
+            <SectionHeading section={sectionHeaderStyles}>Projects</SectionHeading>
+            {userData?.projects?.length > 0 ? (
+              userData.projects.map(project => (
+                <div key={project.id} className='mb-4 last:mb-0'>
+                  <div className='flex items-start justify-between min-h-4.5 mb-0.5'>
+                    <span
+                      style={{
+                        fontSize: `${companyStyles?.size}pt`,
+                        letterSpacing: companyStyles?.spacing,
+                        textTransform: companyStyles?.case
+                      }}
+                      className={`${companyStyles?.weight} text-slate-800`}
+                    >
+                      {project.name || (
+                        <span className='inline-block h-6 w-32 bg-slate-200 rounded animate-pulse'></span>
+                      )}
+                    </span>
+                    {project.url && (
+                      <span className='text-[10pt] text-slate-400 italic'>
+                        {project.url}
+                      </span>
+                    )}
+                  </div>
+                  <div className='min-h-4.25 mb-2'>
+                    <span
+                      style={{
+                        fontSize: `${jobTitleStyles?.size}pt`,
+                        textTransform: jobTitleStyles?.case
+                      }}
+                      className={`${jobTitleStyles?.style} text-slate-500`}
+                    >
+                      {project.description || project.techStack || (
+                        <span className='inline-block h-5 w-32 bg-slate-200 rounded animate-pulse'></span>
+                      )}
+                    </span>
+                  </div>
+                  {project.points?.length > 0 ? (
+                    <ul className='space-y-1'>
+                      {project.points.map((b, i) => (
+                        <li
+                          key={i}
+                          style={{
+                            fontSize: `${bodyTextStyles?.size}pt`,
+                            textTransform: bodyTextStyles?.case
+                          }}
+                          className={`${bodyTextStyles?.style} flex gap-2 text-slate-900 leading-snug items-start`}
+                        >
+                          <span className='text-slate-700 shrink-0 mt-px'>•</span>
+                          <span className='flex-1 mt-0.5'>{b}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  ) : (
+                    <div className='space-y-4 mt-2.5'>
+                      <div className='h-6 w-full bg-slate-200 rounded animate-pulse'></div>
+                      <div className='h-6 w-5/6 bg-slate-200 rounded animate-pulse'></div>
+                    </div>
+                  )}
+                </div>
+              ))
+            ) : (
+              <div className='mb-5'>
+                <div className='flex items-start justify-between min-h-4.5 mb-0.5'>
+                  <span className='inline-block h-2 w-32 bg-slate-200 rounded animate-pulse'></span>
+                </div>
+                <div className='min-h-4.25 mb-2'>
+                  <span className='inline-block h-1.5 w-24 bg-slate-200 rounded animate-pulse'></span>
+                </div>
+                <div className='space-y-1.5 mt-2'>
+                  <div className='h-1.5 w-full bg-slate-200 rounded animate-pulse'></div>
+                  <div className='h-1.5 w-5/6 bg-slate-200 rounded animate-pulse'></div>
+                </div>
+              </div>
+            )}
+          </section>
+        )}
+
+        {/* Certificates */}
+        {userData?.showCertificates && (
+          <section className='mb-5'>
+            <SectionHeading section={sectionHeaderStyles}>Certifications</SectionHeading>
+            {userData?.certificates?.length > 0 ? (
+              userData.certificates.map(cert => (
+                <div key={cert.id} className='mb-3 last:mb-0'>
+                  <span
+                    style={{
+                      fontSize: `${bodyTextStyles?.size}pt`
+                    }}
+                    className='text-slate-700'
+                  >
+                    {cert.name || (
+                      <span className='inline-block h-5 w-40 bg-slate-200 rounded animate-pulse'></span>
+                    )}
+                    {cert.issuer && (
+                      <span className='text-slate-400 ml-2'>— {cert.issuer}</span>
+                    )}
+                  </span>
+                  {cert.year && (
+                    <p className='text-[10pt] text-slate-400 italic mt-0.5'>
+                      {cert.year}
+                      {cert.url && <span className='ml-2'>{cert.url}</span>}
+                    </p>
+                  )}
+                </div>
+              ))
+            ) : (
+              <div className='mb-3'>
+                <span className='inline-block h-5 w-40 bg-slate-200 rounded animate-pulse'></span>
+              </div>
+            )}
+          </section>
+        )}
       </div>
     </div>
   )
