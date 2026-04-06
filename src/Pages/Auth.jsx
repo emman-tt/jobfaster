@@ -7,6 +7,7 @@ import { toastPresets } from '../components/toasters'
 import Loader from '../components/Loader'
 import { useNavigate } from 'react-router-dom'
 
+import { setToken } from '../libs/token'
 export default function Auth () {
   const [isLogin, setIsLogin] = useState(true)
   const [name, setName] = useState('')
@@ -44,14 +45,14 @@ export default function Auth () {
   }
 
   function validateLogin (res) {
-    if (res == 422) {
+    if (res.statusCode == 422) {
       return toast.error('Something went wrong', {
         position: 'top-center',
         ...toastPresets.authError('Please provide all the input credentials')
       })
     }
 
-    if (res == 401) {
+    if (res.statusCode == 401) {
       toast.error('Something went wrong', {
         position: 'top-center',
         ...toastPresets.authError('Invalid user credentials')
@@ -59,13 +60,14 @@ export default function Auth () {
       return
     }
 
-    if (Number(res) > 200) {
+    if (Number(res.statusCode) > 200) {
       return toast.error('Something went wrong', {
         position: 'top-center',
         ...toastPresets.authError('Please try again')
       })
     }
 
+    setToken()
     toast.success('Account created succesfully', {
       position: 'top-center',
       ...toastPresets.aiSuccess(`Welcome back ${name}, got any jobs to apply?`)
@@ -73,14 +75,14 @@ export default function Auth () {
     navigate('/dashboard')
   }
   function validateRegister (res) {
-    if (res == 422) {
+    if (res.statusCode == 422) {
       return toast.error('Something went wrong', {
         position: 'top-center',
         ...toastPresets.authError('Please provide all the input credentials')
       })
     }
 
-    if (res == 401) {
+    if (res.statusCode == 401) {
       toast.error('Something went wrong', {
         position: 'top-center',
         ...toastPresets.authError('User already exists please log in')
@@ -88,12 +90,13 @@ export default function Auth () {
       return setIsLogin(true)
     }
 
-    if (Number(res) > 200) {
+    if (Number(res.statusCode) > 200) {
       return toast.error('Something went wrong', {
         position: 'top-center',
         ...toastPresets.authError('Please try again')
       })
     }
+
     toast.success('Account created succesfully', {
       position: 'top-center',
       ...toastPresets.aiSuccess(`Welcome ${name}, lets start the applications`)

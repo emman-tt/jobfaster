@@ -16,10 +16,6 @@ export async function register (name, password, email) {
   }
 }
 
-
-
-
-
 export async function login (password, email) {
   try {
     const res = await api.post('/auth/login', {
@@ -30,8 +26,11 @@ export async function login (password, email) {
     const response = await res.data
     return response
   } catch (error) {
-    console.log(error)
-    const errorStatus = error?.response?.status
-    return errorStatus
+    const err = error.response.data
+    return {
+      statusCode: error.response.status,
+      status: err.status,
+      message: err.message
+    }
   }
 }

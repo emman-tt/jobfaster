@@ -17,6 +17,7 @@ import Job from './App/Dashboard/Job/Job'
 import Finalize from './App/Dashboard/Job/Finalize'
 import Auth from './Pages/Auth'
 import Additional from './App/Onboarding/Additional-step3/Additional'
+import { AuthProvider } from './context/auth'
 function App () {
   return (
     <BrowserRouter>
@@ -31,34 +32,36 @@ function App () {
           }
         }}
       />
-      <Routes>
-        <Route path='/' element={<Navigate to={'/dashboard'} />} />
-        <Route path='/correction' element={<Correction />} />
-        <Route path='/quick/actions' element={<QuickAction />} />
-        <Route path='/auth' element={<Auth />} />
+      <AuthProvider>
+        <Routes>
+          <Route path='/' element={<Navigate to={'/dashboard'} />} />
+          <Route path='/correction' element={<Correction />} />
+          <Route path='/quick/actions' element={<QuickAction />} />
+          <Route path='/auth' element={<Auth />} />
 
-        <Route path='/onboarding' element={<Onboarding />}>
-          <Route path='personal' element={<Personal />} />
-          <Route path='job' element={<Jobs />} />
-          <Route path='experience' element={<Experience />} />
-          <Route path='additional' element={<Additional />} />
-          <Route path='format' element={<Format />} />
-        </Route>
-
-        <Route path='/dashboard' element={<Dashboard />}>
-          <Route index element={<Navigate to={'/dashboard/overview'} />} />
-          <Route path='overview' element={<Overview />} />
-          <Route path='resumes' element={<Overview />} />
-          <Route path='folder/:id' element={<Overview />} />
-          <Route path='file' element={<Resume />} />
-          <Route path='job' element={<Job />} />
-          <Route path='finalize' element={<Finalize />} />
-
-          <Route path='create/resume' element={<CreateResume />}>
-            <Route path='examples' element={<Examples />} />
+          <Route path='/onboarding' element={<Onboarding />}>
+            <Route path='personal' element={<Personal />} />
+            <Route path='job' element={<Jobs />} />
+            <Route path='experience' element={<Experience />} />
+            <Route path='additional' element={<Additional />} />
+            <Route path='format' element={<Format />} />
           </Route>
-        </Route>
-      </Routes>
+
+          <Route path='/dashboard' element={<Dashboard />}>
+            <Route index element={<Navigate to={'/dashboard/overview'} />} />
+            <Route path='overview' element={<Overview />} />
+            <Route path='resumes' element={<Overview />} />
+            <Route path='folder/:id' element={<Overview />} />
+            <Route path='file' element={<Resume />} />
+            <Route path='job' element={<Job />} />
+            <Route path='finalize' element={<Finalize />} />
+
+            <Route path='create/resume' element={<CreateResume />}>
+              <Route path='examples' element={<Examples />} />
+            </Route>
+          </Route>
+        </Routes>
+      </AuthProvider>
     </BrowserRouter>
   )
 }

@@ -43,6 +43,7 @@ export default function UploadFile () {
   const [dragging, setDragging] = useState(false)
   const [file, setFile] = useState({})
   const [loading, setLoading] = useState(false)
+
   function addfile (incoming) {
     const fileItem = incoming[0]
     setLoading(true)
@@ -109,14 +110,14 @@ export default function UploadFile () {
 
           return navigate('/auth')
         }
-        if (res.statusCode == 404) {
+        if (res.statusCode == 422) {
           toast.error('No file provided ', {
             ...toastPresets.authError(),
             description: 'Please make sure to select a file',
             position: 'top-center'
           })
 
-          return 
+          return
         }
         const data = res.data
 
@@ -282,9 +283,13 @@ export default function UploadFile () {
         <button
           onClick={() => navigateNext()}
           style={{ backgroundColor: loading ? 'gray' : '#ff8904' }}
-          className={`flex-1 cursor-pointer  text-white text-sm font-semibold font-satoshi py-4 rounded-xl  transition-colors`}
+          className={`flex-1 cursor-pointer flex justify-center gap-5  text-white items-center text-sm font-semibold font-satoshi py-4 rounded-xl  transition-colors`}
         >
-          Upload File
+          {loading ? (
+            <div className=' small-loader border-4 '></div>
+          ) : (
+            'Upload File'
+          )}
         </button>
       </div>
     </section>

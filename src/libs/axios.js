@@ -12,6 +12,9 @@ export const api = axios.create({
 let isRefreshing = false
 let queue = []
 
+
+
+
 api.interceptors.response.use(undefined, async error => {
   if (error.config._retry == true) {
     window.location.href = '/auth'
