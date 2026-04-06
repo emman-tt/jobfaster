@@ -10,7 +10,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useEffect, useState } from 'react'
 import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import { toggleModals } from '../../../store/modalSlice'
-import FilePreview from './FilePreview'
+import FilePreview from '../Resume/FilePreview'
 import { connector } from '../../../hooks/useSocket'
 export default function Main () {
   const { programs } = useSelector(state => state.files)
@@ -49,7 +49,6 @@ export default function Main () {
   }
 
   function openFileModal () {
-    connector()
     dispatch(toggleModals('uploadFile'))
   }
   function openFolderModal () {
@@ -127,7 +126,7 @@ export default function Main () {
                 onClick={() => {
                   openFile(openedFolder.id, item.id)
                 }}
-                className=' pl-2 gap-2 h-33 w-35 flex flex-col items-start  '
+                className=' pl-2 gap-2 h-26 w-35 flex flex-col items-start  '
               >
                 <div className='bg-[#c4c7cc15] shadow-sm  rounded-xl w-full h-full flex'>
                   <div className=' mt-5'>
@@ -147,7 +146,12 @@ export default function Main () {
                       />
                     )}
                   </div>
-                  <FilePreview data={item.content} layoutId={item.layoutId} />
+
+                  {item.source == 'upload' ? (
+                    <MiniIframe src={item.content} />
+                  ) : (
+                    <FilePreview data={item.content} layoutId={item.layoutId} />
+                  )}
                 </div>
                 <div className='flex w-[90%]  mt-1 pl-2 items-center text-[10px] text-gray-700 justify-center font-semibold gap-1'>
                   <p className=' truncate'>{item.name}.pdf</p>
@@ -184,7 +188,7 @@ export default function Main () {
                 onClick={() => {
                   openFile(null, item.id)
                 }}
-                className=' cursor-pointer pl-2 gap-2 h-33 w-35 flex flex-col items-start  '
+                className=' cursor-pointer pl-2 gap-2  h-26 w-35 flex flex-col items-start  '
               >
                 <div className='bg-[#c4c7cc15] shadow-sm  rounded-xl w-full h-full flex'>
                   <div className=' mt-5'>
@@ -204,9 +208,17 @@ export default function Main () {
                       />
                     )}
                   </div>
-                  <FilePreview data={item.content} layoutId={item.layoutId} />
+                  {item.source == 'upload' ? (
+                    <MiniIframe src={item.content} />
+                  ) : (
+                    <FilePreview
+                      className={'h-26'}
+                      data={item.content}
+                      layoutId={item.layoutId}
+                    />
+                  )}
                 </div>
-                <div className='flex w-[90%]  mt-1 pl-2 items-center text-[10px] text-gray-700 justify-center font-semibold gap-1'>
+                <div className='flex w-full  mt-1 pl-2 items-center text-[10px] text-gray-700 justify-center font-semibold gap-1'>
                   <p className=' truncate'>{item.name}.pdf</p>
                   <p className=' whitespace-nowrap'>{item.size}mb</p>
                 </div>
@@ -214,6 +226,17 @@ export default function Main () {
             )
           )}
       </section>
+    </section>
+  )
+}
+function MiniIframe ({ src }) {
+  const thumbnailUrl = src.replace(
+    '/upload/',
+    '/upload/w_300,h_400,pg_1,f_jpg/'
+  )
+  return (
+    <section className='bg-[#c4c7cc15] shadow-sm rounded-xl w-full h-full overflow-hidden'>
+      <img src={thumbnailUrl} alt='' className=' h-full w-full object-cover' />
     </section>
   )
 }

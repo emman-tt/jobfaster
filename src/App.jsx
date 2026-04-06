@@ -9,7 +9,6 @@ import Overview from './App/Dashboard/Overview/Overview'
 import Resume from './App/Dashboard/Resume/Resume'
 import Correction from './Pages/Correction'
 import CreateResume from './App/Dashboard/CreateResume/page'
-// import Select from './App/Dashboard/CreateResume/Select'
 import Examples from './App/Dashboard/CreateResume/examples'
 import Finale from './App/Onboarding/Finale'
 import QuickAction from './Pages/QuickActions'
@@ -33,7 +32,7 @@ function App () {
         }}
       />
       <Routes>
-        <Route path='/' element={<Navigate to={'/onboarding/personal'} />} />
+        <Route path='/' element={<Navigate to={'/dashboard'} />} />
         <Route path='/correction' element={<Correction />} />
         <Route path='/quick/actions' element={<QuickAction />} />
         <Route path='/auth' element={<Auth />} />

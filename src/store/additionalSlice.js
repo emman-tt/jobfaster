@@ -65,7 +65,9 @@ export const additionalSlice = createSlice({
       state.projects = state.projects.filter(item => item.id !== action.payload)
     },
     removeCertificateField: (state, action) => {
-      state.certificates = state.certificates.filter(item => item.id !== action.payload)
+      state.certificates = state.certificates.filter(
+        item => item.id !== action.payload
+      )
     }
   }
 })

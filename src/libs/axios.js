@@ -1,10 +1,12 @@
 import axios from 'axios'
+import { toast } from 'sonner'
+import { toastPresets } from '../components/toasters'
 const API_URL = import.meta.env.VITE_PORT_URL
 
 export const api = axios.create({
   baseURL: API_URL,
   withCredentials: true,
-  timeout: 5000
+  timeout: 10000
 })
 
 let isRefreshing = false
@@ -13,6 +15,13 @@ let queue = []
 api.interceptors.response.use(undefined, async error => {
   if (error.config._retry == true) {
     window.location.href = '/auth'
+  }
+
+  if (error.code === 'ECONNABORTED') {
+    return toast.error('Something went wrong , Please try again', {
+      ...toastPresets.authError(),
+      position: 'top-center'
+    })
   }
 
   if (

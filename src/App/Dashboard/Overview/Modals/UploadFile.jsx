@@ -10,7 +10,10 @@ import { useEffect, useRef, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { toggleModals } from '../../../../store/modalSlice'
 import { Upload } from '../../../../services/upload'
-import { sendMessage } from '../../../../hooks/useSocket'
+import { saveProgram } from '../../../../store/filesSlice'
+import { toast } from 'sonner'
+import { toastPresets } from '../../../../components/toasters'
+import { useNavigate } from 'react-router-dom'
 
 const ACCEPTED_FORMATS = [
   'image/jpeg',
@@ -36,11 +39,13 @@ function formatBytes (bytes) {
 export default function UploadFile () {
   const dispatch = useDispatch()
   const inputRef = useRef(null)
+  const navigate = useNavigate()
   const [dragging, setDragging] = useState(false)
   const [file, setFile] = useState({})
   const [loading, setLoading] = useState(false)
   function addfile (incoming) {
     const fileItem = incoming[0]
+    setLoading(true)
     if (!fileItem) {
       return console.log('the file doesnt exist')
     }
@@ -55,12 +60,14 @@ export default function UploadFile () {
       status: 'uploading'
     }
     setFile(fileobj)
+
     let progress = 0
     const interval = setInterval(() => {
       progress += Math.floor(Math.random() * 15) + 5
       if (progress >= 100) {
         progress = 100
         clearInterval(interval)
+        setLoading(false)
         setFile({ ...fileobj, progress: 100, status: 'done' })
       } else {
         setFile({ ...fileobj, progress })
@@ -84,14 +91,49 @@ export default function UploadFile () {
     setFile({})
   }
 
-  function navigateNext () {
+  async function navigateNext () {
     setLoading(true)
-    sendMessage('RESUME_UPLOAD', file)
-  }
 
-  useEffect(() => {
-    
-  })
+    try {
+      const formData = new FormData()
+      formData.append('file', file.file)
+
+      Upload(formData).then(res => {
+        console.log(res)
+        if (res.statusCode == 401) {
+          toast.error('Session Timed out ', {
+            ...toastPresets.authError(),
+            description: 'Please log in',
+            position: 'top-center'
+          })
+
+          return navigate('/auth')
+        }
+        if (res.statusCode == 404) {
+          toast.error('No file provided ', {
+            ...toastPresets.authError(),
+            description: 'Please make sure to select a file',
+            position: 'top-center'
+          })
+
+          return 
+        }
+        const data = res.data
+
+        toast.success(`File ${data.name} uploaded succesfully`, {
+          ...toastPresets.aiSuccess(),
+          description: 'File added to list of resumes',
+          position: 'top-center'
+        })
+        dispatch(saveProgram(data))
+        dispatch(toggleModals('uploadFile'))
+      })
+    } catch (error) {
+      console.error(error)
+    } finally {
+      setLoading(false)
+    }
+  }
 
   function closeModal () {
     dispatch(toggleModals('uploadFile'))
@@ -238,11 +280,11 @@ export default function UploadFile () {
           Cancel
         </button>
         <button
-          disabled={loading}
-          onClick={navigateNext}
-          className='flex-1 bg-[#ff8904] text-white text-sm font-semibold font-satoshi py-4 rounded-xl  transition-colors'
+          onClick={() => navigateNext()}
+          style={{ backgroundColor: loading ? 'gray' : '#ff8904' }}
+          className={`flex-1 cursor-pointer  text-white text-sm font-semibold font-satoshi py-4 rounded-xl  transition-colors`}
         >
-          Attach Files
+          Upload File
         </button>
       </div>
     </section>

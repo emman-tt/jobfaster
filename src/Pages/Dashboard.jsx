@@ -1,4 +1,4 @@
-import { data, Outlet, useNavigate } from 'react-router-dom'
+import {  Outlet, useNavigate } from 'react-router-dom'
 import Sidebar from '../App/Dashboard/Sidebar'
 import { useSelector } from 'react-redux'
 import Overlay from '../components/Overlay'
@@ -11,8 +11,8 @@ import { PanelLeftOpenIcon, PanelRightOpenIcon } from 'lucide-react'
 import { useDispatch } from 'react-redux'
 import { useEffect, useRef } from 'react'
 import SelectResume from '../App/Dashboard/Job/Modals/SelectResume'
-import { onJobApply, onResumeUpload } from '../hooks/useSocket'
-import { saveResume } from '../store/filesSlice'
+import { onJobApply } from '../hooks/useSocket'
+import { saveProgram } from '../store/filesSlice'
 import { getAllFiles } from '../utils/getAllFiles'
 import { dumpEmailDetails } from '../store/emailSlice'
 import { toast } from 'sonner'
@@ -36,15 +36,6 @@ export default function Dashboard () {
   function closeRightbar () {
     dispatch(toggleRightbar(false))
   }
-
-  useEffect(() => {
-    onResumeUpload(data => {
-      toggleModals('chooseTemplate')
-      if (data) {
-        console.log(data)
-      }
-    })
-  }, [])
 
   useEffect(() => {
     onJobApply(data => {
@@ -75,9 +66,10 @@ export default function Dashboard () {
             name: `${match.name}-${splitted}`,
             content: content,
             createdAt: timestamp
+
           }
 
-          dispatch(saveResume(tobeSaved))
+          dispatch(saveProgram(tobeSaved))
           dispatch(dumpEmailDetails(response.email))
           navigate(`/dashboard/file/?resumeID=${splitted}`)
         } else {
