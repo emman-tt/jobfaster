@@ -85,7 +85,6 @@ const initialState = {
           source: 'upload',
           extension: 'pdf',
           name: 'Emmanuel Resume.pdf',
-
           size: 226937,
           content:
             'https://res.cloudinary.com/drpnhajh9/image/upload/v1775417800/Jobfaster/1775417796836-Emmanuel%20Resume.pdf',
@@ -108,7 +107,6 @@ const initialState = {
       layoutId: null,
       source: 'upload',
       extension: 'pdf',
-
       name: 'Emmanuel Resume.pdf',
       download:
         'https://res.cloudinary.com/drpnhajh9/image/upload/v1775417800/Jobfaster/1775417796836-Emmanuel%20Resume.pdf',

@@ -67,7 +67,7 @@ export default function Auth () {
       })
     }
 
-    setToken()
+    setToken(res.data)
     toast.success('Account created succesfully', {
       position: 'top-center',
       ...toastPresets.aiSuccess(`Welcome back ${name}, got any jobs to apply?`)
@@ -96,7 +96,7 @@ export default function Auth () {
         ...toastPresets.authError('Please try again')
       })
     }
-
+    setToken(res.data)
     toast.success('Account created succesfully', {
       position: 'top-center',
       ...toastPresets.aiSuccess(`Welcome ${name}, lets start the applications`)

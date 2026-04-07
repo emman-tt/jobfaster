@@ -93,14 +93,13 @@ export default function UploadFile () {
   }
 
   async function navigateNext () {
-    setLoading(true)
-
     try {
+      setLoading(true)
       const formData = new FormData()
       formData.append('file', file.file)
 
       Upload(formData).then(res => {
-        console.log(res)
+        setLoading(false)
         if (res.statusCode == 401) {
           toast.error('Session Timed out ', {
             ...toastPresets.authError(),
@@ -132,7 +131,9 @@ export default function UploadFile () {
     } catch (error) {
       console.error(error)
     } finally {
-      setLoading(false)
+      setTimeout(() => {
+        setLoading(false)
+      }, 2000)
     }
   }
 
