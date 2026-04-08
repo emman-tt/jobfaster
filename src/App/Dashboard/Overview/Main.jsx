@@ -6,32 +6,35 @@ import {
 } from 'lucide-react'
 import Folder from '../../../components/Folder'
 
-import { useDispatch, useSelector } from 'react-redux'
-import { useEffect, useState } from 'react'
+import { useDispatch } from 'react-redux'
 import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import { toggleModals } from '../../../store/modalSlice'
 import FilePreview from '../Resume/FilePreview'
-import { connector } from '../../../hooks/useSocket'
+import { useQuery, useQueryClient } from '@tanstack/react-query'
+import { FetchPrograms } from '../../../services/Program'
 export default function Main () {
-  const { programs } = useSelector(state => state.files)
   const { id } = useParams()
   const dispatch = useDispatch()
-  const openedFolder = useSelector(state =>
-    state.files.programs.find(item => item.id == id)
-  )
+  const queryClient = useQueryClient()
 
   const navigate = useNavigate()
   const location = useLocation()
   const actualPath = location.pathname.split('/').at(-1)
-  const [loader, showLoader] = useState(true)
+
+  const { data, isLoading } = useQuery({
+    queryKey: ['program'],
+    queryFn: () => FetchPrograms(),
+    staleTime: 60 * 1000,
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
+    refetchOnMount: false
+  })
+  const programs = data?.data
+
+  const openedFolder = programs?.find(item => item.id == id)
+
   const headerText =
     actualPath !== 'overview' ? 'Saved Resumes' : 'Recently Opened'
-
-  useEffect(() => {
-    setTimeout(() => {
-      showLoader(false)
-    }, 1000)
-  }, [])
 
   function openFile (folderid, resumeid) {
     if (folderid == 0 || !folderid) {
@@ -41,10 +44,7 @@ export default function Main () {
   }
 
   function openFolder (item) {
-    showLoader(true)
-    setTimeout(() => {
-      showLoader(false)
-    }, 400)
+    queryClient.invalidateQueries({ queryKey: ['program'] })
     navigate(`/dashboard/folder/${item.id}`)
   }
 
@@ -106,7 +106,7 @@ export default function Main () {
           </p>
           {id && (
             <>
-              <ChevronRight className=' w-4 h-4' />{' '}
+              <ChevronRight className=' w-4 h-4' />
               <p className=' capitalize'>{openedFolder.name}</p>
             </>
           )}
@@ -114,9 +114,9 @@ export default function Main () {
       </div>
 
       <section
-        className={`flex mt-0  relative justify-start  pt-5 pl-10 gap-y-5 overflow-y-scroll ${
+        className={`flex mt-0  relative justify-start  pt-5 pl-10 gap-y-5 overflow-hidden overflow-y-scroll ${
           actualPath == 'overview' ? 'h-75' : 'h-130'
-        }  [scrollbar-width:thin] py-15 w-full gap-15 flex-wrap`}
+        }  [scrollbar-width:thin] py-15 w-full gap-5 flex-wrap`}
       >
         {/* specific files in an opened folder  */}
         {openedFolder && (
@@ -161,21 +161,34 @@ export default function Main () {
             ))}
           </section>
         )}
-        {loader == true && (
-          <div className='custom-loader absolute bottom-0  top-0 left-0 right-0 w-full '></div>
+        {isLoading == true && (
+          <>
+            <div className='custom-loader absolute bottom-0 top-0 left-0 right-0 w-full '></div>
+            <section className='flex gap-5 flex-wrap'>
+              {id ? (
+                [...Array(4)].map((_, i) => <FileSkeleton key={i} />)
+              ) : (
+                <>
+                  {[...Array(6)].map((_, i) => (
+                    <FolderSkeleton key={i} />
+                  ))}
+                </>
+              )}
+            </section>
+          </>
         )}
 
         {/* All folders and files in overview and resumes */}
-        {!loader &&
+        {!isLoading &&
           !id &&
-          programs.map(item =>
+          programs?.map(item =>
             item.type === 'folder' ? (
               <div
                 onDoubleClick={() => {
                   openFolder(item)
                 }}
                 key={item.id}
-                className='w-20 cursor-pointer'
+                className='w-30  cursor-pointer'
               >
                 <Folder files={item.files} />
                 <div className='flex w-full text-xs mt-2 items-center text-[10px] text-gray-700 justify-center font-semibold gap-1'>
@@ -188,7 +201,7 @@ export default function Main () {
                 onClick={() => {
                   openFile(null, item.id)
                 }}
-                className=' cursor-pointer pl-2 gap-2  h-26 w-35 flex flex-col items-start  '
+                className=' cursor-pointer pl-2 gap-2  h-26 w-32  flex flex-col items-start  '
               >
                 <div className='bg-[#c4c7cc15] shadow-sm  rounded-xl w-full h-full flex'>
                   <div className=' mt-5'>
@@ -212,7 +225,7 @@ export default function Main () {
                     <MiniIframe src={item.content} />
                   ) : (
                     <FilePreview
-                      className={'h-26'}
+                      className={'h-26 '}
                       data={item.content}
                       layoutId={item.layoutId}
                     />
@@ -237,6 +250,34 @@ function MiniIframe ({ src }) {
   return (
     <section className='bg-[#c4c7cc15] shadow-sm rounded-xl w-full h-full overflow-hidden'>
       <img src={thumbnailUrl} alt='' className=' h-full w-full object-cover' />
+    </section>
+  )
+}
+
+function FolderSkeleton () {
+  return (
+    <div className='w-30 animate-pulse'>
+      <div className='bg-slate-200 rounded-xl w-full h-26 flex flex-col items-center justify-center'>
+        <div className='w-12 h-12 bg-slate-300 rounded-lg mb-2' />
+        <div className='w-20 h-3 bg-slate-300 rounded' />
+      </div>
+      <div className='flex w-full text-xs mt-2 items-center justify-center gap-1'>
+        <div className='w-16 h-3 bg-slate-200 rounded' />
+      </div>
+    </div>
+  )
+}
+
+function FileSkeleton () {
+  return (
+    <section className='pl-2 gap-2 h-26 w-32 flex flex-col items-start'>
+      <div className='bg-slate-200 shadow-sm rounded-xl w-full h-full flex flex-col items-center justify-center p-4'>
+        <div className='w-8 h-8 bg-slate-300 rounded mb-2' />
+        <div className='w-20 h-3 bg-slate-300 rounded' />
+      </div>
+      <div className='flex w-full mt-1 pl-2 items-center justify-center gap-1'>
+        <div className='w-14 h-2 bg-slate-200 rounded' />
+      </div>
     </section>
   )
 }

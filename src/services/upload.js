@@ -3,7 +3,7 @@ import { api } from '../libs/axios'
 export async function Upload (formData) {
   try {
     const response = await api.post('/file/resume', formData, {
-      timeout: 10000,
+      timeout: 50000,
       headers: {
         'Content-Type': 'multipart/form-data'
       }

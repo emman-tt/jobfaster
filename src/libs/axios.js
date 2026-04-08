@@ -21,29 +21,38 @@ api.interceptors.request.use(config => {
 })
 
 api.interceptors.response.use(undefined, async error => {
-  // only redirect if it was a retried auth request
-  if (error.config._retry && error.response?.status === 401) {
+  const status = error.response?.status
+  const message = error.response?.data?.message
+
+  if (error.config._retry && status === 401) {
     window.location.href = '/auth'
     return
   }
 
   if (error.code === 'ECONNABORTED') {
-    return toast.error('Something went wrong, please try again', {
+    toast.error('Request timed out, please try again', {
       ...toastPresets.authError(),
       position: 'top-center'
     })
+    throw error
   }
 
-  if (
-    error.response?.data?.message === 'ACCESS_TOKEN_EXPIRED' && // ← data.message
-    !error.config._retry
-  ) {
+  if (!error.response) {
+    toast.error('No internet connection', {
+      ...toastPresets.authError(),
+      position: 'top-center'
+    })
+    throw error
+  }
+
+  // access token expired — refresh and retry
+  if (message === 'ACCESS_TOKEN_EXPIRED' && !error.config._retry) {
     error.config._retry = true
 
     if (isRefreshing) {
       return new Promise((resolve, reject) => {
         queue.push(err => {
-          if (err) return reject(err) // ← handle rejection
+          if (err) return reject(err)
           resolve(api(error.config))
         })
       })
@@ -53,21 +62,43 @@ api.interceptors.response.use(undefined, async error => {
 
     try {
       const { data } = await api.post('/auth/refresh')
-      console.log(data)
-      setToken(data.accessToken) // ← store new token
+      setToken(data.accessToken)
       api.defaults.headers.common[
         'Authorization'
-      ] = `Bearer ${data.accessToken}` // ← update default header
-      queue.forEach(cb => cb(null)) // ← resolve queue
+      ] = `Bearer ${data.accessToken}`
+      queue.forEach(cb => cb(null))
       queue = []
-      return api(error.config) // ← retry original request
+      return api(error.config)
     } catch (err) {
-      queue.forEach(cb => cb(err)) // ← reject queue on failure
+      queue.forEach(cb => cb(err))
       queue = []
-      window.location.href = '/auth' // ← redirect on refresh failure
+      window.location.href = '/auth'
     } finally {
       isRefreshing = false
     }
+  }
+
+  switch (status) {
+    case 403:
+      toast.error('You do not have permission to do this', {
+        ...toastPresets.authError(),
+        position: 'top-center'
+      })
+      break
+    case 429:
+      toast.error('Too many requests, please slow down', {
+        ...toastPresets.authError(),
+        position: 'top-center'
+      })
+      break
+    case 500:
+    case 502:
+    case 503:
+      toast.error('Something went wrong, please try again', {
+        ...toastPresets.authError(),
+        position: 'top-center'
+      })
+      break
   }
 
   throw error

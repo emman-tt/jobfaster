@@ -93,12 +93,19 @@ export default function UploadFile () {
   }
 
   async function navigateNext () {
+    const id = toast.loading(`Uploading File ${file.name}`, {
+      ...toastPresets.generalLoading(),
+      position: 'top-center',
+      description: 'Saving file to our server , takes some time'
+    })
+
     try {
       setLoading(true)
       const formData = new FormData()
       formData.append('file', file.file)
 
       Upload(formData).then(res => {
+        toast.dismiss(id)
         setLoading(false)
         if (res.statusCode == 401) {
           toast.error('Session Timed out ', {
@@ -126,14 +133,13 @@ export default function UploadFile () {
           position: 'top-center'
         })
         dispatch(saveProgram(data))
-        dispatch(toggleModals('uploadFile'))
       })
+
+      dispatch(toggleModals('uploadFile'))
     } catch (error) {
       console.error(error)
     } finally {
-      setTimeout(() => {
-        setLoading(false)
-      }, 2000)
+      setLoading(false)
     }
   }
 

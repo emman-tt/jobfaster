@@ -1,6 +1,34 @@
-
-
 export const toastPresets = {
+  generalSuccess: description => ({
+    description: description,
+    duration: 5000,
+    position: 'top-center',
+    style: {
+      background: 'rgba(15, 23, 42, 0.95)',
+      backdropFilter: 'blur(8px)',
+      color: 'white',
+      border: '1px solid rgba(241, 126, 39, 0.3)',
+      borderRadius: '1.25rem',
+      padding: '16px',
+      fontSize: '14px'
+    },
+    className: 'font-satoshi shadow-2xl shadow-orange-900/10'
+  }),
+  generalLoading: description => ({
+    description: description,
+    duration: Infinity,
+    position: 'top-center',
+    style: {
+      background: 'rgba(15, 23, 42, 0.95)',
+      backdropFilter: 'blur(8px)',
+      color: 'white',
+      border: '1px solid rgba(241, 126, 39, 0.3)',
+      borderRadius: '1.25rem',
+      padding: '16px',
+      fontSize: '14px'
+    },
+    className: 'font-satoshi shadow-2xl shadow-orange-900/10'
+  }),
   aiProcessing: () => ({
     // icon: <Sparkles className='w-5 h-5 text-orange-400 animate-pulse' />,
     description:
