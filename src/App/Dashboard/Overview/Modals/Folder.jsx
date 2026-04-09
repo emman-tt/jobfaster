@@ -18,23 +18,17 @@ export default function Folder () {
     dispatch(toggleModals('folder'))
   }
 
-  const data = useQuery({
-    queryKey: ['folder'],
-    queryFn: () => FetchPrograms
-  })
-  if (data) {
-    console.log(data)
-  }
+
 
   const mutation = useMutation({
     mutationFn: UploadFolder,
     onSuccess: data => {
-      console.log(data)
       setSaving(false)
-      queryClient.invalidateQueries({ queryKey: ['folder'] })
+      queryClient.invalidateQueries({ queryKey: ['program'] })
       toast.success(`Folder created successfully as  ${folderName}`, {
         ...toastPresets.generalSuccess()
       })
+      dispatch(toggleModals('folder'))
     }
   })
 

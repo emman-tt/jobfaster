@@ -11,7 +11,10 @@ import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import { toggleModals } from '../../../store/modalSlice'
 import FilePreview from '../Resume/FilePreview'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
-import { FetchPrograms } from '../../../services/Program'
+import { FetchPrograms, MoveFile } from '../../../services/Program'
+import { useState } from 'react'
+import { toast } from 'sonner'
+
 export default function Main () {
   const { id } = useParams()
   const dispatch = useDispatch()
@@ -19,6 +22,8 @@ export default function Main () {
   const navigate = useNavigate()
   const location = useLocation()
   const actualPath = location.pathname.split('/').at(-1)
+  const [, setDraggedItem] = useState(null)
+  const [touchDrag, setTouchDrag] = useState(null)
 
   const { data, isLoading } = useQuery({
     queryKey: ['program'],
@@ -30,8 +35,9 @@ export default function Main () {
   })
   const programs = data?.data
 
-  const openedFolder = programs?.find(item => item.id == id)
+  const openedFolder = programs?.find(item => item?.folder?.id == id)?.folder
 
+  console.log(openedFolder)
   const headerText =
     actualPath !== 'overview' ? 'Saved Resumes' : 'Recently Opened'
 
@@ -44,7 +50,7 @@ export default function Main () {
 
   function openFolder (item) {
     queryClient.invalidateQueries({ queryKey: ['program'] })
-    navigate(`/dashboard/folder/${item.id}`)
+    navigate(`/dashboard/folder/${item.folder.id}`)
   }
 
   function openFileModal () {
@@ -52,6 +58,94 @@ export default function Main () {
   }
   function openFolderModal () {
     dispatch(toggleModals('folder'))
+  }
+
+  function handleDragStart (e, item, type) {
+    e.dataTransfer.setData('itemId', type === 'folder' ? item.folder.id : item.file.id)
+    e.dataTransfer.setData('itemType', type)
+    setDraggedItem({ item, type })
+  }
+
+  function handleDragOver (e) {
+    e.preventDefault()
+  }
+
+  async function handleDrop (e, targetFolderId) {
+    e.preventDefault()
+    const itemId = e.dataTransfer.getData('itemId')
+    const itemType = e.dataTransfer.getData('itemType')
+    
+    if (itemType === 'file') {
+      try {
+        await MoveFile(itemId, targetFolderId)
+        toast.success('File moved successfully')
+        queryClient.invalidateQueries({ queryKey: ['program'] })
+      } catch (err) {
+        console.error('Failed to move file:', err)
+        toast.error('Failed to move file')
+      }
+    }
+  }
+
+  function handleTouchStart (e, item, type) {
+    const touch = e.touches[0]
+    setTouchDrag({
+      itemId: type === 'folder' ? item.folder.id : item.file.id,
+      itemType: type,
+      startX: touch.clientX,
+      startY: touch.clientY
+    })
+    setDraggedItem({ item, type })
+  }
+
+  function handleTouchMove (e) {
+    if (!touchDrag) return
+    
+    e.preventDefault()
+    const touch = e.touches[0]
+    const elementUnder = document.elementFromPoint(touch.clientX, touch.clientY)
+    const dropZone = elementUnder?.closest('[data-droppable="true"]')
+    
+    document.querySelectorAll('[data-droppable="true"]').forEach(el => {
+      el.classList.remove('ring-2', 'ring-orange-400')
+    })
+    
+    if (dropZone) {
+      dropZone.classList.add('ring-2', 'ring-orange-400')
+    }
+  }
+
+  async function handleTouchEnd (e) {
+    if (!touchDrag) return
+    
+    const touch = e.changedTouches[0]
+    let dropZone = null
+    
+    if (touch.clientX > 0 && touch.clientY > 0) {
+      const elementUnder = document.elementFromPoint(touch.clientX, touch.clientY)
+      dropZone = elementUnder?.closest('[data-droppable="true"]')
+    }
+    
+    document.querySelectorAll('[data-droppable="true"]').forEach(el => {
+      el.classList.remove('ring-2', 'ring-orange-400')
+    })
+    
+    if (dropZone) {
+      const targetFolderId = dropZone.getAttribute('data-folder-id')
+      if (touchDrag.itemType === 'file' && targetFolderId) {
+        try {
+          await MoveFile(touchDrag.itemId, targetFolderId)
+          toast.success('File moved successfully')
+          queryClient.invalidateQueries({ queryKey: ['program'] })
+        } catch (err) {
+          console.error('Failed to move file:', err)
+          toast.error('Failed to move file')
+        }
+      }
+    }
+    
+    setTouchDrag(null)
+    setDraggedItem(null)
   }
 
   return (
@@ -106,13 +200,15 @@ export default function Main () {
           {id && (
             <>
               <ChevronRight className=' w-4 h-4' />
-              <p className=' capitalize'>{openedFolder.name}</p>
+              <p className=' capitalize'>{openedFolder?.metaData?.name}</p>
             </>
           )}
         </div>
       </div>
 
       <section
+        onTouchMove={handleTouchMove}
+        onTouchEnd={handleTouchEnd}
         className={`flex mt-0  relative justify-start  pt-5 pl-10 gap-y-5 overflow-hidden overflow-y-scroll ${
           actualPath == 'overview' ? 'h-75' : 'h-130'
         }  [scrollbar-width:thin] py-15 w-full gap-5 flex-wrap`}
@@ -122,6 +218,9 @@ export default function Main () {
           <section className=' cursor-pointer flex w-full gap-10'>
             {openedFolder?.files?.map(item => (
               <section
+                draggable
+                onDragStart={(e) => handleDragStart(e, { file: item }, 'file')}
+                onTouchStart={(e) => handleTouchStart(e, { file: item }, 'file')}
                 onClick={() => {
                   openFile(openedFolder.id, item.id)
                 }}
@@ -146,10 +245,13 @@ export default function Main () {
                     )}
                   </div>
 
-                  {item.source == 'upload' ? (
-                    <MiniIframe src={item.content} />
+                  {item.file.source == 'upload' ? (
+                    <MiniIframe src={item.file.metaData.content} />
                   ) : (
-                    <FilePreview data={item.content} layoutId={item.layoutId} />
+                    <FilePreview
+                      data={item.file.metaData.content}
+                      layoutId={item.layoutId}
+                    />
                   )}
                 </div>
                 <div className='flex w-[90%]  mt-1 pl-2 items-center text-[10px] text-gray-700 justify-center font-semibold gap-1'>
@@ -183,20 +285,29 @@ export default function Main () {
           programs?.map(item =>
             item?.type === 'FOLDER' ? (
               <div
+                data-droppable='true'
+                data-folder-id={item.folder.id}
+                onTouchMove={handleTouchMove}
+                onTouchEnd={handleTouchEnd}
                 onDoubleClick={() => {
                   openFolder(item)
                 }}
+                onDragOver={handleDragOver}
+                onDrop={(e) => handleDrop(e, item.folder.id)}
                 key={item.folder.id}
                 className='w-30  cursor-pointer'
               >
-                <Folder files={item.files} />
+                <Folder files={item?.files?.metaData} />
                 <div className='flex w-full text-xs mt-2 items-center text-[10px] text-gray-700 justify-center font-semibold gap-1'>
-                  <p className=' truncate'>{item.name}</p>
-                  <p>{item.size}mb</p>
+                  <p className=' truncate'>{item.folder.metaData.name}</p>
+                  <p>{item.folder.metaData.size}mb</p>
                 </div>
               </div>
             ) : (
               <section
+                draggable
+                onDragStart={(e) => handleDragStart(e, item, 'file')}
+                onTouchStart={(e) => handleTouchStart(e, item, 'file')}
                 key={item.file.id}
                 onClick={() => {
                   openFile(null, item.file.id)

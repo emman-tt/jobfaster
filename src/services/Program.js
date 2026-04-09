@@ -27,3 +27,11 @@ export async function FetchPrograms () {
   })
   return response.data
 }
+
+export async function MoveFile (fileId, folderId) {
+  const response = await api.put(`/${base}/file/move`, {
+    fileId,
+    folderId
+  })
+  return response.data
+}

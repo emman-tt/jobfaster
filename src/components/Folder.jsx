@@ -21,9 +21,9 @@ export default function Folder ({ files }) {
         <div
           className={`bg-[#feb053] group  cursor-pointer  relative rounded-tl-none rounded-xl h-22 w-28`}
         >
-          {files.map((item, i) => (
+          {files?.map((item, i) => (
             <Paper
-              key={item.id}
+              key={item.name}
               extension={item.extension}
               className={`${item.styles} 
             ${filesArray[i]?.styles}
