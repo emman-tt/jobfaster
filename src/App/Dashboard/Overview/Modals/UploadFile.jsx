@@ -9,12 +9,13 @@ import {
 import { useEffect, useRef, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { toggleModals } from '../../../../store/modalSlice'
-import { Upload } from '../../../../services/upload'
+
 import { saveProgram } from '../../../../store/filesSlice'
 import { toast } from 'sonner'
 import { toastPresets } from '../../../../components/toasters'
 import { useNavigate } from 'react-router-dom'
-
+import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { UploadFile as Upload } from '../../../../services/Program'
 const ACCEPTED_FORMATS = [
   'image/jpeg',
   'image/png',
@@ -43,6 +44,7 @@ export default function UploadFile () {
   const [dragging, setDragging] = useState(false)
   const [file, setFile] = useState({})
   const [loading, setLoading] = useState(false)
+  const queryClient = useQueryClient()
 
   function addfile (incoming) {
     const fileItem = incoming[0]
@@ -92,55 +94,40 @@ export default function UploadFile () {
     setFile({})
   }
 
+  const mutation = useMutation({
+    mutationFn: Upload,
+    onSuccess: data => {
+      queryClient.invalidateQueries({ queryKey: ['program'] })
+      toast.success(`File ${file.name} uploaded succesfully`, {
+        ...toastPresets.aiSuccess(),
+        description: 'File added to list of resumes',
+        position: 'top-center'
+      })
+    },
+    onError: () => {
+      toast.error('Failed to upload file', {
+        ...toastPresets.generalError('Please try again'),
+        position: 'top-center'
+      })
+    }
+  })
+
   async function navigateNext () {
     const id = toast.loading(`Uploading File ${file.name}`, {
       ...toastPresets.generalLoading(),
+      duration: 1000,
       position: 'top-center',
       description: 'Saving file to our server , takes some time'
     })
+    setLoading(true)
+    const formData = new FormData()
+    formData.append('file', file.file)
 
-    try {
-      setLoading(true)
-      const formData = new FormData()
-      formData.append('file', file.file)
+    mutation.mutate(formData)
 
-      Upload(formData).then(res => {
-        toast.dismiss(id)
-        setLoading(false)
-        if (res.statusCode == 401) {
-          toast.error('Session Timed out ', {
-            ...toastPresets.authError(),
-            description: 'Please log in',
-            position: 'top-center'
-          })
+    toast.dismiss(id)
 
-          return navigate('/auth')
-        }
-        if (res.statusCode == 422) {
-          toast.error('No file provided ', {
-            ...toastPresets.authError(),
-            description: 'Please make sure to select a file',
-            position: 'top-center'
-          })
-
-          return
-        }
-        const data = res.data
-
-        toast.success(`File ${data.name} uploaded succesfully`, {
-          ...toastPresets.aiSuccess(),
-          description: 'File added to list of resumes',
-          position: 'top-center'
-        })
-        dispatch(saveProgram(data))
-      })
-
-      dispatch(toggleModals('uploadFile'))
-    } catch (error) {
-      console.error(error)
-    } finally {
-      setLoading(false)
-    }
+    closeModal()
   }
 
   function closeModal () {

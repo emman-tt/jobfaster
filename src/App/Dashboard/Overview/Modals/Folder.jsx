@@ -19,16 +19,21 @@ export default function Folder () {
   }
 
 
-
   const mutation = useMutation({
     mutationFn: UploadFolder,
     onSuccess: data => {
       setSaving(false)
       queryClient.invalidateQueries({ queryKey: ['program'] })
-      toast.success(`Folder created successfully as  ${folderName}`, {
+      toast.success(`Folder created successfully as ${folderName}`, {
         ...toastPresets.generalSuccess()
       })
       dispatch(toggleModals('folder'))
+    },
+    onError: () => {
+      setSaving(false)
+      toast.error('Failed to create folder', {
+        ...toastPresets.generalError()
+      })
     }
   })
 
@@ -57,7 +62,7 @@ export default function Folder () {
       <div className=' w-full h-[70%] rounded-xl flex justify-center items-center bg-gray-50'>
         <img src={folderImage} className=' w-[70%] h-auto' alt='' />
       </div>
-      <di className='w-full px-10 mt-4'>
+      <div className='w-full px-10 mt-4'>
         {mutation.isError && (
           <div className=' text-red-500 text-xs font-semibold'>
             Please give a name to your folder
@@ -69,7 +74,7 @@ export default function Folder () {
           placeholder='Folder name'
           className=' border-b border-gray-400 pb-2 w-full outline-0 '
         />
-      </di>
+      </div>
 
       <div onClick={navigateNext} className=' px-15 w-full'>
         <button

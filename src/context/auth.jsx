@@ -1,5 +1,5 @@
 import { useContext, createContext, useEffect } from 'react'
-import { setToken, getToken } from '../libs/token'
+import { setToken, getToken, clearToken } from '../libs/token'
 import { api } from '../libs/axios'
 import { useNavigate } from 'react-router-dom'
 
@@ -7,6 +7,18 @@ const AuthContext = createContext(null)
 
 export function AuthProvider ({ children }) {
   const navigate = useNavigate()
+  
+  const logout = async () => {
+    try {
+      await api.post('/auth/logout', {}, { withCredentials: true })
+    } catch (err) {
+      console.error('Logout error:', err)
+    }
+    clearToken()
+    delete api.defaults.headers.common['Authorization']
+    navigate('/auth')
+  }
+  
   useEffect(() => {
     const silentRefresh = async () => {
       try {
@@ -34,7 +46,11 @@ export function AuthProvider ({ children }) {
       silentRefresh()
     }
   }, [navigate])
-  return children
+  return (
+    <AuthContext.Provider value={{ logout }}>
+      {children}
+    </AuthContext.Provider>
+  )
 }
 
 export const useAuth = () => {

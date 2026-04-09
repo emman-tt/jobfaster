@@ -25,7 +25,7 @@ export default function Main () {
   const [, setDraggedItem] = useState(null)
   const [touchDrag, setTouchDrag] = useState(null)
 
-  const { data, isLoading } = useQuery({
+  const { data, isLoading, isFetching } = useQuery({
     queryKey: ['program'],
     queryFn: () => FetchPrograms(),
     staleTime: 3 * 60 * 1000,
@@ -37,7 +37,6 @@ export default function Main () {
 
   const openedFolder = programs?.find(item => item?.folder?.id == id)?.folder
 
-  console.log(openedFolder)
   const headerText =
     actualPath !== 'overview' ? 'Saved Resumes' : 'Recently Opened'
 
@@ -49,7 +48,7 @@ export default function Main () {
   }
 
   function openFolder (item) {
-    queryClient.invalidateQueries({ queryKey: ['program'] })
+    // queryClient.invalidateQueries({ queryKey: ['program'] })
     navigate(`/dashboard/folder/${item.folder.id}`)
   }
 
@@ -61,7 +60,10 @@ export default function Main () {
   }
 
   function handleDragStart (e, item, type) {
-    e.dataTransfer.setData('itemId', type === 'folder' ? item.folder.id : item.file.id)
+    e.dataTransfer.setData(
+      'itemId',
+      type === 'folder' ? item.folder.id : item.file.id
+    )
     e.dataTransfer.setData('itemType', type)
     setDraggedItem({ item, type })
   }
@@ -74,7 +76,7 @@ export default function Main () {
     e.preventDefault()
     const itemId = e.dataTransfer.getData('itemId')
     const itemType = e.dataTransfer.getData('itemType')
-    
+
     if (itemType === 'file') {
       try {
         await MoveFile(itemId, targetFolderId)
@@ -100,16 +102,16 @@ export default function Main () {
 
   function handleTouchMove (e) {
     if (!touchDrag) return
-    
+
     e.preventDefault()
     const touch = e.touches[0]
     const elementUnder = document.elementFromPoint(touch.clientX, touch.clientY)
     const dropZone = elementUnder?.closest('[data-droppable="true"]')
-    
+
     document.querySelectorAll('[data-droppable="true"]').forEach(el => {
       el.classList.remove('ring-2', 'ring-orange-400')
     })
-    
+
     if (dropZone) {
       dropZone.classList.add('ring-2', 'ring-orange-400')
     }
@@ -117,19 +119,22 @@ export default function Main () {
 
   async function handleTouchEnd (e) {
     if (!touchDrag) return
-    
+
     const touch = e.changedTouches[0]
     let dropZone = null
-    
+
     if (touch.clientX > 0 && touch.clientY > 0) {
-      const elementUnder = document.elementFromPoint(touch.clientX, touch.clientY)
+      const elementUnder = document.elementFromPoint(
+        touch.clientX,
+        touch.clientY
+      )
       dropZone = elementUnder?.closest('[data-droppable="true"]')
     }
-    
+
     document.querySelectorAll('[data-droppable="true"]').forEach(el => {
       el.classList.remove('ring-2', 'ring-orange-400')
     })
-    
+
     if (dropZone) {
       const targetFolderId = dropZone.getAttribute('data-folder-id')
       if (touchDrag.itemType === 'file' && targetFolderId) {
@@ -143,7 +148,7 @@ export default function Main () {
         }
       }
     }
-    
+
     setTouchDrag(null)
     setDraggedItem(null)
   }
@@ -218,9 +223,10 @@ export default function Main () {
           <section className=' cursor-pointer flex w-full gap-10'>
             {openedFolder?.files?.map(item => (
               <section
+                key={item.id}
                 draggable
-                onDragStart={(e) => handleDragStart(e, { file: item }, 'file')}
-                onTouchStart={(e) => handleTouchStart(e, { file: item }, 'file')}
+                onDragStart={e => handleDragStart(e, { file: item }, 'file')}
+                onTouchStart={e => handleTouchStart(e, { file: item }, 'file')}
                 onClick={() => {
                   openFile(openedFolder.id, item.id)
                 }}
@@ -228,7 +234,7 @@ export default function Main () {
               >
                 <div className='bg-[#c4c7cc15] shadow-sm  rounded-xl w-full h-full flex'>
                   <div className=' mt-5'>
-                    {item.extension == 'pdf' ? (
+                    {item.metaData.extension == 'pdf' ? (
                       <img
                         width='23'
                         height='23'
@@ -245,37 +251,40 @@ export default function Main () {
                     )}
                   </div>
 
-                  {item.file.source == 'upload' ? (
-                    <MiniIframe src={item.file.metaData.content} />
+                  {item.source == 'upload' ? (
+                    <MiniIframe src={item.metaData.content} />
                   ) : (
                     <FilePreview
-                      data={item.file.metaData.content}
+                      data={item.metaData.content}
                       layoutId={item.layoutId}
                     />
                   )}
                 </div>
                 <div className='flex w-[90%]  mt-1 pl-2 items-center text-[10px] text-gray-700 justify-center font-semibold gap-1'>
-                  <p className=' truncate'>{item.name}.pdf</p>
-                  <p className=' whitespace-nowrap'>{item.size}mb</p>
+                  <p className=' truncate'>{item.metaData.name}.pdf</p>
+                  <p className=' whitespace-nowrap'>{item.metaData.size}mb</p>
                 </div>
               </section>
             ))}
           </section>
         )}
-        {isLoading == true && (
+        {isFetching && (
           <>
             <div className='custom-loader absolute bottom-0 top-0 left-0 right-0 w-full '></div>
-            <section className='flex gap-5 flex-wrap'>
-              {id ? (
-                [...Array(4)].map((_, i) => <FileSkeleton key={i} />)
-              ) : (
-                <>
-                  {[...Array(6)].map((_, i) => (
-                    <FolderSkeleton key={i} />
-                  ))}
-                </>
-              )}
-            </section>
+
+            {isLoading && (
+              <section className='flex gap-5 flex-wrap'>
+                {id ? (
+                  [...Array(4)].map((_, i) => <FileSkeleton key={i} />)
+                ) : (
+                  <>
+                    {[...Array(6)].map((_, i) => (
+                      <FolderSkeleton key={i} />
+                    ))}
+                  </>
+                )}
+              </section>
+            )}
           </>
         )}
 
@@ -293,62 +302,64 @@ export default function Main () {
                   openFolder(item)
                 }}
                 onDragOver={handleDragOver}
-                onDrop={(e) => handleDrop(e, item.folder.id)}
+                onDrop={e => handleDrop(e, item.folder.id)}
                 key={item.folder.id}
                 className='w-30  cursor-pointer'
               >
-                <Folder files={item?.files?.metaData} />
+                <Folder files={item?.folder.files} />
                 <div className='flex w-full text-xs mt-2 items-center text-[10px] text-gray-700 justify-center font-semibold gap-1'>
                   <p className=' truncate'>{item.folder.metaData.name}</p>
                   <p>{item.folder.metaData.size}mb</p>
                 </div>
               </div>
             ) : (
-              <section
-                draggable
-                onDragStart={(e) => handleDragStart(e, item, 'file')}
-                onTouchStart={(e) => handleTouchStart(e, item, 'file')}
-                key={item.file.id}
-                onClick={() => {
-                  openFile(null, item.file.id)
-                }}
-                className=' cursor-pointer pl-2 gap-2  h-26 w-32  flex flex-col items-start  '
-              >
-                <div className='bg-[#c4c7cc15] shadow-sm  rounded-xl w-full h-full flex'>
-                  <div className=' mt-5'>
-                    {item.file.metaData.extension == 'pdf' ? (
-                      <img
-                        width='23'
-                        height='23'
-                        src='https://img.icons8.com/color/48/pdf-2--v1.png'
-                        alt='pdf-2--v1'
-                      />
+              !item.file?.folderId?.length > 0 && (
+                <section
+                  draggable
+                  onDragStart={e => handleDragStart(e, item, 'file')}
+                  onTouchStart={e => handleTouchStart(e, item, 'file')}
+                  key={item.file.id}
+                  onClick={() => {
+                    openFile(null, item.file.id)
+                  }}
+                  className=' cursor-pointer pl-2 gap-2  h-26 w-32  flex flex-col items-start  '
+                >
+                  <div className='bg-[#c4c7cc15] shadow-sm  rounded-xl w-full h-full flex'>
+                    <div className=' mt-5'>
+                      {item.file.metaData.extension == 'pdf' ? (
+                        <img
+                          width='23'
+                          height='23'
+                          src='https://img.icons8.com/color/48/pdf-2--v1.png'
+                          alt='pdf-2--v1'
+                        />
+                      ) : (
+                        <img
+                          width='23'
+                          height='23'
+                          src='https://img.icons8.com/color/48/microsoft-word-2019--v2.png'
+                          alt='microsoft-word-2019--v2'
+                        />
+                      )}
+                    </div>
+                    {item?.file.source == 'upload' ? (
+                      <MiniIframe src={item.file.metaData.content} />
                     ) : (
-                      <img
-                        width='23'
-                        height='23'
-                        src='https://img.icons8.com/color/48/microsoft-word-2019--v2.png'
-                        alt='microsoft-word-2019--v2'
+                      <FilePreview
+                        className={'h-26'}
+                        data={item?.file?.metaData?.content}
+                        layoutId={item?.file?.metaData?.layoutId}
                       />
                     )}
                   </div>
-                  {item?.file.source == 'upload' ? (
-                    <MiniIframe src={item.file.metaData.content} />
-                  ) : (
-                    <FilePreview
-                      className={'h-26'}
-                      data={item?.file?.metaData?.content}
-                      layoutId={item?.file?.metaData?.layoutId}
-                    />
-                  )}
-                </div>
-                <div className='flex w-full  mt-1 pl-2 items-center text-[10px] text-gray-700 justify-center font-semibold gap-1'>
-                  <p className=' truncate'>{item.file.metaData.name}.pdf</p>
-                  <p className=' whitespace-nowrap'>
-                    {item.file.metaData.size}mb
-                  </p>
-                </div>
-              </section>
+                  <div className='flex w-full  mt-1 pl-2 items-center text-[10px] text-gray-700 justify-center font-semibold gap-1'>
+                    <p className=' truncate'>{item.file.metaData.name}.pdf</p>
+                    <p className=' whitespace-nowrap'>
+                      {item.file.metaData.size}mb
+                    </p>
+                  </div>
+                </section>
+              )
             )
           )}
       </section>
