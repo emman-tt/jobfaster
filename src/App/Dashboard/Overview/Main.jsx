@@ -16,7 +16,6 @@ export default function Main () {
   const { id } = useParams()
   const dispatch = useDispatch()
   const queryClient = useQueryClient()
-
   const navigate = useNavigate()
   const location = useLocation()
   const actualPath = location.pathname.split('/').at(-1)
@@ -24,7 +23,7 @@ export default function Main () {
   const { data, isLoading } = useQuery({
     queryKey: ['program'],
     queryFn: () => FetchPrograms(),
-    staleTime: 60 * 1000,
+    staleTime: 3 * 60 * 1000,
     refetchOnWindowFocus: false,
     refetchOnReconnect: false,
     refetchOnMount: false
@@ -119,9 +118,9 @@ export default function Main () {
         }  [scrollbar-width:thin] py-15 w-full gap-5 flex-wrap`}
       >
         {/* specific files in an opened folder  */}
-        {openedFolder && (
+        {openedFolder && id && (
           <section className=' cursor-pointer flex w-full gap-10'>
-            {openedFolder.files.map(item => (
+            {openedFolder?.files?.map(item => (
               <section
                 onClick={() => {
                   openFile(openedFolder.id, item.id)
@@ -182,12 +181,12 @@ export default function Main () {
         {!isLoading &&
           !id &&
           programs?.map(item =>
-            item.type === 'folder' ? (
+            item?.type === 'FOLDER' ? (
               <div
                 onDoubleClick={() => {
                   openFolder(item)
                 }}
-                key={item.id}
+                key={item.folder.id}
                 className='w-30  cursor-pointer'
               >
                 <Folder files={item.files} />
@@ -198,14 +197,15 @@ export default function Main () {
               </div>
             ) : (
               <section
+                key={item.file.id}
                 onClick={() => {
-                  openFile(null, item.id)
+                  openFile(null, item.file.id)
                 }}
                 className=' cursor-pointer pl-2 gap-2  h-26 w-32  flex flex-col items-start  '
               >
                 <div className='bg-[#c4c7cc15] shadow-sm  rounded-xl w-full h-full flex'>
                   <div className=' mt-5'>
-                    {item.extension == 'pdf' ? (
+                    {item.file.metaData.extension == 'pdf' ? (
                       <img
                         width='23'
                         height='23'
@@ -221,19 +221,21 @@ export default function Main () {
                       />
                     )}
                   </div>
-                  {item.source == 'upload' ? (
-                    <MiniIframe src={item.content} />
+                  {item?.file.source == 'upload' ? (
+                    <MiniIframe src={item.file.metaData.content} />
                   ) : (
                     <FilePreview
-                      className={'h-26 '}
-                      data={item.content}
-                      layoutId={item.layoutId}
+                      className={'h-26'}
+                      data={item?.file?.metaData?.content}
+                      layoutId={item?.file?.metaData?.layoutId}
                     />
                   )}
                 </div>
                 <div className='flex w-full  mt-1 pl-2 items-center text-[10px] text-gray-700 justify-center font-semibold gap-1'>
-                  <p className=' truncate'>{item.name}.pdf</p>
-                  <p className=' whitespace-nowrap'>{item.size}mb</p>
+                  <p className=' truncate'>{item.file.metaData.name}.pdf</p>
+                  <p className=' whitespace-nowrap'>
+                    {item.file.metaData.size}mb
+                  </p>
                 </div>
               </section>
             )

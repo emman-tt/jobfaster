@@ -6,34 +6,34 @@ import { useNavigate } from 'react-router-dom'
 const AuthContext = createContext(null)
 
 export function AuthProvider ({ children }) {
-  // const navigate = useNavigate()
-  // useEffect(() => {
-  //   const silentRefresh = async () => {
-  //     try {
-  //       const res = await api.post(
-  //         '/auth/refresh',
-  //         {},
-  //         {
-  //           withCredentials: true
-  //         }
-  //       )
+  const navigate = useNavigate()
+  useEffect(() => {
+    const silentRefresh = async () => {
+      try {
+        const res = await api.post(
+          '/auth/refresh',
+          {},
+          {
+            withCredentials: true
+          }
+        )
 
-  //       const data = res.data
-  //       const token = data.data
+        const data = res.data
+        const token = data.data
 
-  //       setToken(token)
-  //       api.defaults.headers.common['Authorization'] = `Bearer ${token}`
-  //     } catch (err) {
-  //       console.log(err)
-  //       navigate('/auth')
-  //     }
-  //   }
+        setToken(token)
+        api.defaults.headers.common['Authorization'] = `Bearer ${token}`
+      } catch (err) {
+        console.log(err)
+        navigate('/auth')
+      }
+    }
 
-  //   const token = getToken()
-  //   if (!token) {
-  //     // silentRefresh()
-  //   }
-  // }, [navigate])
+    const token = getToken()
+    if (!token) {
+      silentRefresh()
+    }
+  }, [navigate])
   return children
 }
 
