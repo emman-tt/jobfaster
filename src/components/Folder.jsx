@@ -23,8 +23,8 @@ export default function Folder ({ files }) {
         >
           {files?.map((item, i) => (
             <Paper
-              key={item.name}
-              extension={item.extension}
+              key={item.id}
+              extension={item.metaData.extension}
               className={`${item.styles} 
             ${filesArray[i]?.styles}
             paper absolute`}

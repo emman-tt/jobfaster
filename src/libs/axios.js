@@ -45,7 +45,6 @@ api.interceptors.response.use(undefined, async error => {
     throw error
   }
 
-  // access token expired — refresh and retry
   if (message === 'ACCESS_TOKEN_EXPIRED' && !error.config._retry) {
     error.config._retry = true
 
@@ -72,7 +71,18 @@ api.interceptors.response.use(undefined, async error => {
     } catch (err) {
       queue.forEach(cb => cb(err))
       queue = []
-      window.location.href = '/auth'
+      const isNetworkError =
+        !err.response ||
+        err.code === 'ERR_NETWORK' ||
+        err.code === 'ECONNABORTED'
+      if (isNetworkError) {
+        toast.error('No internet connection, please check your network', {
+          ...toastPresets.authError(),
+          position: 'top-center'
+        })
+      } else {
+        window.location.href = '/auth'
+      }
     } finally {
       isRefreshing = false
     }

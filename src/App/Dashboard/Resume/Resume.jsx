@@ -23,10 +23,10 @@ export default function Resume ({ data }) {
       }
     }
 
-    return programs.find(item => item.file.id == resumeId)
+    return programs?.find(item => item?.file?.id == resumeId)
   }
-  const resume = findResume().file
-  const type = resume.source
+  const resume = findResume()?.file
+  const type = resume?.source
 
   if (type == 'builder') {
     return <Builder resume={resume} layoutId={resume.layoutId} />

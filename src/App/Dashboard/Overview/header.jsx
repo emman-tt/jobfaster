@@ -63,7 +63,7 @@ export const Header = () => {
 
       <nav
         className={`flex w-full justify-between h-37 mt-5 gap-5 ${
-          !showRightbar && 'pr-30'
+          !showRightbar && 'pr-20'
         }`}
       >
         <section

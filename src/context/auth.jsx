@@ -1,4 +1,4 @@
-import { useContext, createContext, useEffect } from 'react'
+import { useContext, createContext, useEffect, useRef } from 'react'
 import { setToken, getToken, clearToken } from '../libs/token'
 import { api } from '../libs/axios'
 import { useNavigate } from 'react-router-dom'
@@ -7,6 +7,7 @@ const AuthContext = createContext(null)
 
 export function AuthProvider ({ children }) {
   const navigate = useNavigate()
+  const isRefreshing = useRef(false)
   
   const logout = async () => {
     try {
@@ -20,13 +21,18 @@ export function AuthProvider ({ children }) {
   }
   
   useEffect(() => {
+    const controller = new AbortController()
     const silentRefresh = async () => {
+      if (isRefreshing.current) return
+      isRefreshing.current = true
+
       try {
         const res = await api.post(
           '/auth/refresh',
           {},
           {
-            withCredentials: true
+            withCredentials: true,
+            signal: controller.signal
           }
         )
 
@@ -36,8 +42,14 @@ export function AuthProvider ({ children }) {
         setToken(token)
         api.defaults.headers.common['Authorization'] = `Bearer ${token}`
       } catch (err) {
-        console.log(err)
-        navigate('/auth')
+        if (err.name === 'AbortError') return
+        const isNetworkError = !err.response || err.code === 'ERR_NETWORK' || err.code === 'ECONNABORTED'
+        if (!isNetworkError) {
+          console.error('Auth refresh failed:', err)
+          navigate('/auth')
+        }
+      } finally {
+        isRefreshing.current = false
       }
     }
 
@@ -45,6 +57,8 @@ export function AuthProvider ({ children }) {
     if (!token) {
       silentRefresh()
     }
+
+    return () => controller.abort()
   }, [navigate])
   return (
     <AuthContext.Provider value={{ logout }}>
