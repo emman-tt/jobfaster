@@ -1,4 +1,4 @@
-import {  Outlet, useNavigate } from 'react-router-dom'
+import { Outlet, useNavigate } from 'react-router-dom'
 import Sidebar from '../App/Dashboard/Sidebar'
 import { useSelector } from 'react-redux'
 import Overlay from '../components/Overlay'
@@ -19,6 +19,8 @@ import { toast } from 'sonner'
 import { toastPresets } from '../components/toasters'
 import ChooseTemplate from '../App/Dashboard/Overview/Modals/ChooseTemplate'
 import { toggleModals } from '../store/modalSlice'
+import { useQuery } from '@tanstack/react-query'
+import { getActivity } from '../services/activity'
 
 export default function Dashboard () {
   const { modals } = useSelector(state => state.modal)
@@ -66,7 +68,6 @@ export default function Dashboard () {
             name: `${match.name}-${splitted}`,
             content: content,
             createdAt: timestamp
-
           }
 
           dispatch(saveProgram(tobeSaved))
@@ -80,6 +81,17 @@ export default function Dashboard () {
       }
     })
   }, [dispatch, navigate, allFilesOnly])
+
+  const { data } = useQuery({
+    queryKey: ['activity'],
+    queryFn: () => getActivity(),
+    staleTime: 3 * 60 * 1000,
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
+    refetchOnMount: false
+  })
+
+  const activities = data?.data
 
   return (
     <section className='flex relative overflow-hidden  w-full h-screen '>
@@ -107,6 +119,7 @@ export default function Dashboard () {
         </div>
         {showRightbar && (
           <Rightbar
+            data={activities}
             className={
               'w-80 transition-all duration-200 transform-gpu ease-linear  rounded-xl shadow-[#23232389] shadow-sm '
             }

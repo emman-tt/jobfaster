@@ -14,8 +14,7 @@ import {
 import { useDispatch, useSelector } from 'react-redux'
 import { toggleModals } from '../../../../store/modalSlice'
 import UploadResume from './UploadResume'
-import { Upload } from '../../../../services/upload'
-import { saveCorrections } from '../../../../store/aiSlice'
+
 import { toggleNotification } from '../../../../store/notificationSlice'
 import { useNavigate } from 'react-router-dom'
 import { GetFileIcon } from '../../../../components/getFileIcon'
@@ -44,12 +43,12 @@ export default function SelectResume () {
       dispatch(toggleNotification({ category: 'tailor', value: true }))
       const formData = new FormData()
       formData.append('file', uploadedFile.file)
-      Upload(formData).then(result => {
-        if (result) {
-          dispatch(saveCorrections(result))
-          navigate('/correction')
-        }
-      })
+      // Upload(formData).then(result => {
+      //   if (result) {
+      //     dispatch(saveCorrections(result))
+      //     navigate('/correction')
+      //   }
+      // })
     } else {
       if (!selected) {
         return console.log('nothing selected')

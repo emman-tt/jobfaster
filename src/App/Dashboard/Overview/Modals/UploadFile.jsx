@@ -6,14 +6,13 @@ import {
   UploadIcon,
   X
 } from 'lucide-react'
-import { useEffect, useRef, useState } from 'react'
+import {  useRef, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { toggleModals } from '../../../../store/modalSlice'
 
-import { saveProgram } from '../../../../store/filesSlice'
 import { toast } from 'sonner'
 import { toastPresets } from '../../../../components/toasters'
-import { useNavigate } from 'react-router-dom'
+
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { UploadFile as Upload } from '../../../../services/Program'
 const ACCEPTED_FORMATS = [
@@ -40,7 +39,7 @@ function formatBytes (bytes) {
 export default function UploadFile () {
   const dispatch = useDispatch()
   const inputRef = useRef(null)
-  const navigate = useNavigate()
+ 
   const [dragging, setDragging] = useState(false)
   const [file, setFile] = useState({})
   const [loading, setLoading] = useState(false)
@@ -96,8 +95,9 @@ export default function UploadFile () {
 
   const mutation = useMutation({
     mutationFn: Upload,
-    onSuccess: data => {
+    onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['program'] })
+      queryClient.invalidateQueries({ queryKey: ['activity'] })
       toast.success(`File ${file.name} uploaded succesfully`, {
         ...toastPresets.aiSuccess(),
         description: 'File added to list of resumes',

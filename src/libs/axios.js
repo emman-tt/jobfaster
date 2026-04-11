@@ -37,15 +37,15 @@ api.interceptors.response.use(undefined, async error => {
     throw error
   }
 
-  if (!error.response) {
-    toast.error('No internet connection', {
-      ...toastPresets.authError(),
-      position: 'top-center'
-    })
-    throw error
-  }
+  // if (!error.response) {
+  //   toast.error('No internet connection', {
+  //     ...toastPresets.authError(),
+  //     position: 'top-center'
+  //   })
+  //   throw error
+  // }
 
-  if (message === 'ACCESS_TOKEN_EXPIRED' && !error.config._retry) {
+  if (error.response.status === 401 && !error.config._retry) {
     error.config._retry = true
 
     if (isRefreshing) {
@@ -61,10 +61,10 @@ api.interceptors.response.use(undefined, async error => {
 
     try {
       const { data } = await api.post('/auth/refresh')
-      setToken(data.accessToken)
-      api.defaults.headers.common[
-        'Authorization'
-      ] = `Bearer ${data.accessToken}`
+      console.log(data)
+      const accessToken = data.data
+      setToken(accessToken)
+      api.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`
       queue.forEach(cb => cb(null))
       queue = []
       return api(error.config)

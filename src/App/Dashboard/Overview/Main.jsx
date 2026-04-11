@@ -6,7 +6,8 @@ import {
   FolderOpen,
   Pencil,
   Search,
-  Trash2
+  Trash2,
+  Upload
 } from 'lucide-react'
 import Folder from '../../../components/Folder'
 
@@ -368,8 +369,12 @@ export default function Main () {
         )}
 
         {/* All folders and files in overview and resumes */}
+        {!isLoading && !id && (!programs || programs.length === 0) && (
+          <EmptyState onUpload={openFileModal} />
+        )}
         {!isLoading &&
           !id &&
+          programs?.length > 0 &&
           programs?.map(item =>
             item?.type === 'FOLDER' ? (
               <div
@@ -537,6 +542,23 @@ function Skeleton () {
       <div className='flex w-full text-xs mt-2 items-center justify-center gap-1'>
         <div className='w-16 h-3 bg-slate-200 rounded' />
       </div>
+    </div>
+  )
+}
+
+function EmptyState () {
+  return (
+    <div className='col-span-8 flex flex-col items-center justify-center h-75 gap-4'>
+      <div className='w-10 h-10 rounded-full bg-orange-50 flex items-center justify-center'>
+        <FolderCodeIcon className='w-6 h-6 text-orange-300' />
+      </div>
+      <p className='text-lg font-satoshi font-semibold text-slate-800'>
+        No files yet
+      </p>
+      <p className='text-sm font-satoshi text-slate-500 text-center max-w-60'>
+        Upload your first resume to get started.
+      </p>
+  
     </div>
   )
 }
