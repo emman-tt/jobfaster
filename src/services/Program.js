@@ -2,6 +2,13 @@ import { api } from '../libs/axios'
 
 const base = 'program'
 
+export async function deleteProgram (id) {
+  const response = await api.delete(`/${base}/${id}`, {
+    timeout: 50000
+  })
+  const raw = await response.data
+  return raw
+}
 export async function UploadFolder (name) {
   const response = await api.post(`/${base}/folder/${name}`, {
     timeout: 50000
@@ -11,7 +18,7 @@ export async function UploadFolder (name) {
 }
 
 export async function UploadFile (formData) {
-  const response = await api.post(`/${base}/resume`, formData, {
+  const response = await api.post(`/${base}/file`, formData, {
     timeout: 50000,
     headers: {
       'Content-Type': 'multipart/form-data'

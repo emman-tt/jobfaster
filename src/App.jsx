@@ -18,6 +18,7 @@ import Finalize from './App/Dashboard/Job/Finalize'
 import Auth from './Pages/Auth'
 import Additional from './App/Onboarding/Additional-step3/Additional'
 import { AuthProvider } from './context/auth'
+import Editor from './Pages/Editor'
 function App () {
   return (
     <BrowserRouter>
@@ -38,6 +39,8 @@ function App () {
           <Route path='/correction' element={<Correction />} />
           <Route path='/quick/actions' element={<QuickAction />} />
           <Route path='/auth' element={<Auth />} />
+
+          <Route path='/editor' element={<Editor />}></Route>
 
           <Route path='/onboarding' element={<Onboarding />}>
             <Route path='personal' element={<Personal />} />

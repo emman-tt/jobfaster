@@ -16,7 +16,7 @@ import { toggleModals } from '../../../../store/modalSlice'
 import UploadResume from './UploadResume'
 
 import { toggleNotification } from '../../../../store/notificationSlice'
-import { useNavigate } from 'react-router-dom'
+
 import { GetFileIcon } from '../../../../components/getFileIcon'
 import { sendMessage } from '../../../../hooks/useSocket'
 import { getAllFiles } from '../../../../utils/getAllFiles'
@@ -26,7 +26,7 @@ export default function SelectResume () {
   const [searchQuery, setSearchQuery] = useState('')
   const [uploadedFile, setUploadedFile] = useState({})
   const dispatch = useDispatch()
-  const navigate = useNavigate()
+  
   const { programs } = useSelector(state => state.files)
   const { job } = useSelector(state => state.ai)
   const [selected, setSelected] = useState(null)
@@ -43,26 +43,17 @@ export default function SelectResume () {
       dispatch(toggleNotification({ category: 'tailor', value: true }))
       const formData = new FormData()
       formData.append('file', uploadedFile.file)
-      // Upload(formData).then(result => {
-      //   if (result) {
-      //     dispatch(saveCorrections(result))
-      //     navigate('/correction')
-      //   }
-      // })
+
     } else {
       if (!selected) {
         return console.log('nothing selected')
       }
       const all = getAllFiles(programs)
-
       const found = all.find(item => item.id == selected)
-
       if (!found) {
         throw new Error('no data as such found')
       }
-
       const use = found.content
-
       const data = {
         job: {
           ...job
@@ -80,9 +71,7 @@ export default function SelectResume () {
         experience: use.experience,
         fileId: found.id
       }
-
       sendMessage('tailor', data)
-
       closeModal()
     }
   }

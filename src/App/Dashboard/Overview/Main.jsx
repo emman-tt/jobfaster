@@ -15,8 +15,12 @@ import { useDispatch } from 'react-redux'
 import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import { toggleModals } from '../../../store/modalSlice'
 import FilePreview from '../Resume/FilePreview'
-import { useQuery, useQueryClient } from '@tanstack/react-query'
-import { FetchPrograms, MoveFile } from '../../../services/Program'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import {
+  deleteProgram,
+  FetchPrograms,
+  MoveFile
+} from '../../../services/Program'
 import { useState, useEffect } from 'react'
 import { toast } from 'sonner'
 import { toastPresets } from '../../../components/toasters'
@@ -43,7 +47,8 @@ export default function Main () {
     visible: false,
     x: 0,
     y: 0,
-    folder: null
+
+    id: null
   })
 
   useEffect(() => {
@@ -55,14 +60,14 @@ export default function Main () {
     return () => window.removeEventListener('click', handleClickOutside)
   }, [menuConfig.visible])
 
-  function handleFolderClick (e, item) {
+  function handleClick (e, item) {
     e.preventDefault()
     e.stopPropagation()
     setMenuConfig({
       visible: true,
       x: e.clientX,
       y: e.clientY,
-      item: item
+      id: item
     })
   }
 
@@ -135,8 +140,7 @@ export default function Main () {
           position: 'top-center'
         })
         queryClient.invalidateQueries({ queryKey: ['program'] })
-      } catch (err) {
-        console.error('Failed to move file:', err)
+      } catch {
         toast.dismiss(loadingToast)
         toast.error('Failed to move file', {
           ...toastPresets.generalError('Please try again'),
@@ -158,6 +162,25 @@ export default function Main () {
     })
     setDraggedItem({ item, type })
   }
+
+  const mutation = useMutation({
+    mutationFn: deleteProgram,
+    onSuccess: data => {
+      const program = data.data
+      queryClient.invalidateQueries({ queryKey: ['program'] })
+      queryClient.invalidateQueries({ queryKey: ['activity'] })
+      toast.success(`Program deleted  succesfully`, {
+        ...toastPresets.aiSuccess(),
+        position: 'top-center'
+      })
+    },
+    onError: () => {
+      toast.error('Failed to delete program', {
+        ...toastPresets.generalError('Please try again'),
+        position: 'top-center'
+      })
+    }
+  })
 
   function handleTouchMove (e) {
     if (!touchDrag) return
@@ -387,7 +410,7 @@ export default function Main () {
                 }}
                 onDragOver={handleDragOver}
                 onDrop={e => handleDrop(e, item.folder.id)}
-                onClick={e => handleFolderClick(e, item)}
+                onClick={e => handleClick(e, item.folder.id)}
                 key={item.folder.id}
                 className='w-28 shrink-0 cursor-pointer'
               >
@@ -452,6 +475,7 @@ export default function Main () {
       </section>
       {menuConfig.visible && !openedFolder && (
         <FolderMenu
+          mutation={mutation}
           config={menuConfig}
           onOpen={() => openFolder(menuConfig.item)}
           onClose={() => setMenuConfig(prev => ({ ...prev, visible: false }))}
@@ -461,10 +485,10 @@ export default function Main () {
   )
 }
 
-function FolderMenu ({ config, onClose, onOpen }) {
+function FolderMenu ({ config, onClose, onOpen, mutation }) {
   return (
     <div
-      className='fixed z-50 bg-white shadow-xl border border-slate-100/50 rounded-2xl py-1.5 w-40 flex flex-col font-satoshi'
+      className='fixed z-50 bg-white shadow-xl border border-slate-100/50 rounded-2xl py-1.5 w-25 p-0 flex flex-col font-satoshi'
       style={{
         top: config.y,
         left: config.x,
@@ -477,31 +501,32 @@ function FolderMenu ({ config, onClose, onOpen }) {
           onOpen()
           onClose()
         }}
-        className='flex items-center gap-3 px-4 py-2 hover:bg-slate-50 text-slate-700 text-[11px] font-semibold transition-all cursor-pointer'
+        className='flex items-center rounded-[inherit] gap-2 px-4 py-2 hover:bg-slate-50 text-slate-700 text-[10px] font-semibold transition-all cursor-pointer'
       >
-        <FolderOpen size={14} strokeWidth={2.5} />
+        <FolderOpen size={11} strokeWidth={2.5} />
         <span>Open</span>
       </button>
 
       <button
         onClick={() => {
-          toast.info(`Downloading ${config.item.folder.metaData.name}`)
+         
           onClose()
         }}
-        className='flex items-center gap-3 px-4 py-2 hover:bg-slate-50 text-slate-700 text-[11px] font-semibold transition-all cursor-pointer'
+        className='flex items-center gap-2 px-4 py-2 hover:bg-slate-50 text-slate-700 text-[10px] font-semibold transition-all cursor-pointer'
       >
-        <Download size={14} strokeWidth={2.5} />
+        <Download className=' shrink-0' size={11} strokeWidth={2.5} />
+
         <span>Download</span>
       </button>
 
       <button
         onClick={() => {
-          toast.info(`Renaming ${config.item.folder.metaData.name}`)
+         
           onClose()
         }}
-        className='flex items-center gap-3 px-4 py-2 hover:bg-slate-50 text-slate-700 text-[11px] font-semibold transition-all cursor-pointer'
+        className='flex items-center gap-2 px-4 py-2 hover:bg-slate-50 text-slate-700 text-[10px] font-semibold transition-all cursor-pointer'
       >
-        <Pencil size={14} strokeWidth={2.5} />
+        <Pencil size={11} strokeWidth={2.5} />
         <span>Rename</span>
       </button>
 
@@ -509,12 +534,12 @@ function FolderMenu ({ config, onClose, onOpen }) {
 
       <button
         onClick={() => {
-          toast.error(`Deleted ${config.item.folder.metaData.name}`)
+          mutation.mutate(config.id)
           onClose()
         }}
-        className='flex items-center gap-3 px-4 py-2 hover:bg-rose-50 text-rose-500 text-[11px] font-semibold transition-all cursor-pointer'
+        className='flex items-center gap-2 px-4 py-2 hover:bg-rose-50 text-rose-500 text-[10px] font-semibold transition-all cursor-pointer'
       >
-        <Trash2 size={14} strokeWidth={2.5} />
+        <Trash2 size={11} strokeWidth={2.5} />
         <span>Delete</span>
       </button>
     </div>
@@ -558,7 +583,6 @@ function EmptyState () {
       <p className='text-sm font-satoshi text-slate-500 text-center max-w-60'>
         Upload your first resume to get started.
       </p>
-  
     </div>
   )
 }

@@ -44,7 +44,7 @@ export default function Activity ({ data }) {
   }
 
 
-  console.log(data)
+ 
 
 
 

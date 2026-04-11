@@ -89,6 +89,17 @@
   --font-body-text: "Roboto", "Helvetica", sans-serif;
 }
 
+.dotted-pattern {
+  background-color: #f4f2f09a;
+
+  /* Reduced to 0.5px for a much finer look */
+  /* Using rgba to make the dots subtle against the off-white background */
+  background-image: radial-gradient(rgba(0, 0, 0, 0.15) 1px, transparent 0.5px);
+
+  /* You can also tighten the spacing to match the smaller scale */
+  background-size: 15px 15px;
+}
+
 .small-loader {
   width: 20px;
   height: 20px;
