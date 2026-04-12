@@ -1,5 +1,5 @@
-import { useState, useRef } from 'react'
-import { Bold, Italic, Underline, Type } from 'lucide-react'
+import { useRef } from 'react'
+import { Bold, Italic, Underline } from 'lucide-react'
 
 export default function TextBox ({
   width = 'w-full',
@@ -7,39 +7,10 @@ export default function TextBox ({
   placeholder = 'Begin detailing your professional philosophy and key career achievements...'
 }) {
   const editorRef = useRef(null)
-  const [fontSize, setFontSize] = useState('16')
-  const [fontFamily, setFontFamily] = useState('font-sans')
-
-  const fontFamilies = [
-    { value: 'font-sans', label: 'Sans Serif', style: 'font-sans' },
-    { value: 'font-serif', label: 'Serif', style: 'font-serif' },
-    { value: 'font-mono', label: 'Monospace', style: 'font-mono' },
-    { value: 'font-[georgia]', label: 'Georgia', style: 'font-[georgia]' }
-  ]
-
-  const fontSizes = ['12', '14', '16', '18', '20', '24', '28', '32']
 
   const applyFormatting = (command, value = null) => {
     document.execCommand(command, false, value)
     editorRef.current?.focus()
-  }
-
-  const handleFontSizeChange = size => {
-    setFontSize(size)
-    applyFormatting('fontSize', size)
-  }
-
-  const handleFontFamilyChange = fontClass => {
-    setFontFamily(fontClass)
-    if (window.getSelection().toString().length > 0) {
-      const selection = window.getSelection()
-      if (selection.rangeCount > 0) {
-        const range = selection.getRangeAt(0)
-        const span = document.createElement('span')
-        span.className = fontClass
-        range.surroundContents(span)
-      }
-    }
   }
 
   const handleInput = () => {
@@ -51,7 +22,7 @@ export default function TextBox ({
       className={`${width} ${height} flex flex-col bg-gray-50 rounded-xl border border-gray-200 shadow-sm overflow-hidden`}
     >
       {/* Toolbar */}
-      <div className='bg-white border-b border-gray-200 p-3 flex flex-wrap gap-2 items-center'>
+      <div className='bg-white border-b border-gray-200 p-3 flex flex-wrap gap-2 items-center justify-end'>
         {/* Bold */}
         <button
           onClick={() => applyFormatting('bold')}
@@ -78,37 +49,6 @@ export default function TextBox ({
         >
           <Underline size={18} />
         </button>
-
-        {/* Divider */}
-        <div className='w-px h-6 bg-gray-300'></div>
-
-        {/* Font Size */}
-        <select
-          value={fontSize}
-          onChange={e => handleFontSizeChange(e.target.value)}
-          className='px-3 py-1.5 rounded-lg border border-gray-300 text-xs text-gray-700 hover:bg-gray-50 focus:outline-[#ec5b13] transition-colors'
-          title='Font Size'
-        >
-          {fontSizes.map(size => (
-            <option key={size} value={size}>
-              {size}px
-            </option>
-          ))}
-        </select>
-
-        {/* Font Family */}
-        <select
-          value={fontFamily}
-          onChange={e => handleFontFamilyChange(e.target.value)}
-          className='px-3 py-1.5 rounded-lg border border-gray-300 text-xs text-gray-700 hover:bg-gray-50 focus:outline-[#ec5b13] transition-colors'
-          title='Font Family'
-        >
-          {fontFamilies.map(font => (
-            <option key={font.value} value={font.value} className={font.style}>
-              {font.label}
-            </option>
-          ))}
-        </select>
 
         {/* Divider */}
         <div className='w-px h-6 bg-gray-300'></div>

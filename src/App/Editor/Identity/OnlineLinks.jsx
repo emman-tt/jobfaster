@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { onlineProfiles } from '../../../utils/links'
-import { ChevronDown } from 'lucide-react'
+import { ChevronDown, Trash, Trash2 } from 'lucide-react'
 import useClickOutside from '../../../hooks/useClick'
 import { useDispatch } from 'react-redux'
 import { saveOnlineLinks } from '../../../store/formatSlice'
@@ -28,7 +28,16 @@ export default function OnlineLinks () {
     setSavedLinks(prevSaved => {
       const alreadyExists = prevSaved.find(link => link.name === itemToAdd.name)
       if (alreadyExists) return prevSaved
-      return [...prevSaved, { name: itemToAdd.name, link: '', id: itemToAdd.id, fill: itemToAdd.fill, path: itemToAdd.path }]
+      return [
+        ...prevSaved,
+        {
+          name: itemToAdd.name,
+          link: '',
+          id: itemToAdd.id,
+          fill: itemToAdd.fill,
+          path: itemToAdd.path
+        }
+      ]
     })
   }
 
@@ -81,10 +90,10 @@ export default function OnlineLinks () {
               </div>
               <button
                 onClick={() => removeLink(link.id)}
-                className='text-red-500 hover:text-red-700 text-sm shrink-0 w-5 h-5 flex items-center justify-center hover:bg-red-50 rounded transition-colors'
+                className='text-red-500 hover:text-red-700 text-sm shrink-0 w-5 h-5 flex items-center cursor-pointer justify-center hover:bg-red-50 rounded transition-colors'
                 title='Remove link'
               >
-                🗑️
+                <Trash2 className=' w-4 h-4'/>
               </button>
             </div>
             <input

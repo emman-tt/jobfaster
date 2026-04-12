@@ -19,7 +19,7 @@ export default function Identity () {
   }
 
   return (
-    <section className='w-full mb-20'>
+    <section className='w-full mb-7'>
       {/* Basic Information Section */}
       <div className='px-4 sm:px-6 md:px-8 lg:px-10'>
         <h2 className='text-lg font-bold text-gray-900  flex items-center'>
@@ -155,7 +155,7 @@ export default function Identity () {
       </div>
 
       {/* Summary Section */}
-      <div className='mt-8 px-6'>
+      <div className='mt-12'>
         <Summary />
       </div>
     </section>

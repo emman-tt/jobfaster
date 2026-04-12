@@ -15,7 +15,6 @@ export function Main ({ activeSection }) {
   return (
     <section className='h-full w-full overflow-hidden flex'>
       <Steps />
-
       <div className='flex-1 overflow-auto'>
         <Canvas />
       </div>
