@@ -4,7 +4,9 @@ import { Bold, Italic, Underline } from 'lucide-react'
 export default function TextBox ({
   width = 'w-full',
   height = 'h-64',
-  placeholder = 'Begin detailing your professional philosophy and key career achievements...'
+  placeholder = 'Begin detailing your professional philosophy and key career achievements...',
+  value = '',
+  onChange = () => {}
 }) {
   const editorRef = useRef(null)
 
@@ -13,8 +15,9 @@ export default function TextBox ({
     editorRef.current?.focus()
   }
 
-  const handleInput = () => {
-    // Update editor content
+  const handleInput = (e) => {
+    const text = e.target.innerText
+    onChange(text)
   }
 
   return (
@@ -64,19 +67,22 @@ export default function TextBox ({
       </div>
 
       {/* Editor Area */}
-      <div
-        ref={editorRef}
-        onInput={handleInput}
-        contentEditable
-        suppressContentEditableWarning
-        className='flex-1 p-4 overflow-auto text-sm text-gray-900 bg-white focus:outline-none'
-        style={{
-          wordWrap: 'break-word'
-        }}
-      >
-        <span className='text-gray-400 pointer-events-none select-none'>
-          {placeholder}
-        </span>
+      <div className='relative flex-1'>
+        {!value && (
+          <span className='absolute top-4 left-4 text-sm text-gray-400 pointer-events-none select-none'>
+            {placeholder}
+          </span>
+        )}
+        <div
+          ref={editorRef}
+          onInput={handleInput}
+          contentEditable
+          suppressContentEditableWarning
+          className='absolute top-0 left-0 right-0 bottom-0 p-4 overflow-auto text-sm text-gray-900 bg-white focus:outline-none'
+          style={{
+            wordWrap: 'break-word'
+          }}
+        />
       </div>
     </div>
   )

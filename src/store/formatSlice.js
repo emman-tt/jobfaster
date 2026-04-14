@@ -1,9 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit'
 
 const initialState = {
-  showEducationDates: false,
-  onlineLinks: [],
-
   fileType: 'PDF',
   relevantBulletCount: 4,
   lessRelevantBulletCount: 2,
@@ -13,8 +10,6 @@ const initialState = {
     italic: true
   },
   hobbies: '',
-
-
   styless: {
     fontType: 'calibri',
     name: {
@@ -25,8 +20,6 @@ const initialState = {
       spacing: 10,
       color: 'text-slate-800'
     },
-
-    // Section Headers
     sectionHeader: {
       size: 13,
       weight: 'font-bold',
@@ -35,18 +28,14 @@ const initialState = {
       spacing: 2,
       color: 'text-slate-800'
     },
-
-    //  Company/School (Bold)
     company: {
-      size: 12, // 12px
+      size: 12,
       weight: 'font-bold',
       style: 'normal',
       case: 'none',
       color: 'text-slate-800',
       spacing: 0
     },
-
-    //  Job Title/Role (Italic)
     jobTitle: {
       size: 12,
       weight: 'font-normal',
@@ -55,8 +44,6 @@ const initialState = {
       color: 'text-slate-500',
       spacing: 1
     },
-
-    // Bullets & Skills & Degree (Regular)
     bodyText: {
       size: 12,
       weight: 'font-normal',
@@ -65,8 +52,6 @@ const initialState = {
       spacing: 0,
       color: 'text-slate-600'
     },
-
-    // Dates
     date: {
       size: 11,
       weight: 'font-normal',
@@ -75,7 +60,6 @@ const initialState = {
       spacing: 0,
       color: 'text-slate-400'
     },
-    //  Contact Info (Location, Phone, Email)
     contact: {
       size: 12,
       weight: 'font-normal',
@@ -97,17 +81,11 @@ export const formatSlice = createSlice({
     selectFontType: (state, action) => {
       state.styless.fontType = action.payload
     },
-    toggleEducationDatesShow: (state, action) => {
-      state.showEducationDates = action.payload
-    },
     saveBulletCount: (state, action) => {
       const { category, value } = action.payload
       category === 'relevant'
         ? (state.relevantBulletCount = value)
         : (state.lessRelevantBulletCount = value)
-    },
-    saveOnlineLinks: (state, action) => {
-      state.onlineLinks = action.payload
     },
     saveErrors: (state, action) => {
       state.errors = action.payload
@@ -115,7 +93,6 @@ export const formatSlice = createSlice({
     saveHobbies: (state, action) => {
       state.hobbies = action.payload
     },
-
     updateGroupStyle: (state, action) => {
       const { category, field, value } = action.payload
       if (state.styless[category]) {
@@ -129,8 +106,6 @@ export const {
   selectFileType,
   selectFontType,
   saveBulletCount,
-  toggleEducationDatesShow,
-  saveOnlineLinks,
   saveErrors,
   saveHobbies,
   updateGroupStyle

@@ -1,19 +1,12 @@
 import { useState } from 'react'
 import { ChevronDown, Plus, GripVertical, Trash2, X, Edit2 } from 'lucide-react'
+import { useDispatch, useSelector } from 'react-redux'
+import { updateEducation, removeEducation } from '../../../store/educationSlice'
 
 export default function Education () {
   const [isOpen, setIsOpen] = useState(true)
-  const [educations, setEducations] = useState([
-    {
-      id: 1,
-      school: 'University of Ghana',
-      degree: 'Bachelor of Science',
-      field: 'Computer Science',
-      startYear: '',
-      endYear: '',
-      highlights: []
-    }
-  ])
+  const dispatch = useDispatch()
+  const educations = useSelector(state => state.education.educations)
   const [showModal, setShowModal] = useState(false)
   const [editingId, setEditingId] = useState(null)
   const [highlightInput, setHighlightInput] = useState('')
@@ -30,7 +23,7 @@ export default function Education () {
     if (id) {
       const edu = educations.find(e => e.id === id)
       if (edu) {
-        setFormData(edu)
+        setFormData({ ...edu })
         setEditingId(id)
       }
     } else {
@@ -75,30 +68,23 @@ export default function Education () {
   const handleSaveEducation = () => {
     if (formData.school.trim() && formData.degree.trim()) {
       if (editingId) {
-        setEducations(prev =>
-          prev.map(edu => (edu.id === editingId ? formData : edu))
-        )
+        dispatch(updateEducation({ id: editingId, data: formData }))
       } else {
-        const newEducation = {
-          ...formData,
-          id: Date.now()
-        }
-        setEducations([...educations, newEducation])
+        dispatch(updateEducation({ id: Date.now(), data: formData }))
       }
       closeModal()
     }
   }
 
   const handleDeleteEducation = id => {
-    setEducations(educations.filter(edu => edu.id !== id))
+    dispatch(removeEducation(id))
   }
 
   return (
     <section className='w-full'>
-      {/* Header */}
       <div
         onClick={() => setIsOpen(!isOpen)}
-        className='flex items-center justify-between px-4 sm:px-6 md:px-8 lg:px-10 py-4 cursor-pointer hover:bg-gray-50/50 transition-colors'
+        className='flex items-center justify-between px-4 sm:px-6 md:px-8 lg:px-10 py-4 cursor-pointer border-b border-gray-200 transition-colors'
       >
         <h2 className='text-lg font-bold text-gray-900 flex items-center'>
           <span className='inline-block w-1 h-6 bg-[#f56010] mr-3'></span>
@@ -114,39 +100,39 @@ export default function Education () {
         </button>
       </div>
 
-      {/* Content */}
       {isOpen && (
-        <div className='px-4 sm:px-6 md:px-8 lg:px-10 py-4 space-y-3 border-t border-gray-200'>
-          {/* Education Items */}
+        <div className='px-4 sm:px-6 md:px-8 lg:px-10 py-4 space-y-3'>
           {educations.map(edu => (
             <div
               key={edu.id}
               className='border border-gray-200 rounded-xl overflow-hidden bg-white hover:shadow-sm transition-shadow'
             >
-              {/* Item Header */}
-              <div className='w-full flex items-center justify-between p-4 hover:bg-gray-50 transition-colors'>
+              <div className='w-full flex items-center justify-between p-4 transition-colors'>
                 <div className='flex items-center gap-3 flex-1'>
-                  <GripVertical
-                    size={16}
-                    className='text-gray-400 flex-shrink-0'
-                  />
+                  <GripVertical size={16} className='text-black shrink-0' />
                   <div className='text-left'>
                     <p className='text-sm font-semibold text-gray-900'>
-                      {edu.school}
+                      {edu.school || 'Untitled'}
                     </p>
                     <p className='text-xs text-gray-500'>{edu.degree}</p>
                   </div>
                 </div>
                 <div className='flex items-center gap-3'>
                   <button
-                    onClick={() => openModal(edu.id)}
+                    onClick={e => {
+                      e.stopPropagation()
+                      openModal(edu.id)
+                    }}
                     className='p-1.5 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors'
                     title='Edit'
                   >
                     <Edit2 size={16} />
                   </button>
                   <button
-                    onClick={() => handleDeleteEducation(edu.id)}
+                    onClick={e => {
+                      e.stopPropagation()
+                      handleDeleteEducation(edu.id)
+                    }}
                     className='p-1.5 text-red-500 hover:bg-red-50 rounded-lg transition-colors'
                     title='Delete'
                   >
@@ -157,10 +143,9 @@ export default function Education () {
             </div>
           ))}
 
-          {/* Add New Education Button */}
           <button
             onClick={() => openModal()}
-            className='w-full flex items-center justify-center gap-2 px-4 py-3 border border-dashed border-gray-300 rounded-xl text-gray-600 hover:bg-gray-50 hover:border-gray-400 transition-colors text-sm font-medium'
+            className='w-full flex items-center justify-center gap-2 px-4 py-3 border border-dashed border-gray-300 rounded-xl text-gray-600 hover:bg-gray-50 hover:border-gray-400 transition-colors text-sm'
           >
             <Plus size={18} />
             Add a new education
@@ -168,29 +153,25 @@ export default function Education () {
         </div>
       )}
 
-      {/* Modal */}
       {showModal && (
-        <div className='fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4'>
-          <div className='bg-white rounded-2xl shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto'>
-            {/* Modal Header */}
-            <div className='flex items-center justify-between px-6 py-4 border-b border-gray-200 sticky top-0 bg-white'>
-              <h3 className='text-lg font-bold text-gray-900'>
+        <div className='fixed inset-0 bg-black/60 flex items-center justify-center z-50 p-4 backdrop-blur-sm transition-all animate-in fade-in duration-200'>
+          <div className='bg-white rounded-4xl shadow-2xl max-w-xl w-full overflow-hidden animate-in zoom-in-95 duration-200'>
+            <div className='flex items-center justify-between px-8 py-6'>
+              <h3 className='text-2xl font-bold text-gray-900'>
                 {editingId ? 'Edit Education' : 'Add Education'}
               </h3>
               <button
                 onClick={closeModal}
-                className='p-1 hover:bg-gray-100 rounded-lg transition-colors'
+                className='p-2 hover:bg-gray-100 rounded-full transition-colors text-black'
               >
                 <X size={20} />
               </button>
             </div>
 
-            {/* Modal Content */}
-            <div className='p-6 space-y-4'>
-              {/* School and Degree */}
-              <div className='grid grid-cols-1 sm:grid-cols-2 gap-4'>
+            <div className='px-8 pb-8 space-y-3 max-h-[70vh] overflow-y-auto custom-scrollbar'>
+              <div className='grid grid-cols-1 sm:grid-cols-2 gap-3'>
                 <div>
-                  <label className='text-xs font-bold text-gray-600 uppercase tracking-wide block mb-2'>
+                  <label className='text-[10px] font-bold text-black uppercase tracking-widest block mb-2'>
                     SCHOOL
                   </label>
                   <input
@@ -199,12 +180,12 @@ export default function Education () {
                     onChange={e =>
                       setFormData({ ...formData, school: e.target.value })
                     }
-                    placeholder='e.g., University of Ghana'
-                    className='w-full border border-gray-300 rounded-lg px-3 py-2.5 text-xs focus:outline-[#ec5b13] focus:border-[#ec5b13]'
+                    placeholder='University of Ghana'
+                    className='w-full border border-gray-100 bg-white rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-1 focus:ring-[#6B4E42] placeholder:text-gray-300 transition-all text-gray-700'
                   />
                 </div>
                 <div>
-                  <label className='text-xs font-bold text-gray-600 uppercase tracking-wide block mb-2'>
+                  <label className='text-[10px] font-bold text-black uppercase tracking-widest block mb-2'>
                     DEGREE
                   </label>
                   <input
@@ -213,15 +194,14 @@ export default function Education () {
                     onChange={e =>
                       setFormData({ ...formData, degree: e.target.value })
                     }
-                    placeholder='e.g., Bachelor of Science'
-                    className='w-full border border-gray-300 rounded-lg px-3 py-2.5 text-xs focus:outline-[#ec5b13] focus:border-[#ec5b13]'
+                    placeholder='Bachelor of Science'
+                    className='w-full border border-gray-100 bg-white rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-1 focus:ring-[#6B4E42] placeholder:text-gray-300 transition-all text-gray-700'
                   />
                 </div>
               </div>
 
-              {/* Field of Study */}
               <div>
-                <label className='text-xs font-bold text-gray-600 uppercase tracking-wide block mb-2'>
+                <label className='text-[10px] font-bold text-black uppercase tracking-widest block mb-2'>
                   FIELD OF STUDY
                 </label>
                 <input
@@ -230,29 +210,28 @@ export default function Education () {
                   onChange={e =>
                     setFormData({ ...formData, field: e.target.value })
                   }
-                  placeholder='e.g., Computer Science'
-                  className='w-full border border-gray-300 rounded-lg px-3 py-2.5 text-xs focus:outline-[#ec5b13] focus:border-[#ec5b13]'
+                  placeholder='Computer Science'
+                  className='w-full border border-gray-100 bg-white rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-1 focus:ring-[#6B4E42] placeholder:text-gray-300 transition-all text-gray-700'
                 />
               </div>
 
-              {/* Start and End Year */}
-              <div className='grid grid-cols-1 sm:grid-cols-2 gap-4'>
+              <div className='grid grid-cols-1 sm:grid-cols-2 gap-3'>
                 <div>
-                  <label className='text-xs font-bold text-gray-600 uppercase tracking-wide block mb-2'>
+                  <label className='text-[10px] font-bold text-black uppercase tracking-widest block mb-2'>
                     START YEAR
                   </label>
                   <input
-                    type='number'
+                    type='text'
                     value={formData.startYear}
                     onChange={e =>
                       setFormData({ ...formData, startYear: e.target.value })
                     }
                     placeholder='2018'
-                    className='w-full border border-gray-300 rounded-lg px-3 py-2.5 text-xs focus:outline-[#ec5b13] focus:border-[#ec5b13]'
+                    className='w-full border border-gray-100 bg-white rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-1 focus:ring-[#6B4E42] placeholder:text-gray-300 transition-all text-gray-700'
                   />
                 </div>
                 <div>
-                  <label className='text-xs font-bold text-gray-600 uppercase tracking-wide block mb-2'>
+                  <label className='text-[10px] font-bold text-black uppercase tracking-widest block mb-2'>
                     END YEAR
                   </label>
                   <input
@@ -262,68 +241,66 @@ export default function Education () {
                       setFormData({ ...formData, endYear: e.target.value })
                     }
                     placeholder='2022'
-                    className='w-full border border-gray-300 rounded-lg px-3 py-2.5 text-xs focus:outline-[#ec5b13] focus:border-[#ec5b13]'
+                    className='w-full border border-gray-100 bg-white rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-1 focus:ring-[#6B4E42] placeholder:text-gray-300 transition-all text-gray-700'
                   />
                 </div>
               </div>
 
-              {/* Highlights */}
               <div>
-                <label className='text-xs font-bold text-gray-600 uppercase tracking-wide block mb-2'>
+                <label className='text-[10px] font-bold text-black uppercase tracking-widest block mb-2'>
                   HIGHLIGHTS
                 </label>
-                <div className='space-y-2 mb-3'>
+                <div className='space-y-3 mb-4'>
                   {formData.highlights.map(highlight => (
                     <div
                       key={highlight.id}
-                      className='flex items-center justify-between gap-2 bg-gray-50 px-3 py-2 rounded-lg'
+                      className='flex items-center justify-between gap-4 bg-[#F9F9F9] px-4 py-3 rounded-xl group transition-all'
                     >
-                      <span className='text-xs text-gray-700 flex-1'>
+                      <span className='text-sm text-gray-500 flex-1'>
                         {highlight.text}
                       </span>
                       <button
                         onClick={() => handleRemoveHighlight(highlight.id)}
-                        className='p-0.5 text-red-500 hover:bg-red-100 rounded transition-colors flex-shrink-0'
+                        className='p-1 text-gray-300 hover:text-red-500 hover:bg-white rounded-lg transition-all'
                       >
-                        <X size={14} />
+                        <X size={16} />
                       </button>
                     </div>
                   ))}
                 </div>
 
-                {/* Add Highlight Input */}
                 <div className='flex gap-2'>
                   <input
                     type='text'
                     value={highlightInput}
                     onChange={e => setHighlightInput(e.target.value)}
                     placeholder='Add a highlight...'
-                    className='flex-1 border border-gray-300 rounded-lg px-3 py-2.5 text-xs focus:outline-[#ec5b13] focus:border-[#ec5b13]'
+                    className='flex-1 border border-gray-100 bg-white rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-1 focus:ring-[#6B4E42] placeholder:text-gray-300 transition-all text-gray-700'
                     onKeyDown={e =>
                       e.key === 'Enter' && handleAddHighlight()
                     }
                   />
                   <button
                     onClick={handleAddHighlight}
-                    className='px-3 py-2.5 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors text-gray-700 text-xs font-medium'
+                    className='p-3 bg-[#ec5b13] text-white rounded-xl hover:bg-[#f8571d] transition-colors'
                   >
-                    <Plus size={16} />
+                    <Plus size={18} />
                   </button>
                 </div>
               </div>
             </div>
 
-            {/* Modal Footer */}
-            <div className='flex gap-2 justify-end px-6 py-4 border-t border-gray-200 sticky bottom-0 bg-white'>
+            <div className='flex items-center justify-end gap-4 px-8 py-6 bg-white'>
               <button
                 onClick={closeModal}
-                className='px-6 py-2.5 text-xs font-medium text-gray-700 border border-gray-300 hover:bg-gray-50 rounded-lg transition-colors'
+                className='px-10 py-3 text-sm font-bold text-gray-600 border border-gray-200 bg-white hover:bg-gray-50 rounded-full transition-all active:scale-95'
               >
                 Cancel
               </button>
               <button
                 onClick={handleSaveEducation}
-                className='px-6 py-2.5 text-xs font-medium text-white bg-[#ec5b13] hover:bg-[#d94d0d] rounded-lg transition-colors'
+                className='px-10 py-3 text-sm font-bold text-white bg-[#fd9d6d] hover:bg-[#ec560a] rounded-full transition-all shadow-md hover:shadow-lg active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed'
+                disabled={!formData.school.trim() || !formData.degree.trim()}
               >
                 {editingId ? 'Update Entry' : 'Save Entry'}
               </button>

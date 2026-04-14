@@ -23,10 +23,10 @@ api.interceptors.request.use(config => {
 api.interceptors.response.use(undefined, async error => {
   const status = error.response?.status
   const message = error.response?.data?.message
-
-  if (error.config._retry && status === 401) {
+  console.log(error.config)
+  if (error.config._retry && status == 401) {
     window.location.href = '/auth'
-    return
+    return3
   }
 
   if (error.code === 'ECONNABORTED') {
@@ -61,7 +61,7 @@ api.interceptors.response.use(undefined, async error => {
 
     try {
       const { data } = await api.post('/auth/refresh')
-      console.log(data)
+
       const accessToken = data.data
       setToken(accessToken)
       api.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`

@@ -1,7 +1,11 @@
+import Achievements from './Achievements/Achievement'
+import Certifications from './Certifications/Certifications'
 import Education from './Education/Education'
 import Experience from './Experience/Experience'
 import Identity from './Identity/Identity'
+import Languages from './Languages/Languages'
 import Projects from './Projects/Projects'
+import Skills from './Skills/Skills'
 
 export default function Steps () {
   return (
@@ -10,6 +14,10 @@ export default function Steps () {
       <Experience />
       <Education />
       <Projects />
+      <Skills />
+      <Languages />
+      <Achievements />
+      <Certifications />
     </section>
   )
 }

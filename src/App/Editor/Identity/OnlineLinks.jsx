@@ -3,7 +3,7 @@ import { onlineProfiles } from '../../../utils/links'
 import { ChevronDown, Trash, Trash2 } from 'lucide-react'
 import useClickOutside from '../../../hooks/useClick'
 import { useDispatch } from 'react-redux'
-import { saveOnlineLinks } from '../../../store/formatSlice'
+import { saveOnlineLinks } from '../../../store/personalSlice'
 
 export default function OnlineLinks () {
   const [links, setLinks] = useState(onlineProfiles)
@@ -44,9 +44,9 @@ export default function OnlineLinks () {
   function handleChange (e, index) {
     const { value } = e.target
     setSavedLinks(prev => {
-      const updated = [...prev]
-      updated[index].link = value
-      return updated
+      return prev.map((item, i) =>
+        i === index ? { ...item, link: value } : item
+      )
     })
   }
 

@@ -1,22 +1,16 @@
 import { useState } from 'react'
 import { ChevronDown, Plus, GripVertical, Trash2, X, Edit2 } from 'lucide-react'
+import { useDispatch, useSelector } from 'react-redux'
+import { removeExperience, updateExperience } from '../../../store/workSlice'
 
 export default function Experience () {
   const [isOpen, setIsOpen] = useState(true)
-  const [experiences, setExperiences] = useState([
-    {
-      id: 1,
-      company: 'Astroverse',
-      position: 'Software Intern',
-      location: '',
-      startYear: '',
-      endYear: '',
-      accomplishments: []
-    }
-  ])
+  const dispatch = useDispatch()
+  const experiences = useSelector(state => state.work.experiences)
   const [showModal, setShowModal] = useState(false)
   const [editingId, setEditingId] = useState(null)
   const [accomplishmentInput, setAccomplishmentInput] = useState('')
+  const [isAddingBullet, setIsAddingBullet] = useState(false)
   const [formData, setFormData] = useState({
     company: '',
     position: '',
@@ -30,7 +24,7 @@ export default function Experience () {
     if (id) {
       const exp = experiences.find(e => e.id === id)
       if (exp) {
-        setFormData(exp)
+        setFormData({ ...exp })
         setEditingId(id)
       }
     } else {
@@ -50,6 +44,7 @@ export default function Experience () {
   const closeModal = () => {
     setShowModal(false)
     setAccomplishmentInput('')
+    setIsAddingBullet(false)
   }
 
   const handleAddAccomplishment = () => {
@@ -62,35 +57,23 @@ export default function Experience () {
         ]
       }))
       setAccomplishmentInput('')
+      setIsAddingBullet(false)
     }
   }
 
-  const handleRemoveAccomplishment = id => {
-    setFormData(prev => ({
-      ...prev,
-      accomplishments: prev.accomplishments.filter(acc => acc.id !== id)
-    }))
+  const handleDeleteExperience = id => {
+    dispatch(removeExperience(id))
   }
 
   const handleSaveExperience = () => {
     if (formData.company.trim() && formData.position.trim()) {
       if (editingId) {
-        setExperiences(prev =>
-          prev.map(exp => (exp.id === editingId ? formData : exp))
-        )
+        dispatch(updateExperience({ id: editingId, data: formData }))
       } else {
-        const newExperience = {
-          ...formData,
-          id: Date.now()
-        }
-        setExperiences([...experiences, newExperience])
+        dispatch(updateExperience({ id: Date.now(), data: formData }))
       }
       closeModal()
     }
-  }
-
-  const handleDeleteExperience = id => {
-    setExperiences(experiences.filter(exp => exp.id !== id))
   }
 
   return (
@@ -98,7 +81,7 @@ export default function Experience () {
       {/* Header */}
       <div
         onClick={() => setIsOpen(!isOpen)}
-        className='flex items-center justify-between px-4 sm:px-6 md:px-8 lg:px-10 py-4 cursor-pointer hover:bg-gray-50/50 transition-colors'
+        className='flex items-center justify-between px-4 sm:px-6 md:px-8 lg:px-10 py-4 cursor-pointer border-b border-gray-200 transition-colors'
       >
         <h2 className='text-lg font-bold text-gray-900 flex items-center'>
           <span className='inline-block w-1 h-6 bg-[#f56010] mr-3'></span>
@@ -116,7 +99,7 @@ export default function Experience () {
 
       {/* Content */}
       {isOpen && (
-        <div className='px-4 sm:px-6 md:px-8 lg:px-10 py-4 space-y-3 border-t border-gray-200'>
+        <div className='px-4 sm:px-6 md:px-8 lg:px-10 py-4 space-y-3 '>
           {/* Experience Items */}
           {experiences.map(exp => (
             <div
@@ -124,29 +107,32 @@ export default function Experience () {
               className='border border-gray-200 rounded-xl overflow-hidden bg-white hover:shadow-sm transition-shadow'
             >
               {/* Item Header */}
-              <div className='w-full flex items-center justify-between p-4 hover:bg-gray-50 transition-colors'>
+              <div className='w-full flex items-center justify-between p-4  transition-colors'>
                 <div className='flex items-center gap-3 flex-1'>
-                  <GripVertical
-                    size={16}
-                    className='text-gray-400 flex-shrink-0'
-                  />
+                  <GripVertical size={16} className='text-black shrink-0' />
                   <div className='text-left'>
                     <p className='text-sm font-semibold text-gray-900'>
-                      {exp.company}
+                      {exp.company || 'Untitled'}
                     </p>
                     <p className='text-xs text-gray-500'>{exp.position}</p>
                   </div>
                 </div>
                 <div className='flex items-center gap-3'>
                   <button
-                    onClick={() => openModal(exp.id)}
+                    onClick={e => {
+                      e.stopPropagation()
+                      openModal(exp.id)
+                    }}
                     className='p-1.5 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors'
                     title='Edit'
                   >
                     <Edit2 size={16} />
                   </button>
                   <button
-                    onClick={() => handleDeleteExperience(exp.id)}
+                    onClick={e => {
+                      e.stopPropagation()
+                      handleDeleteExperience(exp.id)
+                    }}
                     className='p-1.5 text-red-500 hover:bg-red-50 rounded-lg transition-colors'
                     title='Delete'
                   >
@@ -160,7 +146,7 @@ export default function Experience () {
           {/* Add New Experience Button */}
           <button
             onClick={() => openModal()}
-            className='w-full flex items-center justify-center gap-2 px-4 py-3 border border-dashed border-gray-300 rounded-xl text-gray-600 hover:bg-gray-50 hover:border-gray-400 transition-colors text-sm font-medium'
+            className='w-full flex items-center justify-center gap-2 px-4 py-3 border border-dashed border-gray-300 rounded-xl text-gray-600 hover:bg-gray-50 hover:border-gray-400 transition-colors text-sm '
           >
             <Plus size={18} />
             Add a new experience
@@ -170,167 +156,217 @@ export default function Experience () {
 
       {/* Modal */}
       {showModal && (
-        <div className='fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4'>
-          <div className='bg-white rounded-2xl shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto'>
-            {/* Modal Header */}
-            <div className='flex items-center justify-between px-6 py-4 border-b border-gray-200 sticky top-0 bg-white'>
-              <h3 className='text-lg font-bold text-gray-900'>
-                {editingId ? 'Edit Experience' : 'Add Experience'}
-              </h3>
-              <button
-                onClick={closeModal}
-                className='p-1 hover:bg-gray-100 rounded-lg transition-colors'
-              >
-                <X size={20} />
-              </button>
-            </div>
-
-            {/* Modal Content */}
-            <div className='p-6 space-y-4'>
-              {/* Company and Role */}
-              <div className='grid grid-cols-1 sm:grid-cols-2 gap-4'>
-                <div>
-                  <label className='text-xs font-bold text-gray-600 uppercase tracking-wide block mb-2'>
-                    COMPANY
-                  </label>
-                  <input
-                    type='text'
-                    value={formData.company}
-                    onChange={e =>
-                      setFormData({ ...formData, company: e.target.value })
-                    }
-                    placeholder='e.g., Paystack'
-                    className='w-full border border-gray-300 rounded-lg px-3 py-2.5 text-xs focus:outline-[#ec5b13] focus:border-[#ec5b13]'
-                  />
-                </div>
-                <div>
-                  <label className='text-xs font-bold text-gray-600 uppercase tracking-wide block mb-2'>
-                    ROLE
-                  </label>
-                  <input
-                    type='text'
-                    value={formData.position}
-                    onChange={e =>
-                      setFormData({ ...formData, position: e.target.value })
-                    }
-                    placeholder='e.g., Frontend Developer'
-                    className='w-full border border-gray-300 rounded-lg px-3 py-2.5 text-xs focus:outline-[#ec5b13] focus:border-[#ec5b13]'
-                  />
-                </div>
-              </div>
-
-              {/* Location */}
-              <div>
-                <label className='text-xs font-bold text-gray-600 uppercase tracking-wide block mb-2'>
-                  LOCATION
-                </label>
-                <input
-                  type='text'
-                  value={formData.location}
-                  onChange={e =>
-                    setFormData({ ...formData, location: e.target.value })
-                  }
-                  placeholder='e.g., Accra, Ghana'
-                  className='w-full border border-gray-300 rounded-lg px-3 py-2.5 text-xs focus:outline-[#ec5b13] focus:border-[#ec5b13]'
-                />
-              </div>
-
-              {/* Start and End Year */}
-              <div className='grid grid-cols-1 sm:grid-cols-2 gap-4'>
-                <div>
-                  <label className='text-xs font-bold text-gray-600 uppercase tracking-wide block mb-2'>
-                    START YEAR
-                  </label>
-                  <input
-                    type='number'
-                    value={formData.startYear}
-                    onChange={e =>
-                      setFormData({ ...formData, startYear: e.target.value })
-                    }
-                    placeholder='2022'
-                    className='w-full border border-gray-300 rounded-lg px-3 py-2.5 text-xs focus:outline-[#ec5b13] focus:border-[#ec5b13]'
-                  />
-                </div>
-                <div>
-                  <label className='text-xs font-bold text-gray-600 uppercase tracking-wide block mb-2'>
-                    END YEAR
-                  </label>
-                  <input
-                    type='text'
-                    value={formData.endYear}
-                    onChange={e =>
-                      setFormData({ ...formData, endYear: e.target.value })
-                    }
-                    placeholder='Present'
-                    className='w-full border border-gray-300 rounded-lg px-3 py-2.5 text-xs focus:outline-[#ec5b13] focus:border-[#ec5b13]'
-                  />
-                </div>
-              </div>
-
-              {/* Key Accomplishments */}
-              <div>
-                <label className='text-xs font-bold text-gray-600 uppercase tracking-wide block mb-2'>
-                  KEY ACCOMPLISHMENTS
-                </label>
-                <div className='space-y-2 mb-3'>
-                  {formData.accomplishments.map(acc => (
-                    <div
-                      key={acc.id}
-                      className='flex items-center justify-between gap-2 bg-gray-50 px-3 py-2 rounded-lg'
-                    >
-                      <span className='text-xs text-gray-700 flex-1'>
-                        {acc.text}
-                      </span>
-                      <button
-                        onClick={() => handleRemoveAccomplishment(acc.id)}
-                        className='p-0.5 text-red-500 hover:bg-red-100 rounded transition-colors flex-shrink-0'
-                      >
-                        <X size={14} />
-                      </button>
-                    </div>
-                  ))}
-                </div>
-
-                {/* Add Accomplishment Input */}
-                <div className='flex gap-2'>
-                  <input
-                    type='text'
-                    value={accomplishmentInput}
-                    onChange={e => setAccomplishmentInput(e.target.value)}
-                    placeholder='Add an accomplishment...'
-                    className='flex-1 border border-gray-300 rounded-lg px-3 py-2.5 text-xs focus:outline-[#ec5b13] focus:border-[#ec5b13]'
-                    onKeyDown={e =>
-                      e.key === 'Enter' && handleAddAccomplishment()
-                    }
-                  />
-                  <button
-                    onClick={handleAddAccomplishment}
-                    className='px-3 py-2.5 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors text-gray-700 text-xs font-medium'
-                  >
-                    <Plus size={16} />
-                  </button>
-                </div>
-              </div>
-            </div>
-
-            {/* Modal Footer */}
-            <div className='flex gap-2 justify-end px-6 py-4 border-t border-gray-200 sticky bottom-0 bg-white'>
-              <button
-                onClick={closeModal}
-                className='px-6 py-2.5 text-xs font-medium text-gray-700 border border-gray-300 hover:bg-gray-50 rounded-lg transition-colors'
-              >
-                Cancel
-              </button>
-              <button
-                onClick={handleSaveExperience}
-                className='px-6 py-2.5 text-xs font-medium text-white bg-[#ec5b13] hover:bg-[#d94d0d] rounded-lg transition-colors'
-              >
-                {editingId ? 'Update Entry' : 'Save Entry'}
-              </button>
-            </div>
-          </div>
-        </div>
+        <Modal
+          setFormData={setFormData}
+          formData={formData}
+          isAddingBullet={isAddingBullet}
+          editingId={editingId}
+          setAccomplishmentInput={setAccomplishmentInput}
+          accomplishmentInput={accomplishmentInput}
+          setIsAddingBullet={setIsAddingBullet}
+          closeModal={closeModal}
+          handleAddAccomplishment={handleAddAccomplishment}
+          handleSaveExperience={handleSaveExperience}
+        />
       )}
     </section>
+  )
+}
+
+function Modal ({
+  formData,
+  setFormData,
+  isAddingBullet,
+  editingId,
+  setAccomplishmentInput,
+  accomplishmentInput,
+  setIsAddingBullet,
+  closeModal,
+  handleAddAccomplishment,
+  handleSaveExperience
+}) {
+  const handleRemoveAccomplishment = id => {
+    setFormData(prev => ({
+      ...prev,
+      accomplishments: prev.accomplishments.filter(acc => acc.id !== id)
+    }))
+  }
+
+  return (
+    <div className='fixed inset-0 bg-black/60 flex items-center justify-center z-50 p-4 backdrop-blur-sm transition-all animate-in fade-in duration-200'>
+      <div className='bg-white rounded-4xl shadow-2xl max-w-xl w-full overflow-hidden animate-in zoom-in-95 duration-200'>
+        <div className='flex items-center justify-between px-8 py-6'>
+          <h3 className='text-2xl font-bold text-gray-900'>
+            {editingId ? 'Edit Experience' : 'Add Experience'}
+          </h3>
+          <button
+            onClick={closeModal}
+            className='p-2 hover:bg-gray-100 rounded-full transition-colors text-black'
+          >
+            <X size={20} />
+          </button>
+        </div>
+
+        <div className='px-8 pb-8 space-y-3 max-h-[70vh] overflow-y-auto custom-scrollbar'>
+          <div className='grid grid-cols-1 sm:grid-cols-2 gap-3'>
+            <div>
+              <label className='text-[10px] font-bold text-black uppercase tracking-widest block mb-2'>
+                COMPANY
+              </label>
+              <input
+                type='text'
+                value={formData.company}
+                onChange={e =>
+                  setFormData({ ...formData, company: e.target.value })
+                }
+                placeholder='Paystack'
+                className='w-full border border-gray-100 bg-white rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-1 focus:ring-[#6B4E42] placeholder:text-gray-300  placeholder:text-xstransition-all  text-gray-700'
+              />
+            </div>
+            <div>
+              <label className='text-[10px] font-bold text-black uppercase tracking-widest block mb-2'>
+                ROLE
+              </label>
+              <input
+                type='text'
+                value={formData.position}
+                onChange={e =>
+                  setFormData({ ...formData, position: e.target.value })
+                }
+                placeholder='Frontend Developer'
+                className='w-full border border-gray-100 bg-white rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-1 focus:ring-[#6B4E42] placeholder:text-gray-300 transition-all font-satoshi  text-gray-700'
+              />
+            </div>
+          </div>
+          <div>
+            <label className='text-[10px] font-bold text-black uppercase tracking-widest block mb-2'>
+              LOCATION
+            </label>
+            <input
+              type='text'
+              value={formData.location}
+              onChange={e =>
+                setFormData({ ...formData, location: e.target.value })
+              }
+              placeholder='Accra, Ghana'
+              className='w-full border border-gray-100 bg-white rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-1 focus:ring-[#6B4E42] placeholder:text-gray-300 transition-all  text-gray-700'
+            />
+          </div>
+
+          <div className='grid grid-cols-1 sm:grid-cols-2 gap-6'>
+            <div>
+              <label className='text-[10px] font-bold text-black uppercase tracking-widest block mb-2'>
+                START YEAR
+              </label>
+              <input
+                type='text'
+                value={formData.startYear}
+                onChange={e =>
+                  setFormData({ ...formData, startYear: e.target.value })
+                }
+                placeholder='2022'
+                className='w-full border border-gray-100 bg-white rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-1 focus:ring-[#6B4E42] placeholder:text-gray-300 transition-all  text-gray-700'
+              />
+            </div>
+            <div>
+              <label className='text-[10px] font-bold text-black uppercase tracking-widest block mb-2'>
+                END YEAR
+              </label>
+              <div className='relative'>
+                <input
+                  type='text'
+                  value={formData.endYear}
+                  onChange={e =>
+                    setFormData({ ...formData, endYear: e.target.value })
+                  }
+                  placeholder='Present'
+                  className='w-full border border-gray-100 bg-white rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-1 focus:ring-[#6B4E42] placeholder:text-gray-300 transition-all  text-gray-700'
+                />
+                <ChevronDown
+                  size={16}
+                  className='absolute right-4 top-1/2 -translate-y-1/2 text-black pointer-events-none'
+                />
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <label className='text-[10px] font-bold text-black uppercase tracking-widest block mb-2'>
+              KEY ACCOMPLISHMENTS
+            </label>
+            <p className='text-xs text-gray-400 mb-3'>
+              Include at least 3 points to make your experience stand out
+            </p>
+            <div className='space-y-3 mb-4'>
+              {formData.accomplishments.map(acc => (
+                <div
+                  key={acc.id}
+                  className='flex items-center justify-between gap-4 bg-[#F9F9F9] px-4 py-3 rounded-xl group transition-all'
+                >
+                  <span className='text-sm text-gray-500 '>{acc.text}</span>
+                  <button
+                    onClick={() => handleRemoveAccomplishment(acc.id)}
+                    className='p-1 text-gray-300 hover:text-red-500 hover:bg-white rounded-lg transition-all'
+                  >
+                    <X size={16} />
+                  </button>
+                </div>
+              ))}
+            </div>
+
+            {isAddingBullet ? (
+              <div className='flex gap-2 animate-in slide-in-from-top-2 duration-200'>
+                <input
+                  autoFocus
+                  type='text'
+                  value={accomplishmentInput}
+                  onChange={e => setAccomplishmentInput(e.target.value)}
+                  placeholder='Detail your accomplishment...'
+                  className='flex-1 border border-gray-100 bg-white rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-1 focus:ring-[#6B4E42] placeholder:text-gray-300 transition-all  text-gray-700'
+                  onKeyDown={e => {
+                    if (e.key === 'Enter') handleAddAccomplishment()
+                    if (e.key === 'Escape') setIsAddingBullet(false)
+                  }}
+                  onBlur={() => {
+                    if (!accomplishmentInput) setIsAddingBullet(false)
+                  }}
+                />
+                <button
+                  onClick={handleAddAccomplishment}
+                  className='p-3 bg-[#ec5b13] text-white rounded-xl hover:bg-[#f8571d] transition-colors'
+                >
+                  <Plus size={18} />
+                </button>
+              </div>
+            ) : (
+              <button
+                onClick={() => setIsAddingBullet(true)}
+                className='flex items-center gap-2 text-sm pl-5 font-semibold text-[#ff8c52]  cursor-pointer transition-colors py-1'
+              >
+                <Plus size={16} />
+                Add bullet
+              </button>
+            )}
+          </div>
+        </div>
+
+        {/* Modal Footer */}
+        <div className='flex items-center justify-end gap-4 px-8 py-6 bg-white'>
+          <button
+            onClick={closeModal}
+            className='px-10 py-3 text-sm font-bold text-gray-600 border border-gray-200 bg-white hover:bg-gray-50 rounded-full transition-all active:scale-95'
+          >
+            Cancel
+          </button>
+          <button
+            onClick={handleSaveExperience}
+            className='px-10 py-3 text-sm font-bold text-white bg-[#fd9d6d] hover:bg-[#ec560a] rounded-full transition-all shadow-md hover:shadow-lg active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed'
+            disabled={!formData.company.trim() || !formData.position.trim()}
+          >
+            {editingId ? 'Update Entry' : 'Save Entry'}
+          </button>
+        </div>
+      </div>
+    </div>
   )
 }

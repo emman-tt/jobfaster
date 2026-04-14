@@ -7,17 +7,14 @@ import CompanyStyles from './CompanyStyles'
 import JobTitleStyles from './JobTitleStyles'
 import BodyStyles from './BodyStyles'
 import DateContactStyles from './DateContactStyles'
-import { toggleFinale } from '../../../store/onboardingSlice'
 
-import { useDispatch } from 'react-redux'
 
 export default function Format () {
   
-  const dispatch = useDispatch()
 
   function navigateNext () {
     try {
-      dispatch(toggleFinale(true))
+     console.log('next')
     } catch (err) {
       console.error('Validation failed to execute:', err)
     }

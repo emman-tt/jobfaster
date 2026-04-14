@@ -61,7 +61,7 @@ export function Topbar ({ isPreview, setIsPreview }) {
           <div className='flex items-center gap-2'>
             <button
               onClick={handleBack}
-              className='flex items-center gap-1.5 px-3 py-1.5 rounded-full text-gray-700 hover:bg-gray-100 font-[500] text-sm transition-colors font-satoshi'
+              className='flex items-center gap-1.5 px-3 py-1.5 rounded-full text-gray-700 hover:bg-gray-100 font-medium text-sm transition-colors font-satoshi'
             >
               <ArrowLeft size={16} />
               <span>Back</span>
@@ -72,36 +72,39 @@ export function Topbar ({ isPreview, setIsPreview }) {
             <button
               onClick={handleSave}
               disabled={isSaving}
-              className='flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#fd9155] text-white font-[500] text-sm transition-all hover:bg-[#e8854a] active:scale-95 disabled:opacity-50 font-satoshi'
+              className='flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#fd9155] text-white font-medium text-sm transition-all hover:bg-[#e8854a] active:scale-95 disabled:opacity-50 font-satoshi'
             >
               <Save size={15} />
               <span>{isSaving ? 'Saving...' : 'Save'}</span>
             </button>
 
-            <button
-              onClick={handlePreview}
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full font-[500] text-sm transition-all font-satoshi ${
-                isPreview
-                  ? 'bg-[#fd9155] text-white hover:bg-[#e8854a]'
-                  : 'text-gray-700 hover:bg-gray-100'
-              } active:scale-95`}
-            >
-              <Eye size={15} />
-              <span>Preview</span>
-            </button>
+            <div className='flex items-center bg-gray-100 rounded-full p-1 gap-1'>
+              <button
+                onClick={handlePreview}
+                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full 
+                  font-medium text-sm transition-all font-satoshi ${
+                  isPreview
+                    ? 'bg-[#fd9155] text-white hover:bg-[#e8854a]'
+                    : 'text-gray-700 hover:bg-gray-200'
+                }`}
+              >
+                <Eye size={15} />
+                <span>Preview</span>
+              </button>
 
-            <button
-              onClick={() => setShowTemplates(true)}
-              className='flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#fd9155] text-white font-[500] text-sm transition-all hover:bg-[#e8854a] active:scale-95 font-satoshi'
-            >
-              <LayoutTemplate size={15} />
-              <span>Templates</span>
-            </button>
+              <button
+                onClick={() => setShowTemplates(true)}
+                className='flex items-center gap-1.5 px-3 py-1.5 rounded-full font-medium text-sm transition-all font-satoshi text-gray-700 hover:bg-gray-200'
+              >
+                <LayoutTemplate size={15} />
+                <span>Templates</span>
+              </button>
+            </div>
 
             <div className='relative'>
               <button
                 onClick={() => setShowExportMenu(!showExportMenu)}
-                className='flex items-center gap-1.5 px-3 py-1.5 rounded-full text-gray-700 hover:bg-gray-100 font-[500] text-sm transition-colors font-satoshi'
+                className='flex items-center gap-1.5 px-3 py-1.5 rounded-full text-gray-700 hover:bg-gray-100 font-medium text-sm transition-colors font-satoshi'
               >
                 <FileDown size={15} />
                 <span>Export</span>

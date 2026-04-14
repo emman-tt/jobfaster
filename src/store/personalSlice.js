@@ -8,23 +8,8 @@ const initialState = {
     location: '',
     jobTitle: ''
   },
-  skillsAndTools: [],
-  languages: [],
-  showLanguages: false,
-  kindsOfWork: [],
-  summaryType: 'No summary',
+  onlineLinks: [],
   summary: '',
-  education: [
-    {
-      id: 1,
-      level: '',
-      instituition: '',
-      degree: '',
-      startYear: '',
-      endYear: '',
-      gpa: ''
-    }
-  ],
   errors: {}
 }
 export const personalSlice = createSlice({
@@ -35,59 +20,11 @@ export const personalSlice = createSlice({
       const { name, value } = action.payload
       state.contactDetails[name] = value
     },
-    selectSummaryType: (state, action) => {
-      state.summaryType = action.payload
+    saveOnlineLinks: (state, action) => {
+      state.onlineLinks = action.payload
     },
     saveSummary: (state, action) => {
       state.summary = action.payload
-    },
-    saveSkillsAndTools: (state, action) => {
-      state.skillsAndTools.push(action.payload)
-    },
-    deleteSkillsAndTools: (state, action) => {
-      state.skillsAndTools = state.skillsAndTools.filter(
-        item => item.toLowerCase() !== action.payload.toLowerCase()
-      )
-    },
-    saveLanguages: (state, action) => {
-      state.languages.push(action.payload)
-    },
-    deleteLanguages: (state, action) => {
-      state.languages = state.languages.filter(
-        item => item.toLowerCase() !== action.payload.toLowerCase()
-      )
-    },
-    setShowLanguages: (state, action) => {
-      state.showLanguages = action.payload
-    },
-    saveKindsOfWorks: (state, action) => {
-      state.kindsOfWork = action.payload
-    },
-    saveEducation: (state, action) => {
-      const { name, value, id } = action.payload
-      const found = state.education.find(item => item.id == id)
-
-      if (found) {
-        found[name] = value
-      }
-    },
-    removeEducationField: (state, action) => {
-      state.education = state.education.filter(
-        item => item.id !== action.payload
-      )
-    },
-    addEducationField: state => {
-      const newField = {
-        id: crypto.randomUUID(),
-        level: '',
-        instituition: '',
-        degree: '',
-        startYear: '',
-        endYear: '',
-        gpa: ''
-      }
-
-      state.education.push(newField)
     },
     saveErrors: (state, action) => {
       state.errors = action.payload
@@ -97,17 +34,8 @@ export const personalSlice = createSlice({
 
 export const {
   saveContactDetails,
-  saveSkillsAndTools,
-  saveKindsOfWorks,
-  saveEducation,
-  saveErrors,
-  clearErrors,
-  addEducationField,
-  removeEducationField,
-  deleteSkillsAndTools,
-  saveLanguages,
-  deleteLanguages,
-  setShowLanguages,
-  selectSummaryType,
-  saveSummary
+  saveOnlineLinks,
+
+  saveSummary,
+  saveErrors
 } = personalSlice.actions

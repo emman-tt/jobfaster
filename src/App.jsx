@@ -1,16 +1,14 @@
 import { Route, Routes, BrowserRouter, Navigate } from 'react-router-dom'
-import Onboarding from './Pages/Onboarding'
-import { Personal } from './App/Onboarding/Peronal-step1/Personal'
-import Jobs from './App/Onboarding/Job-step4/Job'
+
 import Format from './App/Onboarding/Format-step5/Format'
-import Experience from './App/Onboarding/Experience-step2/Experience'
+
 import Dashboard from './Pages/Dashboard'
 import Overview from './App/Dashboard/Overview/Overview'
 import Resume from './App/Dashboard/Resume/Resume'
 import Correction from './Pages/Correction'
 import CreateResume from './App/Dashboard/CreateResume/page'
 import Examples from './App/Dashboard/CreateResume/examples'
-import Finale from './App/Onboarding/Finale'
+
 import QuickAction from './Pages/QuickActions'
 import { Toaster } from 'sonner'
 import Job from './App/Dashboard/Job/Job'
@@ -42,10 +40,7 @@ function App () {
 
           <Route path='/editor' element={<Editor />}></Route>
 
-          <Route path='/onboarding' element={<Onboarding />}>
-            <Route path='personal' element={<Personal />} />
-            <Route path='job' element={<Jobs />} />
-            <Route path='experience' element={<Experience />} />
+          <Route path='/onboarding' element={<Navigate to={'/additional'} />}>
             <Route path='additional' element={<Additional />} />
             <Route path='format' element={<Format />} />
           </Route>
