@@ -1,5 +1,4 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { Dumbbell } from 'lucide-react'
 
 const initialState = {
   emailDetails: {}

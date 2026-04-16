@@ -10,7 +10,8 @@ const initialState = {
     correction: false,
     saveResume: false,
     selectResume: false,
-    chooseTemplate: false
+    chooseTemplate: false,
+    showTemplates: false
   }
 }
 export const modalSlice = createSlice({
@@ -23,4 +24,4 @@ export const modalSlice = createSlice({
   }
 })
 
-export const { toggleModals } = modalSlice.actions
+export const { toggleModals, setShowTemplates } = modalSlice.actions

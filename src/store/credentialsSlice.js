@@ -14,7 +14,10 @@ export const credentialsSlice = createSlice({
       const { id, data } = action.payload
       const foundIndex = state.certifications.findIndex(cert => cert.id === id)
       if (foundIndex !== -1) {
-        state.certifications[foundIndex] = { ...state.certifications[foundIndex], ...data }
+        state.certifications[foundIndex] = {
+          ...state.certifications[foundIndex],
+          ...data
+        }
       } else {
         state.certifications.push({ id, ...data })
       }
@@ -31,14 +34,19 @@ export const credentialsSlice = createSlice({
       state.certifications.push(newCert)
     },
     removeCertification: (state, action) => {
-      state.certifications = state.certifications.filter(cert => cert.id !== action.payload)
+      state.certifications = state.certifications.filter(
+        cert => cert.id !== action.payload
+      )
     },
 
     updateAchievement: (state, action) => {
       const { id, data } = action.payload
       const foundIndex = state.achievements.findIndex(ach => ach.id === id)
       if (foundIndex !== -1) {
-        state.achievements[foundIndex] = { ...state.achievements[foundIndex], ...data }
+        state.achievements[foundIndex] = {
+          ...state.achievements[foundIndex],
+          ...data
+        }
       } else {
         state.achievements.push({ id, ...data })
       }
@@ -53,7 +61,9 @@ export const credentialsSlice = createSlice({
       state.achievements.push(newAchievement)
     },
     removeAchievement: (state, action) => {
-      state.achievements = state.achievements.filter(ach => ach.id !== action.payload)
+      state.achievements = state.achievements.filter(
+        ach => ach.id !== action.payload
+      )
     },
 
     updateSkill: (state, action) => {

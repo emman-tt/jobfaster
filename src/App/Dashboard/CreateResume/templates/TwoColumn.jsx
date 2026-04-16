@@ -196,8 +196,6 @@ function EducationEntry ({ entry, eduStyles, bodyStyles, metaStyles }) {
           style={{ fontSize: `${metaStyles?.size}pt` }}
           className='text-slate-500 flex items-center min-h-4'
         >
-          # EducationEntry shimmer update for Grade/Level would follow but I'll
-          group if possible.
           {entry.detail ||
             [
               entry.level ? `level ${entry.level}` : '',

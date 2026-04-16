@@ -8,7 +8,6 @@ import { aiSlice } from './aiSlice'
 import { previewSlice } from './previewSlice'
 import { notificationSlice } from './notificationSlice'
 import { emailSlice } from './emailSlice'
-import { additionalSlice } from './additionalSlice'
 import { workSlice } from './workSlice'
 import { educationSlice } from './educationSlice'
 import { credentialsSlice } from './credentialsSlice'
@@ -28,6 +27,5 @@ export const store = configureStore({
     preview: previewSlice.reducer,
     notification: notificationSlice.reducer,
     email: emailSlice.reducer,
-    additional: additionalSlice.reducer
   }
 })

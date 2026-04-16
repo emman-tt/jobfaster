@@ -10,8 +10,7 @@ import {
   Upload
 } from 'lucide-react'
 import Folder from '../../../components/Folder'
-
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import { toggleModals } from '../../../store/modalSlice'
 import FilePreview from '../Resume/FilePreview'
@@ -34,6 +33,7 @@ function formatBytes (bytes) {
 }
 
 export default function Main () {
+  const { showRightbar } = useSelector(state => state.dashboard)
   const { id } = useParams()
   const dispatch = useDispatch()
   const queryClient = useQueryClient()
@@ -315,10 +315,13 @@ export default function Main () {
       <section
         onTouchMove={handleTouchMove}
         onTouchEnd={handleTouchEnd}
-        className={`grid grid-cols-8 gap-4 mt-0 pt-5 pl-10 overflow-hidden 
-            justify-start pb-0 mb-0 items-center max-h-130  gap-y-10
+        className={`grid  gap-4 transform-gpu transition-all duration-150 ease-in-out mt-0 pt-5 pl-10 overflow-hidden 
+            justify-start 
+            ${
+              showRightbar ? 'grid-cols-6' : 'grid-cols-8'
+            } pb-0 mb-0 items-center max-h-130  gap-y-10
           overflow-y-auto ${
-            actualPath == 'overview' ? 'h-75' : ''
+            actualPath == 'overview' ? 'h-75' : 'min-h-20'
           } [scrollbar-width:thin] w-full`}
       >
         {/* specific files in an opened folder  */}
@@ -376,19 +379,7 @@ export default function Main () {
           </section>
         )}
         {isFetching && (
-          <>
-            <div className='custom-loader absolute bottom-0 top-0 left-0 right-0 w-full '></div>
-
-            {isLoading && (
-              <section className='flex col-span-7 gap-5 flex-wrap'>
-                <>
-                  {[...Array(16)].map((_, i) => (
-                    <Skeleton key={i} />
-                  ))}
-                </>
-              </section>
-            )}
-          </>
+          <div className='custom-loader absolute bottom-0 top-0 left-0 right-0 w-full '></div>
         )}
 
         {/* All folders and files in overview and resumes */}
@@ -509,7 +500,6 @@ function FolderMenu ({ config, onClose, onOpen, mutation }) {
 
       <button
         onClick={() => {
-         
           onClose()
         }}
         className='flex items-center gap-2 px-4 py-2 hover:bg-slate-50 text-slate-700 text-[10px] font-semibold transition-all cursor-pointer'
@@ -521,7 +511,6 @@ function FolderMenu ({ config, onClose, onOpen, mutation }) {
 
       <button
         onClick={() => {
-         
           onClose()
         }}
         className='flex items-center gap-2 px-4 py-2 hover:bg-slate-50 text-slate-700 text-[10px] font-semibold transition-all cursor-pointer'
@@ -554,20 +543,6 @@ function MiniIframe ({ src }) {
     <section className='bg-[#c4c7cc15] shadow-sm rounded-xl w-full h-full overflow-hidden'>
       <img src={thumbnailUrl} alt='' className=' h-full w-full object-cover' />
     </section>
-  )
-}
-
-function Skeleton () {
-  return (
-    <div className='w-30 animate-pulse'>
-      <div className='bg-slate-100 rounded-xl w-full h-26 flex flex-col items-center justify-center'>
-        <div className='w-12 h-12 bg-slate-150 rounded-lg mb-2' />
-        <div className='w-20 h-3 bg-slate-200 rounded' />
-      </div>
-      <div className='flex w-full text-xs mt-2 items-center justify-center gap-1'>
-        <div className='w-16 h-3 bg-slate-200 rounded' />
-      </div>
-    </div>
   )
 }
 

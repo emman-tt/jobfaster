@@ -1,7 +1,5 @@
 import { useNavigate } from 'react-router-dom'
 import { BackNext } from '../../../components/BackNext'
-import Projects from './Projects'
-import Certificates from './Certificates'
 
 export default function Additional () {
   const navigate = useNavigate()

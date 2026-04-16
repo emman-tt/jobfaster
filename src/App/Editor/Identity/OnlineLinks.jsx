@@ -93,7 +93,7 @@ export default function OnlineLinks () {
                 className='text-red-500 hover:text-red-700 text-sm shrink-0 w-5 h-5 flex items-center cursor-pointer justify-center hover:bg-red-50 rounded transition-colors'
                 title='Remove link'
               >
-                <Trash2 className=' w-4 h-4'/>
+                <Trash2 className=' w-4 h-4' />
               </button>
             </div>
             <input
@@ -107,7 +107,6 @@ export default function OnlineLinks () {
         ))}
       </div>
 
-      {/* Add Link Section */}
       <div className='mt-6 flex flex-col sm:flex-row gap-3 w-full'>
         <div className='w-full sm:w-40 relative shrink-0'>
           <button
@@ -122,7 +121,6 @@ export default function OnlineLinks () {
             />
           </button>
 
-          {/* Dropdown Menu */}
           {linksBox && (
             <div className='absolute z-20 top-full left-0 right-0 mt-2 bg-white border border-gray-200 rounded-xl shadow-lg overflow-hidden'>
               <ul className='max-h-48 overflow-y-auto'>

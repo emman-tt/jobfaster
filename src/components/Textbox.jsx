@@ -26,7 +26,7 @@ export default function TextBox ({
     >
       {/* Toolbar */}
       <div className='bg-white border-b border-gray-200 p-3 flex flex-wrap gap-2 items-center justify-end'>
-        {/* Bold */}
+   
         <button
           onClick={() => applyFormatting('bold')}
           className='p-2 rounded-lg hover:bg-gray-100 transition-colors text-gray-700 hover:text-gray-900 flex items-center justify-center'
@@ -35,7 +35,7 @@ export default function TextBox ({
           <Bold size={18} />
         </button>
 
-        {/* Italic */}
+     
         <button
           onClick={() => applyFormatting('italic')}
           className='p-2 rounded-lg hover:bg-gray-100 transition-colors text-gray-700 hover:text-gray-900 flex items-center justify-center'
@@ -44,7 +44,7 @@ export default function TextBox ({
           <Italic size={18} />
         </button>
 
-        {/* Underline */}
+    
         <button
           onClick={() => applyFormatting('underline')}
           className='p-2 rounded-lg hover:bg-gray-100 transition-colors text-gray-700 hover:text-gray-900 flex items-center justify-center'
@@ -53,10 +53,9 @@ export default function TextBox ({
           <Underline size={18} />
         </button>
 
-        {/* Divider */}
+    
         <div className='w-px h-6 bg-gray-300'></div>
 
-        {/* Clear Formatting */}
         <button
           onClick={() => applyFormatting('removeFormat')}
           className='px-3 py-1.5 rounded-lg bg-red-50 hover:bg-red-100 text-red-600 text-xs font-medium transition-colors'

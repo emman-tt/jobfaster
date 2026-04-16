@@ -110,9 +110,9 @@ const processes = [
   },
   {
     id: 3,
-    name: 'Templates Library',
+    name: 'Daily jobs',
     icon: <Layers className='w-4 h-4' />,
-    href: 'templates'
+    href: 'listings'
   },
   {
     id: 4,
@@ -126,6 +126,12 @@ const tools = [
   {
     id: 5,
     name: 'Create Resume',
+    icon: <PlusCircle className='w-4 h-4' />,
+    href: 'create/resume/examples'
+  },
+  {
+    id: 5,
+    name: 'Preferences',
     icon: <PlusCircle className='w-4 h-4' />,
     href: 'create/resume/examples'
   }

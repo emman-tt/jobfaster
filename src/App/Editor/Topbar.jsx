@@ -10,13 +10,18 @@ import {
   Copy,
   Trash2,
   LayoutTemplate,
-  X
+  X,
+  CircleArrowDown
 } from 'lucide-react'
+import { toggleModals } from '../../store/modalSlice'
+import { useDispatch } from 'react-redux'
+import Menubar from './Menubar'
 export function Topbar ({ isPreview, setIsPreview }) {
   const navigate = useNavigate()
   const [isSaving, setIsSaving] = useState(false)
   const [showExportMenu, setShowExportMenu] = useState(false)
-  const [showTemplates, setShowTemplates] = useState(false)
+  const [menuBox, showMenuBox] = useState(false)
+  const dispatch = useDispatch()
 
   function handleBack () {
     navigate('/dashboard')
@@ -54,10 +59,14 @@ export function Topbar ({ isPreview, setIsPreview }) {
     }
   }
 
+  function showTemplates () {
+    dispatch(toggleModals('showTemplates'))
+  }
+
   return (
     <>
       <header className='bg-white border-b border-gray-200 px-4 py-2'>
-        <div className='flex items-center justify-between'>
+        <div className='flex items-center relative justify-between'>
           <div className='flex items-center gap-2'>
             <button
               onClick={handleBack}
@@ -66,6 +75,15 @@ export function Topbar ({ isPreview, setIsPreview }) {
               <ArrowLeft size={16} />
               <span>Back</span>
             </button>
+            <button className='flex cursor-pointer items-center gap-1.5 px-5 py-1.5 rounded-full bg-gray-100 hover:bg-[#fd9155]  font-medium transition-all    active:scale-95 disabled:opacity-50 font-IBM'>
+              <CircleArrowDown size={15} />
+              <span className=' text-black  text-sm hover:text-white'>
+                Typography
+              </span>
+            </button>
+            <div className=' absolute translate-y-[56%] w-120 z-100 translate-x-15'>
+              <Menubar />
+            </div>
           </div>
 
           <div className='flex items-center gap-1.5'>
@@ -83,17 +101,17 @@ export function Topbar ({ isPreview, setIsPreview }) {
                 onClick={handlePreview}
                 className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full 
                   font-medium text-sm transition-all font-satoshi ${
-                  isPreview
-                    ? 'bg-[#fd9155] text-white hover:bg-[#e8854a]'
-                    : 'text-gray-700 hover:bg-gray-200'
-                }`}
+                    isPreview
+                      ? 'bg-[#fd9155] text-white hover:bg-[#e8854a]'
+                      : 'text-gray-700 hover:bg-gray-200'
+                  }`}
               >
                 <Eye size={15} />
                 <span>Preview</span>
               </button>
 
               <button
-                onClick={() => setShowTemplates(true)}
+                onClick={() => showTemplates()}
                 className='flex items-center gap-1.5 px-3 py-1.5 rounded-full font-medium text-sm transition-all font-satoshi text-gray-700 hover:bg-gray-200'
               >
                 <LayoutTemplate size={15} />
@@ -169,9 +187,6 @@ export function Topbar ({ isPreview, setIsPreview }) {
           </div>
         </div>
       </header>
-      {showTemplates && (
-        <TemplatesPanel onClose={() => setShowTemplates(false)} />
-      )}
     </>
   )
 }
