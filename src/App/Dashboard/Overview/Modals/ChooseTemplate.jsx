@@ -2,7 +2,6 @@ import { X, Check } from 'lucide-react'
 import { useDispatch, useSelector } from 'react-redux'
 import { toggleModals } from '../../../../store/modalSlice'
 import { changeLayout } from '../../../../store/aiSlice'
-import { selectFontType } from '../../../../store/formatSlice'
 import TwoColumnResume from '../../CreateResume/templates/TwoColumn'
 import LeftAlligned from '../../CreateResume/templates/LeftAlligned'
 import SkillsFirstResume from '../../CreateResume/templates/SkillsFirst'
@@ -18,13 +17,7 @@ const templates = [
   { id: 5, name: 'Bold', Comp: DividedResume }
 ]
 
-const fonts = [
-  { id: 'calibri', label: 'Calibri' },
-  { id: 'arial', label: 'Arial' },
-  { id: 'times-new-roman', label: 'Times New Roman' },
-  { id: 'georgia', label: 'Georgia' },
-  { id: 'garamond', label: 'Garamond' }
-]
+
 
 const colors = [
   '#0a66c2',

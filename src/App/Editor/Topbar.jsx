@@ -14,13 +14,14 @@ import {
   CircleArrowDown
 } from 'lucide-react'
 import { toggleModals } from '../../store/modalSlice'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import Menubar from './Menubar'
 export function Topbar ({ isPreview, setIsPreview }) {
   const navigate = useNavigate()
   const [isSaving, setIsSaving] = useState(false)
   const [showExportMenu, setShowExportMenu] = useState(false)
-  const [menuBox, showMenuBox] = useState(false)
+  const [menuBar, showMenuBar] = useState(false)
+  const { modals } = useSelector(state => state.modal)
   const dispatch = useDispatch()
 
   function handleBack () {
@@ -75,15 +76,20 @@ export function Topbar ({ isPreview, setIsPreview }) {
               <ArrowLeft size={16} />
               <span>Back</span>
             </button>
-            <button className='flex cursor-pointer items-center gap-1.5 px-5 py-1.5 rounded-full bg-gray-100 hover:bg-[#fd9155]  font-medium transition-all    active:scale-95 disabled:opacity-50 font-IBM'>
+            <button
+              onClick={() => showMenuBar(e => !e)}
+              className='flex cursor-pointer items-center gap-1.5 px-5 py-1.5 rounded-full bg-gray-100 hover:bg-[#fd9155]  font-medium transition-all    active:scale-95 disabled:opacity-50 font-IBM'
+            >
               <CircleArrowDown size={15} />
               <span className=' text-black  text-sm hover:text-white'>
                 Typography
               </span>
             </button>
-            <div className=' absolute translate-y-[56%] w-120 z-100 translate-x-15'>
-              <Menubar />
-            </div>
+            {menuBar && (
+              <div className=' absolute top-full left-0 right-0 mt-5  w-120 z-100 '>
+                <Menubar />
+              </div>
+            )}
           </div>
 
           <div className='flex items-center gap-1.5'>

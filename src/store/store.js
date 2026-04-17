@@ -1,5 +1,4 @@
 import { personalSlice } from './personalSlice'
-import { formatSlice } from './formatSlice'
 import { configureStore } from '@reduxjs/toolkit'
 import { filesSlice } from './filesSlice'
 import { modalSlice } from './modalSlice'
@@ -11,10 +10,10 @@ import { emailSlice } from './emailSlice'
 import { workSlice } from './workSlice'
 import { educationSlice } from './educationSlice'
 import { credentialsSlice } from './credentialsSlice'
+import { editorSlice } from './editorSlice'
 
 export const store = configureStore({
   reducer: {
-    format: formatSlice.reducer,
     personal: personalSlice.reducer,
     work: workSlice.reducer,
     education: educationSlice.reducer,
@@ -27,5 +26,6 @@ export const store = configureStore({
     preview: previewSlice.reducer,
     notification: notificationSlice.reducer,
     email: emailSlice.reducer,
+    editor: editorSlice.reducer,
   }
 })

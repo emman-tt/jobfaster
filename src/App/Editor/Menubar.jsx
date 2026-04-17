@@ -1,275 +1,225 @@
+import { useState } from 'react'
 import {
   AlignLeft,
   AlignCenter,
   AlignRight,
   Strikethrough,
-  ChevronsUpDown,
-  ChevronDown
+  ChevronDown,
+  AlignJustify
 } from 'lucide-react'
-import { useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import {
+  setAlign,
+  setFont,
+  setHeight,
+  setSize,
+  setWeight
+} from '../../store/editorSlice'
 
-export default function Menubar () {
-  const [typography, setTypography] = useState({
-    font: 'Inter',
-    weight: '500',
-    size: '14',
-    sizeUnit: 'PX',
-    height: 'Auto',
-    heightUnit: 'PX',
-    color: '#2563eb',
-    align: 'left',
-    bold: false,
-    italic: false,
-    underline: false,
-    strikethrough: false
-  })
+const fontList = [
+  { id: 1, name: 'inter', value: 'font-inter' },
+  { id: 2, name: 'Open Sans', value: 'font-open' },
+  { id: 3, name: 'Roboto', value: 'font-roboto' },
+  { id: 4, name: 'Arial', value: 'font-arial' },
+  { id: 5, name: 'Garamond', value: 'font-garamond' }
+]
 
-  const handleChange = (field, value) => {
-    setTypography(prev => ({ ...prev, [field]: value }))
-  }
+const weightArray = [
+  { name: '400 - Regular', value: 400 },
+  { name: '500 - Medium', value: 500 },
+  { name: '600 - Semi Bold', value: 600 },
+  { name: '700 - Bold', value: 700 }
+]
 
-  const toggleStyle = style => {
-    setTypography(prev => ({ ...prev, [style]: !prev[style] }))
-  }
+const lineHeightOptions = [
+  { name: '1.2 - Tight', value: 1.2 },
+  { name: '1.4 - Normal', value: 1.4 },
+  { name: '1.5 - Normal', value: 1.5 },
+  { name: '1.6 - Relaxed', value: 1.6 }
+]
 
-  const fontList = [
-    {
-      id: 1,
-      name: 'inter',
-      value: 'font-inter'
-    },
-    {
-      id: 2,
-      name: 'Open Sans',
-      value: 'font-open'
-    },
-    {
-      id: 3,
-      name: 'Roboto',
-      value: 'font-roboto'
-    },
-    {
-      id: 4,
-      name: 'Arial',
-      value: 'font-arial'
-    },
-    {
-      id: 5,
-      name: 'Garamond',
-      value: 'font-garamond '
-    }
-  ]
+const alignList = [
+  { name: 'left', comp: AlignLeft },
+  { name: 'right', comp: AlignRight },
+  { name: 'center', comp: AlignCenter },
+  { name: 'justify', comp: AlignJustify }
+]
+
+function FontWeight ({ onSelect, weight }) {
+  const [isOpen, setIsOpen] = useState(false)
 
   return (
+    <div className='w-full sm:w-30 relative shrink-0'>
+      <button
+        onClick={() => setIsOpen(prev => !prev)}
+        className='w-full border border-gray-200 pl-4 pr-3 py-2.5 rounded-xl text-xs text-gray-900 font-medium flex items-center justify-between  transition-all shadow-sm bg-white'
+      >
+        <span>Font weight</span>
+        <ChevronDown
+          className={`w-4 h-4 transition-transform duration-150 ${
+            isOpen ? 'rotate-180' : ''
+          }`}
+        />
+      </button>
+
+      <div
+        className={`absolute z-20 top-full left-0 right-0 mt-2 bg-white ${
+          isOpen ? 'border border-gray-200' : ''
+        } cursor-pointer rounded-xl shadow-lg overflow-hidden`}
+      >
+        <ul className='max-h-48 overflow-y-auto'>
+          {isOpen &&
+            weightArray.map(item => (
+              <li
+                key={item.value}
+                onClick={() => {
+                  onSelect(item.name)
+                  setIsOpen(false)
+                }}
+                style={{
+                  fontWeight: item.value
+                }}
+                className={`flex items-center gap-2 px-4 py-3 text-xs text-gray-900 ${
+                  item.name == weight && 'bg-orange-400'
+                }   cursor-pointer transition-colors`}
+              >
+                {item.name}
+              </li>
+            ))}
+        </ul>
+      </div>
+    </div>
+  )
+}
+
+function Alignment ({ onSelect, align }) {
+  return (
+    <div className='space-y-2'>
+      <label className='text-sm text-gray-600'>Align</label>
+      <div className='flex gap-2'>
+        {alignList.map(item => {
+          const Icon = item.comp
+          return (
+            <button
+              key={item.name}
+              onClick={() => onSelect(item.name)}
+              className={`flex-1 hover:bg-gray-50 p-2 border rounded-lg cursor-pointer transition ${
+                align === item.name ? ' border-orange-600' : ' border-gray-200'
+              }`}
+            >
+              <Icon size={18} className='mx-auto' />
+            </button>
+          )
+        })}
+      </div>
+    </div>
+  )
+}
+
+export default function Menubar () {
+  const dispatch = useDispatch()
+  const { font, align, size, weight, height } = useSelector(
+    state => state.editor
+  )
+  function SelectFont (item) {
+    dispatch(setFont(item))
+  }
+
+  function getFont (item) {
+    return fontList.find(e => e.name == item).value
+  }
+  return (
     <section className='w-full bg-white h-full rounded-2xl shadow-lg p-5 space-y-4'>
-      <div className='text-lg    font-bold text-gray-900'>Typography</div>
-
-      <div className=''>
+      <h3 className='text-lg font-bold text-gray-900'>Typography</h3>
+      <p className='text-xs text-gray-500'>
+        Job titles, company names, bullet points, and descriptions will inherit
+        their typography changes relative to body text .
+      </p>
+      <div>
         <label className='text-sm text-gray-600'>Font</label>
-
-        <div className=' flex w-full flex-wrap gap-5'>
+        <div className='flex w-full flex-wrap gap-5'>
           {fontList.map(item => (
             <div
-              className=' rounded-xl shadow-sm bg-white w-15 h-15'
               key={item.id}
-            ></div>
+              className={`rounded-xl 
+                ${getFont(
+                  item.name
+                )} text-xl font-medium cursor-pointer justify-center flex items-center shadow-sm bg-white w-15 h-15`}
+            >
+              A a
+            </div>
           ))}
         </div>
       </div>
-      <FontWeight />
-      <div className='grid grid-cols-2 gap-3'>
-        <div className='space-y-2'>
-          <label className='text-sm text-gray-600'>Size</label>
-          <div className='flex gap-2'>
+
+      <div className='flex gap-3'>
+        <FontWeight
+          weight={weight}
+          onSelect={val => dispatch(setWeight(val))}
+        />
+        <div className='w-full h-10 flex gap-0 items-center'>
+          <label className='text-sm w-15 text-gray-600 font-IBM'>Size :</label>
+          <div className='gap-2 w-full border border-gray-200 rounded-xl text-xs text-gray-900 font-medium transition-all shadow-sm bg-white'>
             <input
               type='number'
-              value={typography.size}
-              onChange={e => handleChange('size', e.target.value)}
-              className='flex-1 px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm
-               focus:outline-none focus:ring-2 focus:ring-blue-500'
+              min={10}
+              max={24}
+              onChange={e => dispatch(setSize(e.target.value))}
+              className='px-3 py-2 h-full w-full border border-gray-200 rounded-lg text-sm focus:outline-none'
             />
           </div>
         </div>
-        <div className='space-y-2'>
-          <label className='text-sm text-gray-600'>Height</label>
-          <div className='flex gap-2'>
-            <input
-              type='text'
-              placeholder='Auto'
-              value={typography.height}
-              onChange={e => handleChange('height', e.target.value)}
-              className='flex-1 px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500'
-            />
-          </div>
-        </div>
-      </div>
 
-      <div className='space-y-2'>
-        <label className='text-sm text-gray-600'>Color</label>
-        <button className='w-full flex items-center gap-3 px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm hover:bg-gray-100 transition'>
-          <div
-            className='w-5 h-5 rounded'
-            style={{ backgroundColor: typography.color }}
-          />
-          <span>Blue Base</span>
-        </button>
+        <LineHeight
+          height={height}
+          onSelect={val => dispatch(setHeight(val))}
+        />
       </div>
-
-      {/* Alignment */}
-      <div className='space-y-2'>
-        <label className='text-sm text-gray-600'>Align</label>
-        <div className='flex gap-2'>
-          <button
-            onClick={() => handleChange('align', 'left')}
-            className={`flex-1 p-2 border rounded-lg transition ${
-              typography.align === 'left'
-                ? 'bg-blue-100 border-blue-300'
-                : 'bg-gray-50 border-gray-200'
-            }`}
-          >
-            <AlignLeft size={18} className='mx-auto' />
-          </button>
-          <button
-            onClick={() => handleChange('align', 'center')}
-            className={`flex-1 p-2 border rounded-lg transition ${
-              typography.align === 'center'
-                ? 'bg-blue-100 border-blue-300'
-                : 'bg-gray-50 border-gray-200'
-            }`}
-          >
-            <AlignCenter size={18} className='mx-auto' />
-          </button>
-          <button
-            onClick={() => handleChange('align', 'right')}
-            className={`flex-1 p-2 border rounded-lg transition ${
-              typography.align === 'right'
-                ? 'bg-blue-100 border-blue-300'
-                : 'bg-gray-50 border-gray-200'
-            }`}
-          >
-            <AlignRight size={18} className='mx-auto' />
-          </button>
-          <button
-            onClick={() => handleChange('align', 'justify')}
-            className={`flex-1 p-2 border rounded-lg transition ${
-              typography.align === 'justify'
-                ? 'bg-blue-100 border-blue-300'
-                : 'bg-gray-50 border-gray-200'
-            }`}
-          >
-            <Strikethrough size={18} className='mx-auto' />
-          </button>
-        </div>
-      </div>
-
-      {/* Text Styles */}
-      <div className='space-y-2'>
-        <label className='text-sm text-gray-600'>Style</label>
-        <div className='flex gap-2'>
-          <button
-            onClick={() => toggleStyle('bold')}
-            className={`flex-1 p-2 font-bold border rounded-lg transition ${
-              typography.bold
-                ? 'bg-blue-100 border-blue-300'
-                : 'bg-gray-50 border-gray-200'
-            }`}
-          >
-            B
-          </button>
-          <button
-            onClick={() => toggleStyle('italic')}
-            className={`flex-1 p-2 italic border rounded-lg transition ${
-              typography.italic
-                ? 'bg-blue-100 border-blue-300'
-                : 'bg-gray-50 border-gray-200'
-            }`}
-          >
-            I
-          </button>
-          <button
-            onClick={() => toggleStyle('underline')}
-            className={`flex-1 p-2 underline border rounded-lg transition ${
-              typography.underline
-                ? 'bg-blue-100 border-blue-300'
-                : 'bg-gray-50 border-gray-200'
-            }`}
-          >
-            U
-          </button>
-          <button
-            onClick={() => toggleStyle('strikethrough')}
-            className={`flex-1 p-2 line-through border rounded-lg transition ${
-              typography.strikethrough
-                ? 'bg-blue-100 border-blue-300'
-                : 'bg-gray-50 border-gray-200'
-            }`}
-          >
-            S
-          </button>
-        </div>
-      </div>
+      <Alignment align={align} onSelect={val => dispatch(setAlign(val))} />
     </section>
   )
 }
 
-const weightArray = [
-  {
-    name: '400 - Regular',
-    value: 400
-  },
-  {
-    name: '500 - Medium',
-    value: 500
-  },
-  {
-    name: '600 - Semi Bold',
-    value: 600
-  },
-  {
-    name: '700 - Bold',
-    value: 700
-  }
-]
+function LineHeight ({ onSelect, height }) {
+  const [isOpen, setIsOpen] = useState(false)
 
-function FontWeight ({ selectSize }) {
-  const [box, showBox] = useState(false)
   return (
-    <section className='mt-6 flex flex-col sm:flex-row gap-3 w-full'>
-      <div className='w-full sm:w-40 relative shrink-0'>
-        <button
-          onClick={() => showBox(e => !e)}
-          className='w-full border border-gray-100 pl-4  pr-3 py-2.5 rounded-xl text-xs text-gray-900 font-medium flex items-center justify-between hover:shadow-md transition-all shadow-xs bg-white'
-        >
-          <span>Font weight</span>
-          <ChevronDown
-            className={`w-4 h-4 transition-transform duration-150 ${
-              box ? 'rotate-180' : ''
-            }`}
-          />
-        </button>
+    <div className='w-full sm:w-36 relative shrink-0'>
+      <button
+        onClick={() => setIsOpen(prev => !prev)}
+        className='w-full border border-gray-200 pl-4 pr-3 py-2.5 rounded-xl text-xs text-gray-900 font-medium flex items-center justify-between transition-all shadow-sm bg-white'
+      >
+        <span>Line height</span>
+        <ChevronDown
+          className={`w-4 h-4 transition-transform duration-150 ${
+            isOpen ? 'rotate-180' : ''
+          }`}
+        />
+      </button>
 
-        <div
-          className={`absolute z-20 top-full left-0 right-0 mt-2 bg-white ${
-            box && 'border'
-          }  border-gray-200 cursor-pointer rounded-xl shadow-lg overflow-hidden`}
-        >
-          <ul className='max-h-48 overflow-y-auto'>
-            {box &&
-              weightArray.map(item => (
-                <li
-                  key={item.value}
-                  onClick={() => {
-                    selectSize(item.value)
-                    showBox(false)
-                  }}
-                  className='flex items-center gap-2 px-4 py-3 text-xs text-gray-900 hover:bg-[#ec5b13]/5 cursor-pointer transition-colors'
-                >
-                  {item.name}
-                </li>
-              ))}
-          </ul>
-        </div>
+      <div
+        className={`absolute z-20 top-full left-0 right-0 mt-2 bg-white ${
+          isOpen ? 'border border-gray-200' : ''
+        } cursor-pointer rounded-xl shadow-lg overflow-hidden`}
+      >
+        <ul className='max-h-48 overflow-y-auto'>
+          {isOpen &&
+            lineHeightOptions.map(item => (
+              <li
+                key={item.value}
+                onClick={() => {
+                  onSelect(item.value)
+                  setIsOpen(false)
+                }}
+                className={`flex items-center gap-2 px-4 py-3 text-xs text-gray-900 ${
+                  item.value == height && 'bg-orange-500 text-white'
+                } cursor-pointer transition-colors`}
+              >
+                {item.name}
+              </li>
+            ))}
+        </ul>
       </div>
-    </section>
+    </div>
   )
 }
