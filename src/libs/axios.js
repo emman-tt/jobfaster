@@ -22,11 +22,10 @@ api.interceptors.request.use(config => {
 
 api.interceptors.response.use(undefined, async error => {
   const status = error.response?.status
-  const message = error.response?.data?.message
-  console.log(error.config)
+
   if (error.config._retry && status == 401) {
     window.location.href = '/auth'
-    return3
+    return
   }
 
   if (error.code === 'ECONNABORTED') {

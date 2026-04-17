@@ -1,17 +1,21 @@
 import { createSlice } from '@reduxjs/toolkit'
 
 const initialState = {
-  font: 'Inter',
+  font: 'font-inter',
   weight: 500,
   size: 14,
-  height:1.5,
-  align: 'left'
+  height: 1.2,
+  align: 'left',
+  templateId: 1
 }
 
 export const editorSlice = createSlice({
   name: 'editor',
   initialState,
   reducers: {
+    saveTemplateId (state, action) {
+      state.templateId = action.payload
+    },
     setFont: (state, action) => {
       state.font = action.payload
     },
@@ -30,5 +34,11 @@ export const editorSlice = createSlice({
   }
 })
 
-export const { setFont, setWeight, setSize, setHeight, setAlign } =
-  editorSlice.actions
+export const {
+  setFont,
+  setWeight,
+  setSize,
+  saveTemplateId,
+  setHeight,
+  setAlign
+} = editorSlice.actions

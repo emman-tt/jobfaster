@@ -138,6 +138,7 @@ function LanguageRow ({ lang, isEditing, editingValue, onStartEditing, onInputCh
             type='text'
             value={lang.language}
             onClick={onStartEditing}
+            readOnly
             placeholder='Language'
             className='w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-1 focus:ring-[#ec5b13] placeholder:text-gray-300 transition-all text-gray-900 bg-white shadow-sm hover:shadow-md transition-shadow cursor-text'
           />

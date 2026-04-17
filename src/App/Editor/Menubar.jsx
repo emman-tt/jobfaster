@@ -118,13 +118,10 @@ function Alignment ({ onSelect, align }) {
 
 export default function Menubar () {
   const dispatch = useDispatch()
-  const { font, align, size, weight, height } = useSelector(
-    state => state.editor
-  )
+  const { font, align, weight, height } = useSelector(state => state.editor)
   function SelectFont (item) {
     dispatch(setFont(item))
   }
-
   function getFont (item) {
     return fontList.find(e => e.name == item).value
   }
@@ -141,10 +138,13 @@ export default function Menubar () {
           {fontList.map(item => (
             <div
               key={item.id}
+              onClick={() => {
+                SelectFont(item.value)
+              }}
               className={`rounded-xl 
-                ${getFont(
-                  item.name
-                )} text-xl font-medium cursor-pointer justify-center flex items-center shadow-sm bg-white w-15 h-15`}
+                ${getFont(item.name)} text-xl ${
+                item.value == font && 'border-orange-500 border'
+              } font-medium cursor-pointer justify-center flex items-center shadow-sm bg-white w-15 h-15`}
             >
               A a
             </div>

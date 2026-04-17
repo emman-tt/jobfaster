@@ -3,14 +3,17 @@ import Canvas from './Canvas'
 import Steps from './Steps'
 import TemplateSelector from './TemplateSelector'
 import { toggleModals } from '../../store/modalSlice'
-import { saveTemplateId } from '../../store/dashboardSlice'
-export function Main ({ activeSection }) {
+import { saveTemplateId } from '../../store/editorSlice'
+export function Main () {
   const { modals } = useSelector(state => state.modal)
+  const { templateId } = useSelector(state => state.editor)
+
   const dispatch = useDispatch()
   return (
     <section className='h-full w-full overflow-hidden flex'>
       <TemplateSelector
-        onSelect={id => dispatch(saveTemplateId(id))}
+        selectedTemplate={templateId}
+        onSelect={item => dispatch(saveTemplateId(item))}
         onClose={() => dispatch(toggleModals('showTemplates'))}
         isOpen={modals.showTemplates == true}
       />

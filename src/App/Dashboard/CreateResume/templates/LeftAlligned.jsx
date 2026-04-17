@@ -1,13 +1,23 @@
 function SectionRule ({ label, section }) {
+  const weightMap = {
+    'font-normal': 400,
+    'font-medium': 500,
+    'font-semibold': 600,
+    'font-bold': 700
+  }
+
   return (
     <div className='mb-4'>
       <h2
         style={{
           letterSpacing: section?.spacing,
           textTransform: section?.case,
-          fontSize: `${section?.size}pt`
+          fontSize: `${section?.size}pt`,
+          fontWeight: weightMap[section?.weight] || 700,
+          fontStyle: section?.style === 'italic' ? 'italic' : 'normal',
+          color: '#0f172a'
         }}
-        className={`${section?.weight} ${section?.style} text-slate-900 mb-2`}
+        className='mb-2'
       >
         {label}
       </h2>
@@ -17,27 +27,36 @@ function SectionRule ({ label, section }) {
 }
 
 function ContactRow ({ value, href, styles }) {
+  const weightMap = {
+    'font-normal': 400,
+    'font-medium': 500,
+    'font-semibold': 600,
+    'font-bold': 700
+  }
+
   const content = (
     <span
       style={{
         fontSize: `${styles?.size}pt`,
-        fontWeight: styles?.weight === 'font-bold' ? 'bold' : 'normal'
+        fontWeight: weightMap[styles?.weight] || 400,
+        color: '#475569'
       }}
-      className='text-slate-900 w-full min-h-4.25 flex items-center'
+      className='w-full min-h-4.25 flex items-center'
     >
       {value}
     </span>
   )
   return (
-    <div className='flex items-start gap-2 text-slate-400'>
+    <div className='flex items-start gap-2'>
       {href && typeof value === 'string' ? (
         <a
           style={{
             fontSize: `${styles?.size}pt`,
-            fontWeight: styles?.weight === 'font-bold' ? 'bold' : 'normal'
+            fontWeight: weightMap[styles?.weight] || 400,
+            color: '#0f172a'
           }}
           href={href}
-          className='w-full text-slate-900 hover:text-slate-600 transition-colors min-h-4.25 flex items-center'
+          className='w-full hover:text-slate-600 transition-colors min-h-4.25 flex items-center'
         >
           {value}
         </a>
@@ -55,6 +74,13 @@ function ExperienceEntry ({
   bulletStyles,
   metaStyles
 }) {
+  const weightMap = {
+    'font-normal': 400,
+    'font-medium': 500,
+    'font-semibold': 600,
+    'font-bold': 700
+  }
+
   return (
     <div
       className='grid gap-x-5 mb-5 last:mb-0'
@@ -63,8 +89,13 @@ function ExperienceEntry ({
       {/* Date column */}
       <div className='text-right pt-px'>
         <span
-          style={{ fontSize: `${metaStyles?.size}pt` }}
-          className='text-slate-400 tabular-nums leading-tight block min-h-7.5'
+          style={{
+            fontSize: `${metaStyles?.size}pt`,
+            fontStyle: 'italic',
+            color: '#94a3b8',
+            lineHeight: 1.2
+          }}
+          className='tabular-nums block min-h-7.5'
         >
           {entry?.startYear || (
             <span className='inline-block h-1.5 w-6 bg-slate-200 rounded animate-pulse'></span>
@@ -82,9 +113,11 @@ function ExperienceEntry ({
           <p
             style={{
               fontSize: `${jobStyles?.size}pt`,
-              textTransform: jobStyles?.case
+              textTransform: 'uppercase',
+              fontWeight: 700,
+              letterSpacing: '0.05em',
+              color: '#0f172a'
             }}
-            className={`${jobStyles?.style} font-bold tracking-widest uppercase text-slate-900`}
           >
             {entry?.jobTitle || (
               <span className='inline-block h-6 w-32 bg-slate-200 rounded animate-pulse'></span>
@@ -96,9 +129,11 @@ function ExperienceEntry ({
             style={{
               fontSize: `${companyStyles?.size}pt`,
               letterSpacing: companyStyles?.spacing,
-              textTransform: companyStyles?.case
+              textTransform: companyStyles?.case,
+              fontStyle: 'italic',
+              fontWeight: weightMap[companyStyles?.weight] || 500,
+              color: '#64748b'
             }}
-            className={`${companyStyles?.style} ${companyStyles?.weight} text-slate-500 italic`}
           >
             {entry?.company ? (
               `${entry?.company}${
@@ -118,9 +153,12 @@ function ExperienceEntry ({
                 key={i}
                 style={{
                   fontSize: `${bulletStyles?.size}pt`,
-                  textTransform: bulletStyles?.case
+                  textTransform: bulletStyles?.case,
+                  fontStyle: bulletStyles?.style === 'italic' ? 'italic' : 'normal',
+                  color: '#0f172a',
+                  lineHeight: 1.4
                 }}
-                className={`${bulletStyles?.style} flex gap-2 text-slate-900 leading-snug items-start`}
+                className='flex gap-2 items-start'
               >
                 <span className='text-slate-700 shrink-0 mt-px'>•</span>
                 <span className='flex-1 mt-0.5'>
@@ -145,6 +183,13 @@ function ExperienceEntry ({
 }
 
 function EducationEntry ({ entry, metaStyles, bodyStyles, companyStyles }) {
+  const weightMap = {
+    'font-normal': 400,
+    'font-medium': 500,
+    'font-semibold': 600,
+    'font-bold': 700
+  }
+
   return (
     <div
       className='grid gap-x-5 mb-5 last:mb-0'
@@ -153,8 +198,13 @@ function EducationEntry ({ entry, metaStyles, bodyStyles, companyStyles }) {
       {/* Date column */}
       <div className='text-right pt-px'>
         <span
-          style={{ fontSize: `${metaStyles?.size}pt` }}
-          className='text-slate-400 tabular-nums leading-tight block min-h-7.5'
+          style={{
+            fontSize: `${metaStyles?.size}pt`,
+            fontStyle: 'italic',
+            color: '#94a3b8',
+            lineHeight: 1.2
+          }}
+          className='tabular-nums block min-h-7.5'
         >
           {entry?.startYear || (
             <span className='inline-block h-5 w-15 bg-slate-200 rounded animate-pulse'></span>
@@ -172,9 +222,11 @@ function EducationEntry ({ entry, metaStyles, bodyStyles, companyStyles }) {
           <p
             style={{
               fontSize: `${bodyStyles?.size}pt`,
-              textTransform: bodyStyles?.case
+              textTransform: bodyStyles?.case || 'uppercase',
+              fontWeight: weightMap[bodyStyles?.weight] || 500,
+              letterSpacing: '0.05em',
+              color: '#0f172a'
             }}
-            className={`${bodyStyles?.style} ${bodyStyles?.weight}  tracking-widest  text-slate-900`}
           >
             {entry?.degree || (
               <span className='inline-block h-7 w-80 bg-slate-200 rounded animate-pulse'></span>
@@ -186,9 +238,12 @@ function EducationEntry ({ entry, metaStyles, bodyStyles, companyStyles }) {
             style={{
               fontSize: `${companyStyles?.size}pt`,
               letterSpacing: companyStyles?.spacing,
-              textTransform: companyStyles?.case
+              textTransform: companyStyles?.case,
+              fontStyle: 'italic',
+              fontWeight: weightMap[companyStyles?.weight] || 500,
+              color: '#64748b'
             }}
-            className={`${companyStyles?.style} ${companyStyles?.weight} gap-2 items-center flex text-slate-500 italic`}
+            className='gap-2 items-center flex'
           >
             {entry.instituition ? (
               `${entry.instituition}`
@@ -222,31 +277,51 @@ export default function LeftAlligned ({ userData, className }) {
   const styles = userData?.styles
   const sectionHeaderStyles = styles?.sectionHeader
   const nameStyles = styles?.name
-  // const metaDataStyles = styles?.metadata
   const jobTitleStyles = styles?.jobTitle
   const companyStyles = styles?.company
   const bodyTextStyles = styles?.bodyText
   const dateStyles = styles?.date
   const contactStyles = styles?.contact
+  const fontFamily = styles?.fontFamily || 'Inter, sans-serif'
+
+  const weightMap = {
+    'font-normal': 400,
+    'font-medium': 500,
+    'font-semibold': 600,
+    'font-bold': 700
+  }
 
   return (
     <div
-      className={`bg-white max-w-2xl mx-auto shadow-md font-sans ${className}`}
+      className={`bg-white max-w-2xl mx-auto shadow-md ${className}`}
+      style={{ fontFamily }}
     >
       {/* ── Header — left-aligned, no border accent ── */}
       <header className='px-10 pt-9 pb-6 border-b-2 border-slate-200'>
         <h1
           style={{
             fontSize: `${nameStyles?.size}pt`,
-            letterSpacing: nameStyles?.spacing
+            letterSpacing: nameStyles?.spacing,
+            fontWeight: weightMap[nameStyles?.weight] || 700,
+            textTransform: 'uppercase',
+            color: '#0f172a',
+            marginBottom: '0.25rem'
           }}
-          className={`${nameStyles?.weight} uppercase text-slate-900 mb-1 flex items-center min-h-8`}
+          className='flex items-center min-h-8'
         >
           {userData?.name || (
             <span className='inline-block h-10 w-48 bg-slate-200 rounded animate-pulse'></span>
           )}
         </h1>
-        <p className='text-[10pt] italic text-slate-500 mb-1.5 flex items-center min-h-5'>
+        <p
+          style={{
+            fontSize: '10pt',
+            fontStyle: 'italic',
+            color: '#64748b',
+            marginBottom: '0.375rem'
+          }}
+          className='flex items-center min-h-5'
+        >
           {userData?.jobTitle || (
             <span className='inline-block h-6 w-32 bg-slate-200 rounded animate-pulse'></span>
           )}
@@ -282,17 +357,13 @@ export default function LeftAlligned ({ userData, className }) {
               )
             }
           />
-          <ContactRow
-            styles={contactStyles}
-            value={
-              userData?.linkedin || (
-                <span className='inline-block h-5 w-32 bg-slate-200 rounded animate-pulse'></span>
-              )
-            }
-            href={
-              userData?.linkedin ? `https://${userData?.linkedin}` : undefined
-            }
-          />
+          {userData?.linkedin?.length > 0 && (
+            <ContactRow
+              styles={contactStyles}
+              value={userData?.linkedin}
+              href={`https://${userData?.linkedin}`}
+            />
+          )}
         </div>
 
         {/* Summary */}
@@ -303,9 +374,12 @@ export default function LeftAlligned ({ userData, className }) {
               <p
                 style={{
                   fontSize: `${bodyTextStyles?.size}pt`,
-                  textTransform: bodyTextStyles?.case
+                  textTransform: bodyTextStyles?.case,
+                  fontStyle: bodyTextStyles?.style === 'italic' ? 'italic' : 'normal',
+                  color: '#0f172a',
+                  lineHeight: 1.6
                 }}
-                className={`${bodyTextStyles?.style} text-slate-900 leading-relaxed min-h-5 flex items-center`}
+                className='min-h-5 flex items-center'
               >
                 {userData?.summary || (
                   <span className='w-full flex flex-col gap-4 mt-2.5'>
