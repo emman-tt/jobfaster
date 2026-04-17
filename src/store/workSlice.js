@@ -40,6 +40,10 @@ export const workSlice = createSlice({
         state.experiences.push({ id, ...data })
       }
     },
+    reArrange (state, action) {
+      const { category, value } = action.payload
+      state[category] = value
+    },
     addExperience: (state, action) => {
       const newExp = {
         id: Date.now(),
@@ -124,5 +128,6 @@ export const {
   addProject,
   removeProject,
   addTech,
-  removeTech
+  removeTech,
+  reArrange
 } = workSlice.actions

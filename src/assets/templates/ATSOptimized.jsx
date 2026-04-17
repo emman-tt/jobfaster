@@ -41,7 +41,7 @@ const ATSOptimized = ({ data }) => {
             letterSpacing: nameStyles.spacing || 0
           }}
         >
-          {data?.name || 'Name'}
+          {data?.name}
         </div>
         <div
           style={{
@@ -50,7 +50,7 @@ const ATSOptimized = ({ data }) => {
             color: jobTitleStyles.color || '#666'
           }}
         >
-          {data?.jobTitle || 'Job Title'}
+          {data?.jobTitle}
         </div>
         <div
           style={{

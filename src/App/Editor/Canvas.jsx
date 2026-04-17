@@ -2,13 +2,6 @@ import { useRef, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { ZoomIn, ZoomOut, RotateCcw, Layout } from 'lucide-react'
 import { setShowTemplates } from '../../store/modalSlice'
-import TemplateSelector from './TemplateSelector'
-import ClassicProfessional from '../../assets/templates/ClassicProfessional'
-import ModernMinimalist from '../../assets/templates/ModernMinimalist'
-import ExecutiveSummary from '../../assets/templates/ExecutiveSummary'
-import TechnicalFocused from '../../assets/templates/TechnicalFocused'
-import AcademicStyle from '../../assets/templates/AcademicStyle'
-import ATSOptimized from '../../assets/templates/ATSOptimized'
 import { Preview } from './Preview'
 
 export default function Canvas () {

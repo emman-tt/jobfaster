@@ -85,6 +85,16 @@ export const credentialsSlice = createSlice({
     },
     removeSkill: (state, action) => {
       state.skills = state.skills.filter(skill => skill.id !== action.payload)
+    },
+    reArrange: (state, action) => {
+      const { category, value } = action.payload
+      if (category === 'skills') {
+        state.skills = value
+      } else if (category === 'certifications') {
+        state.certifications = value
+      } else if (category === 'achievements') {
+        state.achievements = value
+      }
     }
   }
 })
@@ -98,5 +108,6 @@ export const {
   removeAchievement,
   updateSkill,
   addSkill,
-  removeSkill
+  removeSkill,
+  reArrange
 } = credentialsSlice.actions

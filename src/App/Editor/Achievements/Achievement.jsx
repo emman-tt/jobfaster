@@ -1,7 +1,9 @@
 import { useState } from 'react'
-import { ChevronDown, Plus, Trash2, X, Edit2 } from 'lucide-react'
+import { ChevronDown, Plus, Trash2, X, Edit2, GripVertical } from 'lucide-react'
 import { useDispatch, useSelector } from 'react-redux'
-import { addAchievement, removeAchievement, updateAchievement } from '../../../store/credentialsSlice'
+import { addAchievement, removeAchievement, updateAchievement, reArrange } from '../../../store/credentialsSlice'
+import { DragDropProvider } from '@dnd-kit/react'
+import { Sortable } from '../../../components/dragger'
 
 const years = ['2024', '2023', '2022', '2021', '2020', '2019', '2018', '2017', '2016', '2015', '2014', '2013', '2012', '2011', '2010']
 
@@ -70,10 +72,22 @@ export default function Achievements () {
     return text
   }
 
+  const handleDragEnd = event => {
+    const { source } = event.operation
+    const { initialIndex, index } = source
+    if (initialIndex !== index) {
+      const newItems = [...achievements]
+      const [removed] = newItems.splice(initialIndex, 1)
+      newItems.splice(index, 0, removed)
+      dispatch(reArrange({ category: 'achievements', value: newItems }))
+    }
+  }
+
   return (
     <section className='w-full'>
       {/* Header */}
-      <div
+      <DragDropProvider onDragEnd={handleDragEnd}>
+        <div
         onClick={() => setIsOpen(!isOpen)}
         className='flex items-center justify-between px-4 sm:px-6 md:px-8 lg:px-10 py-4 cursor-pointer border-b border-gray-200 transition-colors'
       >
@@ -95,13 +109,16 @@ export default function Achievements () {
       {isOpen && (
         <div className='px-4 sm:px-6 md:px-8 lg:px-10 py-4 space-y-3'>
           {/* Achievement Items */}
-          {achievements.map(ach => (
-            <div
+          {achievements.map((ach, index) => (
+            <Sortable
+              index={index}
+              id={ach.id}
               key={ach.id}
               className='border border-gray-200 rounded-xl overflow-hidden bg-white hover:shadow-sm transition-shadow'
             >
               <div className='w-full flex items-center justify-between p-4 transition-colors'>
                 <div className='flex items-center gap-3 flex-1'>
+                  <GripVertical size={16} className='text-black shrink-0' />
                   <p className='text-sm font-medium text-gray-900 text-left'>
                     {displayAchievement(ach)}
                   </p>
@@ -129,7 +146,7 @@ export default function Achievements () {
                   </button>
                 </div>
               </div>
-            </div>
+            </Sortable>
           ))}
 
           {/* Add New Achievement Button */}
@@ -153,6 +170,7 @@ export default function Achievements () {
           handleSaveAchievement={handleSaveAchievement}
         />
       )}
+      </DragDropProvider>
     </section>
   )
 }

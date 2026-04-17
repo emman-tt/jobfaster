@@ -37,7 +37,7 @@ const AcademicStyle = ({ data }) => {
             fontWeight: nameStyles.weight === 'font-bold' ? 'bold' : 'normal'
           }}
         >
-          {data?.name || 'Name'}
+          {data?.name}
         </h1>
         <p style={{ fontSize: `${contactStyles.size || 11}pt`, margin: '0' }}>
           {data?.email} • {data?.phone} • {data?.location}
@@ -67,7 +67,7 @@ const AcademicStyle = ({ data }) => {
         <p
           style={{ margin: '0', lineHeight: bodyLeading, textAlign: 'justify' }}
         >
-          {data?.summary || 'Professional summary...'}
+          {data?.summary}
         </p>
       </div>
 

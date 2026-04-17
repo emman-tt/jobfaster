@@ -1,7 +1,5 @@
 import React from 'react'
 
-
-
 const ModernMinimalist = ({ data }) => {
   const styles = data?.styles || {}
   const fontFamily = styles.fontFamily || 'Arial, sans-serif'
@@ -18,12 +16,10 @@ const ModernMinimalist = ({ data }) => {
   return (
     <div
       style={{
-  
         color: '#2c3e50',
         maxWidth: '850px'
       }}
       className={`${fontFamily}`}
-
     >
       <div style={{ marginBottom: '32px' }}>
         <h1
@@ -34,11 +30,15 @@ const ModernMinimalist = ({ data }) => {
             letterSpacing: nameStyles.spacing || 2
           }}
         >
-          {data?.name || 'Name'}
+          {data?.name}
         </h1>
-        <div
-          style={{ height: '1px', background: '#e0e0e0', margin: '16px 0' }}
-        ></div>
+
+        {data?.name && (
+          <div
+            style={{ height: '1px', background: '#e0e0e0', margin: '16px 0' }}
+          ></div>
+        )}
+
         <div
           style={{
             display: 'flex',
@@ -48,7 +48,7 @@ const ModernMinimalist = ({ data }) => {
             marginBottom: '16px'
           }}
         >
-          <span>{data?.jobTitle || 'Job Title'}</span>
+          <span>{data?.jobTitle}</span>
           <span>{data?.phone}</span>
         </div>
         <div
@@ -58,7 +58,7 @@ const ModernMinimalist = ({ data }) => {
             marginBottom: '8px'
           }}
         >
-          {data?.email} | {data?.location}
+          {data?.email} {data?.email && '|'} {data?.location}
         </div>
         {data?.linkedin?.length > 0 && (
           <div
@@ -202,9 +202,15 @@ const ModernMinimalist = ({ data }) => {
         </div>
       )}
 
-      {(data?.education?.length > 0 || data?.languages?.length > 0 || data?.skills?.length > 0) && (
+      {(data?.education?.length > 0 ||
+        data?.languages?.length > 0 ||
+        data?.skills?.length > 0) && (
         <div
-          style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '32px' }}
+          style={{
+            display: 'grid',
+            gridTemplateColumns: '1fr 1fr',
+            gap: '32px'
+          }}
         >
           <div>
             {data?.education?.length > 0 && (
@@ -257,7 +263,9 @@ const ModernMinimalist = ({ data }) => {
               </>
             )}
             {data?.languages?.length > 0 && (
-              <div style={{ marginTop: data?.education?.length > 0 ? '16px' : 0 }}>
+              <div
+                style={{ marginTop: data?.education?.length > 0 ? '16px' : 0 }}
+              >
                 <h3
                   style={{
                     fontSize: `${companyStyles.size || 12}pt`,
@@ -297,7 +305,10 @@ const ModernMinimalist = ({ data }) => {
                   Skills
                 </h2>
                 <div
-                  style={{ fontSize: `${bodyStyles.size || 12}pt`, lineHeight: '1.8' }}
+                  style={{
+                    fontSize: `${bodyStyles.size || 12}pt`,
+                    lineHeight: '1.8'
+                  }}
                 >
                   {data.skills.map((skill, i) => (
                     <span
@@ -320,7 +331,13 @@ const ModernMinimalist = ({ data }) => {
 
       {(data?.certificates?.length > 0 || data?.achievements?.length > 0) && (
         <div style={{ marginTop: '32px' }}>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '32px' }}>
+          <div
+            style={{
+              display: 'grid',
+              gridTemplateColumns: '1fr 1fr',
+              gap: '32px'
+            }}
+          >
             <div>
               {data?.certificates?.length > 0 && (
                 <>
@@ -345,7 +362,9 @@ const ModernMinimalist = ({ data }) => {
                     }}
                   >
                     {data.certificates.map((cert, i) => (
-                      <li key={i} style={{ marginBottom: '4px' }}>{cert.name}</li>
+                      <li key={i} style={{ marginBottom: '4px' }}>
+                        {cert.name}
+                      </li>
                     ))}
                   </ul>
                 </>
@@ -375,7 +394,9 @@ const ModernMinimalist = ({ data }) => {
                     }}
                   >
                     {data.achievements.map((ach, i) => (
-                      <li key={i} style={{ marginBottom: '4px' }}>{ach}</li>
+                      <li key={i} style={{ marginBottom: '4px' }}>
+                        {ach}
+                      </li>
                     ))}
                   </ul>
                 </>

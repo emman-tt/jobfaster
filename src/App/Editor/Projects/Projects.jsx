@@ -1,7 +1,9 @@
 import { useState } from 'react'
 import { ChevronDown, Plus, GripVertical, Trash2, X, Edit2 } from 'lucide-react'
 import { useDispatch, useSelector } from 'react-redux'
-import { updateProject, removeProject } from '../../../store/workSlice'
+import { updateProject, removeProject, reArrange } from '../../../store/workSlice'
+import { DragDropProvider } from '@dnd-kit/react'
+import { Sortable } from '../../../components/dragger'
 
 export default function Projects () {
   const [isOpen, setIsOpen] = useState(true)
@@ -78,9 +80,21 @@ export default function Projects () {
     dispatch(removeProject(id))
   }
 
+  const handleDragEnd = event => {
+    const { source } = event.operation
+    const { initialIndex, index } = source
+    if (initialIndex !== index) {
+      const newItems = [...projects]
+      const [removed] = newItems.splice(initialIndex, 1)
+      newItems.splice(index, 0, removed)
+      dispatch(reArrange({ category: 'projects', value: newItems }))
+    }
+  }
+
   return (
     <section className='w-full'>
-      <div
+      <DragDropProvider onDragEnd={handleDragEnd}>
+        <div
         onClick={() => setIsOpen(!isOpen)}
         className='flex items-center justify-between px-4 sm:px-6 md:px-8 lg:px-10 py-4 cursor-pointer border-b border-gray-200 transition-colors'
       >
@@ -100,8 +114,10 @@ export default function Projects () {
 
       {isOpen && (
         <div className='px-4 sm:px-6 md:px-8 lg:px-10 py-4 space-y-3'>
-          {projects.map(project => (
-            <div
+          {projects.map((project, index) => (
+            <Sortable
+              index={index}
+              id={project.id}
               key={project.id}
               className='border border-gray-200 rounded-xl overflow-hidden bg-white hover:shadow-sm transition-shadow'
             >
@@ -142,7 +158,7 @@ export default function Projects () {
                   </button>
                 </div>
               </div>
-            </div>
+            </Sortable>
           ))}
 
           <button
@@ -293,6 +309,7 @@ export default function Projects () {
           </div>
         </div>
       )}
+      </DragDropProvider>
     </section>
   )
 }

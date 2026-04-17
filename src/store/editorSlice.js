@@ -6,7 +6,7 @@ const initialState = {
   size: 14,
   height: 1.2,
   align: 'left',
-  templateId: 1
+  templateId: 'classic'
 }
 
 export const editorSlice = createSlice({

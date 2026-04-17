@@ -1,7 +1,9 @@
 import { useState } from 'react'
 import { ChevronDown, Plus, GripVertical, Trash2, Edit2 } from 'lucide-react'
 import { useDispatch, useSelector } from 'react-redux'
-import { addSkill, removeSkill, updateSkill } from '../../../store/credentialsSlice'
+import { addSkill, removeSkill, updateSkill, reArrange } from '../../../store/credentialsSlice'
+import { DragDropProvider } from '@dnd-kit/react'
+import { Sortable } from '../../../components/dragger'
 
 export default function Skills () {
   const [isOpen, setIsOpen] = useState(true)
@@ -70,14 +72,26 @@ export default function Skills () {
     }
   }
 
+  const handleDragEnd = event => {
+    const { source } = event.operation
+    const { initialIndex, index } = source
+    if (initialIndex !== index) {
+      const newItems = [...skills]
+      const [removed] = newItems.splice(initialIndex, 1)
+      newItems.splice(index, 0, removed)
+      dispatch(reArrange({ category: 'skills', value: newItems }))
+    }
+  }
+
   const formatList = (list) => {
     return list?.join(' - ') || ''
   }
 
   return (
     <section className='w-full'>
-      <div
-        onClick={() => setIsOpen(!isOpen)}
+      <DragDropProvider onDragEnd={handleDragEnd}>
+        <div
+          onClick={() => setIsOpen(!isOpen)}
         className='flex items-center justify-between px-4 sm:px-6 md:px-8 lg:px-10 py-4 cursor-pointer border-b border-gray-200 transition-colors'
       >
         <h2 className='text-lg font-bold text-gray-900 flex items-center'>
@@ -96,8 +110,10 @@ export default function Skills () {
 
       {isOpen && (
         <div className='px-4 sm:px-6 md:px-8 lg:px-10 py-4 space-y-3'>
-          {skills.map(skill => (
-            <div
+          {skills.map((skill, index) => (
+            <Sortable
+              index={index}
+              id={skill.id}
               key={skill.id}
               className='border border-gray-200 rounded-xl overflow-hidden bg-white hover:shadow-sm transition-shadow'
             >
@@ -183,7 +199,7 @@ export default function Skills () {
                   </button>
                 </div>
               </div>
-            </div>
+            </Sortable>
           ))}
 
           <button
@@ -195,6 +211,7 @@ export default function Skills () {
           </button>
         </div>
       )}
+      </DragDropProvider>
     </section>
   )
 }

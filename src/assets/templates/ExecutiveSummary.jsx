@@ -41,7 +41,7 @@ const ExecutiveSummary = ({ data }) => {
             letterSpacing: nameStyles.spacing || 0
           }}
         >
-          {data?.name || 'Name'}
+          {data?.name}
         </h1>
         <h2
           style={{
@@ -51,7 +51,7 @@ const ExecutiveSummary = ({ data }) => {
             fontWeight: 600
           }}
         >
-          {data?.jobTitle || 'Job Title'}
+          {data?.jobTitle}
         </h2>
         <p
           style={{

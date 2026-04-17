@@ -1,7 +1,9 @@
 import { useState } from 'react'
-import { ChevronDown, Plus, Trash2, X, Edit2 } from 'lucide-react'
+import { ChevronDown, Plus, Trash2, X, Edit2, GripVertical } from 'lucide-react'
 import { useDispatch, useSelector } from 'react-redux'
-import { addCertification, removeCertification, updateCertification } from '../../../store/credentialsSlice'
+import { addCertification, removeCertification, updateCertification, reArrange } from '../../../store/credentialsSlice'
+import { DragDropProvider } from '@dnd-kit/react'
+import { Sortable } from '../../../components/dragger'
 
 const years = ['2024', '2023', '2022', '2021', '2020', '2019', '2018', '2017', '2016', '2015', '2014', '2013', '2012', '2011', '2010']
 
@@ -65,10 +67,22 @@ export default function Certifications () {
     }
   }
 
+  const handleDragEnd = event => {
+    const { source } = event.operation
+    const { initialIndex, index } = source
+    if (initialIndex !== index) {
+      const newItems = [...certifications]
+      const [removed] = newItems.splice(initialIndex, 1)
+      newItems.splice(index, 0, removed)
+      dispatch(reArrange({ category: 'certifications', value: newItems }))
+    }
+  }
+
   return (
     <section className='w-full'>
       {/* Header */}
-      <div
+      <DragDropProvider onDragEnd={handleDragEnd}>
+        <div
         onClick={() => setIsOpen(!isOpen)}
         className='flex items-center justify-between px-4 sm:px-6 md:px-8 lg:px-10 py-4 cursor-pointer border-b border-gray-200 transition-colors'
       >
@@ -90,19 +104,24 @@ export default function Certifications () {
       {isOpen && (
         <div className='px-4 sm:px-6 md:px-8 lg:px-10 py-4 space-y-3'>
           {/* Certification Items */}
-          {certifications.map(cert => (
-            <div
+          {certifications.map((cert, index) => (
+            <Sortable
+              index={index}
+              id={cert.id}
               key={cert.id}
               className='border border-gray-200 rounded-xl overflow-hidden bg-white hover:shadow-sm transition-shadow'
             >
               <div className='w-full flex items-center justify-between p-4 transition-colors'>
                 <div className='flex items-center gap-3 flex-1'>
-                  <p className='text-sm font-semibold text-gray-900'>
-                    {cert.name || 'Untitled'}
-                  </p>
-                  <p className='text-xs text-gray-500'>
-                    {cert.organization} | {cert.year}
-                  </p>
+                  <GripVertical size={16} className='text-black shrink-0' />
+                  <div className='text-left'>
+                    <p className='text-sm font-semibold text-gray-900'>
+                      {cert.name || 'Untitled'}
+                    </p>
+                    <p className='text-xs text-gray-500'>
+                      {cert.organization} | {cert.year}
+                    </p>
+                  </div>
                 </div>
                 <div className='flex items-center gap-3'>
                   <button
@@ -127,7 +146,7 @@ export default function Certifications () {
                   </button>
                 </div>
               </div>
-            </div>
+            </Sortable>
           ))}
 
           {/* Add New Certification Button */}
@@ -151,6 +170,7 @@ export default function Certifications () {
           handleSaveCertification={handleSaveCertification}
         />
       )}
+      </DragDropProvider>
     </section>
   )
 }

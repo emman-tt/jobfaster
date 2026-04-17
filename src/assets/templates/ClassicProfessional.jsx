@@ -1,10 +1,8 @@
 import React from 'react'
 
-
-
 const ClassicProfessional = ({ data }) => {
   const styles = data?.styles || {}
-  const fontFamily = styles.fontFamily 
+  const fontFamily = styles.fontFamily
   const nameStyles = styles.name || {}
   const sectionStyles = styles.sectionHeader || {}
   const companyStyles = styles.company || {}
@@ -12,23 +10,20 @@ const ClassicProfessional = ({ data }) => {
   const bodyStyles = styles.bodyText || {}
   const dateStyles = styles.date || {}
   const contactStyles = styles.contact || {}
-
   const bodyLeading = bodyStyles.leading ? Number(bodyStyles.leading) : 1.6
 
   return (
     <div
       style={{
-        
         lineHeight: bodyLeading,
         color: '#333',
         maxWidth: '850px'
       }}
       className={`${fontFamily}`}
-
     >
       <div
         style={{
-          borderBottom: '3px solid #333',
+          borderBottom: data?.name || (data?.jobTitle && '3px solid #333'),
           paddingBottom: '16px',
           marginBottom: '24px'
         }}
@@ -41,7 +36,7 @@ const ClassicProfessional = ({ data }) => {
             letterSpacing: nameStyles.spacing || 0
           }}
         >
-          {data?.name || 'Name'}
+          {data?.name}
         </h1>
         <p
           style={{
@@ -51,7 +46,7 @@ const ClassicProfessional = ({ data }) => {
             fontStyle: jobTitleStyles.style || 'italic'
           }}
         >
-          {data?.jobTitle || 'Job Title'}
+          {data?.jobTitle}
         </p>
         <p
           style={{
@@ -60,7 +55,8 @@ const ClassicProfessional = ({ data }) => {
             color: contactStyles.color || '#666'
           }}
         >
-          {data?.location} | {data?.phone} | {data?.email}
+          {data?.location} {data?.location && '|'} {data?.phone}
+          {data?.phone && '|'} {data?.email}
         </p>
         {data?.linkedin?.length > 0 && (
           <p
@@ -123,7 +119,8 @@ const ClassicProfessional = ({ data }) => {
                 <h3
                   style={{
                     fontSize: `${companyStyles.size || 12}pt`,
-                    fontWeight: companyStyles.weight === 'font-medium' ? 500 : 'bold',
+                    fontWeight:
+                      companyStyles.weight === 'font-medium' ? 500 : 'bold',
                     margin: '0'
                   }}
                 >
@@ -148,7 +145,13 @@ const ClassicProfessional = ({ data }) => {
               >
                 {exp.company}, {exp.location}
               </p>
-              <ul style={{ fontSize: `${bodyStyles.size || 11}pt`, margin: '0', paddingLeft: '20px' }}>
+              <ul
+                style={{
+                  fontSize: `${bodyStyles.size || 11}pt`,
+                  margin: '0',
+                  paddingLeft: '20px'
+                }}
+              >
                 {exp.accomplishments?.map((acc, i) => (
                   <li key={i} style={{ marginBottom: '4px' }}>
                     {acc}
@@ -231,7 +234,8 @@ const ClassicProfessional = ({ data }) => {
                   <h3
                     style={{
                       fontSize: `${companyStyles.size || 12}pt`,
-                      fontWeight: companyStyles.weight === 'font-medium' ? 500 : 'bold',
+                      fontWeight:
+                        companyStyles.weight === 'font-medium' ? 500 : 'bold',
                       margin: '0'
                     }}
                   >
@@ -331,9 +335,17 @@ const ClassicProfessional = ({ data }) => {
           >
             Certifications
           </h2>
-          <ul style={{ fontSize: `${bodyStyles.size || 11}pt`, margin: '0', paddingLeft: '20px' }}>
+          <ul
+            style={{
+              fontSize: `${bodyStyles.size || 11}pt`,
+              margin: '0',
+              paddingLeft: '20px'
+            }}
+          >
             {data.certificates.map((cert, i) => (
-              <li key={i}>{cert.name} {cert.issuer && `(${cert.issuer})`}</li>
+              <li key={i}>
+                {cert.name} {cert.issuer && `(${cert.issuer})`}
+              </li>
             ))}
           </ul>
         </div>
@@ -354,7 +366,13 @@ const ClassicProfessional = ({ data }) => {
           >
             Achievements
           </h2>
-          <ul style={{ fontSize: `${bodyStyles.size || 11}pt`, margin: '0', paddingLeft: '20px' }}>
+          <ul
+            style={{
+              fontSize: `${bodyStyles.size || 11}pt`,
+              margin: '0',
+              paddingLeft: '20px'
+            }}
+          >
             {data.achievements.map((ach, i) => (
               <li key={i}>{ach}</li>
             ))}

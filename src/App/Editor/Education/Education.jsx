@@ -1,7 +1,9 @@
 import { useState } from 'react'
 import { ChevronDown, Plus, GripVertical, Trash2, X, Edit2 } from 'lucide-react'
 import { useDispatch, useSelector } from 'react-redux'
-import { updateEducation, removeEducation } from '../../../store/educationSlice'
+import { updateEducation, removeEducation, reArrange } from '../../../store/educationSlice'
+import { DragDropProvider } from '@dnd-kit/react'
+import { Sortable } from '../../../components/dragger'
 
 export default function Education () {
   const [isOpen, setIsOpen] = useState(true)
@@ -80,9 +82,21 @@ export default function Education () {
     dispatch(removeEducation(id))
   }
 
+  const handleDragEnd = event => {
+    const { source } = event.operation
+    const { initialIndex, index } = source
+    if (initialIndex !== index) {
+      const newItems = [...educations]
+      const [removed] = newItems.splice(initialIndex, 1)
+      newItems.splice(index, 0, removed)
+      dispatch(reArrange({ category: 'education', value: newItems }))
+    }
+  }
+
   return (
     <section className='w-full'>
-      <div
+      <DragDropProvider onDragEnd={handleDragEnd}>
+        <div
         onClick={() => setIsOpen(!isOpen)}
         className='flex items-center justify-between px-4 sm:px-6 md:px-8 lg:px-10 py-4 cursor-pointer border-b border-gray-200 transition-colors'
       >
@@ -102,8 +116,10 @@ export default function Education () {
 
       {isOpen && (
         <div className='px-4 sm:px-6 md:px-8 lg:px-10 py-4 space-y-3'>
-          {educations.map(edu => (
-            <div
+          {educations.map((edu, index) => (
+            <Sortable
+              index={index}
+              id={edu.id}
               key={edu.id}
               className='border border-gray-200 rounded-xl overflow-hidden bg-white hover:shadow-sm transition-shadow'
             >
@@ -140,7 +156,7 @@ export default function Education () {
                   </button>
                 </div>
               </div>
-            </div>
+            </Sortable>
           ))}
 
           <button
@@ -308,6 +324,7 @@ export default function Education () {
           </div>
         </div>
       )}
+      </DragDropProvider>
     </section>
   )
 }

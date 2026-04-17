@@ -44,7 +44,7 @@ export default function TemplateSelector ({
                 <div className='flex items-center gap-2 mb-2'>
                   <div
                     className={`w-3 h-3 rounded-full ${
-                      selectedTemplate === template.id
+                      selectedTemplate == template.id
                         ? 'bg-orange-500'
                         : 'bg-slate-300'
                     }`}

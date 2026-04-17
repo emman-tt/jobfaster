@@ -10,6 +10,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@dnd-kit/react": "^0.4.0",
     "@gsap/react": "^2.1.2",
     "@headlessui/react": "^2.2.9",
     "@lottiefiles/dotlottie-react": "^0.18.6",
@@ -21,6 +22,7 @@
     "gsap": "^3.14.2",
     "lucide-react": "^0.577.0",
     "pdfjs-dist": "^5.6.205",
+    "re-resizable": "^6.11.2",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
     "react-draggable": "^4.5.0",

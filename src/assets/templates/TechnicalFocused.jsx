@@ -40,7 +40,7 @@ const TechnicalFocused = ({ data }) => {
             letterSpacing: nameStyles.spacing || 0
           }}
         >
-          {data?.name || 'Name'}
+          {data?.name}
         </h1>
         <p
           style={{
@@ -51,7 +51,7 @@ const TechnicalFocused = ({ data }) => {
             fontStyle: jobTitleStyles.style || 'normal'
           }}
         >
-          {data?.jobTitle || 'Job Title'}
+          {data?.jobTitle}
         </p>
         <div
           style={{

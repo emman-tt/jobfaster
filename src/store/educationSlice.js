@@ -89,6 +89,12 @@ export const educationSlice = createSlice({
         if (language !== undefined) found.language = language
         if (proficiency !== undefined) found.proficiency = proficiency
       }
+    },
+    reArrange: (state, action) => {
+      const { category, value } = action.payload
+      if (category === 'education') {
+        state.educations = value
+      }
     }
   }
 })
@@ -102,5 +108,6 @@ export const {
   saveLanguage,
   addLanguage,
   removeLanguage,
-  updateLanguageProficiency
+  updateLanguageProficiency,
+  reArrange
 } = educationSlice.actions
