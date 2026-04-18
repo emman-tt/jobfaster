@@ -6,7 +6,10 @@ const initialState = {
   size: 14,
   height: 1.2,
   align: 'left',
-  templateId: 'classic'
+  templateId: 'classic',
+  isPreview: false,
+  modal: null,
+  editingId: null
 }
 
 export const editorSlice = createSlice({
@@ -15,6 +18,9 @@ export const editorSlice = createSlice({
   reducers: {
     saveTemplateId (state, action) {
       state.templateId = action.payload
+    },
+    togglePreview (state) {
+      state.isPreview = !state.isPreview
     },
     setFont: (state, action) => {
       state.font = action.payload
@@ -30,6 +36,9 @@ export const editorSlice = createSlice({
     },
     setAlign: (state, action) => {
       state.align = action.payload
+    },
+    setModal: (state, action) => {
+      state.modal = action.payload
     }
   }
 })
@@ -40,5 +49,7 @@ export const {
   setSize,
   saveTemplateId,
   setHeight,
-  setAlign
+  setAlign,
+  togglePreview,
+  setModal
 } = editorSlice.actions

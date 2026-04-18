@@ -16,6 +16,7 @@ import {
 import { toggleModals } from '../../store/modalSlice'
 import { useDispatch, useSelector } from 'react-redux'
 import Menubar from './Menubar'
+import { togglePreview } from '../../store/editorSlice'
 export function Topbar ({ isPreview, setIsPreview }) {
   const navigate = useNavigate()
   const [isSaving, setIsSaving] = useState(false)
@@ -34,7 +35,7 @@ export function Topbar ({ isPreview, setIsPreview }) {
   }
 
   function handlePreview () {
-    setIsPreview(!isPreview)
+    dispatch(togglePreview())
   }
 
   function handleExport (format) {
@@ -96,21 +97,17 @@ export function Topbar ({ isPreview, setIsPreview }) {
             <button
               onClick={handleSave}
               disabled={isSaving}
-              className='flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#fd9155] text-white font-medium text-sm transition-all hover:bg-[#e8854a] active:scale-95 disabled:opacity-50 font-satoshi'
+              className='flex items-center gap-1.5 px-3 py-1.5 rounded-full  text-black cursor-pointer font-medium text-sm transition-all  active:scale-95 disabled:opacity-50 font-satoshi'
             >
               <Save size={15} />
               <span>{isSaving ? 'Saving...' : 'Save'}</span>
             </button>
 
-            <div className='flex items-center bg-gray-100 rounded-full p-1 gap-1'>
+            <div className='flex items-center  rounded-full p-1 gap-1'>
               <button
                 onClick={handlePreview}
-                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full 
-                  font-medium text-sm transition-all font-satoshi ${
-                    isPreview
-                      ? 'bg-[#fd9155] text-white hover:bg-[#e8854a]'
-                      : 'text-gray-700 hover:bg-gray-200'
-                  }`}
+                className={`flex items-center cursor-pointer gap-1.5 px-3 py-1.5 rounded-full 
+                  font-medium text-sm transition-all font-satoshi `}
               >
                 <Eye size={15} />
                 <span>Preview</span>
@@ -160,27 +157,11 @@ export function Topbar ({ isPreview, setIsPreview }) {
             <div className='w-px h-8 bg-gray-200 mx-1' />
 
             <button
-              onClick={handleSettings}
-              className='p-1.5 rounded-full text-gray-700 hover:bg-gray-100 transition-colors'
-              title='Settings'
-            >
-              <Settings size={15} />
-            </button>
-
-            <button
               onClick={handleShare}
               className='p-1.5 rounded-full text-gray-700 hover:bg-gray-100 transition-colors'
               title='Share'
             >
               <Link2 size={15} />
-            </button>
-
-            <button
-              onClick={handleDuplicate}
-              className='p-1.5 rounded-full text-gray-700 hover:bg-gray-100 transition-colors'
-              title='Duplicate'
-            >
-              <Copy size={15} />
             </button>
 
             <button

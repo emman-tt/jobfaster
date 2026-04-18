@@ -40,7 +40,7 @@ export default function Canvas () {
   }
 
   return (
-    <section className='relative w-full z-30 grow h-full flex items-center justify-center overflow-hidden'>
+    <section className='relative w-full    grow h-full flex items-center justify-center overflow-hidden'>
       <div
         ref={elementRef}
         style={{
@@ -48,7 +48,7 @@ export default function Canvas () {
             scale / 100
           })`
         }}
-        className='origin-center cursor-grab active:cursor-grabbing'
+        className='origin-center z-1 cursor-grab active:cursor-grabbing'
         onMouseDown={handleMouseDown}
         onMouseMove={handleMouseMove}
         onMouseUp={handleMouseUp}
@@ -57,7 +57,7 @@ export default function Canvas () {
         <Preview />
       </div>
 
-      <div className='absolute bottom-6 left-1/2 -translate-x-1/2 flex items-center gap-2 px-4 py-2.5 rounded-2xl bg-black/60 backdrop-blur-xl border border-white/40 shadow-lg'>
+      <div className='absolute z-6 bottom-6 left-1/2 -translate-x-1/2 flex items-center gap-2 px-4 py-2.5 rounded-2xl bg-black/60 backdrop-blur-xl border border-white/40 shadow-lg'>
         <button
           onClick={() => dispatch(setShowTemplates(true))}
           className='p-1.5 cursor-pointer rounded-lg transition-colors text-white hover:bg-white/20'

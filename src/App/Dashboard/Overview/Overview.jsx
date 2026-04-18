@@ -6,7 +6,6 @@ export default function Overview () {
     <section>
       <Header />
       <Main/>
- 
     </section>
   )
 }

@@ -8,18 +8,18 @@ const AuthContext = createContext(null)
 export function AuthProvider ({ children }) {
   const navigate = useNavigate()
   const isRefreshing = useRef(false)
-  
+
   const logout = async () => {
     try {
       await api.post('/auth/logout', {}, { withCredentials: true })
-    } catch (err) {
-      console.error('Logout error:', err)
+    } catch (error) {
+      console.error('Logout error:', error)
     }
     clearToken()
     delete api.defaults.headers.common['Authorization']
     navigate('/auth')
   }
-  
+
   useEffect(() => {
     const controller = new AbortController()
     const silentRefresh = async () => {
@@ -41,11 +41,17 @@ export function AuthProvider ({ children }) {
 
         setToken(token)
         api.defaults.headers.common['Authorization'] = `Bearer ${token}`
-      } catch (err) {
-        if (err.name === 'AbortError') return
-        const isNetworkError = !err.response || err.code === 'ERR_NETWORK' || err.code === 'ECONNABORTED'
-        if (!isNetworkError) {
-          console.error('Auth refresh failed:', err)
+      } catch (error) {
+        console.log(error.response)
+        console.log(error.request)
+        console.log(error)
+        if (error.name === 'AbortError') return
+        const isNetworkerror =
+          !error.response ||
+          error.code === 'ERR_NETWORK' ||
+          error.code === 'ECONNABORTED'
+        if (!isNetworkerror) {
+          console.error('Auth refresh failed:', error)
           navigate('/auth')
         }
       } finally {
@@ -54,16 +60,14 @@ export function AuthProvider ({ children }) {
     }
 
     const token = getToken()
-    if (!token) {
+    if (token) {
       silentRefresh()
     }
 
     return () => controller.abort()
   }, [navigate])
   return (
-    <AuthContext.Provider value={{ logout }}>
-      {children}
-    </AuthContext.Provider>
+    <AuthContext.Provider value={{ logout }}>{children}</AuthContext.Provider>
   )
 }
 

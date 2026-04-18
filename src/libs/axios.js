@@ -23,9 +23,9 @@ api.interceptors.request.use(config => {
 api.interceptors.response.use(undefined, async error => {
   const status = error.response?.status
 
-  if (error.config._retry && status == 401) {
+  if (error.config._retry && error?.response?.status == 401) {
     window.location.href = '/auth'
-    return
+    return Promise.reject(error)
   }
 
   if (error.code === 'ECONNABORTED') {
@@ -36,15 +36,12 @@ api.interceptors.response.use(undefined, async error => {
     throw error
   }
 
-  // if (!error.response) {
-  //   toast.error('No internet connection', {
-  //     ...toastPresets.authError(),
-  //     position: 'top-center'
-  //   })
-  //   throw error
-  // }
+  if (error?.response?.status == 401 && !error.config._retry) {
+    if (error.config._isRefresh) {
+      window.location.href = '/auth'
+      return Promise.reject(error)
+    }
 
-  if (error.response.status === 401 && !error.config._retry) {
     error.config._retry = true
 
     if (isRefreshing) {
@@ -59,7 +56,7 @@ api.interceptors.response.use(undefined, async error => {
     isRefreshing = true
 
     try {
-      const { data } = await api.post('/auth/refresh')
+      const { data } = await api.post('/auth/refresh', {}, { _isRefresh: true })
 
       const accessToken = data.data
       setToken(accessToken)
@@ -70,6 +67,7 @@ api.interceptors.response.use(undefined, async error => {
     } catch (err) {
       queue.forEach(cb => cb(err))
       queue = []
+
       const isNetworkError =
         !err.response ||
         err.code === 'ERR_NETWORK' ||
@@ -82,6 +80,7 @@ api.interceptors.response.use(undefined, async error => {
       } else {
         window.location.href = '/auth'
       }
+      throw err
     } finally {
       isRefreshing = false
     }
