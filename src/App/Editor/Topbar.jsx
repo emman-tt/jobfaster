@@ -3,27 +3,30 @@ import { useNavigate } from 'react-router-dom'
 import {
   ArrowLeft,
   Save,
-  Eye,
   FileDown,
-  Settings,
   Link2,
-  Copy,
   Trash2,
   LayoutTemplate,
-  X,
   CircleArrowDown
 } from 'lucide-react'
 import { toggleModals } from '../../store/modalSlice'
 import { useDispatch, useSelector } from 'react-redux'
 import Menubar from './Menubar'
-import { togglePreview } from '../../store/editorSlice'
-export function Topbar ({ isPreview, setIsPreview }) {
+import ExportMenu from './ExportMenu'
+import { exportToPDF, exportToDOCX } from '../../services/export.jsx'
+import { toast } from 'sonner'
+
+export function Topbar () {
   const navigate = useNavigate()
   const [isSaving, setIsSaving] = useState(false)
   const [showExportMenu, setShowExportMenu] = useState(false)
   const [menuBar, showMenuBar] = useState(false)
-  const { modals } = useSelector(state => state.modal)
   const dispatch = useDispatch()
+
+  const personal = useSelector(state => state.personal)
+  const work = useSelector(state => state.work)
+  const education = useSelector(state => state.education)
+  const credentials = useSelector(state => state.credentials)
 
   function handleBack () {
     navigate('/dashboard')
@@ -34,25 +37,92 @@ export function Topbar ({ isPreview, setIsPreview }) {
     setTimeout(() => setIsSaving(false), 1500)
   }
 
-  function handlePreview () {
-    dispatch(togglePreview())
-  }
+  async function handleExport (format) {
+    const resumeData = {
+      name: personal.contactDetails.fullName,
+      email: personal.contactDetails.email,
+      phone: personal.contactDetails.phone,
+      location: personal.contactDetails.location,
+      jobTitle: personal.contactDetails.jobTitle,
+      linkedin: personal.onlineLinks?.linkedin || '',
+      summary: personal.summary,
+      experience: work.experiences
+        .filter(exp => exp.company || exp.position)
+        .map(exp => ({
+          company: exp.company,
+          position: exp.position,
+          location: exp.location,
+          startYear: exp.startYear,
+          endYear: exp.endYear,
+          accomplishments: exp.accomplishments
+            .filter(acc => acc.text)
+            .map(acc => acc.text)
+        })),
+      education: education.educations
+        .filter(edu => edu.school || edu.degree)
+        .map(edu => ({
+          school: edu.school,
+          degree: edu.degree,
+          field: edu.field,
+          startYear: edu.startYear,
+          endYear: edu.endYear,
+          highlights: edu.highlights.filter(h => h.text).map(h => h.text)
+        })),
+      skills: credentials.skills.flatMap(skill => skill.list || []),
+      languages: education.languages
+        .filter(lang => lang.language)
+        .map(lang => ({
+          name: lang.language,
+          proficiency: lang.proficiency
+        })),
+      projects: work.projects
+        .filter(proj => proj.name || proj.description)
+        .map(proj => ({
+          name: proj.name,
+          description: proj.description,
+          techStack: proj.techStack.filter(t => t.name).map(t => t.name),
+          link: proj.link,
+          github: proj.github
+        })),
+      certificates: credentials.certifications
+        .filter(cert => cert.name)
+        .map(cert => ({
+          name: cert.name,
+          issuer: cert.organization,
+          year: cert.year
+        })),
+      achievements: credentials.achievements
+        .filter(ach => ach.achievement)
+        .map(ach => ach.achievement)
+    }
 
-  function handleExport (format) {
-    console.log(`Export as ${format}`)
     setShowExportMenu(false)
-  }
 
-  function handleSettings () {
-    console.log('Settings clicked')
+    if (format === 'pdf') {
+      const success = await exportToPDF(
+        resumeData,
+        personal.contactDetails.fullName || 'resume'
+      )
+      if (success) {
+        toast.success('PDF exported successfully')
+      } else {
+        toast.error('Failed to export PDF')
+      }
+    } else if (format === 'docx') {
+      const success = await exportToDOCX(
+        resumeData,
+        personal.contactDetails.fullName || 'resume'
+      )
+      if (success) {
+        toast.success('DOCX exported successfully')
+      } else {
+        toast.error('DOCX export coming soon')
+      }
+    }
   }
 
   function handleShare () {
     console.log('Share clicked')
-  }
-
-  function handleDuplicate () {
-    console.log('Duplicate clicked')
   }
 
   function handleDelete () {
@@ -103,24 +173,13 @@ export function Topbar ({ isPreview, setIsPreview }) {
               <span>{isSaving ? 'Saving...' : 'Save'}</span>
             </button>
 
-            <div className='flex items-center  rounded-full p-1 gap-1'>
-              <button
-                onClick={handlePreview}
-                className={`flex items-center cursor-pointer gap-1.5 px-3 py-1.5 rounded-full 
-                  font-medium text-sm transition-all font-satoshi `}
-              >
-                <Eye size={15} />
-                <span>Preview</span>
-              </button>
-
-              <button
-                onClick={() => showTemplates()}
-                className='flex items-center gap-1.5 px-3 py-1.5 rounded-full font-medium text-sm transition-all font-satoshi text-gray-700 hover:bg-gray-200'
-              >
-                <LayoutTemplate size={15} />
-                <span>Templates</span>
-              </button>
-            </div>
+            <button
+              onClick={() => showTemplates()}
+              className='flex items-center gap-1.5 px-3 py-1.5 rounded-full font-medium text-sm transition-all font-satoshi text-gray-700 hover:bg-gray-200'
+            >
+              <LayoutTemplate size={15} />
+              <span>Templates</span>
+            </button>
 
             <div className='relative'>
               <button
@@ -131,25 +190,8 @@ export function Topbar ({ isPreview, setIsPreview }) {
                 <span>Export</span>
               </button>
               {showExportMenu && (
-                <div className='absolute top-full right-0 mt-2 w-40 bg-white rounded-2xl shadow-lg border border-gray-200 py-2 z-50'>
-                  <button
-                    onClick={() => handleExport('PDF')}
-                    className='w-full px-4 py-2 text-left text-gray-700 hover:bg-gray-100 transition-colors'
-                  >
-                    PDF
-                  </button>
-                  <button
-                    onClick={() => handleExport('DOCX')}
-                    className='w-full px-4 py-2 text-left text-gray-700 hover:bg-gray-100 transition-colors'
-                  >
-                    DOCX
-                  </button>
-                  <button
-                    onClick={() => handleExport('Copy')}
-                    className='w-full px-4 py-2 text-left text-gray-700 hover:bg-gray-100 transition-colors'
-                  >
-                    Copy
-                  </button>
+                <div className='absolute top-full right-0 mt-2 w-80 bg-white rounded-2xl shadow-lg border border-gray-200 py-2 z-50'>
+                  <ExportMenu onExport={handleExport} />
                 </div>
               )}
             </div>

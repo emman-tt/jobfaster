@@ -319,7 +319,7 @@ export default function Main () {
             justify-start 
             ${
               showRightbar ? 'grid-cols-6' : 'grid-cols-8'
-            } pb-0 mb-0 items-center max-h-130  gap-y-10
+            } pb-0 mb-0  max-h-130  gap-y-10
           overflow-y-auto ${
             actualPath == 'overview' ? 'h-75' : 'min-h-20'
           } [scrollbar-width:thin] w-full`}
@@ -403,7 +403,7 @@ export default function Main () {
                 onDrop={e => handleDrop(e, item.folder.id)}
                 onClick={e => handleClick(e, item.folder.id)}
                 key={item.folder.id}
-                className='w-28 shrink-0 cursor-pointer'
+                className='w-28 shrink-0  cursor-pointer'
               >
                 <Folder files={item?.folder.files} />
                 <div className='flex w-full text-xs mt-2 items-center text-[10px] text-gray-700 justify-center font-semibold gap-1'>

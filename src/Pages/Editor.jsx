@@ -5,7 +5,6 @@ import { Main } from '../App/Editor/Main'
 
 
 export default function Editor () {
-  const [isPreview, setIsPreview] = useState(false)
   const [activeSection, setActiveSection] = useState('identity')
 
   return (
@@ -15,7 +14,7 @@ export default function Editor () {
         onSectionChange={setActiveSection}
       />
       <section className=' w-full flex flex-col'>
-        <Topbar isPreview={isPreview} setIsPreview={setIsPreview} />
+        <Topbar />
         <Main activeSection={activeSection} />
       </section>
     </section>

@@ -112,7 +112,7 @@ const processes = [
     id: 3,
     name: 'Daily jobs',
     icon: <Layers className='w-4 h-4' />,
-    href: 'listings'
+    href: 'job-listing'
   },
   {
     id: 4,

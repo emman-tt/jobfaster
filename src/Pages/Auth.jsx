@@ -1,13 +1,19 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Sparkles } from 'lucide-react'
 import authImg from '../assets/img/auth1.jpg'
 import { login, register } from '../services/auth'
 import { toast } from 'sonner'
 import { toastPresets } from '../components/toasters'
 import Loader from '../components/Loader'
-import { useNavigate } from 'react-router-dom'
-
+import { Await, useNavigate } from 'react-router-dom'
+import { createAuthClient } from 'better-auth/client'
 import { setToken } from '../libs/token'
+import { api } from '../libs/axios'
+
+const authClient = createAuthClient({
+  baseURL: 'http://localhost:3000'
+})
+
 export default function Auth () {
   const [isLogin, setIsLogin] = useState(true)
   const [name, setName] = useState('')
@@ -15,6 +21,40 @@ export default function Auth () {
   const [password, setPassword] = useState('')
   const [loader, showLoader] = useState(false)
   const navigate = useNavigate()
+
+  useEffect(() => {
+    async function exchangeSession() {
+      try {
+        const session = await authClient.getSession()
+        if (session?.user) {
+          const res = await api.post('/auth/oauth-to-jwt')
+          if (res.data.status === 'success') {
+            setToken(res.data.accessToken)
+            toast.success('Welcome back!', {
+              position: 'top-center',
+              ...toastPresets.aiSuccess(`Welcome back ${session.user.name}`)
+            })
+            navigate('/dashboard')
+          }
+        }
+      } catch (error) {
+        console.error('Session exchange failed:', error)
+      }
+    }
+    exchangeSession()
+  }, [navigate])
+
+  async function handleGoogle() {
+    try {
+
+      await authClient.signIn.social({
+        provider: 'google',
+        callbackURL: `${window.location.origin}/dashboard`, 
+      })
+    } catch (error) {
+      console.error('Google sign in failed:', error)
+    }
+  }
 
   function handleAuth () {
     if (!email || !password) {
@@ -255,6 +295,7 @@ export default function Auth () {
 
               {/* Google Button */}
               <button
+                onClick={() => handleGoogle()}
                 type='button'
                 className='w-full py-3 bg-slate-50 hover:bg-slate-100 border border-slate-100 text-slate-700 text-sm font-bold rounded-full transition-all flex items-center justify-center gap-3 active:scale-[0.98]'
               >

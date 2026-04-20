@@ -1,6 +1,9 @@
 import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { addAchievement, updateAchievement } from '../../../store/credentialsSlice'
+import {
+  addAchievement,
+  updateAchievement
+} from '../../../store/credentialsSlice'
 import { setModal } from '../../../store/editorSlice'
 import { X, ChevronDown } from 'lucide-react'
 
