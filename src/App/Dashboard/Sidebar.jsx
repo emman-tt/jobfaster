@@ -72,10 +72,17 @@ export default function Sidebar ({ className }) {
       <div className=' flex flex-col gap-4  '>
         <div className='px-2 flex flex-col gap-3'>
           {bottom.map(item => (
-            <div key={item.id} className='flex gap-3 items-center'>
+            <NavLink
+              to={item.href || '#'}
+              key={item.id}
+              style={{
+                backgroundColor: item.href && pathname.includes(item.href) ? '#e6e8ec' : 'inherit'
+              }}
+              className='flex gap-3 items-center p-2 rounded-xl transition-colors'
+            >
               <span>{item.icon}</span>
-              <p className='text-sm font-IBM  text-[12px]'>{item.name}</p>
-            </div>
+              <p className='text-sm font-IBM text-[12px]'>{item.name}</p>
+            </NavLink>
           ))}
         </div>
         <div className=' w-full flex gap-3 px-2 rounded-xl py-3 items-center bg-[#e8e7ea]'>
@@ -112,7 +119,7 @@ const processes = [
     id: 3,
     name: 'Daily jobs',
     icon: <Layers className='w-4 h-4' />,
-    href: 'job-listing'
+    href: 'listing'
   },
   {
     id: 4,
@@ -138,6 +145,6 @@ const tools = [
 ]
 
 const bottom = [
-  { id: 1, name: 'FAQ', icon: <CircleEllipsis className='w-4 h-4' /> },
-  { id: 2, name: 'Settings', icon: <Settings className='w-4 h-4' /> }
+  { id: 1, name: 'FAQ', icon: <CircleEllipsis className='w-4 h-4' />, href: 'faq' },
+  { id: 2, name: 'Settings', icon: <Settings className='w-4 h-4' />, href: 'settings' }
 ]

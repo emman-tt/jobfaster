@@ -1,85 +1,99 @@
-import React from 'react'
-import { MapPin, Sparkles, ArrowRight } from 'lucide-react'
+import React, { useState } from 'react'
+import { MapPin, Sparkles, ArrowRight, Globe, Clock } from 'lucide-react'
+import { findEmail,getApplyInfo } from '../../../utils/findEmail'
+import ApplyDialog from './ApplyDialog'
 
-export default function JobDetailView({ job }) {
+export default function JobDetailView ({ job }) {
+  const [showApplyDialog, setShowApplyDialog] = useState(false)
+
   if (!job) return null
 
-  const salary = job.job_salary ? `$${job.job_salary.toLocaleString()}` : 'Not disclosed'
-  const requirements = job.job_highlights?.Qualifications || []
-  const responsibilities = job.job_highlights?.Responsibilities || []
+  const salary = job.jobSalaryString || job.jobSalary || 'Not disclosed'
+  const requirements = job.jobHighlights?.Qualifications || []
+  const responsibilities = job.jobHighlights?.Responsibilities || []
+
+  const applyInfo = getApplyInfo(job)
+  const jobWithApplyInfo = { ...job, applyInfo }
 
   return (
-    <div className="p-6 pb-20">
-      <div className="space-y-5">
+    <div className='p-6 pb-20'>
+      <div className='space-y-6 pt-15'>
         <div>
-          <h2 className="text-xl font-semibold text-slate-900 leading-tight font-IBM">{job.job_title}</h2>
-          <p className="text-xs font-semibold text-[#f17e27] mt-1.5 uppercase tracking-wide">
-            {job.employer_name}
+          <h2 className='text-lg font-bold text-slate-900 leading-tight font-IBM'>
+            {job.jobTitle}
+          </h2>
+          <p className='text-xs font-bold text-[#f17e27] mt-2 uppercase tracking-wider'>
+            {job.employerName}
           </p>
-          <div className="flex items-center gap-3 mt-2">
-            <p className="text-xs text-slate-400 flex items-center gap-1">
-              <MapPin className="w-3 h-3" />
-              {job.job_location}
-            </p>
-            <span className="w-0.5 h-0.5 bg-slate-300 rounded-full" />
-            <p className="text-xs text-slate-400">
-              {job.job_posted_human_readable}
-            </p>
+          <div className='flex flex-wrap items-center gap-3 mt-3'>
+            <span className='flex items-center gap-1.5 text-xs text-slate-500'>
+              <MapPin className='w-3.5 h-3.5' />
+              {job.jobLocation}
+            </span>
+            <span className='flex items-center gap-1.5 text-xs text-slate-500'>
+              <Clock className='w-3.5 h-3.5' />
+              {job.jobPostedHumanReadable}
+            </span>
+            {job.employerWebsite && (
+              <span className='flex items-center gap-1.5 text-xs text-blue-600 hover:underline cursor-pointer'>
+                <Globe className='w-3.5 h-3.5' />
+                Website
+              </span>
+            )}
           </div>
         </div>
 
-        <div className="flex items-center gap-2">
-          <span className="px-2.5 py-1 bg-[#fff7ed] text-[#f17e27] rounded-full text-[9px] font-semibold uppercase tracking-wider border border-[#feb053]/30">
-            {job.job_employment_type_text}
+        <div className='flex items-center gap-2 flex-wrap'>
+          <span className='px-3 py-1.5 bg-[#fff7ed] text-[#f17e27] rounded-full text-[10px] font-bold uppercase tracking-wider'>
+            {job.jobEmploymentType}
           </span>
-          <div className="flex-1 h-px bg-gray-100" />
-        </div>
-
-        <div className="flex items-center gap-2 py-1">
-          <span className="text-[10px] font-medium text-slate-400 uppercase tracking-wider font-satoshi">
-            Salary
-          </span>
-          <span className="text-sm font-medium text-slate-600 font-IBM">
+          <span className='px-3 py-1.5 bg-gray-100 text-slate-600 rounded-full text-[10px] font-medium'>
             {salary}
           </span>
         </div>
 
-        <div className="space-y-5">
+        <div className='space-y-5'>
           <div>
-            <h3 className="text-[10px] font-medium text-slate-400 uppercase tracking-[0.1em] mb-2">
+            <h3 className='text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-3'>
               Description
             </h3>
-            <p className="text-xs text-slate-500 leading-relaxed font-satoshi whitespace-pre-line">
-              {job.job_description}
+            <p className='text-sm text-slate-600 leading-relaxed whitespace-pre-line'>
+              {job.jobDescription}
             </p>
           </div>
 
-          {responsibilities.length > 0 && (
-            <div className="pt-1 border-t border-gray-100">
-              <h3 className="text-[10px] font-medium text-slate-400 uppercase tracking-[0.1em] mb-3">
+          {responsibilities?.length > 0 && (
+            <div className='pt-4 border-t border-gray-100'>
+              <h3 className='text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-4'>
                 Responsibilities
               </h3>
-              <ul className="space-y-2">
+              <ul className='space-y-3'>
                 {responsibilities.map((resp, index) => (
-                  <li key={index} className="flex items-start gap-2 text-xs text-slate-500 group">
-                    <span className="w-1 h-1 bg-[#f17e27] rounded-full mt-1 shrink-0" />
-                    <span className="font-satoshi leading-normal">{resp}</span>
+                  <li
+                    key={index}
+                    className='flex items-start gap-3 text-sm text-slate-600'
+                  >
+                    <span className='w-1.5 h-1.5 bg-[#f17e27] rounded-full mt-1.5 shrink-0' />
+                    <span>{resp}</span>
                   </li>
                 ))}
               </ul>
             </div>
           )}
 
-          {requirements.length > 0 && (
-            <div className="pt-1 border-t border-gray-100">
-              <h3 className="text-[10px] font-medium text-slate-400 uppercase tracking-[0.1em] mb-3">
+          {requirements?.length > 0 && (
+            <div className='pt-4 border-t border-gray-100'>
+              <h3 className='text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-4'>
                 Requirements
               </h3>
-              <ul className="space-y-2">
+              <ul className='space-y-3'>
                 {requirements.map((req, index) => (
-                  <li key={index} className="flex items-start gap-2 text-xs text-slate-500 group">
-                    <span className="w-1 h-1 bg-[#f17e27] rounded-full mt-1 shrink-0" />
-                    <span className="font-satoshi leading-normal">{req}</span>
+                  <li
+                    key={index}
+                    className='flex items-start gap-3 text-sm text-slate-600'
+                  >
+                    <span className='w-1.5 h-1.5 bg-[#f17e27] rounded-full mt-1.5 shrink-0' />
+                    <span>{req}</span>
                   </li>
                 ))}
               </ul>
@@ -87,19 +101,31 @@ export default function JobDetailView({ job }) {
           )}
         </div>
 
-        <div className="flex flex-col gap-2 pt-2">
-          <button className="w-full flex items-center justify-center gap-2 px-5 py-3.5 bg-white border-2 border-[#f17e27] text-[#f17e27] hover:bg-[#fff7ed] text-[10px] font-semibold rounded-xl transition-all active:scale-[0.98]">
-            <Sparkles className="w-3.5 h-3.5" />
-            AI TAILOR RESUME
-          </button>
-          <button 
-            className="w-full flex items-center justify-center gap-2 px-5 py-3.5 bg-[#f17e27] hover:bg-[#e16d16] text-white text-[10px] font-semibold rounded-xl shadow-lg shadow-orange-100/50 transition-all active:scale-[0.98]"
-            onClick={() => job.job_apply_link && window.open(job.job_apply_link, '_blank')}
+        <div className='flex flex-col justify-center  items-center '>
+          <button
+            className='w-[80%] cursor-pointer flex items-center justify-center gap-2 px-5 py-4.5 bg-[#f17e27] hover:bg-[#e16d16] text-white text-xs font-bold rounded-xl shadow-lg shadow-orange-100/50 transition-all active:scale-[0.98]'
+            onClick={() => setShowApplyDialog(true)}
           >
-            <ArrowRight className="w-3.5 h-3.5" />
+            <ArrowRight className='w-4 h-4' />
             APPLY NOW
           </button>
         </div>
+
+        <ApplyDialog
+          isOpen={showApplyDialog}
+          onClose={() => setShowApplyDialog(false)}
+          job={jobWithApplyInfo}
+          onApplyOnApp={() => {
+            setShowApplyDialog(false)
+            alert('Apply on app - select resume flow here')
+          }}
+          onApplyExternal={() => {
+            setShowApplyDialog(false)
+            if (job.jobApplyLink) {
+              window.open(job.jobApplyLink, '_blank')
+            }
+          }}
+        />
       </div>
     </div>
   )
