@@ -22,6 +22,7 @@ export function Topbar () {
   const [showExportMenu, setShowExportMenu] = useState(false)
   const [menuBar, showMenuBar] = useState(false)
   const dispatch = useDispatch()
+  const { appearance } = useSelector(state => state.preferences)
 
   const personal = useSelector(state => state.personal)
   const work = useSelector(state => state.work)
@@ -137,27 +138,39 @@ export function Topbar () {
 
   return (
     <>
-      <header className='bg-white border-b border-gray-200 px-4 py-2'>
+      <header className={`px-4 py-2 ${
+        appearance.theme == 'dark' ? 'bg-[#2a2a2a] border-b border-slate-700' : 'bg-white border-b border-gray-200'
+      }`}>
         <div className='flex items-center relative justify-between'>
           <div className='flex items-center gap-2'>
             <button
               onClick={handleBack}
-              className='flex items-center gap-1.5 px-3 py-1.5 rounded-full text-gray-700 hover:bg-gray-100 font-medium text-sm transition-colors font-satoshi'
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full font-medium text-sm transition-colors font-satoshi ${
+                appearance.theme == 'dark'
+                  ? 'text-slate-300 hover:bg-slate-700'
+                  : 'text-gray-700 hover:bg-gray-100'
+              }`}
             >
               <ArrowLeft size={16} />
               <span>Back</span>
             </button>
             <button
               onClick={() => showMenuBar(e => !e)}
-              className='flex cursor-pointer items-center gap-1.5 px-5 py-1.5 rounded-full bg-gray-100 hover:bg-[#fd9155]  font-medium transition-all    active:scale-95 disabled:opacity-50 font-IBM'
+              className={`flex cursor-pointer items-center gap-1.5 px-5 py-1.5 rounded-full font-medium transition-all active:scale-95 disabled:opacity-50 font-IBM ${
+                appearance.theme == 'dark'
+                  ? 'bg-[#202020] hover:bg-[#f17e27] text-white'
+                  : 'bg-gray-100 hover:bg-[#fd9155]'
+              }`}
             >
               <CircleArrowDown size={15} />
-              <span className=' text-black  text-sm hover:text-white'>
+              <span className={`text-sm ${
+                appearance.theme == 'dark' ? 'text-white' : 'text-black'
+              }`}>
                 Typography
               </span>
             </button>
             {menuBar && (
-              <div className=' absolute top-full left-0 right-0 mt-5  w-120 z-100 '>
+              <div className='absolute top-full left-0 right-0 mt-5 w-120 z-100'>
                 <Menubar />
               </div>
             )}
@@ -167,7 +180,11 @@ export function Topbar () {
             <button
               onClick={handleSave}
               disabled={isSaving}
-              className='flex items-center gap-1.5 px-3 py-1.5 rounded-full  text-black cursor-pointer font-medium text-sm transition-all  active:scale-95 disabled:opacity-50 font-satoshi'
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full cursor-pointer font-medium text-sm transition-all active:scale-95 disabled:opacity-50 font-satoshi ${
+                appearance.theme == 'dark'
+                  ? 'text-slate-300 hover:bg-slate-700'
+                  : 'text-black hover:bg-gray-100'
+              }`}
             >
               <Save size={15} />
               <span>{isSaving ? 'Saving...' : 'Save'}</span>
@@ -175,7 +192,11 @@ export function Topbar () {
 
             <button
               onClick={() => showTemplates()}
-              className='flex items-center gap-1.5 px-3 py-1.5 rounded-full font-medium text-sm transition-all font-satoshi text-gray-700 hover:bg-gray-200'
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full font-medium text-sm transition-all font-satoshi ${
+                appearance.theme == 'dark'
+                  ? 'text-slate-300 hover:bg-slate-700'
+                  : 'text-gray-700 hover:bg-gray-200'
+              }`}
             >
               <LayoutTemplate size={15} />
               <span>Templates</span>
@@ -184,23 +205,37 @@ export function Topbar () {
             <div className='relative'>
               <button
                 onClick={() => setShowExportMenu(!showExportMenu)}
-                className='flex items-center gap-1.5 px-3 py-1.5 rounded-full text-gray-700 hover:bg-gray-100 font-medium text-sm transition-colors font-satoshi'
+                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full font-medium text-sm transition-colors font-satoshi ${
+                  appearance.theme == 'dark'
+                    ? 'text-slate-300 hover:bg-slate-700'
+                    : 'text-gray-700 hover:bg-gray-100'
+                }`}
               >
                 <FileDown size={15} />
                 <span>Export</span>
               </button>
               {showExportMenu && (
-                <div className='absolute top-full right-0 mt-2 w-80 bg-white rounded-2xl shadow-lg border border-gray-200 py-2 z-50'>
+                <div className={`absolute top-full right-0 mt-2 w-80 rounded-2xl shadow-lg py-2 z-50 ${
+                  appearance.theme == 'dark'
+                    ? 'bg-[#2a2a2a] border border-slate-700'
+                    : 'bg-white border border-gray-200'
+                }`}>
                   <ExportMenu onExport={handleExport} />
                 </div>
               )}
             </div>
 
-            <div className='w-px h-8 bg-gray-200 mx-1' />
+            <div className={`w-px h-8 mx-1 ${
+              appearance.theme == 'dark' ? 'bg-slate-700' : 'bg-gray-200'
+            }`} />
 
             <button
               onClick={handleShare}
-              className='p-1.5 rounded-full text-gray-700 hover:bg-gray-100 transition-colors'
+              className={`p-1.5 rounded-full transition-colors ${
+                appearance.theme == 'dark'
+                  ? 'text-slate-300 hover:bg-slate-700'
+                  : 'text-gray-700 hover:bg-gray-100'
+              }`}
               title='Share'
             >
               <Link2 size={15} />

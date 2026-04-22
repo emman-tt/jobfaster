@@ -7,7 +7,7 @@ export default function ApplyDialog ({ isOpen, onClose, job, onApplyOnApp, onApp
   const { applyInfo } = job
 
   return (
-    <div className='fixed inset-0 z-[100] flex items-center justify-center'>
+    <div className='fixed inset-0 z-100 flex items-center justify-center'>
       <div
         className='absolute inset-0 bg-black/40 backdrop-blur-sm'
         onClick={onClose}

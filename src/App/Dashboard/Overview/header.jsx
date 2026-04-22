@@ -78,7 +78,7 @@ export const Header = () => {
         }`}
       >
         <section
-          onClick={() => navigate('/dashboard/create/resume')}
+          onClick={() => navigate('/dashboard/templates')}
           className={`w-full  cursor-pointer ${
             appearance.theme == 'dark'
               ? 'bg-[#090711]'

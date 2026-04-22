@@ -117,7 +117,9 @@ const ThemeCard = ({ type, label, active, onClick, image }) => {
 const Toggle = ({ active, onChange }) => (
   <button
     onClick={() => onChange(!active)}
-    className={`w-11 h-6 rounded-full transition-all relative ${
+    className={`w-11 h-6 rounded-full transition-all
+        
+         relative ${
       active ? 'bg-[#f17e27]' : 'bg-slate-200 dark:bg-slate-800'
     }`}
   >
@@ -214,9 +216,13 @@ export default function Prefrences () {
           label='Compact mode'
           description='Reduce spacing to show more content at once. Ideal for smaller screens.'
         >
-          <div className='flex items-center justify-between p-4 rounded-xl bg-slate-50 dark:bg-slate-900/50 border border-slate-100 dark:border-slate-800/50'>
+          <div
+            className={`flex items-center justify-between p-4 rounded-xl  border ${
+              appearance.theme == 'dark' ? 'bg-[#2A2A2A] border-0' : 'bg-white'
+            } border-slate-100 `}
+          >
             <div className='flex items-center gap-3'>
-              <div className='p-2 bg-white dark:bg-slate-800 rounded-lg shadow-sm text-[#f17e27]'>
+              <div className='p-2  dark:bg-slate-800 rounded-lg shadow-sm text-[#f17e27]'>
                 <Layout size={18} />
               </div>
               <div>
@@ -231,7 +237,7 @@ export default function Prefrences () {
                 </p>
               </div>
             </div>
-            <Toggle
+            <Toggle 
               active={appearance.compactMode}
               onChange={val => dispatch(setCompactMode(val))}
             />
@@ -265,7 +271,7 @@ export default function Prefrences () {
             <div
               className={`flex items-center gap-2 px-4 py-2.5 rounded-lg border w-full cursor-pointer ${
                 appearance.theme === 'dark'
-                  ? 'bg-slate-900 border-slate-800 text-white'
+                  ? 'bg-[#2A2A2A] border-0 text-white'
                   : 'bg-white border-slate-200 text-slate-700'
               }`}
             >
@@ -290,7 +296,7 @@ export default function Prefrences () {
                   exportPref.format === format.toLowerCase()
                     ? 'border-[#f17e27] bg-[#f17e27] text-white shadow-none shadow-[#f17e27]/20'
                     : appearance.theme === 'dark'
-                    ? 'border-slate-800  bg-slate-900 text-slate-400 hover:border-slate-700'
+                    ? ' border-0  bg-[#2A2A2A] text-slate-400 hover:border-slate-700'
                     : 'border-slate-200 bg-white text-slate-600 hover:bg-slate-50'
                 }`}
               >

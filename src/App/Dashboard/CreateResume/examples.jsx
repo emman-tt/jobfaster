@@ -48,20 +48,33 @@ const templateStyles = {
 export default function Examples () {
   const dispatch = useDispatch()
   const { layoutId } = useSelector(state => state.ai)
+  const { appearance } = useSelector(state => state.preferences)
   const navigate = useNavigate()
 
   function navigateNext () {
-    navigate('/onboarding/personal')
+    navigate('/editor')
   }
 
   return (
-    <section className='w-full h-full pt-16 px-12 overflow-auto'>
+    <section
+      className={`w-full h-full pt-16 px-12 overflow-auto ${
+        appearance.theme == 'dark' ? 'bg-[#202020]' : 'bg-white'
+      }`}
+    >
       <div className='flex items-center justify-between mb-6'>
         <div>
-          <h2 className='text-2xl font-semibold font-satoshi'>
+          <h2
+            className={`text-2xl font-semibold font-satoshi ${
+              appearance.theme == 'dark' ? 'text-white' : 'text-slate-900'
+            }`}
+          >
             Choose your template
           </h2>
-          <p className='text-sm font-satoshi text-slate-500 mt-1'>
+          <p
+            className={`text-sm font-satoshi mt-1 ${
+              appearance.theme == 'dark' ? 'text-slate-400' : 'text-slate-500'
+            }`}
+          >
             Select a layout structure for your resume
           </p>
         </div>
@@ -87,9 +100,11 @@ export default function Examples () {
               }`}
             >
               <div
-                className={`relative bg-white border border-slate-200 rounded-lg overflow-hidden ${
-                  item.id == layoutId ? 'shadow-lg' : 'shadow-sm'
-                }`}
+                className={`relative rounded-lg overflow-hidden ${
+                  appearance.theme == 'dark'
+                    ? 'bg-[#202020] border-slate-700'
+                    : 'bg-white border-slate-200'
+                } ${item.id == layoutId ? 'shadow-lg' : 'shadow-sm'} border`}
               >
                 <div
                   className='overflow-hidden overflow-y-scroll [scrollbar-width:thin] '
@@ -108,7 +123,11 @@ export default function Examples () {
               </div>
               <p
                 className={`text-sm font-satoshi font-medium text-center mt-2 ${
-                  item.id == layoutId ? 'text-orange-600' : 'text-slate-600'
+                  item.id == layoutId
+                    ? 'text-orange-600'
+                    : appearance.theme == 'dark'
+                    ? 'text-white'
+                    : 'text-slate-600'
                 }`}
               >
                 {item.name}

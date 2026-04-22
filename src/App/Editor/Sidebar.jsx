@@ -7,6 +7,7 @@ import {
   Trophy,
   Palette
 } from 'lucide-react'
+import { useSelector } from 'react-redux'
 const sections = [
   { id: 'identity', icon: User, label: 'Identity' },
   { id: 'experience', icon: Briefcase, label: 'Experience' },
@@ -17,8 +18,13 @@ const sections = [
   { id: 'presentation', icon: Palette, label: 'Presentation' }
 ]
 export function Sidebar ({ activeSection, onSectionChange }) {
+  const { appearance } = useSelector(state => state.preferences)
   return (
-    <aside className='w-16 h-full bg-white border-r border-gray-200 flex flex-col items-center py-4 gap-2 pt-20'>
+    <aside className={`w-16 h-full flex flex-col items-center py-4 gap-2 pt-20 ${
+      appearance.theme == 'dark'
+        ? 'bg-[#2a2a2a] border-r border-slate-700'
+        : 'bg-white border-r border-gray-200'
+    }`}>
       {sections.map(section => {
         const Icon = section.icon
         const isActive = activeSection === section.id
@@ -30,7 +36,9 @@ export function Sidebar ({ activeSection, onSectionChange }) {
             className={`w-10 h-10 cursor-pointer rounded-xl flex items-center justify-center transition-all ${
               isActive
                 ? 'text-[#fd9155] font-bold'
-                : 'text-gray-500  hover:text-gray-700'
+                : appearance.theme == 'dark'
+                  ? 'text-slate-400 hover:text-white'
+                  : 'text-gray-500 hover:text-gray-700'
             }`}
           >
             <Icon size={20} />

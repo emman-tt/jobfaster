@@ -19,6 +19,7 @@ export default function Steps ({
   const [width, setWidth] = useState(480)
   const [isResizing, setIsResizing] = useState(false)
   const { isPreview } = useSelector(state => state.editor)
+  const { appearance } = useSelector(state => state.preferences)
 
   return (
     <Resizable
@@ -29,7 +30,7 @@ export default function Steps ({
       onResize={() => {
         setIsResizing(true)
       }}
-      className=' transition-all duration-0 ease'
+      className='transition-all duration-0 ease'
       onResizeStop={(event, direction, elementRef, delta) => {
         setWidth(width + delta.width)
         setIsResizing(false)
@@ -39,10 +40,11 @@ export default function Steps ({
         autoHide={true}
         forceVisible='y'
         color='orange'
-        className={` scrollbar-none overflow-hidden
-         pb-20 pt-10 h-full bg-white/90  ${
-           isResizing && 'border-r-2 border-orange-500'
-         } overflow-y-scroll`}
+        className={`scrollbar-none overflow-hidden pb-20 pt-10 h-full ${
+          appearance.theme == 'dark'
+            ? 'bg-[#2a2a2a]'
+            : 'bg-white/90'
+        } ${isResizing && 'border-r-2 border-orange-500'} overflow-y-scroll`}
       >
         <Identity />
         <Experience editingId={editingId} setEditingId={setEditingId} />
