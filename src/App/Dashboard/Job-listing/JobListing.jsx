@@ -63,22 +63,34 @@ export function JobListing () {
   }
 
   return (
-    <section className={`w-full h-screen overflow-hidden flex flex-col relative ${
-      appearance.theme == 'dark' ? 'bg-[#202020]' : 'bg-white'
-    }`}>
-      <div className={`w-full h-full overflow-y-auto [scrollbar-width:none] p-5 ${
+    <section
+      className={`w-full h-screen overflow-hidden flex flex-col relative ${
         appearance.theme == 'dark' ? 'bg-[#202020]' : 'bg-white'
-      }`}>
+      }`}
+    >
+      <div
+        className={`w-full h-full overflow-y-auto [scrollbar-width:none] p-5 ${
+          appearance.theme == 'dark' ? 'bg-[#202020]' : 'bg-white'
+        }`}
+      >
         <div className='max-w-7xl h-full   mx-auto space-y-5'>
           <div className='space-y-4 h-full justify-between flex  flex-col  '>
             <section className=' flex flex-col p-10 gap-5'>
               <div className='flex items-center justify-between px-1'>
-                <h2 className={`text-[13px] font-medium font-satoshi ${
-                  appearance.theme == 'dark' ? 'text-slate-400' : 'text-slate-500'
-                }`}>
-                  <span className={`font-bold ${
-                    appearance.theme == 'dark' ? 'text-white' : 'text-slate-900'
-                  }`}>
+                <h2
+                  className={`text-[13px] font-medium font-satoshi ${
+                    appearance.theme == 'dark'
+                      ? 'text-slate-400'
+                      : 'text-slate-500'
+                  }`}
+                >
+                  <span
+                    className={`font-bold ${
+                      appearance.theme == 'dark'
+                        ? 'text-white'
+                        : 'text-slate-900'
+                    }`}
+                  >
                     {jobs.length}
                   </span>
                   {jobs.length === 1 ? ' job' : ' jobs'}
@@ -92,9 +104,8 @@ export function JobListing () {
                   </div>
                 ) : jobs.length === 0 ? (
                   <div className='col-span-full flex flex-col items-center justify-center py-20 gap-4'>
-                    <p className='text-slate-500'>No jobs found</p>
+                    <p className={appearance.theme == 'dark' ? 'text-slate-400' : 'text-slate-500'}>No jobs found</p>
                     <button
-                      //   onClick={handlegetJobs}
                       className='px-4 py-2 bg-[#f17e27] text-white rounded-lg text-sm font-semibold'
                     >
                       Fetch Jobs
@@ -106,7 +117,11 @@ export function JobListing () {
                     return (
                       <div
                         key={job.id || job.jobId}
-                        className='bg-white rounded-2xl p-4 border border-gray-100 shadow-sm hover:shadow-md transition-all cursor-pointer'
+                        className={`rounded-2xl p-4 border shadow-sm hover:shadow-md transition-all cursor-pointer ${
+                          appearance.theme == 'dark'
+                            ? 'bg-[#2a2a2a] border-0'
+                            : 'bg-white border-gray-100'
+                        }`}
                         onClick={() => handleJobClick(prepared)}
                       >
                         <div className='flex gap-3'>
@@ -114,7 +129,9 @@ export function JobListing () {
                             {prepared.employerLogo ? (
                               <img
                                 src={prepared.employerLogo}
-                                className='w-full h-full object-contain rounded-lg bg-gray-50'
+                                className={`w-full h-full object-contain rounded-lg ${
+                                  appearance.theme == 'dark' ? 'bg-[#202020]' : 'bg-gray-50'
+                                }`}
                                 alt=''
                               />
                             ) : (
@@ -125,7 +142,9 @@ export function JobListing () {
                           </div>
 
                           <div className='flex-1 min-w-0'>
-                            <h3 className='text-sm font-bold text-slate-900 font-IBM truncate'>
+                            <h3 className={`text-sm font-bold font-IBM truncate ${
+                              appearance.theme == 'dark' ? 'text-white' : 'text-slate-900'
+                            }`}>
                               {prepared.jobTitle}
                             </h3>
                             <p className='text-xs font-bold text-[#f17e27] uppercase tracking-wide mt-0.5'>
@@ -138,12 +157,18 @@ export function JobListing () {
                           <span className='px-2.5 py-1 bg-[#fff7ed] text-[#f17e27] rounded-full text-[10px] font-bold'>
                             {prepared.jobEmploymentType}
                           </span>
-                          <span className='px-2.5 py-1 bg-gray-100 text-slate-600 rounded-full text-[10px] font-medium'>
+                          <span className={`px-2.5 py-1 rounded-full text-[10px] font-medium ${
+                            appearance.theme == 'dark'
+                              ? 'bg-[#202020] text-slate-300'
+                              : 'bg-gray-100 text-slate-600'
+                          }`}>
                             {getJobSalary(prepared)}
                           </span>
                         </div>
 
-                        <div className='flex items-center gap-2 mt-3 text-xs text-slate-500'>
+                        <div className={`flex items-center gap-2 mt-3 text-xs ${
+                          appearance.theme == 'dark' ? 'text-slate-400' : 'text-slate-500'
+                        }`}>
                           <span className='flex items-center gap-1'>
                             <MapPin className='w-3 h-3' />
                             {prepared.jobLocation}
@@ -152,7 +177,9 @@ export function JobListing () {
                           <span>{prepared.jobPostedHumanReadable}</span>
                         </div>
 
-                        <p className='text-xs text-slate-500 mt-3 line-clamp-2 leading-relaxed'>
+                        <p className={`text-xs mt-3 line-clamp-2 leading-relaxed ${
+                          appearance.theme == 'dark' ? 'text-slate-400' : 'text-slate-500'
+                        }`}>
                           {prepared.jobDescription}
                         </p>
                       </div>
@@ -166,17 +193,21 @@ export function JobListing () {
       </div>
 
       {selectedJob && (
-        <div className='fixed inset-0 z-40  '>
+        <div className='fixed inset-0 z-40'>
           <div
-            className='absolute inset-0 bg-black/20 '
+            className='absolute inset-0 bg-black/20'
             onClick={closeDetail}
           />
-          <div className='absolute right-2 rounded-2xl top-2 bottom-10 h-[97%] w-full max-w-xl bg-white scrollbar-none shadow-2xl overflow-y-auto'>
+          <div className={`absolute right-2 rounded-2xl top-2 bottom-10 h-[97%] w-full max-w-xl scrollbar-none shadow-2xl overflow-y-auto ${
+            appearance.theme == 'dark' ? 'bg-[#2a2a2a]' : 'bg-white'
+          }`}>
             <button
               onClick={closeDetail}
-              className='absolute top-4 right-4 p-2 bg-white rounded-full shadow-lg hover:bg-gray-50 transition-all z-10'
+              className={`absolute top-4 right-4 p-2 rounded-full shadow-lg transition-all z-10 ${
+                appearance.theme == 'dark' ? 'bg-[#202020] hover:bg-slate-800' : 'bg-white hover:bg-gray-50'
+              }`}
             >
-              <X className='w-5 h-5 text-slate-600' />
+              <X className={`w-5 h-5 ${appearance.theme == 'dark' ? 'text-white' : 'text-slate-600'}`} />
             </button>
             <JobDetailView job={selectedJob} />
           </div>

@@ -59,9 +59,10 @@ function App () {
             <Route path='listing' element={<JobListing />} />
             <Route path='settings' element={<Settings />} />
             <Route path='preference' element={<Prefrences />} />
-            <Route path='create/resume' element={<CreateResume />}>
+            <Route path='templates' element={<Examples />} />
+            {/* <Route path='create/resume' element={<CreateResume />}>
               <Route path='examples' element={<Examples />} />
-            </Route>
+            </Route> */}
           </Route>
         </Routes>
       </AuthProvider>

@@ -97,7 +97,7 @@ export default function Dashboard () {
   return (
     <section
       className={`flex relative ${
-        appearance.theme == 'dark' ? 'bg-[#202020]' : 'bg-[#f8f8f8]'
+        appearance.theme == 'dark' ? 'bg-[#202020]' : 'bg-white'
       }  overflow-hidden   w-full h-screen `}
     >
       <Sidebar
@@ -142,31 +142,51 @@ export default function Dashboard () {
 
       {modals.selectResume && (
         <>
-          <Overlay className={'bg-[#e0e4e582] backdrop-blur-sm'} />
+          <Overlay
+            className={` ${
+              appearance.theme == 'dark' ? 'bg-[#00000000]' : 'bg-[#e0e4e582]'
+            } backdrop-blur-sm`}
+          />
           <SelectResume />
         </>
       )}
       {modals.resume && (
         <>
-          <Overlay className={'bg-[#e0e4e582] backdrop-blur-sm'} />
+          <Overlay
+            className={` ${
+              appearance.theme == 'dark' ? 'bg-[#00000000]' : 'bg-[#e0e4e582]'
+            } backdrop-blur-sm`}
+          />
           <Resume />
         </>
       )}
       {modals.uploadFile && (
         <>
-          <Overlay className={'bg-[#e0e4e582] backdrop-blur-sm'} />
+          <Overlay
+            className={` ${
+              appearance.theme == 'dark' ? 'bg-[#00000000]' : 'bg-[#e0e4e582]'
+            } backdrop-blur-sm`}
+          />
           <UploadFile />
         </>
       )}
       {modals.folder && (
         <>
-          <Overlay className={'bg-[#e0e4e582] backdrop-blur-sm'} />
+          <Overlay
+            className={` ${
+              appearance.theme == 'dark' ? 'bg-[#00000000]' : 'bg-[#e0e4e582]'
+            } backdrop-blur-sm`}
+          />
           <Folder />
         </>
       )}
       {modals.chooseTemplate && (
         <>
-          <Overlay className={'bg-[#e0e4e582] backdrop-blur-sm'} />
+          <Overlay
+            className={` ${
+              appearance.theme == 'dark' ? 'bg-[#00000000]' : 'bg-[#e0e4e582]'
+            } backdrop-blur-sm`}
+          />
           <ChooseTemplate />
         </>
       )}

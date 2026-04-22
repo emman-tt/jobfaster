@@ -1,343 +1,327 @@
+import React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { FileText, Bot, Palette, Share2, Bell, Type } from 'lucide-react'
 import {
-  setResumeTemplate,
-  setPaperSize,
-  setDefaultFont,
-  setDefaultFontSize,
-  setLineSpacing,
-  setAiTone,
-  setAutoOptimize,
-  setAddMetrics,
-  setStrengthenVerbs,
+  MoreVertical,
+  Check,
+  Globe,
+  Layout,
+  Monitor,
+  Download
+} from 'lucide-react'
+import {
   setTheme,
   setSidebar,
   setCompactMode,
   setExportFormat,
-  setFileNaming,
-  setIncludeCoverLetter,
-  setAiCompleteNotification,
-  setWeeklyDigestNotification,
-  setAppStatusNotification,
-  setMarketingNotification,
-  setAutoSave,
-  setCharCount,
-  setAtsScore,
-  setSpellCheck
+  setFileNaming
 } from '../../store/preferencesSlice'
 
-const Radio = ({ label, checked, onChange }) => {
+import systemThemeImg from '../../assets/img/systemMode.png'
+import lightThemeImg from '../../assets/img/lightMode.png'
+import darkThemeImg from '../../assets/img/darkMode.png'
+
+const SectionHeader = ({ title, description }) => {
   const { appearance } = useSelector(state => state.preferences)
   return (
-    <label className='flex items-center gap-1.5 cursor-pointer'>
-      <div
-        className={`w-3.5 h-3.5 rounded-full border-2 flex items-center justify-center transition-colors ${
-          checked ? 'border-[#f17e27]' : 'border-slate-300'
-        }`}
-      >
-        {checked && <div className='w-1.5 h-1.5 rounded-full bg-[#f17e27]' />}
+    <div className='flex items-center justify-between py-6'>
+      <div className='space-y-1'>
+        <h1
+          className={`text-2xl font-bold font-satoshi ${
+            appearance.theme === 'dark' ? 'text-white' : 'text-slate-900'
+          }`}
+        >
+          {title}
+        </h1>
+        <p
+          className={`text-sm ${
+            appearance.theme === 'dark' ? 'text-slate-400' : 'text-slate-500'
+          }`}
+        >
+          {description}
+        </p>
       </div>
-      <span className={`text-xs ${
-        appearance.theme == 'dark' ? 'text-slate-300' : 'text-slate-600'
-      }`}>{label}</span>
-      <input
-        type='radio'
-        checked={checked}
-        onChange={onChange}
-        className='hidden'
-      />
-    </label>
+    </div>
   )
 }
 
-const Checkbox = ({ label, checked, onChange }) => {
+const SettingRow = ({ label, description, children, border = true }) => {
   const { appearance } = useSelector(state => state.preferences)
   return (
-    <label className='flex items-center gap-2 cursor-pointer'>
-      <div
-        className={`w-4 h-4 rounded border flex items-center justify-center transition-colors ${
-          checked ? 'bg-[#f17e27] border-[#f17e27]' : 'border-slate-300'
-        }`}
-      >
-        {checked && <span className='text-white text-[10px]'>✓</span>}
-      </div>
-      <span className={`text-xs ${
-        appearance.theme == 'dark' ? 'text-slate-300' : 'text-slate-600'
-      }`}>{label}</span>
-      <input
-        type='checkbox'
-        checked={checked}
-        onChange={onChange}
-        className='hidden'
-      />
-    </label>
-  )
-}
-
-const Select = ({ value, options, onChange }) => {
-  const { appearance } = useSelector(state => state.preferences)
-  return (
-    <select
-      value={value}
-      onChange={e => onChange(e.target.value)}
-      className={`px-3 py-1.5 text-xs rounded-lg border text-slate-700 outline-none focus:border-[#f17e27] transition-colors cursor-pointer ${
-        appearance.theme == 'dark'
-          ? 'bg-[#202020] border-slate-700'
-          : 'border-slate-200 bg-white'
+    <div
+      className={`grid grid-cols-1 md:grid-cols-12 gap-6 py-8 ${
+        border
+          ? `border-t ${
+              appearance.theme === 'dark'
+                ? 'border-slate-800'
+                : 'border-slate-100'
+            }`
+          : ''
       }`}
     >
-      {options.map(opt => (
-        <option key={opt} value={opt}>
-          {opt}
-        </option>
-      ))}
-    </select>
-  )
-}
-
-const Row = ({ label, children }) => {
-  const { appearance } = useSelector(state => state.preferences)
-  return (
-    <div className={`flex items-center justify-between py-2 border-b last:border-0 ${
-      appearance.theme == 'dark' ? 'border-slate-700' : 'border-slate-100'
-    }`}>
-      <span className={`text-xs w-36 ${
-        appearance.theme == 'dark' ? 'text-slate-300' : 'text-slate-600'
-      }`}>{label}</span>
-      <div className='flex items-center gap-3'>{children}</div>
+      <div className='md:col-span-4 space-y-1'>
+        <h3
+          className={`text-sm font-semibold ${
+            appearance.theme === 'dark' ? 'text-slate-200' : 'text-slate-700'
+          }`}
+        >
+          {label}
+        </h3>
+        <p
+          className={`text-xs ${
+            appearance.theme === 'dark' ? 'text-slate-400' : 'text-slate-500'
+          }`}
+        >
+          {description}
+        </p>
+      </div>
+      <div className='md:col-span-8'>{children}</div>
     </div>
   )
 }
 
-const SectionHeading = ({ icon: Icon, children }) => {
+const ThemeCard = ({ type, label, active, onClick, image }) => {
   const { appearance } = useSelector(state => state.preferences)
   return (
-    <h2 className={`text-sm font-semibold flex items-center gap-2 border-b border-slate-200 pb-2 mb-4 ${
-      appearance.theme == 'dark' ? 'text-white' : 'text-slate-800'
-    }`}>
-      <Icon size={15} className='text-[#f17e27]' />
-      {children}
-    </h2>
+    <div className='space-y-3 cursor-pointer group' onClick={onClick}>
+      <div
+        className={`relative aspect-4/3 rounded-xl border-2 transition-all overflow-hidden ${
+          active
+            ? 'border-[#f17e27] ring-2 ring-[#f17e27]/10'
+            : appearance.theme === 'dark'
+            ? 'border-slate-800 bg-slate-900 hover:border-slate-700'
+            : 'border-slate-200 bg-slate-50 hover:border-slate-300'
+        }`}
+      >
+        <img src={image} alt={label} className='w-full h-full object-cover' />
+        {active && (
+          <div className='absolute top-2 right-2 w-5 h-5 bg-[#f17e27] rounded-full flex items-center justify-center text-white shadow-sm'>
+            <Check size={12} strokeWidth={3} />
+          </div>
+        )}
+      </div>
+      <span
+        className={`text-sm font-medium block text-center ${
+          active
+            ? 'text-[#f17e27]'
+            : appearance.theme === 'dark'
+            ? 'text-slate-400'
+            : 'text-slate-600'
+        }`}
+      >
+        {label}
+      </span>
+    </div>
   )
 }
 
-const Card = ({ children }) => {
+const Toggle = ({ active, onChange }) => (
+  <button
+    onClick={() => onChange(!active)}
+    className={`w-11 h-6 rounded-full transition-all relative ${
+      active ? 'bg-[#f17e27]' : 'bg-slate-200 dark:bg-slate-800'
+    }`}
+  >
+    <div
+      className={`absolute top-1 w-4 h-4 bg-white rounded-full shadow-md transition-all ${
+        active ? 'left-6' : 'left-1'
+      }`}
+    />
+  </button>
+)
+
+const RadioOption = ({ label, checked, onChange }) => {
   const { appearance } = useSelector(state => state.preferences)
   return (
-    <div className={`rounded-xl p-5 border space-y-1 ${
-      appearance.theme == 'dark' 
-        ? 'bg-[#2a2a2a] border-slate-700' 
-        : 'bg-white border-slate-200'
-    }`}>
-      {children}
-    </div>
+    <label className='flex items-center gap-3 cursor-pointer group'>
+      <div
+        className={`w-5 h-5 rounded-full border-2 flex items-center justify-center transition-all ${
+          checked
+            ? 'border-[#f17e27]'
+            : appearance.theme === 'dark'
+            ? 'border-slate-700'
+            : 'border-slate-300'
+        }`}
+      >
+        {checked && <div className='w-2.5 h-2.5 rounded-full bg-[#f17e27]' />}
+      </div>
+      <span
+        className={`text-sm ${
+          checked
+            ? appearance.theme === 'dark'
+              ? 'text-white'
+              : 'text-slate-900'
+            : appearance.theme === 'dark'
+            ? 'text-slate-400'
+            : 'text-slate-600'
+        }`}
+      >
+        {label}
+      </span>
+      <input
+        type='radio'
+        className='hidden'
+        checked={checked}
+        onChange={onChange}
+      />
+    </label>
   )
 }
 
 export default function Prefrences () {
   const dispatch = useDispatch()
-  const { appearance } = useSelector(state => state.preferences)
-  const pref = useSelector(state => state.preferences)
+  const { appearance, export: exportPref } = useSelector(
+    state => state.preferences
+  )
 
   return (
-    <section className={`w-full h-screen overflow-y-auto [scrollbar-width:none] p-6 ${
-      appearance.theme == 'dark' ? 'bg-[#202020]' : 'bg-white'
-    }`}>
-      <div className='max-w-2xl mx-auto space-y-6 pb-16'>
-        <div>
-          <h1 className={`text-2xl font-bold font-IBM ${
-            appearance.theme == 'dark' ? 'text-white' : 'text-slate-900'
-          }`}>
-            Preferences
-          </h1>
-          <p className={`text-xs mt-0.5 ${
-            appearance.theme == 'dark' ? 'text-slate-400' : 'text-slate-500'
-          }`}>
-            Customize your experience
+    <section
+      className={`w-full h-screen overflow-y-auto [scrollbar-width:none] p-6 lg:p-12 ${
+        appearance.theme === 'dark' ? 'bg-[#151515]' : 'bg-white'
+      }`}
+    >
+      <div className='max-w-4xl mx-auto'>
+        {/* Header */}
+        <SectionHeader
+          title='Appearance'
+          description='Customize how the platform looks and feels on your device.'
+        />
+
+        {/* Interface Theme */}
+        <SettingRow
+          label='Interface theme'
+          description='Select or customize your UI theme.'
+        >
+          <div className='grid grid-cols-1 sm:grid-cols-3 gap-4 max-w-2xl'>
+            <ThemeCard
+              type='light'
+              label='Light'
+              active={appearance.theme === 'light'}
+              onClick={() => dispatch(setTheme('light'))}
+              image={lightThemeImg}
+            />
+            <ThemeCard
+              type='dark'
+              label='Dark'
+              active={appearance.theme === 'dark'}
+              onClick={() => dispatch(setTheme('dark'))}
+              image={darkThemeImg}
+            />
+          </div>
+        </SettingRow>
+
+        {/* Accessibility / Compact Mode */}
+        <SettingRow
+          label='Compact mode'
+          description='Reduce spacing to show more content at once. Ideal for smaller screens.'
+        >
+          <div className='flex items-center justify-between p-4 rounded-xl bg-slate-50 dark:bg-slate-900/50 border border-slate-100 dark:border-slate-800/50'>
+            <div className='flex items-center gap-3'>
+              <div className='p-2 bg-white dark:bg-slate-800 rounded-lg shadow-sm text-[#f17e27]'>
+                <Layout size={18} />
+              </div>
+              <div>
+                <p
+                  className={`text-sm font-medium ${
+                    appearance.theme === 'dark'
+                      ? 'text-white'
+                      : 'text-slate-900'
+                  }`}
+                >
+                  Enable Compact Mode
+                </p>
+              </div>
+            </div>
+            <Toggle
+              active={appearance.compactMode}
+              onChange={val => dispatch(setCompactMode(val))}
+            />
+          </div>
+        </SettingRow>
+
+        {/* Region & Language Section Placeholder */}
+        <div className='mt-12 mb-6'>
+          <h2
+            className={`text-lg font-bold font-satoshi ${
+              appearance.theme === 'dark' ? 'text-white' : 'text-slate-900'
+            }`}
+          >
+            General Preferences
+          </h2>
+          <p
+            className={`text-sm ${
+              appearance.theme === 'dark' ? 'text-slate-400' : 'text-slate-500'
+            }`}
+          >
+            Default settings for your account activities.
           </p>
         </div>
 
-        <Card>
-          <SectionHeading icon={FileText}>Resume Defaults</SectionHeading>
-          <Row label='Default Template'>
-            <Select
-              value={pref.resume.template}
-              options={[
-                'Classic Chronological',
-                'Modern',
-                'Minimal',
-                'Creative'
-              ]}
-              onChange={v =>
-                dispatch(setResumeTemplate(v.toLowerCase().split(' ')[0]))
-              }
-            />
-          </Row>
-          <Row label='Paper Size'>
-            <div className='flex items-center gap-4'>
-              <Radio
-                label='A4'
-                checked={pref.resume.paperSize === 'a4'}
-                onChange={() => dispatch(setPaperSize('a4'))}
-              />
-              <Radio
-                label='Letter'
-                checked={pref.resume.paperSize === 'letter'}
-                onChange={() => dispatch(setPaperSize('letter'))}
-              />
+        {/* Language Selection */}
+        <SettingRow
+          label='Display Language'
+          description='Choose the language used throughout the application.'
+        >
+          <div className='flex items-center gap-3 w-full sm:w-72'>
+            <div
+              className={`flex items-center gap-2 px-4 py-2.5 rounded-lg border w-full cursor-pointer ${
+                appearance.theme === 'dark'
+                  ? 'bg-slate-900 border-slate-800 text-white'
+                  : 'bg-white border-slate-200 text-slate-700'
+              }`}
+            >
+              <Globe size={16} className='text-slate-400' />
+              <span className='text-sm flex-1'>English (United States)</span>
+              <Check size={14} className='text-[#f17e27]' />
             </div>
-          </Row>
-          <Row label='Default Font'>
-            <Select
-              value={pref.resume.font}
-              options={['Inter', 'Arial', 'Calibri', 'Roboto', 'Open Sans']}
-              onChange={v => dispatch(setDefaultFont(v.toLowerCase()))}
-            />
-          </Row>
-          <Row label='Font Size'>
-            <Select
-              value={pref.resume.fontSize}
-              options={['10pt', '11pt', '12pt', '13pt', '14pt']}
-              onChange={v => dispatch(setDefaultFontSize(v))}
-            />
-          </Row>
-          <Row label='Line Spacing'>
-            <Select
-              value={pref.resume.lineSpacing}
-              options={['1.0', '1.15', '1.5', '2.0']}
-              onChange={v => dispatch(setLineSpacing(v))}
-            />
-          </Row>
-        </Card>
+          </div>
+        </SettingRow>
 
-        <Card>
-          <SectionHeading icon={Bot}>AI Optimization</SectionHeading>
-          <Row label='Default Tone'>
-            <Select
-              value={pref.ai.tone}
-              options={['Professional', 'Friendly', 'Formal', 'Creative']}
-              onChange={v => dispatch(setAiTone(v.toLowerCase()))}
-            />
-          </Row>
-          <Row label='Auto-optimize on save'>
-            <div className='flex items-center gap-4'>
-              <Radio
-                label='Yes'
-                checked={pref.ai.autoOptimize}
-                onChange={() => dispatch(setAutoOptimize(true))}
-              />
-              <Radio
-                label='No'
-                checked={!pref.ai.autoOptimize}
-                onChange={() => dispatch(setAutoOptimize(false))}
-              />
-            </div>
-          </Row>
-          <Row label='Add metrics'>
-            <div className='flex items-center gap-4'>
-              <Radio
-                label='Always'
-                checked={pref.ai.addMetrics === 'always'}
-                onChange={() => dispatch(setAddMetrics('always'))}
-              />
-              <Radio
-                label='Ask me'
-                checked={pref.ai.addMetrics === 'ask'}
-                onChange={() => dispatch(setAddMetrics('ask'))}
-              />
-            </div>
-          </Row>
-          <Row label='Strengthen verbs'>
-            <div className='flex items-center gap-4'>
-              <Radio
-                label='Always'
-                checked={pref.ai.strengthenVerbs === 'always'}
-                onChange={() => dispatch(setStrengthenVerbs('always'))}
-              />
-              <Radio
-                label='Ask me'
-                checked={pref.ai.strengthenVerbs === 'ask'}
-                onChange={() => dispatch(setStrengthenVerbs('ask'))}
-              />
-            </div>
-          </Row>
-        </Card>
+        {/* Export Defaults */}
+        <SettingRow
+          label='Default Export Format'
+          description='Set the default format for your resume downloads.'
+        >
+          <div className='flex flex-wrap gap-3'>
+            {['PDF', 'DOCX', 'JSON'].map(format => (
+              <button
+                key={format}
+                onClick={() => dispatch(setExportFormat(format.toLowerCase()))}
+                className={`px-4 py-2 cursor-pointer rounded-lg text-sm font-medium border transition-all ${
+                  exportPref.format === format.toLowerCase()
+                    ? 'border-[#f17e27] bg-[#f17e27] text-white shadow-none shadow-[#f17e27]/20'
+                    : appearance.theme === 'dark'
+                    ? 'border-slate-800  bg-slate-900 text-slate-400 hover:border-slate-700'
+                    : 'border-slate-200 bg-white text-slate-600 hover:bg-slate-50'
+                }`}
+              >
+                {format}
+              </button>
+            ))}
+          </div>
+        </SettingRow>
 
-        <Card>
-          <SectionHeading icon={Palette}>Appearance</SectionHeading>
-          <Row label='Theme'>
-            <div className='flex items-center gap-4'>
-              <Radio
-                label='Light'
-                checked={pref.appearance.theme === 'light'}
-                onChange={() => dispatch(setTheme('light'))}
-              />
-              <Radio
-                label='Dark'
-                checked={pref.appearance.theme === 'dark'}
-                onChange={() => dispatch(setTheme('dark'))}
-              />
-              <Radio
-                label='System'
-                checked={pref.appearance.theme === 'system'}
-                onChange={() => dispatch(setTheme('system'))}
-              />
-            </div>
-          </Row>
-          <Row label='Sidebar'>
-            <div className='flex items-center gap-4'>
-              <Radio
-                label='Expanded'
-                checked={pref.appearance.sidebar === 'expanded'}
-                onChange={() => dispatch(setSidebar('expanded'))}
-              />
-              <Radio
-                label='Collapsed'
-                checked={pref.appearance.sidebar === 'collapsed'}
-                onChange={() => dispatch(setSidebar('collapsed'))}
-              />
-            </div>
-          </Row>
-          <Row label='Compact Mode'>
-            <div className='flex items-center gap-4'>
-              <Radio
-                label='Yes'
-                checked={pref.appearance.compactMode}
-                onChange={() => dispatch(setCompactMode(true))}
-              />
-              <Radio
-                label='No'
-                checked={!pref.appearance.compactMode}
-                onChange={() => dispatch(setCompactMode(false))}
-              />
-            </div>
-          </Row>
-        </Card>
-
-        <Card>
-          <SectionHeading icon={Share2}>Export & Sharing</SectionHeading>
-          <Row label='Default Format'>
-            <div className='flex items-center gap-4'>
-              <Radio
-                label='PDF'
-                checked={pref.export.format === 'pdf'}
-                onChange={() => dispatch(setExportFormat('pdf'))}
-              />
-              <Radio
-                label='DOCX'
-                checked={pref.export.format === 'docx'}
-                onChange={() => dispatch(setExportFormat('docx'))}
-              />
-            </div>
-          </Row>
-          <Row label='File Naming'>
-            <Select
-              value={pref.export.fileNaming}
-              options={['Resume_{name}', 'Name_Resume', 'Date_Name', 'Custom']}
-              onChange={v => dispatch(setFileNaming(v.toLowerCase()))}
-            />
-          </Row>
-        </Card>
+        {/* File Naming */}
+        <SettingRow
+          label='File Naming Convention'
+          description='How your downloaded files will be named by default.'
+        >
+          <select
+            value={exportPref.fileNaming}
+            onChange={e => dispatch(setFileNaming(e.target.value))}
+            className={`w-full sm:w-72 px-4 py-2.5 rounded-lg border outline-none text-sm transition-all ${
+              appearance.theme === 'dark'
+                ? 'bg-slate-900 border-slate-800 text-white '
+                : 'bg-white border-slate-200 text-slate-700 '
+            }`}
+          >
+            <option value='resume_name'>Resume_{'{name}'}</option>
+            <option value='name_resume'>{'{name}'}_Resume</option>
+            <option value='date_name'>
+              {'{date}'}_{'{name}'}
+            </option>
+            <option value='custom'>Custom Pattern</option>
+          </select>
+        </SettingRow>
       </div>
     </section>
   )

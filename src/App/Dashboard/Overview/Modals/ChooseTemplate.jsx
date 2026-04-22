@@ -30,6 +30,7 @@ const colors = [
 ]
 
 function TemplateCard ({ template, isSelected, onSelect }) {
+  const { appearance } = useSelector(state => state.preferences)
   const Component = template.Comp
 
   return (
@@ -38,10 +39,12 @@ function TemplateCard ({ template, isSelected, onSelect }) {
       className='cursor-pointer flex flex-col items-center'
     >
       <div
-        className={`relative border-2 rounded-lg overflow-hidden transition-all bg-white ${
+        className={`relative border-2 rounded-lg overflow-hidden transition-all ${
+          appearance.theme == 'dark' ? 'bg-[#202020]' : 'bg-white'
+        } ${
           isSelected
             ? 'border-orange-500'
-            : 'border-slate-200 hover:border-slate-300'
+            : appearance.theme == 'dark' ? 'border-slate-700 hover:border-slate-600' : 'border-slate-200 hover:border-slate-300'
         }`}
       >
         <div className='w-73 h-78 overflow-hidden'>
@@ -68,7 +71,7 @@ function TemplateCard ({ template, isSelected, onSelect }) {
       <div className='flex items-center gap-2 mt-2'>
         <span
           className={`text-sm font-medium font-satoshi ${
-            isSelected ? 'text-orange-600' : 'text-slate-700'
+            isSelected ? 'text-orange-600' : appearance.theme == 'dark' ? 'text-white' : 'text-slate-700'
           }`}
         >
           {template.name}
@@ -85,28 +88,43 @@ export default function ChooseTemplate () {
   const dispatch = useDispatch()
   const { layoutId } = useSelector(state => state.ai)
   const { styless } = useSelector(state => state.format)
+  const { appearance } = useSelector(state => state.preferences)
 
   function closeModal () {
     dispatch(toggleModals('chooseTemplate'))
   }
 
   return (
-    <section className='absolute inset-0 z-50 bg-black/40 flex items-center justify-center'>
-      <div className='bg-white rounded-2xl w-[90%] h-[90%] flex flex-col shadow-2xl'>
-        <div className='flex items-center justify-between px-8 py-5 border-b border-slate-200'>
+    <section className={`absolute inset-0 z-50 flex items-center justify-center ${
+      appearance.theme == 'dark' ? 'bg-white/10' : 'bg-black/40'
+    }`}>
+      <div className={`rounded-2xl w-[90%] h-[90%] flex flex-col shadow-2xl ${
+        appearance.theme == 'dark' ? 'bg-[#2a2a2a]' : 'bg-white'
+      }`}>
+        <div className={`flex items-center justify-between px-8 py-5 border-b ${
+          appearance.theme == 'dark' ? 'border-slate-700' : 'border-slate-200'
+        }`}>
           <div>
-            <h2 className='text-xl font-semibold font-satoshi'>
+            <h2 className={`text-xl font-semibold font-satoshi ${
+              appearance.theme == 'dark' ? 'text-white' : 'text-slate-900'
+            }`}>
               Choose a Template
             </h2>
-            <p className='text-sm font-satoshi text-slate-500 mt-0.5'>
+            <p className={`text-sm font-satoshi mt-0.5 ${
+              appearance.theme == 'dark' ? 'text-slate-400' : 'text-slate-500'
+            }`}>
               Pick a style for your resume
             </p>
           </div>
           <button
             onClick={closeModal}
-            className='p-2 hover:bg-slate-100 rounded-lg transition-colors'
+            className={`p-2 rounded-lg transition-colors ${
+              appearance.theme == 'dark' ? 'hover:bg-slate-700' : 'hover:bg-slate-100'
+            }`}
           >
-            <X className='w-5 h-5 text-slate-500' />
+            <X className={`w-5 h-5 ${
+              appearance.theme == 'dark' ? 'text-slate-400' : 'text-slate-500'
+            }`} />
           </button>
         </div>
 
@@ -123,16 +141,24 @@ export default function ChooseTemplate () {
           </div>
         </div>
 
-        <div className='border-t border-slate-200 px-8 py-5'>
+        <div className={`border-t px-8 py-5 ${
+          appearance.theme == 'dark' ? 'border-slate-700' : 'border-slate-200'
+        }`}>
           <div className='flex items-center gap-8'>
             <div className='flex items-center gap-3'>
-              <span className='text-sm font-satoshi font-medium text-slate-600'>
+              <span className={`text-sm font-satoshi font-medium ${
+                appearance.theme == 'dark' ? 'text-slate-300' : 'text-slate-600'
+              }`}>
                 Font
               </span>
               <select
                 value={styless?.fontType || 'calibri'}
                 onChange={e => dispatch(selectFontType(e.target.value))}
-                className='border border-slate-300 rounded-lg px-3 py-2 text-sm font-satoshi bg-white focus:outline-none focus:ring-2 focus:ring-orange-500'
+                className={`border rounded-lg px-3 py-2 text-sm font-satoshi focus:outline-none focus:ring-2 focus:ring-orange-500 ${
+                  appearance.theme == 'dark'
+                    ? 'border-slate-700 bg-[#202020] text-white'
+                    : 'border-slate-300 bg-white'
+                }`}
               >
                 {fonts.map(font => (
                   <option key={font.id} value={font.id}>
@@ -142,7 +168,9 @@ export default function ChooseTemplate () {
               </select>
             </div>
             <div className='flex items-center gap-3'>
-              <span className='text-sm font-satoshi font-medium text-slate-600'>
+              <span className={`text-sm font-satoshi font-medium ${
+                appearance.theme == 'dark' ? 'text-slate-300' : 'text-slate-600'
+              }`}>
                 Accent Color
               </span>
               <div className='flex items-center gap-2'>
@@ -158,10 +186,16 @@ export default function ChooseTemplate () {
           </div>
         </div>
 
-        <div className='border-t border-slate-200 px-8 py-5 flex items-center justify-end gap-4'>
+        <div className={`border-t px-8 py-5 flex items-center justify-end gap-4 ${
+          appearance.theme == 'dark' ? 'border-slate-700' : 'border-slate-200'
+        }`}>
           <button
             onClick={closeModal}
-            className='px-6 py-3 rounded-xl border border-slate-300 text-sm font-satoshi font-medium text-slate-700 hover:bg-slate-50 transition-colors'
+            className={`px-6 py-3 rounded-xl text-sm font-satoshi font-medium transition-colors ${
+              appearance.theme == 'dark'
+                ? 'border border-slate-700 text-slate-300 hover:bg-slate-700'
+                : 'border border-slate-300 text-slate-700 hover:bg-slate-50'
+            }`}
           >
             Cancel
           </button>

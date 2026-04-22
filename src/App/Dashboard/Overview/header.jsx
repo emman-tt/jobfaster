@@ -5,7 +5,7 @@ import { toggleModals } from '../../../store/modalSlice'
 import { useEffect, useRef } from 'react'
 import { gsap } from '../../../libs/gsap'
 import { useSelector } from 'react-redux'
-import { useLocation } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import { toggleHeader } from '../../../store/dashboardSlice'
 export const Header = () => {
   const dispatch = useDispatch()
@@ -13,7 +13,7 @@ export const Header = () => {
   const { appearance } = useSelector(state => state.preferences)
   const headerRef = useRef()
   const location = useLocation()
-
+  const navigate = useNavigate()
   function openModal (item) {
     dispatch(toggleModals(item))
   }
@@ -78,7 +78,7 @@ export const Header = () => {
         }`}
       >
         <section
-          onClick={() => openModal('resume')}
+          onClick={() => navigate('/dashboard/create/resume')}
           className={`w-full  cursor-pointer ${
             appearance.theme == 'dark'
               ? 'bg-[#090711]'

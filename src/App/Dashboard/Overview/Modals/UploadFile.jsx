@@ -7,7 +7,7 @@ import {
   X
 } from 'lucide-react'
 import {  useRef, useState } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { toggleModals } from '../../../../store/modalSlice'
 
 import { toast } from 'sonner'
@@ -39,6 +39,7 @@ function formatBytes (bytes) {
 export default function UploadFile () {
   const dispatch = useDispatch()
   const inputRef = useRef(null)
+  const { appearance } = useSelector(state => state.preferences)
  
   const [dragging, setDragging] = useState(false)
   const [file, setFile] = useState({})
@@ -137,21 +138,31 @@ export default function UploadFile () {
   const floatingName = file?.name
 
   return (
-    <section className='absolute min-h-140 p-8 pb-5 transition-all duration-200 ease-in-out translate-x-120 translate-y-10 z-51 shadow-xl w-[38%] bg-white rounded-2xl flex flex-col gap-4'>
+    <section className={`absolute min-h-140 p-8 pb-5 transition-all duration-200 ease-in-out translate-x-120 translate-y-10 z-51 shadow-xl w-[38%] rounded-2xl flex flex-col gap-4 ${
+      appearance.theme == 'dark' ? 'bg-[#2a2a2a]' : 'bg-white'
+    }`}>
       <div className='flex items-start justify-between'>
         <div className='flex flex-col gap-1'>
-          <h2 className='text-xl font-semibold font-IBM'>
+          <h2 className={`text-xl font-semibold font-IBM ${
+            appearance.theme == 'dark' ? 'text-white' : 'text-slate-900'
+          }`}>
             Upload and attach files
           </h2>
-          <p className='text-sm text-gray-500 font-satoshi'>
+          <p className={`text-sm font-satoshi ${
+            appearance.theme == 'dark' ? 'text-slate-400' : 'text-gray-500'
+          }`}>
             Upload your pdf files or documents to get started
           </p>
         </div>
         <div
           onClick={closeModal}
-          className='cursor-pointer shadow-sm flex justify-center items-center p-1 rounded-lg'
+          className={`cursor-pointer shadow-sm flex justify-center items-center p-1 rounded-lg ${
+            appearance.theme == 'dark' ? 'hover:bg-slate-700' : ''
+          }`}
         >
-          <X className='w-5 h-5 text-gray-600' />
+          <X className={`w-5 h-5 ${
+            appearance.theme == 'dark' ? 'text-slate-400' : 'text-gray-600'
+          }`} />
         </div>
       </div>
 
@@ -159,32 +170,42 @@ export default function UploadFile () {
         onDrop={onDrop}
         onDragOver={onDragOver}
         onDragLeave={onDragLeave}
-        className={`relative border-2 border-dashed rounded-xl p-6 flex flex-col items-center justify-center gap-2 transition-colors duration-200 h-70 bg-white ${
-          dragging ? 'border-blue-400 ' : 'border-gray-300 '
-        }`}
+        className={`relative border-2 border-dashed rounded-xl p-6 flex flex-col items-center justify-center gap-2 transition-colors duration-200 h-70 ${
+          appearance.theme == 'dark' ? 'bg-[#202020] border-slate-700' : 'bg-white'
+        } ${dragging ? 'border-blue-400 ' : ''}`}
       >
         {floatingName?.length > 0 && (
           <div className='absolute top-4 right-4 flex flex-col items-end gap-1'>
-            <span className='text-xs text-gray-500 bg-white border border-gray-200 rounded px-2 py-0.5 shadow-sm'>
+            <span className={`text-xs px-2 py-0.5 rounded shadow-sm ${
+              appearance.theme == 'dark' ? 'bg-[#202020] border-slate-700 text-white' : 'bg-white border border-gray-200'
+            }`}>
               {floatingName}
             </span>
           </div>
         )}
 
-        <div className='w-12 h-10 bg-white border border-gray-200 rounded-xl flex items-center justify-center shadow-sm'>
+        <div className={`w-12 h-10 rounded-xl flex items-center justify-center shadow-sm ${
+          appearance.theme == 'dark' ? 'bg-[#202020]' : 'bg-white'
+        } ${appearance.theme == 'dark' ? 'border border-slate-700' : 'border border-gray-200'}`}>
           <FileText className='w-6 h-6 text-blue-500' />
         </div>
 
-        <p className='text-sm font-semibold text-gray-700'>
+        <p className={`text-sm font-semibold ${
+          appearance.theme == 'dark' ? 'text-white' : 'text-gray-700'
+        }`}>
           Choose a file or drag &amp; drop it here.
         </p>
-        <p className='text-xs text-gray-400'>
+        <p className={`text-xs ${
+          appearance.theme == 'dark' ? 'text-slate-500' : 'text-gray-400'
+        }`}>
           JPEG, PNG, PDF, and MP4 formats, up to {MAX_SIZE_MB} MB.
         </p>
 
         <button
           onClick={() => inputRef.current?.click()}
-          className='mt-2 bg-gray-800 text-white text-sm font-semibold font-satoshi px-5 py-2 rounded-xl hover:bg-gray-700 transition-colors'
+          className={`mt-2 text-white text-sm font-semibold font-satoshi px-5 py-2 rounded-xl transition-colors ${
+            appearance.theme == 'dark' ? 'bg-[#f17e27] hover:bg-[#e16d16]' : 'bg-gray-800 hover:bg-gray-700'
+          }`}
         >
           Browse File
         </button>
@@ -201,11 +222,17 @@ export default function UploadFile () {
 
       {file?.name?.length > 0 && (
         <div className='flex flex-col gap-2'>
-          <p className='text-sm font-semibold text-gray-700'>Uploaded Files:</p>
+          <p className={`text-sm font-semibold ${
+            appearance.theme == 'dark' ? 'text-white' : 'text-gray-700'
+          }`}>Uploaded Files:</p>
           <div className='flex flex-col gap-2 max-h-52 overflow-y-auto [scrollbar-width:thin]'>
             <div
               key={file.id}
-              className='flex items-center gap-3 border border-gray-200 rounded-xl p-3'
+              className={`flex items-center gap-3 rounded-xl p-3 ${
+                appearance.theme == 'dark'
+                  ? 'border border-slate-700 bg-[#202020]'
+                  : 'border border-gray-200'
+              }`}
             >
               <div
                 className={`w-10 h-12 rounded-lg flex items-center justify-center text-white text-[10px] font-bold shrink-0 ${
@@ -216,12 +243,16 @@ export default function UploadFile () {
               </div>
 
               <div className='flex flex-col flex-1 min-w-0 gap-1'>
-                <p className='text-sm font-semibold font-IBM truncate'>
+                <p className={`text-sm font-semibold font-IBM truncate ${
+                  appearance.theme == 'dark' ? 'text-white' : ''
+                }`}>
                   {file.name}
                 </p>
                 {file.status === 'uploading' ? (
                   <div className='flex flex-col gap-1'>
-                    <div className='flex items-center gap-2 text-xs text-gray-500'>
+                    <div className={`flex items-center gap-2 text-xs ${
+                      appearance.theme == 'dark' ? 'text-slate-400' : 'text-gray-500'
+                    }`}>
                       <span>
                         {formatBytes((file.size * file.progress) / 100)} of{' '}
                         {formatBytes(file.size)}
@@ -235,7 +266,9 @@ export default function UploadFile () {
                         %{file.progress}
                       </span>
                     </div>
-                    <div className='w-full h-1.5 bg-gray-200 rounded-full overflow-hidden'>
+                    <div className={`w-full h-1.5 rounded-full overflow-hidden ${
+                      appearance.theme == 'dark' ? 'bg-slate-700' : 'bg-gray-200'
+                    }`}>
                       <div
                         className='h-full bg-blue-500 rounded-full transition-all duration-300'
                         style={{ width: `${file.progress}%` }}
@@ -243,18 +276,24 @@ export default function UploadFile () {
                     </div>
                   </div>
                 ) : (
-                  <div className='flex items-center gap-1 text-xs text-gray-500'>
+                  <div className={`flex items-center gap-1 text-xs ${
+                    appearance.theme == 'dark' ? 'text-slate-400' : 'text-gray-500'
+                  }`}>
                     <span>{formatBytes(file.size)}</span>
                     <span>·</span>
                     <CheckCircle className='w-3.5 h-3.5 text-blue-500' />
-                    <span className='text-gray-600 font-medium'>Completed</span>
+                    <span className={`font-medium ${
+                      appearance.theme == 'dark' ? 'text-slate-300' : 'text-gray-600'
+                    }`}>Completed</span>
                   </div>
                 )}
               </div>
 
               <button
                 onClick={() => removeFile(file.id)}
-                className='shrink-0 text-gray-400 hover:text-red-500 transition-colors'
+                className={`shrink-0 transition-colors ${
+                  appearance.theme == 'dark' ? 'text-slate-400 hover:text-red-500' : 'text-gray-400 hover:text-red-500'
+                }`}
               >
                 {file.status === 'uploading' ? (
                   <X className='w-4 h-4' />
@@ -270,14 +309,18 @@ export default function UploadFile () {
       <div className='flex items-center justify-between gap-3 pt-5'>
         <button
           onClick={closeModal}
-          className='flex-1 border border-gray-300 text-gray-700 text-sm font-semibold font-satoshi py-4 rounded-xl hover:bg-gray-50 transition-colors'
+          className={`flex-1 text-sm font-semibold font-satoshi py-4 rounded-xl transition-colors ${
+            appearance.theme == 'dark'
+              ? 'border border-slate-700 text-slate-300 hover:bg-slate-700'
+              : 'border border-gray-300 text-gray-700 hover:bg-gray-50'
+          }`}
         >
           Cancel
         </button>
         <button
           onClick={() => navigateNext()}
           style={{ backgroundColor: loading ? 'gray' : '#ff8904' }}
-          className={`flex-1 cursor-pointer flex justify-center gap-5  text-white items-center text-sm font-semibold font-satoshi py-4 rounded-xl  transition-colors`}
+          className={`flex-1 cursor-pointer flex justify-center gap-5 text-white items-center text-sm font-semibold font-satoshi py-4 rounded-xl transition-colors`}
         >
           {loading ? (
             <div className=' small-loader border-4 '></div>

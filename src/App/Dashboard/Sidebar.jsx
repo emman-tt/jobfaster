@@ -201,7 +201,7 @@ const tools = [
     id: 5,
     name: 'Create Resume',
     icon: <PlusCircle className='w-4 h-4' />,
-    href: 'create/resume/examples'
+    href: 'templates'
   },
   {
     id: 6,

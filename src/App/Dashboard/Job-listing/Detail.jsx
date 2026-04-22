@@ -1,10 +1,12 @@
 import React, { useState } from 'react'
 import { MapPin, Sparkles, ArrowRight, Globe, Clock } from 'lucide-react'
 import { findEmail,getApplyInfo } from '../../../utils/findEmail'
+import { useSelector } from 'react-redux'
 import ApplyDialog from './ApplyDialog'
 
 export default function JobDetailView ({ job }) {
   const [showApplyDialog, setShowApplyDialog] = useState(false)
+  const { appearance } = useSelector(state => state.preferences)
 
   if (!job) return null
 
@@ -19,18 +21,22 @@ export default function JobDetailView ({ job }) {
     <div className='p-6 pb-20'>
       <div className='space-y-6 pt-15'>
         <div>
-          <h2 className='text-lg font-bold text-slate-900 leading-tight font-IBM'>
+          <h2 className={`text-lg font-bold leading-tight font-IBM ${
+            appearance.theme == 'dark' ? 'text-white' : 'text-slate-900'
+          }`}>
             {job.jobTitle}
           </h2>
           <p className='text-xs font-bold text-[#f17e27] mt-2 uppercase tracking-wider'>
             {job.employerName}
           </p>
-          <div className='flex flex-wrap items-center gap-3 mt-3'>
-            <span className='flex items-center gap-1.5 text-xs text-slate-500'>
+          <div className={`flex flex-wrap items-center gap-3 mt-3 ${
+            appearance.theme == 'dark' ? 'text-slate-400' : 'text-slate-500'
+          }`}>
+            <span className='flex items-center gap-1.5 text-xs'>
               <MapPin className='w-3.5 h-3.5' />
               {job.jobLocation}
             </span>
-            <span className='flex items-center gap-1.5 text-xs text-slate-500'>
+            <span className='flex items-center gap-1.5 text-xs'>
               <Clock className='w-3.5 h-3.5' />
               {job.jobPostedHumanReadable}
             </span>
@@ -47,31 +53,45 @@ export default function JobDetailView ({ job }) {
           <span className='px-3 py-1.5 bg-[#fff7ed] text-[#f17e27] rounded-full text-[10px] font-bold uppercase tracking-wider'>
             {job.jobEmploymentType}
           </span>
-          <span className='px-3 py-1.5 bg-gray-100 text-slate-600 rounded-full text-[10px] font-medium'>
+          <span className={`px-3 py-1.5 rounded-full text-[10px] font-medium ${
+            appearance.theme == 'dark'
+              ? 'bg-[#202020] text-slate-300'
+              : 'bg-gray-100 text-slate-600'
+          }`}>
             {salary}
           </span>
         </div>
 
         <div className='space-y-5'>
           <div>
-            <h3 className='text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-3'>
+            <h3 className={`text-[11px] font-bold uppercase tracking-wider mb-3 ${
+              appearance.theme == 'dark' ? 'text-slate-500' : 'text-slate-400'
+            }`}>
               Description
             </h3>
-            <p className='text-sm text-slate-600 leading-relaxed whitespace-pre-line'>
+            <p className={`text-sm leading-relaxed whitespace-pre-line ${
+              appearance.theme == 'dark' ? 'text-slate-300' : 'text-slate-600'
+            }`}>
               {job.jobDescription}
             </p>
           </div>
 
           {responsibilities?.length > 0 && (
-            <div className='pt-4 border-t border-gray-100'>
-              <h3 className='text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-4'>
+            <div className={`pt-4 border-t ${
+              appearance.theme == 'dark' ? 'border-slate-700' : 'border-gray-100'
+            }`}>
+              <h3 className={`text-[11px] font-bold uppercase tracking-wider mb-4 ${
+                appearance.theme == 'dark' ? 'text-slate-500' : 'text-slate-400'
+              }`}>
                 Responsibilities
               </h3>
               <ul className='space-y-3'>
                 {responsibilities.map((resp, index) => (
                   <li
                     key={index}
-                    className='flex items-start gap-3 text-sm text-slate-600'
+                    className={`flex items-start gap-3 text-sm ${
+                      appearance.theme == 'dark' ? 'text-slate-300' : 'text-slate-600'
+                    }`}
                   >
                     <span className='w-1.5 h-1.5 bg-[#f17e27] rounded-full mt-1.5 shrink-0' />
                     <span>{resp}</span>
@@ -82,15 +102,21 @@ export default function JobDetailView ({ job }) {
           )}
 
           {requirements?.length > 0 && (
-            <div className='pt-4 border-t border-gray-100'>
-              <h3 className='text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-4'>
+            <div className={`pt-4 border-t ${
+              appearance.theme == 'dark' ? 'border-slate-700' : 'border-gray-100'
+            }`}>
+              <h3 className={`text-[11px] font-bold uppercase tracking-wider mb-4 ${
+                appearance.theme == 'dark' ? 'text-slate-500' : 'text-slate-400'
+              }`}>
                 Requirements
               </h3>
               <ul className='space-y-3'>
                 {requirements.map((req, index) => (
                   <li
                     key={index}
-                    className='flex items-start gap-3 text-sm text-slate-600'
+                    className={`flex items-start gap-3 text-sm ${
+                      appearance.theme == 'dark' ? 'text-slate-300' : 'text-slate-600'
+                    }`}
                   >
                     <span className='w-1.5 h-1.5 bg-[#f17e27] rounded-full mt-1.5 shrink-0' />
                     <span>{req}</span>
