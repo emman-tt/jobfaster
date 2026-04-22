@@ -26,6 +26,7 @@ export default function Dashboard () {
   const { modals } = useSelector(state => state.modal)
   const { showRightbar } = useSelector(state => state.dashboard)
   const { programs } = useSelector(state => state.files)
+  const { appearance } = useSelector(state => state.preferences)
   const allFilesOnly = getAllFiles(programs)
   const allFilesOnlyRef = useRef(allFilesOnly)
 
@@ -92,15 +93,27 @@ export default function Dashboard () {
   })
 
   const activities = data?.data
-
+  //
   return (
-    <section className='flex relative overflow-hidden  w-full h-screen '>
-      <Sidebar className={'w-[18%] bg-[#f8f8f8] p-5 '} />
+    <section
+      className={`flex relative ${
+        appearance.theme == 'dark' ? 'bg-[#202020]' : 'bg-[#f8f8f8]'
+      }  overflow-hidden   w-full h-screen `}
+    >
+      <Sidebar
+        className={`w-[18%] ${
+          appearance.theme == 'dark' ? 'bg-[#2a2a2a]' : 'bg-[#f8f8f8]'
+        }  p-5 `}
+      />
       <section className='w-full h-full '>
         <Outlet />
       </section>
       <section className='flex gap-4  pt-3 pr-3 pb-3'>
-        <div className=''>
+        <div
+          className={` ${
+            appearance.theme == 'dark' ? 'text-white' : 'text-black'
+          }`}
+        >
           {!showRightbar ? (
             <PanelRightOpenIcon
               onClick={() => {

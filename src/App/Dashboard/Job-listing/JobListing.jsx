@@ -15,19 +15,17 @@ import {
   X
 } from 'lucide-react'
 import { getJobs } from '../../../services/jobs'
-import JobSearchHeader from './JobSearchHeader'
-import JobDetailView from './JobDetailView'
+import { useSelector } from 'react-redux'
+
+import JobDetailView from './Detail'
 
 export function JobListing () {
   const [selectedJob, setSelectedJob] = useState(null)
+  const { appearance } = useSelector(state => state.preferences)
   const { data: jobs = [], isLoading } = useQuery({
     queryKey: ['jobs'],
     queryFn: getJobs
   })
-
-  //   const handlegetJobs = async () => {
-  //     await getJobs()
-  //   }
 
   const prepareJob = job => ({
     id: job.id,
@@ -42,7 +40,7 @@ export function JobListing () {
     jobCity: job.jobCity || null,
     jobState: job.jobState || null,
     jobCountry: job.jobCountry || null,
-    jobEmploymentType: job.jobEmploymentType ,
+    jobEmploymentType: job.jobEmploymentType,
     jobPostedHumanReadable: job.jobPostedHumanReadable || null,
     jobDescription: job.jobDescription,
     jobIsRemote: job.jobIsRemote || false,
@@ -65,14 +63,22 @@ export function JobListing () {
   }
 
   return (
-    <section className='w-full h-screen overflow-hidden flex flex-col relative'>
-      <div className='w-full h-full   overflow-y-auto [scrollbar-width:none] p-5'>
+    <section className={`w-full h-screen overflow-hidden flex flex-col relative ${
+      appearance.theme == 'dark' ? 'bg-[#202020]' : 'bg-white'
+    }`}>
+      <div className={`w-full h-full overflow-y-auto [scrollbar-width:none] p-5 ${
+        appearance.theme == 'dark' ? 'bg-[#202020]' : 'bg-white'
+      }`}>
         <div className='max-w-7xl h-full   mx-auto space-y-5'>
           <div className='space-y-4 h-full justify-between flex  flex-col  '>
             <section className=' flex flex-col p-10 gap-5'>
               <div className='flex items-center justify-between px-1'>
-                <h2 className='text-[13px] font-medium text-slate-500 font-satoshi'>
-                  <span className='font-bold text-slate-900'>
+                <h2 className={`text-[13px] font-medium font-satoshi ${
+                  appearance.theme == 'dark' ? 'text-slate-400' : 'text-slate-500'
+                }`}>
+                  <span className={`font-bold ${
+                    appearance.theme == 'dark' ? 'text-white' : 'text-slate-900'
+                  }`}>
                     {jobs.length}
                   </span>
                   {jobs.length === 1 ? ' job' : ' jobs'}
@@ -155,32 +161,6 @@ export function JobListing () {
                 )}
               </div>
             </section>
-
-            {/* Pagination */}
-            {/* <div className='flex items-center  justify-between mt-8 py-5 border-t border-gray-100'>
-              <button className='flex items-center gap-1 px-4 py-2 text-[13px] font-bold text-slate-500 hover:text-[#f17e27] transition-all rounded-lg hover:bg-orange-50'>
-                <ChevronLeft className='w-4 h-4' />
-                Prev
-              </button>
-              <div className='flex items-center gap-1.5'>
-                {[1, 2, 3, '...', 12].map((p, i) => (
-                  <button
-                    key={i}
-                    className={`w-8 h-8 flex items-center justify-center rounded-lg text-xs font-bold transition-all ${
-                      p === 1
-                        ? 'bg-[#f17e27] text-white'
-                        : 'text-slate-400 hover:bg-gray-50'
-                    }`}
-                  >
-                    {p}
-                  </button>
-                ))}
-              </div>
-              <button className='flex items-center gap-1 px-4 py-2 text-[13px] font-bold text-slate-500 hover:text-[#f17e27] transition-all rounded-lg hover:bg-orange-50'>
-                Next
-                <ChevronRight className='w-4 h-4' />
-              </button>
-            </div> */}
           </div>
         </div>
       </div>

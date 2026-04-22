@@ -10,12 +10,18 @@ import {
   Linkedin
 } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
+import { useSelector } from 'react-redux'
 
-const SectionHeading = ({ children }) => (
-  <h2 className='text-base font-semibold text-slate-800 border-b border-slate-200 pb-2'>
-    {children}
-  </h2>
-)
+const SectionHeading = ({ children }) => {
+  const { appearance } = useSelector(state => state.preferences)
+  return (
+    <h2 className={`text-base font-semibold border-b border-slate-200 pb-2 ${
+      appearance.theme == 'dark' ? 'text-white' : 'text-slate-800'
+    }`}>
+      {children}
+    </h2>
+  )
+}
 
 const Toggle = ({ active, onClick }) => (
   <button
@@ -32,23 +38,27 @@ const Toggle = ({ active, onClick }) => (
   </button>
 )
 
-const TabButton = ({ id, activeTab, setActiveTab, label, icon: Icon }) => (
-  <button
-    onClick={() => setActiveTab(id)}
-    className={`flex items-center gap-2 px-5 py-2.5 rounded-lg text-sm font-medium transition-all ${
-      activeTab === id
-        ? 'bg-[#f17e27] text-white'
-        : 'text-slate-500 hover:text-slate-700'
-    }`}
-  >
-    <Icon size={16} />
-    {label}
-  </button>
-)
+const TabButton = ({ id, activeTab, setActiveTab, label, icon: Icon }) => {
+  const { appearance } = useSelector(state => state.preferences)
+  return (
+    <button
+      onClick={() => setActiveTab(id)}
+      className={`flex items-center gap-2 px-5 py-2.5 rounded-lg text-sm font-medium transition-all ${
+        activeTab === id
+          ? 'bg-[#f17e27] text-white'
+          : appearance.theme == 'dark' ? 'text-slate-400 hover:text-white' : 'text-slate-500 hover:text-slate-700'
+      }`}
+    >
+      <Icon size={16} />
+      {label}
+    </button>
+  )
+}
 
 export default function Settings () {
   const navigate = useNavigate()
   const [activeTab, setActiveTab] = useState('profile')
+  const { appearance } = useSelector(state => state.preferences)
 
   const [notifications, setNotifications] = useState({
     email: {
@@ -74,14 +84,20 @@ export default function Settings () {
   }
 
   return (
-    <section className='w-full h-screen bg-white overflow-y-auto [scrollbar-width:none] p-6'>
+    <section className={`w-full h-screen overflow-y-auto [scrollbar-width:none] p-6 ${
+      appearance.theme == 'dark' ? 'bg-[#202020]' : 'bg-white'
+    }`}>
       <div className='max-w-3xl mx-auto space-y-6 pb-16'>
         <div className='flex items-center justify-between'>
           <div>
-            <h1 className='text-2xl font-bold text-slate-900 font-IBM'>
+            <h1 className={`text-2xl font-bold font-IBM ${
+              appearance.theme == 'dark' ? 'text-white' : 'text-slate-900'
+            }`}>
               Settings
             </h1>
-            <p className='text-xs text-slate-500 mt-0.5'>
+            <p className={`text-xs mt-0.5 ${
+              appearance.theme == 'dark' ? 'text-slate-400' : 'text-slate-500'
+            }`}>
               Manage your account and preferences
             </p>
           </div>
@@ -98,7 +114,9 @@ export default function Settings () {
           </div>
         </div>
 
-        <div className='flex gap-1 p-1 bg-white rounded-lg border border-slate-200 w-fit'>
+        <div className={`flex gap-1 p-1 rounded-lg border w-fit ${
+          appearance.theme == 'dark' ? 'bg-[#202020] border-slate-700' : 'bg-white border-slate-200'
+        }`}>
           <TabButton
             activeTab={activeTab}
             setActiveTab={setActiveTab}
@@ -126,16 +144,22 @@ export default function Settings () {
           <div className='space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-300'>
             <div className='space-y-4'>
               <SectionHeading>Profile Photo</SectionHeading>
-              <div className='bg-white rounded-xl p-5 border border-slate-200 flex items-center justify-between'>
+              <div className={`rounded-xl p-5 border flex items-center justify-between ${
+                appearance.theme == 'dark' ? 'bg-[#2a2a2a] border-slate-700' : 'bg-white border-slate-200'
+              }`}>
                 <div className='flex items-center gap-4'>
                   <div className='w-16 h-16 bg-[#fff7ed] rounded-xl flex items-center justify-center border border-dashed border-[#f17e27]/30'>
                     <span className='text-xl font-bold text-[#f17e27]'>EA</span>
                   </div>
                   <div>
-                    <h3 className='text-sm font-semibold text-slate-800'>
+                    <h3 className={`text-sm font-semibold ${
+                      appearance.theme == 'dark' ? 'text-white' : 'text-slate-800'
+                    }`}>
                       Profile Photo
                     </h3>
-                    <p className='text-xs text-slate-500'>
+                    <p className={`text-xs ${
+                      appearance.theme == 'dark' ? 'text-slate-400' : 'text-slate-500'
+                    }`}>
                       JPG, GIF or PNG. Max 2MB
                     </p>
                   </div>
@@ -144,7 +168,11 @@ export default function Settings () {
                   <button className='p-2 text-red-500 hover:bg-red-50 rounded-lg transition-colors'>
                     <Trash2 size={16} />
                   </button>
-                  <button className='flex items-center gap-1.5 px-3 py-2 bg-white border border-slate-200 rounded-lg text-xs font-medium text-slate-700 hover:bg-slate-50 transition-colors'>
+                  <button className={`flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-medium transition-colors ${
+                    appearance.theme == 'dark'
+                      ? 'bg-[#202020] border border-slate-700 text-white hover:bg-slate-800'
+                      : 'bg-white border border-slate-200 text-slate-700 hover:bg-slate-50'
+                  }`}>
                     <Upload size={14} />
                     Upload
                   </button>
@@ -154,43 +182,65 @@ export default function Settings () {
 
             <div className='space-y-4'>
               <SectionHeading>Personal Information</SectionHeading>
-              <div className='bg-white rounded-xl p-5 border border-slate-200 space-y-4'>
+              <div className={`rounded-xl p-5 border space-y-4 ${
+                appearance.theme == 'dark' ? 'bg-[#2a2a2a] border-slate-700' : 'bg-white border-slate-200'
+              }`}>
                 <div className='grid grid-cols-2 gap-4'>
                   <div className='space-y-1.5'>
-                    <label className='text-xs font-semibold text-slate-600'>
+                    <label className={`text-xs font-semibold ${
+                      appearance.theme == 'dark' ? 'text-slate-300' : 'text-slate-600'
+                    }`}>
                       First Name
                     </label>
                     <input
                       type='text'
                       placeholder='Emmanuel'
-                      className='w-full px-4 py-2.5 rounded-lg border border-slate-200 focus:border-[#f17e27] focus:ring-1 focus:ring-[#f17e27]/20 outline-none transition-all text-sm text-slate-800'
+                      className={`w-full px-4 py-2.5 rounded-lg border outline-none transition-all text-sm ${
+                        appearance.theme == 'dark'
+                          ? 'bg-[#202020] border-slate-700 text-white placeholder:text-slate-500'
+                          : 'border-slate-200 text-slate-800'
+                      }`}
                     />
                   </div>
                   <div className='space-y-1.5'>
-                    <label className='text-xs font-semibold text-slate-600'>
+                    <label className={`text-xs font-semibold ${
+                      appearance.theme == 'dark' ? 'text-slate-300' : 'text-slate-600'
+                    }`}>
                       Last Name
                     </label>
                     <input
                       type='text'
                       placeholder='Acquah'
-                      className='w-full px-4 py-2.5 rounded-lg border border-slate-200 focus:border-[#f17e27] focus:ring-1 focus:ring-[#f17e27]/20 outline-none transition-all text-sm text-slate-800'
+                      className={`w-full px-4 py-2.5 rounded-lg border outline-none transition-all text-sm ${
+                        appearance.theme == 'dark'
+                          ? 'bg-[#202020] border-slate-700 text-white placeholder:text-slate-500'
+                          : 'border-slate-200 text-slate-800'
+                      }`}
                     />
                   </div>
                 </div>
 
                 <div className='space-y-1.5'>
-                  <label className='text-xs font-semibold text-slate-600'>
+                  <label className={`text-xs font-semibold ${
+                    appearance.theme == 'dark' ? 'text-slate-300' : 'text-slate-600'
+                  }`}>
                     Email Address
                   </label>
                   <div className='relative'>
                     <Mail
-                      className='absolute left-3 top-1/2 -translate-y-1/2 text-slate-400'
+                      className={`absolute left-3 top-1/2 -translate-y-1/2 ${
+                        appearance.theme == 'dark' ? 'text-slate-500' : 'text-slate-400'
+                      }`}
                       size={15}
                     />
                     <input
                       type='email'
                       placeholder='emmanuelacquah.dev@gmail.com'
-                      className='w-full pl-10 pr-4 py-2.5 rounded-lg border border-slate-200 focus:border-[#f17e27] focus:ring-1 focus:ring-[#f17e27]/20 outline-none transition-all text-sm text-slate-800'
+                      className={`w-full pl-10 pr-4 py-2.5 rounded-lg border outline-none transition-all text-sm ${
+                        appearance.theme == 'dark'
+                          ? 'bg-[#202020] border-slate-700 text-white placeholder:text-slate-500'
+                          : 'border-slate-200 text-slate-800'
+                      }`}
                     />
                   </div>
                 </div>
@@ -199,7 +249,9 @@ export default function Settings () {
 
             <div className='space-y-4'>
               <SectionHeading>Connected Accounts</SectionHeading>
-              <div className='bg-white rounded-xl p-5 border border-slate-200 space-y-3'>
+              <div className={`rounded-xl p-5 border space-y-3 ${
+                appearance.theme == 'dark' ? 'bg-[#2a2a2a] border-slate-700' : 'bg-white border-slate-200'
+              }`}>
                 {[
                   {
                     id: 'google',
@@ -247,10 +299,14 @@ export default function Settings () {
                         )}
                       </div>
                       <div>
-                        <p className='text-sm font-medium text-slate-800'>
+                        <p className={`text-sm font-medium ${
+                          appearance.theme == 'dark' ? 'text-white' : 'text-slate-800'
+                        }`}>
                           {account.name}
                         </p>
-                        <p className='text-xs text-slate-500'>
+                        <p className={`text-xs ${
+                          appearance.theme == 'dark' ? 'text-slate-400' : 'text-slate-500'
+                        }`}>
                           {account.email}
                         </p>
                       </div>
@@ -266,8 +322,12 @@ export default function Settings () {
           <div className='space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-300'>
             <div className='space-y-4'>
               <SectionHeading>Email Notifications</SectionHeading>
-              <div className='bg-white rounded-xl border border-slate-200 overflow-hidden'>
-                <div className='divide-y divide-slate-100'>
+              <div className={`rounded-xl border overflow-hidden ${
+                appearance.theme == 'dark' ? 'bg-[#2a2a2a] border-slate-700' : 'bg-white border-slate-200'
+              }`}>
+                <div className={`divide-y ${
+                  appearance.theme == 'dark' ? 'divide-slate-700' : 'divide-slate-100'
+                }`}>
                   {[
                     {
                       key: 'newJobs',
@@ -297,13 +357,19 @@ export default function Settings () {
                   ].map(item => (
                     <div
                       key={item.key}
-                      className='p-4 flex items-center justify-between hover:bg-slate-50 transition-colors'
+                      className={`p-4 flex items-center justify-between transition-colors ${
+                        appearance.theme == 'dark' ? 'hover:bg-[#202020]' : 'hover:bg-slate-50'
+                      }`}
                     >
                       <div>
-                        <p className='text-sm font-medium text-slate-800'>
+                        <p className={`text-sm font-medium ${
+                          appearance.theme == 'dark' ? 'text-white' : 'text-slate-800'
+                        }`}>
                           {item.title}
                         </p>
-                        <p className='text-xs text-slate-500'>{item.desc}</p>
+                        <p className={`text-xs ${
+                          appearance.theme == 'dark' ? 'text-slate-400' : 'text-slate-500'
+                        }`}>{item.desc}</p>
                       </div>
                       <Toggle
                         active={notifications.email[item.key]}
@@ -317,8 +383,12 @@ export default function Settings () {
 
             <div className='space-y-4'>
               <SectionHeading>Push Notifications</SectionHeading>
-              <div className='bg-white rounded-xl border border-slate-200 overflow-hidden'>
-                <div className='divide-y divide-slate-100'>
+              <div className={`rounded-xl border overflow-hidden ${
+                appearance.theme == 'dark' ? 'bg-[#2a2a2a] border-slate-700' : 'bg-white border-slate-200'
+              }`}>
+                <div className={`divide-y ${
+                  appearance.theme == 'dark' ? 'divide-slate-700' : 'divide-slate-100'
+                }`}>
                   {[
                     {
                       key: 'jobAlerts',
@@ -343,13 +413,19 @@ export default function Settings () {
                   ].map(item => (
                     <div
                       key={item.key}
-                      className='p-4 flex items-center justify-between hover:bg-slate-50 transition-colors'
+                      className={`p-4 flex items-center justify-between transition-colors ${
+                        appearance.theme == 'dark' ? 'hover:bg-[#202020]' : 'hover:bg-slate-50'
+                      }`}
                     >
                       <div>
-                        <p className='text-sm font-medium text-slate-800'>
+                        <p className={`text-sm font-medium ${
+                          appearance.theme == 'dark' ? 'text-white' : 'text-slate-800'
+                        }`}>
                           {item.title}
                         </p>
-                        <p className='text-xs text-slate-500'>{item.desc}</p>
+                        <p className={`text-xs ${
+                          appearance.theme == 'dark' ? 'text-slate-400' : 'text-slate-500'
+                        }`}>{item.desc}</p>
                       </div>
                       <Toggle
                         active={notifications.push[item.key]}

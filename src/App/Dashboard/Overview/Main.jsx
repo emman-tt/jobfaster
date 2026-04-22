@@ -34,6 +34,7 @@ function formatBytes (bytes) {
 
 export default function Main () {
   const { showRightbar } = useSelector(state => state.dashboard)
+  const { appearance } = useSelector(state => state.preferences)
   const { id } = useParams()
   const dispatch = useDispatch()
   const queryClient = useQueryClient()
@@ -252,10 +253,16 @@ export default function Main () {
   }
 
   return (
-    <section className='flex flex-col pl-5  gap-0 pt-0'>
-      <div className='px-5 '>
-        <div className='w-full flex  justify-between items-center pr-15 '>
-          <h2 className=' w-full text-2xl font-IBM'>{headerText}</h2>
+    <section className='flex flex-col  pl-5   gap-0 pt-0'>
+      <div className='px-5'>
+        <div className='w-full flex justify-between items-center pr-15'>
+          <h2
+            className={`w-full text-2xl font-IBM ${
+              appearance.theme == 'dark' ? 'text-white' : 'text-black'
+            }`}
+          >
+            {headerText}
+          </h2>
 
           <div className=' flex w-full   items-center  gap-5'>
             {!openedFolder && (
@@ -279,12 +286,26 @@ export default function Main () {
               <FilePlusCornerIcon className=' w-4 h-4' />
               Add File
             </button>
-            <div className=' w-70 grow border-slate-200 p-3 py-2.5   rounded-xl items-center gap-5 border flex'>
-              <Search className='w-5 h-5' />
+            <div
+              className={`w-70 grow  p-3 py-2.5 rounded-xl items-center gap-5 border flex ${
+                appearance.theme == 'dark'
+                  ? 'bg-[#2a2a2a] border-slate-700'
+                  : 'border-slate-200 bg-white'
+              }`}
+            >
+              <Search
+                className={`w-5 h-5 ${
+                  appearance.theme == 'dark' ? 'text-white' : 'text-black'
+                }`}
+              />
               <input
                 type='text'
                 placeholder='Search by Folder or File name'
-                className='w-full text-xs font-satoshi h-full outline-0'
+                className={`w-full text-xs font-satoshi h-full outline-0 ${
+                  appearance.theme == 'dark'
+                    ? 'bg-transparent text-white placeholder:text-slate-400'
+                    : 'text-black'
+                }`}
                 name=''
                 id=''
               />
@@ -292,21 +313,39 @@ export default function Main () {
           </div>
         </div>
 
-        <div className=' flex gap-5 mt-5 items-center pl-5 text-xs font-semibold font-satoshi'>
+        <div
+          className={`flex gap-5 mt-5 items-center pl-5 text-xs font-semibold font-satoshi ${
+            appearance.theme == 'dark' ? 'text-slate-400' : 'text-black'
+          }`}
+        >
           <p
             onClick={() => {
               if (id) navigate(-1)
             }}
-            className={`${
-              id ? 'text-gray-400' : 'text-black'
-            }  cursor-pointer  border-white hover:border-black border-b `}
+            className={`cursor-pointer border-white hover:border-black border-b ${
+              id
+                ? 'text-slate-400'
+                : appearance.theme == 'dark'
+                ? 'text-white'
+                : 'text-black'
+            }`}
           >
             Home
           </p>
           {id && (
             <>
-              <ChevronRight className=' w-4 h-4' />
-              <p className=' capitalize'>{openedFolder?.metaData?.name}</p>
+              <ChevronRight
+                className={`w-4 h-4 ${
+                  appearance.theme == 'dark' ? 'text-white' : 'text-black'
+                }`}
+              />
+              <p
+                className={`capitalize ${
+                  appearance.theme == 'dark' ? 'text-white' : 'text-black'
+                }`}
+              >
+                {openedFolder?.metaData?.name}
+              </p>
             </>
           )}
         </div>
@@ -315,14 +354,14 @@ export default function Main () {
       <section
         onTouchMove={handleTouchMove}
         onTouchEnd={handleTouchEnd}
-        className={`grid  gap-4 transform-gpu transition-all duration-150 ease-in-out mt-0 pt-5 pl-10 overflow-hidden 
-            justify-start 
+        className={`grid   gap-4 transform-gpu transition-all duration-150 ease-in-out mt-0 pt-5 pl-10 overflow-hidden 
+            
             ${
               showRightbar ? 'grid-cols-6' : 'grid-cols-8'
-            } pb-0 mb-0  max-h-130  gap-y-10
-          overflow-y-auto ${
-            actualPath == 'overview' ? 'h-75' : 'min-h-20'
-          } [scrollbar-width:thin] w-full`}
+            } pb-0 mb-0    gap-y-10
+           ${
+             actualPath == 'resumes' && ' min-h-max overflow-y-auto'
+           } [scrollbar-width:thin] w-full`}
       >
         {/* specific files in an opened folder  */}
         {openedFolder && id && (
@@ -368,9 +407,13 @@ export default function Main () {
                     />
                   )}
                 </div>
-                <div className='flex w-[90%]  mt-1 pl-2 items-center text-[10px] text-gray-700 justify-center font-semibold gap-1'>
-                  <p className=' truncate'>{item.metaData.name}.pdf</p>
-                  <p className=' whitespace-nowrap'>
+                <div
+                  className={`flex w-[90%] mt-1 pl-2 items-center text-[10px] justify-center font-semibold gap-1 ${
+                    appearance.theme == 'dark' ? 'text-white' : 'text-gray-700'
+                  }`}
+                >
+                  <p className='truncate'>{item.metaData.name}.pdf</p>
+                  <p className='whitespace-nowrap'>
                     {formatBytes(item.metaData.size)}
                   </p>
                 </div>
@@ -406,8 +449,12 @@ export default function Main () {
                 className='w-28 shrink-0  cursor-pointer'
               >
                 <Folder files={item?.folder.files} />
-                <div className='flex w-full text-xs mt-2 items-center text-[10px] text-gray-700 justify-center font-semibold gap-1'>
-                  <p className=' truncate'>{item.folder.metaData.name}</p>
+                <div
+                  className={`flex w-full text-xs mt-2 items-center text-[10px] justify-center font-semibold gap-1 ${
+                    appearance.theme == 'dark' ? 'text-white' : 'text-gray-700'
+                  }`}
+                >
+                  <p className='truncate'>{item.folder.metaData.name}</p>
                   <p>{formatBytes(item.folder.metaData.size)}</p>
                 </div>
               </div>
@@ -453,9 +500,15 @@ export default function Main () {
                       />
                     )}
                   </div>
-                  <div className='flex w-full  mt-1 pl-2 items-center text-[10px] text-gray-700 justify-center font-semibold gap-1'>
-                    <p className=' truncate'>{item.file.metaData.name}.pdf</p>
-                    <p className=' whitespace-nowrap'>
+                  <div
+                    className={`flex w-full mt-1 pl-2 items-center text-[10px] justify-center font-semibold gap-1 ${
+                      appearance.theme == 'dark'
+                        ? 'text-white'
+                        : 'text-gray-700'
+                    }`}
+                  >
+                    <p className='truncate'>{item.file.metaData.name}.pdf</p>
+                    <p className='whitespace-nowrap'>
                       {formatBytes(item.file.metaData.size)}
                     </p>
                   </div>
@@ -547,15 +600,32 @@ function MiniIframe ({ src }) {
 }
 
 function EmptyState () {
+  const { appearance } = useSelector(state => state.preferences)
   return (
     <div className='col-span-8 flex flex-col items-center justify-center h-75 gap-4'>
-      <div className='w-10 h-10 rounded-full bg-orange-50 flex items-center justify-center'>
-        <FolderCodeIcon className='w-6 h-6 text-orange-300' />
+      <div
+        className={`w-10 h-10 rounded-full flex items-center justify-center ${
+          appearance.theme == 'dark' ? 'bg-[#2a2a2a]' : 'bg-orange-50'
+        }`}
+      >
+        <FolderCodeIcon
+          className={`w-6 h-6 ${
+            appearance.theme == 'dark' ? 'text-white' : 'text-orange-300'
+          }`}
+        />
       </div>
-      <p className='text-lg font-satoshi font-semibold text-slate-800'>
+      <p
+        className={`text-lg font-satoshi font-semibold ${
+          appearance.theme == 'dark' ? 'text-white' : 'text-slate-800'
+        }`}
+      >
         No files yet
       </p>
-      <p className='text-sm font-satoshi text-slate-500 text-center max-w-60'>
+      <p
+        className={`text-sm font-satoshi text-center max-w-60 ${
+          appearance.theme == 'dark' ? 'text-slate-400' : 'text-slate-500'
+        }`}
+      >
         Upload your first resume to get started.
       </p>
     </div>

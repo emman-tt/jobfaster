@@ -19,6 +19,7 @@ import { AuthProvider } from './context/auth'
 import Editor from './Pages/Editor'
 import { JobListing } from './App/Dashboard/Job-listing/JobListing'
 import Settings from './App/Dashboard/Settings/Settings'
+import Prefrences from './App/Dashboard/Prefrences'
 function App () {
   return (
     <BrowserRouter>
@@ -57,6 +58,7 @@ function App () {
             <Route path='finalize' element={<Finalize />} />
             <Route path='listing' element={<JobListing />} />
             <Route path='settings' element={<Settings />} />
+            <Route path='preference' element={<Prefrences />} />
             <Route path='create/resume' element={<CreateResume />}>
               <Route path='examples' element={<Examples />} />
             </Route>

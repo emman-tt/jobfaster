@@ -10,6 +10,7 @@ import { toggleHeader } from '../../../store/dashboardSlice'
 export const Header = () => {
   const dispatch = useDispatch()
   const { showHeader, showRightbar } = useSelector(state => state.dashboard)
+  const { appearance } = useSelector(state => state.preferences)
   const headerRef = useRef()
   const location = useLocation()
 
@@ -56,8 +57,18 @@ export const Header = () => {
 
   return (
     <section ref={headerRef} className='flex flex-col p-10 pr-0 pt-5'>
-      <h2 className=' text-3xl font-garamond'>Good Morning, Emmanuel</h2>
-      <p className=' font-semibold mt-1 text-black/20 text-xs font-satoshi'>
+      <h2
+        className={`text-3xl font-garamond ${
+          appearance.theme == 'dark' ? 'text-white' : 'text-black'
+        }`}
+      >
+        Good Morning, Emmanuel
+      </h2>
+      <p
+        className={`font-semibold mt-1 text-xs font-satoshi ${
+          appearance.theme == 'dark' ? 'text-slate-400' : 'text-black/20'
+        }`}
+      >
         A new day, a new opportunity! Lets create something new
       </p>
 
@@ -68,11 +79,19 @@ export const Header = () => {
       >
         <section
           onClick={() => openModal('resume')}
-          className='w-full hover:bg-gray-100 cursor-pointer bg-[#f8f8f8] overflow-hidden rounded-xl  flex h-full p-2'
+          className={`w-full  cursor-pointer ${
+            appearance.theme == 'dark'
+              ? 'bg-[#090711]'
+              : 'bg-[#f8f8f8] hover:bg-gray-100'
+          }  overflow-hidden rounded-xl  flex h-full p-2`}
         >
-          <div className='w-full pl-5 py-2  font-semibold h-full flex flex-col justify-between rounded-l-[inherit]'>
+          <div
+            className={`w-full ${
+              appearance.theme == 'dark' ? 'text-white' : 'text-black'
+            } pl-5 py-2  font-semibold h-full flex flex-col justify-between rounded-l-[inherit]`}
+          >
             <p>Help me build my resume</p>
-            <p className='text-xs text-gray-400'>
+            <p className={`text-xs text-gray-400`}>
               Start afresh or let Ai do the heavy lifting
             </p>
           </div>
@@ -93,10 +112,24 @@ export const Header = () => {
             />
           </div>
         </section>
-        <section className='w-full hover:bg-gray-100 cursor-pointer bg-[#f8f8f8] overflow-hidden rounded-xl  flex h-full p-2'>
-          <div className='w-full pl-5 py-2  font-semibold h-full flex flex-col justify-between rounded-l-[inherit]'>
+        <section
+          className={`w-full cursor-pointer overflow-hidden rounded-xl flex h-full p-2 ${
+            appearance.theme == 'dark'
+              ? 'bg-[#090711]'
+              : 'bg-[#f8f8f8] hover:bg-gray-100'
+          }`}
+        >
+          <div
+            className={`w-full pl-5 py-2 font-semibold h-full flex flex-col justify-between rounded-l-[inherit] ${
+              appearance.theme == 'dark' ? 'text-white' : 'text-black'
+            }`}
+          >
             <p>Help me craft a cover letter</p>
-            <p className='text-xs text-gray-400'>
+            <p
+              className={`text-xs ${
+                appearance.theme == 'dark' ? 'text-slate-400' : 'text-gray-400'
+              }`}
+            >
               Generate a personalized cover letter based on the job.
             </p>
           </div>
@@ -115,8 +148,18 @@ export const Header = () => {
           </div>
         </section>
 
-        <section className='w-full relative hover:bg-gray-100 cursor-pointer bg-[#f8f8f8] overflow-hidden rounded-xl  flex h-full p-2'>
-          <div className='w-full pl-5 py-2  font-semibold h-full flex flex-col justify-between rounded-l-[inherit]'>
+        <section
+          className={`w-full relative cursor-pointer overflow-hidden rounded-xl flex h-full p-2 ${
+            appearance.theme == 'dark'
+              ? 'bg-[#090711]'
+              : 'bg-[#f8f8f8] hover:bg-gray-100'
+          }`}
+        >
+          <div
+            className={`w-full pl-5 py-2 font-semibold h-full flex flex-col justify-between rounded-l-[inherit] ${
+              appearance.theme == 'dark' ? 'text-white' : 'text-black'
+            }`}
+          >
             <p>View previous applications</p>
             <div className='bg-[#fcbe77] rounded-2xl flex justify-center items-center absolute top-15 right-10 text-white text-xs -rotate-12 p-2 z-5'>
               Applied

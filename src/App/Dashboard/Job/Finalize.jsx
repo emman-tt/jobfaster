@@ -8,6 +8,7 @@ import { toast } from 'sonner'
 export default function Finalize () {
   const { emailDetails } = useSelector(state => state.email)
   const { job } = useSelector(state => state.ai)
+  const { appearance } = useSelector(state => state.preferences)
   const dispatch = useDispatch()
 
   const [formData, setFormData] = useState({
@@ -37,14 +38,24 @@ export default function Finalize () {
   }
 
   return (
-    <div className='w-full h-screen overflow-y-scroll [scrollbar-width:none] flex justify-center p-6 font-satoshi'>
-      <div className='w-full max-w-5xl bg-white h-max my-10 p-10 space-y-8 rounded-3xl shadow-xs'>
+    <section
+      className={`w-full h-screen overflow-y-scroll [scrollbar-width:none] flex justify-center p-6 font-satoshi ${
+        appearance.theme == 'dark' ? 'bg-[#202020]' : 'bg-white'
+      }`}
+    >
+      <div className={`w-full max-w-5xl h-max my-10 p-10 space-y-8 rounded-3xl shadow-xs ${
+        appearance.theme == 'dark' ? 'bg-[#2a2a2a]' : 'bg-white'
+      }`}>
         {/* Header */}
         <div className='space-y-2'>
-          <h1 className='text-2xl font-bold text-slate-900 font-IBM flex items-center gap-3'>
+          <h1 className={`text-2xl font-bold font-IBM flex items-center gap-3 ${
+            appearance.theme == 'dark' ? 'text-white' : 'text-slate-900'
+          }`}>
             Send Application
           </h1>
-          <p className='text-slate-500 text-sm ml-1'>
+          <p className={`text-sm ml-1 ${
+            appearance.theme == 'dark' ? 'text-slate-400' : 'text-slate-500'
+          }`}>
             Review your application and send it directly to the recruiter.
           </p>
         </div>
@@ -302,6 +313,6 @@ export default function Finalize () {
           </div>
         </div>
       </div>
-    </div>
+    </section>
   )
 }

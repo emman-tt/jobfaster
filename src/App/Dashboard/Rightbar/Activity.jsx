@@ -7,8 +7,10 @@ import {
   Mail
 } from 'lucide-react'
 import { TableOfContents } from 'lucide-react'
+import { useSelector } from 'react-redux'
 export default function Activity ({ data }) {
-  
+  const { appearance } = useSelector(state => state.preferences)
+
   function formatDate (item) {
     if (!item) {
       return ''
@@ -43,43 +45,78 @@ export default function Activity ({ data }) {
     }
   }
 
-
- 
-
-
-
   return (
-    <section className=' w-full h-[70%]  pt-0 py-10 px-5'>
-      <h3 className=' text-gray-600 font-semibold font-IBM border-b pb-2'>
+    <section className='w-full h-[70%] pt-0 py-10 px-5'>
+      <h3
+        className={`font-semibold font-IBM border-b pb-2 ${
+          appearance.theme == 'dark' ? 'text-white' : 'text-gray-600'
+        }`}
+      >
         Activity Log
       </h3>
 
-      <section className=' w-full  h-full py-5 overflow-y-auto overflow-x-clip [scrollbar-width:thin]'>
+      <section className='w-full h-full py-5 overflow-y-auto overflow-x-clip [scrollbar-width:thin]'>
         {!data || data.length === 0 ? (
           <div className='flex flex-col items-center justify-center h-full gap-3'>
-            <div className='w-14 h-14 rounded-full bg-slate-100 flex items-center justify-center'>
+            <div
+              className={`w-14 h-14 rounded-full flex items-center justify-center ${
+                appearance.theme == 'dark' ? 'bg-[#202020]' : 'bg-slate-100'
+              }`}
+            >
               <TableOfContents className='w-7 h-7 text-orange-400' />
             </div>
-            <p className='text-sm font-satoshi font-medium text-slate-600'>
+            <p
+              className={`text-sm font-satoshi font-medium ${
+                appearance.theme == 'dark' ? 'text-white' : 'text-slate-600'
+              }`}
+            >
               No activity yet
             </p>
-            <p className='text-xs font-satoshi text-slate-400 text-center max-w-48'>
+            <p
+              className={`text-xs font-satoshi text-center max-w-48 ${
+                appearance.theme == 'dark' ? 'text-slate-500' : 'text-slate-400'
+              }`}
+            >
               Your activity will appear here once you start using the app
             </p>
           </div>
         ) : (
-          <section className=' flex flex-col gap-2 '>
+          <section className='flex flex-col gap-2'>
             {data.length > 0 &&
               data.map(item => (
-                <section className=' flex flex-col gap-2' key={item.id}>
-                  <div className=' flex w-fullg-amber-300  gap-2 items-center '>
-                    <p className=' p-1.5 py-2 rounded-lg bg-gray-200 flex justify-center items-center'>
+                <section className='flex flex-col gap-2' key={item.id}>
+                  <div className='flex w-full gap-2 items-center'>
+                    <p
+                      className={`p-1.5 py-2 rounded-lg flex justify-center items-center ${
+                        appearance.theme == 'dark'
+                          ? 'bg-[#202020] text-white'
+                          : 'bg-gray-200'
+                      }`}
+                    >
                       {findIcon(item.type.toLowerCase())}
                     </p>
-                    <p className=' text-sm font-IBM '>{item.message}</p>
+                    <p
+                      className={`text-sm font-IBM ${
+                        appearance.theme == 'dark' ? 'text-white' : 'text-black'
+                      }`}
+                    >
+                      {item.message}
+                    </p>
                   </div>
-                  <div className='flex w-full border-l-3 h-9 ml-3 border-gray-300 pl-5 gap-3 items-start'>
-                    <p className='text-xs  font-IBM  '>
+                  <div
+                    className={`flex w-full border-l-3 h-9 ml-3 pl-5 gap-3 items-start ${
+                      appearance.theme == 'dark'
+                        ? 'border-slate-700'
+                        : 'border-gray-300'
+                    }`}
+                  >
+                    <p
+                      className={`text-xs font-IBM ${
+                        appearance.theme == 'dark'
+                          ? 'text-slate-400'
+                          : 'text-black'
+                      }`}
+                    >
                       {formatDate(item.updatedAt)}
                     </p>
                   </div>

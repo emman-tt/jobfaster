@@ -1,10 +1,11 @@
 import { Cell, Pie, PieChart } from 'recharts'
+import { useSelector } from 'react-redux'
 
 export default function Records ({percentage}) {
-
+  const { appearance } = useSelector(state => state.preferences)
 
   return (
-    <div className='relative flex items-center h-40 justify-center '>
+    <div className='relative flex items-center h-40 justify-center'>
       <PieChart height={200} width={210}>
         <Pie
           data={[{ value: 100 }]}
@@ -15,7 +16,7 @@ export default function Records ({percentage}) {
           innerRadius={75}
           outerRadius={75}
           dataKey='value'
-          stroke='#e2e8f0'
+          stroke={appearance.theme == 'dark' ? '#404040' : '#e2e8f0'}
           strokeWidth={55}
           strokeDasharray='6 6'
           isAnimationActive={false}
@@ -40,13 +41,17 @@ export default function Records ({percentage}) {
             strokeDasharray='6 6'
           />
 
-          <Cell fill='black' />
+          <Cell fill={appearance.theme == 'dark' ? 'white' : 'black'} />
         </Pie>
       </PieChart>
 
       <div className='absolute top-18.75 flex flex-col items-center'>
-        <span className='text-3xl font-bold'>5/10</span>
-        <span className='text-[10px] text-slate-400 uppercase font-medium tracking-tight'>
+        <span className={`text-3xl font-bold ${
+          appearance.theme == 'dark' ? 'text-white' : 'text-black'
+        }`}>5/10</span>
+        <span className={`text-[10px] uppercase font-medium tracking-tight ${
+          appearance.theme == 'dark' ? 'text-slate-500' : 'text-slate-400'
+        }`}>
           Number of applications today
         </span>
       </div>

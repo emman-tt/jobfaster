@@ -1,6 +1,7 @@
 import { Paper } from '../App/Dashboard/Overview/Paper'
-
+import { useSelector } from 'react-redux'
 export default function Folder ({ files }) {
+  const { appearance } = useSelector(state => state.preferences)
   return (
     <section className='w-full  flex justify-center items-center'>
       <div className='relative flex flex-col'>
@@ -14,12 +15,14 @@ export default function Folder ({ files }) {
         >
           <path
             d='M9.96281 0C9.96281 0 27.1369 0 38.1413 0C44.2203 0 52.182 0 58.0913 0C62.3785 0 65.5758 1.91359 66.0987 3.97737C68.4101 13.1001 89 20 89 20H1.02815C1.02815 20 -4.47007 1.00166 9.96281 0Z'
-            fill={`#feb053`}
+            fill={` ${appearance.theme == 'dark' ? '#ff8c00b3' : '#feb053'}`}
           />
         </svg>
 
         <div
-          className={`bg-[#feb053] group  cursor-pointer  relative rounded-tl-none rounded-xl h-22 w-28`}
+          className={` ${
+            appearance.theme == 'dark' ? 'bg-[#ff8c00b3]' : 'bg-[#feb053]'
+          }   group  cursor-pointer  relative rounded-tl-none rounded-xl h-22 w-28`}
         >
           {files?.map((item, i) => (
             <Paper

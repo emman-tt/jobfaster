@@ -62,15 +62,33 @@ export default function Job () {
     dispatch(toggleModals('selectResume'))
   }
 
+  const { appearance } = useSelector(state => state.preferences)
+
   return (
-    <div className='w-full h-screen overflow-y-scroll [scrollbar-width:none] flex justify-center p-6 font-satoshi'>
-      <div className='w-full max-w-3xl bg-white h-max my-10 p-10 space-y-8 rounded-3xl shadow-xs'>
+    <section
+      className={`w-full h-screen overflow-y-scroll [scrollbar-width:none] flex justify-center p-6 font-satoshi ${
+        appearance.theme == 'dark' ? 'bg-[#202020]' : 'bg-white'
+      }`}
+    >
+      <div
+        className={`w-full max-w-3xl h-max my-10 p-10 space-y-8 rounded-3xl shadow-xs ${
+          appearance.theme == 'dark' ? 'bg-[#2a2a2a]' : 'bg-white'
+        }`}
+      >
         {/* Header */}
         <div className='space-y-2'>
-          <h1 className='text-2xl font-bold text-slate-900 font-IBM flex items-center gap-3'>
+          <h1
+            className={`text-2xl font-bold font-IBM flex items-center gap-3 ${
+              appearance.theme == 'dark' ? 'text-white' : 'text-slate-900'
+            }`}
+          >
             Job Details
           </h1>
-          <p className='text-slate-500 text-sm ml-1'>
+          <p
+            className={`text-sm ml-1 ${
+              appearance.theme == 'dark' ? 'text-white' : 'text-slate-500'
+            }`}
+          >
             Provide the details of the position you're applying for to tailor
             your application perfectly.
           </p>
@@ -82,14 +100,13 @@ export default function Job () {
             <div className='space-y-2'>
               <label
                 htmlFor='title'
-                className='block text-sm font-bold text-slate-700 ml-1'
+                className={`block text-sm font-bold ml-1 ${
+                  appearance.theme == 'dark' ? 'text-white' : 'text-slate-700'
+                }`}
               >
                 Job Title <span className='text-orange-500'>*</span>
               </label>
               <div className='relative'>
-                {/* <div className='absolute left-4 top-1/2 -translate-y-1/2 text-slate-400'>
-                  <Briefcase className='w-4 h-4' />
-                </div> */}
                 <input
                   type='text'
                   id='title'
@@ -98,7 +115,11 @@ export default function Job () {
                   value={job.title}
                   onChange={handleChange}
                   placeholder='e.g. Senior Frontend Developer'
-                  className='w-full pl-5 pr-4 py-3.5 border border-gray-200 focus:border-orange-400 focus:bg-white rounded-2xl outline-none transition-all text-sm font-medium'
+                  className={`w-full pl-5 pr-4 py-3.5 border rounded-2xl outline-none transition-all text-sm font-medium ${
+                    appearance.theme == 'dark'
+                      ? 'bg-[#202020] border-0 text-white placeholder:text-slate-500 placeholder:text-xs '
+                      : 'border-gray-200 focus:border-orange-400 focus:bg-white'
+                  }`}
                 />
               </div>
             </div>
@@ -107,14 +128,13 @@ export default function Job () {
             <div className='space-y-2'>
               <label
                 htmlFor='company'
-                className='block text-sm font-bold text-slate-700 ml-1'
+                className={`block text-sm font-bold ml-1 ${
+                  appearance.theme == 'dark' ? 'text-white' : 'text-slate-700'
+                }`}
               >
                 Company <span className='text-orange-500'>*</span>
               </label>
               <div className='relative'>
-                {/* <div className='absolute left-4 top-1/2 -translate-y-1/2 text-slate-400'>
-                  <Building2 className='w-4 h-4' />
-                </div> */}
                 <input
                   type='text'
                   id='company'
@@ -123,7 +143,11 @@ export default function Job () {
                   value={job.company}
                   onChange={handleChange}
                   placeholder='e.g. TechCorp Inc.'
-                  className='w-full pl-5 pr-4 py-3.5 border border-gray-200 focus:border-orange-400 focus:bg-white rounded-2xl outline-none transition-all text-sm font-medium'
+                  className={`w-full pl-5 pr-4 py-3.5 border rounded-2xl outline-none transition-all text-sm font-medium ${
+                    appearance.theme == 'dark'
+                      ? 'bg-[#202020] border-0 text-white placeholder:text-slate-500 placeholder:text-xs '
+                      : 'border-gray-200 focus:border-orange-400 focus:bg-white'
+                  }`}
                 />
               </div>
             </div>
@@ -134,14 +158,13 @@ export default function Job () {
             <div className='space-y-2'>
               <label
                 htmlFor='hiringManager'
-                className='block text-sm font-bold text-slate-700 ml-1'
+                className={`block text-sm font-bold ml-1 ${
+                  appearance.theme == 'dark' ? 'text-white' : 'text-slate-700'
+                }`}
               >
                 Hiring Manager Name
               </label>
               <div className='relative'>
-                {/* <div className='absolute left-4 top-1/2 -translate-y-1/2 text-slate-400'>
-                  <User className='w-4 h-4' />
-                </div> */}
                 <input
                   type='text'
                   id='hiringManager'
@@ -149,7 +172,11 @@ export default function Job () {
                   value={job.hiringManager}
                   onChange={handleChange}
                   placeholder='e.g. Jane Smith'
-                  className='w-full pl-5 pr-4 py-3.5 border border-gray-200 focus:border-orange-400 focus:bg-white rounded-2xl outline-none transition-all text-sm font-medium'
+                  className={`w-full pl-5 pr-4 py-3.5 border rounded-2xl outline-none transition-all text-sm font-medium ${
+                    appearance.theme == 'dark'
+                      ? 'bg-[#202020]  border-0 text-white placeholder:text-slate-500 placeholder:text-xs'
+                      : 'border-gray-200 focus:border-orange-400 focus:bg-white'
+                  }`}
                 />
               </div>
             </div>
@@ -158,14 +185,13 @@ export default function Job () {
             <div className='space-y-2'>
               <label
                 htmlFor='source'
-                className='block text-sm font-bold text-slate-700 ml-1'
+                className={`block text-sm font-bold ml-1 ${
+                  appearance.theme == 'dark' ? 'text-white' : 'text-slate-700'
+                }`}
               >
                 Job Source
               </label>
               <div className='relative'>
-                {/* <div className='absolute left-4 top-1/2 -translate-y-1/2 text-slate-400'>
-                  <Globe className='w-4 h-4' />
-                </div> */}
                 <input
                   type='text'
                   id='source'
@@ -173,7 +199,11 @@ export default function Job () {
                   value={job.source}
                   onChange={handleChange}
                   placeholder='e.g. LinkedIn'
-                  className='w-full pl-5 pr-4 py-3.5 border border-gray-200 focus:border-orange-400 focus:bg-white rounded-2xl outline-none transition-all text-sm font-medium'
+                  className={`w-full pl-5 pr-4 py-3.5 border rounded-2xl outline-none transition-all text-sm font-medium ${
+                    appearance.theme == 'dark'
+                      ? 'bg-[#202020]  border-0 text-white placeholder:text-slate-500 placeholder:text-xs'
+                      : 'border-gray-200 focus:border-orange-400 focus:bg-white'
+                  }`}
                 />
               </div>
             </div>
@@ -184,14 +214,13 @@ export default function Job () {
             <div className='space-y-2'>
               <label
                 htmlFor='location'
-                className='block text-sm font-bold text-slate-700 ml-1'
+                className={`block text-sm font-bold ml-1 ${
+                  appearance.theme == 'dark' ? 'text-white' : 'text-slate-700'
+                }`}
               >
                 Location
               </label>
               <div className='relative'>
-                {/* <div className='absolute left-4 top-1/2 -translate-y-1/2 text-slate-400'>
-                  <MapPin className='w-4 h-4' />
-                </div> */}
                 <input
                   type='text'
                   id='location'
@@ -199,39 +228,60 @@ export default function Job () {
                   value={job.location}
                   onChange={handleChange}
                   placeholder='e.g. San Francisco (Remote)'
-                  className='w-full pl-5 pr-4 py-3.5 border border-gray-200 focus:border-orange-400 focus:bg-white rounded-2xl outline-none transition-all text-sm font-medium'
+                  className={`w-full pl-5 pr-4 py-3.5 border rounded-2xl outline-none transition-all text-sm font-medium ${
+                    appearance.theme == 'dark'
+                      ? 'bg-[#202020]  border-0 text-white placeholder:text-slate-500 placeholder:text-xs'
+                      : 'border-gray-200 focus:border-orange-400 focus:bg-white'
+                  }`}
                 />
               </div>
             </div>
 
             <div className='space-y-2 relative'>
-              <label className='block text-sm font-bold text-slate-700 ml-1'>
+              <label
+                className={`block text-sm font-bold ml-1 ${
+                  appearance.theme == 'dark' ? 'text-white' : 'text-slate-700'
+                }`}
+              >
                 Email Tone
               </label>
               <div
                 onClick={() => setToggles({ tone: !toggles.tone })}
-                className='w-full cursor-pointer rounded-2xl border border-gray-200 py-3.5 px-6 text-sm font-semibold flex justify-between items-center bg-white transition-all hover:border-orange-200'
+                className={`w-full cursor-pointer rounded-2xl border py-3.5 px-6 text-sm font-semibold flex justify-between items-center transition-all hover:border-orange-200 ${
+                  appearance.theme == 'dark'
+                    ? ' border-0 bg-[#202020] text-white'
+                    : 'border-gray-200 bg-white'
+                }`}
               >
                 <div className='flex items-center gap-2'>
-                 
                   {job.tone.toLowerCase() === 'formal'
                     ? 'Formal'
                     : 'Conversational'}
                 </div>
                 <ChevronDown
-                  className={`h-4 w-4 transition-transform text-slate-400 ${
+                  className={`h-4 w-4 transition-transform ${
                     toggles.tone ? 'rotate-180' : ''
+                  } ${
+                    appearance.theme == 'dark' ? 'text-white' : 'text-slate-400'
                   }`}
                 />
               </div>
               {toggles.tone && (
-                <ul className='absolute z-10 bg-white flex flex-col p-2 top-[calc(100%+8px)] w-full text-black rounded-xl shadow-xl border border-gray-100 overflow-hidden'>
+                <ul
+                  className={`absolute z-10 flex flex-col p-2 top-[calc(100%+8px)] w-full rounded-xl shadow-xl border overflow-hidden ${
+                    appearance.theme == 'dark'
+                      ? 'bg-[#202020]  border-0 text-white'
+                      : 'bg-white border-gray-100 text-black'
+                  }`}
+                >
                   <li
                     onClick={() => saveTone('Formal')}
                     className={`text-sm cursor-pointer p-3 px-4 rounded-lg transition-colors flex items-center gap-2 ${
                       job.tone.toLowerCase() == 'formal'
                         ? 'bg-orange-50 text-orange-600 font-bold'
-                        : ' text-slate-700 font-medium'
+                        : appearance.theme == 'dark'
+                        ? 'text-white'
+                        : 'text-slate-700 font-medium'
                     }`}
                   >
                     Formal
@@ -241,7 +291,9 @@ export default function Job () {
                     className={`text-sm cursor-pointer p-3 px-4 rounded-lg transition-colors flex items-center gap-2 ${
                       job.tone.toLowerCase() == 'conversational'
                         ? 'bg-orange-50 text-orange-600 font-bold'
-                        : ' text-slate-700 font-medium'
+                        : appearance.theme == 'dark'
+                        ? 'text-white'
+                        : 'text-slate-700 font-medium'
                     }`}
                   >
                     Conversational
@@ -255,12 +307,20 @@ export default function Job () {
           <div className='space-y-2'>
             <label
               htmlFor='description'
-              className='block text-sm font-bold text-slate-700 ml-1'
+              className={`block text-sm font-bold ml-1 ${
+                appearance.theme == 'dark' ? 'text-white' : 'text-slate-700'
+              }`}
             >
               Job Description <span className='text-orange-500'>*</span>
             </label>
             <div className='relative'>
-              <div className='absolute left-4 top-5 text-slate-400'>
+              <div
+                className={`absolute left-4 top-5 ${
+                  appearance.theme == 'dark'
+                    ? 'text-slate-500'
+                    : 'text-slate-400'
+                }`}
+              >
                 <FileText className='w-4 h-4' />
               </div>
               <textarea
@@ -271,7 +331,11 @@ export default function Job () {
                 value={job.description}
                 onChange={handleChange}
                 placeholder='Paste the full job description or job URL here...'
-                className='w-full pl-11 pr-4 py-4 border border-gray-200 focus:border-orange-400 focus:bg-white rounded-3xl outline-none transition-all text-sm font-medium resize-none min-h-40'
+                className={`w-full pl-11 pr-4 py-4 border rounded-3xl outline-none transition-all text-sm font-medium resize-none min-h-40 ${
+                  appearance.theme == 'dark'
+                    ? 'bg-[#202020]  border-0 text-white placeholder:text-slate-500 placeholder:text-xs'
+                    : 'border-gray-200 focus:border-orange-400 focus:bg-white'
+                }`}
               />
             </div>
           </div>
@@ -280,12 +344,13 @@ export default function Job () {
           <div className='space-y-2'>
             <label
               htmlFor='email'
-              className='block text-sm font-bold text-slate-700 ml-1'
+              className={`block text-sm font-bold ml-1 ${
+                appearance.theme == 'dark' ? 'text-white' : 'text-slate-700'
+              }`}
             >
               Hiring Contact Email<span className='text-orange-500'>*</span>
             </label>
             <div className='relative'>
-           
               <input
                 type='email'
                 id='email'
@@ -293,14 +358,22 @@ export default function Job () {
                 value={job.email}
                 onChange={handleChange}
                 placeholder='hiring@techcorp.com'
-                className='w-full pl-5 pr-4 py-3.5 border border-gray-200 focus:border-orange-400 focus:bg-white rounded-2xl outline-none transition-all text-sm font-medium'
+                className={`w-full pl-5 pr-4 py-3.5 border rounded-2xl outline-none transition-all text-sm font-medium ${
+                  appearance.theme == 'dark'
+                    ? 'bg-[#202020]  border-0 text-white placeholder:text-slate-500 placeholder:text-xs'
+                    : 'border-gray-200 focus:border-orange-400 focus:bg-white'
+                }`}
               />
             </div>
           </div>
 
           {/* Include Cover Letter Radio Group */}
           <div className='space-y-4'>
-            <label className='block text-sm font-bold text-slate-700 ml-1'>
+            <label
+              className={`block text-sm font-bold ml-1 ${
+                appearance.theme == 'dark' ? 'text-white' : 'text-slate-700'
+              }`}
+            >
               Include a tailored cover letter?
             </label>
             <ul className='grid grid-cols-2 gap-4'>
@@ -308,7 +381,9 @@ export default function Job () {
                 onClick={() => toggleCoverLetter(true)}
                 className={`flex gap-4 w-full border cursor-pointer rounded-2xl py-4 px-6 transition-all duration-200 ease items-center ${
                   job.includeCoverLetter
-                    ? 'border-orange-400  shadow-md translate-y-0.5'
+                    ? 'border-orange-400 shadow-md translate-y-0.5'
+                    : appearance.theme == 'dark'
+                    ? ' border-0 bg-[#202020] hover:border-orange-200'
                     : 'border-slate-100 bg-white hover:border-orange-200'
                 }`}
               >
@@ -319,7 +394,13 @@ export default function Job () {
                 ></div>
                 <div
                   className={`text-sm font-bold ${
-                    job.includeCoverLetter ? '' : 'text-slate-600'
+                    job.includeCoverLetter
+                      ? appearance.theme == 'dark'
+                        ? 'text-white'
+                        : ''
+                      : appearance.theme == 'dark'
+                      ? 'text-slate-400'
+                      : 'text-slate-600'
                   }`}
                 >
                   Yes, include it
@@ -329,7 +410,9 @@ export default function Job () {
                 onClick={() => toggleCoverLetter(false)}
                 className={`flex gap-4 w-full border cursor-pointer rounded-2xl py-4 px-6 transition-all duration-200 ease items-center ${
                   !job.includeCoverLetter
-                    ? 'border-orange-400  shadow-md translate-y-0.5'
+                    ? 'border-orange-400 shadow-md translate-y-0.5'
+                    : appearance.theme == 'dark'
+                    ? ' border-0 text-white bg-[#202020] hover:border-orange-200'
                     : 'border-slate-100 bg-white hover:border-orange-200'
                 }`}
               >
@@ -339,9 +422,14 @@ export default function Job () {
                   } border-[#f17e27] inline-block w-4 h-4 rounded-full`}
                 ></div>
                 <div
-                  className={`text-sm font-bold ${
-                    !job.includeCoverLetter ? '' : 'text-slate-600'
-                  }`}
+                  className={`text-sm font-bold
+                    ${
+                      appearance.theme == 'dark'
+                        ? 'text-white'
+                        : 'text-slate-600'
+                    }
+                    
+                 `}
                 >
                   No, just resume
                 </div>
@@ -353,7 +441,9 @@ export default function Job () {
           <div className='flex items-center justify-between pt-6 border-t border-slate-100'>
             <button
               type='button'
-              className='px-8 py-3 text-sm font-bold text-slate-500 hover:text-slate-800 transition-colors'
+              className={`px-8 py-3 text-sm font-bold text-slate-500 hover:text-slate-800 ${
+                appearance.theme == 'dark' ? 'text-white' : 'text-gray-300'
+              } transition-colors`}
             >
               Reset Form
             </button>
@@ -362,7 +452,11 @@ export default function Job () {
                 connector()
               }}
               type='submit'
-              className='px-10 py-3.5 bg-[#f17e27] hover:bg-[#e16d16] text-white text-sm font-bold rounded-[1.25rem] shadow-lg shadow-orange-100 transition-all flex items-center gap-2 group active:scale-95'
+              className={`px-10 py-3.5 bg-[#f17e27] hover:bg-[#e16d16] text-white text-sm font-bold rounded-[1.25rem] shadow-lg shadow-orange-100 transition-all flex items-center gap-2 group active:scale-95 ${
+                appearance.theme == 'dark'
+                  ? ' shadow-none'
+                  : 'shadow-orange-100'
+              }`}
             >
               Continue
               <ChevronRight className='w-4 h-4 group-hover:translate-x-0.5 transition-transform' />
@@ -370,6 +464,6 @@ export default function Job () {
           </div>
         </form>
       </div>
-    </div>
+    </section>
   )
 }
