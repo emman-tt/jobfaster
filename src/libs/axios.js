@@ -22,18 +22,20 @@ api.interceptors.request.use(config => {
 
 api.interceptors.response.use(undefined, async error => {
   const status = error.response?.status
-
-  if (error.config._retry && error?.response?.status == 401) {
-    window.location.href = '/auth'
-    return Promise.reject(error)
-  }
-
-  if (error.code === 'ECONNABORTED') {
+  const isNetworkError =
+    !error.response ||
+    error.code === 'ERR_NETWORK' ||
+    error.code === 'ECONNABORTED'
+  if (isNetworkError) {
     toast.error('Request timed out, please try again', {
       ...toastPresets.authError(),
       position: 'top-center'
     })
     throw error
+  }
+  if (error.config._retry && error?.response?.status == 401) {
+    window.location.href = '/auth'
+    return Promise.reject(error)
   }
 
   if (error?.response?.status == 401 && !error.config._retry) {
@@ -77,8 +79,6 @@ api.interceptors.response.use(undefined, async error => {
           ...toastPresets.authError(),
           position: 'top-center'
         })
-      } else {
-        window.location.href = '/auth'
       }
       throw err
     } finally {

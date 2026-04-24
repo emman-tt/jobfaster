@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import {
   MoreHorizontal,
   Plus,
@@ -13,6 +13,8 @@ import {
 import { boardData } from './boardData'
 
 import Header from './Header'
+import { DragDropProvider } from '@dnd-kit/react'
+import { Draggable, Droppable, Sortable } from '../../../components/dragger'
 
 const IconMap = {
   Bookmark: Bookmark,
@@ -22,21 +24,59 @@ const IconMap = {
   CheckCircle: CheckCircle
 }
 
+// const handleDragEnd = event => {
+//   const { source } = event.operation
+//   const { initialIndex, index } = source
+//   if (initialIndex !== index) {
+//     // const newItems = [...educations]
+//     // const [removed] = newItems.splice(initialIndex, 1)
+//     // newItems.splice(index, 0, removed)
+//   }
+// }
+
 export default function JobBoard () {
+  const [kanban, setKanban] = useState(boardData)
+  const handleDragEnd = (event, manager) => {
+    const { operation, canceled } = event
+    console.log(operation)
+    if (canceled) {
+      console.log('Drag cancelled')
+      return
+    }
+
+    if (operation.target) {
+      const foundColumn = kanban.find(e => e.id === operation.target.id)
+      if (foundColumn) {
+        // const newCard =
+
+        const newColumn = {
+          ...foundColumn,
+          cards: [...foundColumn.cards]
+        }
+        console.log(
+          `Dropped ${operation.source.id} onto ${operation.target.id}`
+        )
+      }
+    }
+  }
   return (
     <div className='flex flex-col h-full w-full bg-white overflow-hidden'>
       <Header />
       <div className='flex-1 overflow-x-auto p-5 scrollbar-hide'>
-        <div className='flex gap-4 min-w-max h-full items-start'>
-          {boardData.map(column => (
-            <BoardColumn key={column.id} column={column} />
-          ))}
+        <DragDropProvider onDragEnd={handleDragEnd}>
+          <div className='flex gap-4 min-w-max h-full items-start'>
+            {kanban.map(column => (
+              <Droppable id={column.id}>
+                <BoardColumn key={column.id} column={column} />
+              </Droppable>
+            ))}
 
-          {/* Floating Add Column Button */}
-          <button className='shrink-0 w-10 h-10 bg-white rounded-xl shadow-sm border border-gray-200 flex items-center justify-center hover:bg-gray-50 transition-colors mt-0.5'>
-            <Plus className='w-5 h-5 text-gray-400' />
-          </button>
-        </div>
+            {/* Floating Add Column Button */}
+            <button className='shrink-0 w-10 h-10 bg-white rounded-xl shadow-sm border border-gray-200 flex items-center justify-center hover:bg-gray-50 transition-colors mt-0.5'>
+              <Plus className='w-5 h-5 text-gray-400' />
+            </button>
+          </div>
+        </DragDropProvider>
       </div>
     </div>
   )
@@ -71,9 +111,12 @@ function BoardColumn ({ column }) {
       </div>
 
       {/* Cards Container */}
-      <div className='flex flex-col gap-3 scrollbar-none overflow-y-auto pr-1.5 scrollbar-thin scrollbar-thumb-gray-200'>
+
+      <div className='flex flex-col gap-3 scrollbar-none  overflow-y-auto  scrollbar-thin scrollbar-thumb-gray-200'>
         {column.cards.map(card => (
-          <JobCard key={card.id} card={card} />
+          <Draggable itemId={card.id}>
+            <JobCard key={card.id} card={card} />
+          </Draggable>
         ))}
       </div>
     </div>
