@@ -6,46 +6,14 @@ export const boardData = [
     icon: 'Bookmark',
     cards: [
       {
-        id: 1,
-        company: 'Facebook',
-        title: 'Principal UI/UX Designer',
-        location: 'Menlo Park, CA',
-        logo: 'https://upload.wikimedia.org/wikipedia/commons/0/05/Facebook_Logo_%282019%29.png'
-      },
-      {
-        id: 2,
-        company: 'zoom',
-        title: 'Senior Interaction Designer',
-        location: 'Menlo Park, CA',
-        logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/7b/Zoom_Communications_Logo.svg/2560px-Zoom_Communications_Logo.svg.png'
-      },
-      {
-        id: 3,
-        company: 'Taobao',
-        title: 'UI/UX Designer',
-        location: 'Menlo Park, CA',
-        logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/3b/Taobao_logo.svg/1200px-Taobao_logo.svg.png'
-      },
-      {
-        id: 4,
-        company: 'Redit',
-        title: 'Senior Lead Designer',
-        location: 'Menlo Park, CA',
-        logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/07/Reddit_icon.svg/1200px-Reddit_icon.svg.png'
-      },
-      {
-        id: 5,
-        company: 'Opera',
-        title: 'Principal UI/UX Designer Manager',
-        location: 'Menlo Park, CA',
-        logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/49/Opera_2015_icon.svg/1200px-Opera_2015_icon.svg.png'
-      },
-      {
-        id: 6,
-        company: 'Google',
+        id: 7,
+        company: 'Mailchimp',
         title: 'UI/UX Designer Manager',
-        location: 'Menlo Park, CA',
-        logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/1200px-Google_%22G%22_Logo.svg.png'
+        salary: '$2000-$3000',
+        description: 'This section will show notes reference o..',
+        tags: ['REMOTE', 'FULL TIME'],
+        date: 'Applied today',
+        logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/ad/Mailchimp_Logo.svg/1200px-Mailchimp_Logo.svg.png'
       }
     ]
   },
@@ -55,16 +23,6 @@ export const boardData = [
     count: 4,
     icon: 'CheckCircle2',
     cards: [
-      {
-        id: 7,
-        company: 'Mailchimp',
-        title: 'UI/UX Designer Manager',
-        salary: '$2000-$3000',
-        description: 'This section will show notes reference o..',
-        tags: ['REMOTE', 'FULL TIME'],
-        date: 'Applied today',
-        logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/ad/Mailchimp_Logo.svg/1200px-Mailchimp_Logo.svg.png'
-      },
       {
         id: 8,
         company: 'Intercom',

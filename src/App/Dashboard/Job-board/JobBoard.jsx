@@ -46,7 +46,7 @@ function BoardColumn ({ column }) {
   const Icon = IconMap[column.icon] || Bookmark
 
   return (
-    <div className='w-70 flex flex-col h-full'>
+    <div className='w-70 bg-gray-50 rounded-xl  p-2 flex flex-col h-full'>
       {/* Column Header */}
       <div className='flex items-center justify-between mb-4 px-1'>
         <div className='flex items-center gap-2'>
@@ -71,89 +71,49 @@ function BoardColumn ({ column }) {
       </div>
 
       {/* Cards Container */}
-      <div className='flex flex-col gap-3 overflow-y-auto pr-1.5 scrollbar-thin scrollbar-thumb-gray-200'>
+      <div className='flex flex-col gap-3 scrollbar-none overflow-y-auto pr-1.5 scrollbar-thin scrollbar-thumb-gray-200'>
         {column.cards.map(card => (
-          <JobCard key={card.id} card={card} columnId={column.id} />
+          <JobCard key={card.id} card={card} />
         ))}
       </div>
     </div>
   )
 }
 
-function JobCard ({ card, columnId }) {
-  const isCompact = columnId === 'saved'
-
-  if (isCompact) {
-    return (
-      <div className='bg-white p-3.5 rounded-xl shadow-sm border border-gray-200/50 group relative hover:border-gray-300 transition-all cursor-pointer'>
-        <button className='absolute top-3 right-3 text-gray-300 hover:text-gray-500 opacity-0 group-hover:opacity-100 transition-opacity'>
-          <MoreHorizontal className='w-3.5 h-3.5' />
-        </button>
-        <div className='flex gap-3 items-center'>
-          <div className='w-10 h-10 rounded-full bg-white flex items-center justify-center overflow-hidden shrink-0 border border-gray-100 shadow-sm'>
-            <img
-              src={card.logo}
-              alt={card.company}
-              className='w-6 h-6 object-contain'
-            />
-          </div>
-          <div className='flex-1 min-w-0'>
-            <h3 className='font-bold text-gray-800 text-[13px] truncate pr-3 leading-snug'>
-              {card.title}
-            </h3>
-            <div className='flex items-center gap-2 mt-0.5'>
-              <span className='text-[12px] text-gray-400 truncate'>
-                {card.company}
-              </span>
-              <span className='text-[12px] text-gray-400 truncate ml-2'>
-                {card.location}
-              </span>
-            </div>
-          </div>
-        </div>
-      </div>
-    )
-  }
-
+function JobCard ({ card }) {
   return (
-    <div className='bg-white p-4 rounded-xl shadow-sm border border-gray-200/50 group relative hover:border-gray-300 transition-all cursor-pointer'>
-      <button className='absolute top-4 right-4 text-gray-300 hover:text-gray-500 opacity-0 group-hover:opacity-100 transition-opacity'>
+    <div className='bg-white p-1.5 pl-3 h-30 rounded-xl shadow-sm border border-gray-200/50 group relative hover:border-gray-300 transition-all cursor-pointer'>
+      <button className='absolute top-3 right-3 text-gray-300 hover:text-gray-500 opacity-0 group-hover:opacity-100 transition-opacity'>
         <MoreHorizontal className='w-3.5 h-3.5' />
       </button>
-
-      <div className='flex items-center gap-2 mb-3'>
-        <div className='w-7 h-7 rounded-lg bg-white flex items-center justify-center overflow-hidden border border-gray-100 shadow-sm'>
+      <div className='flex gap-3 items-center'>
+        <div className='w-10 h-10 rounded-full bg-white flex items-center justify-center overflow-hidden shrink-0 border border-gray-100 shadow-sm'>
           <img
             src={card.logo}
             alt={card.company}
-            className='w-4.5 h-4.5 object-contain'
+            className='w-6 h-6 object-contain'
           />
         </div>
-        <span className='text-[12px] font-semibold text-gray-700'>
-          {card.company}
-        </span>
+        <h3 className='font-bold text-gray-800 text-[13px] truncate pr-3 leading-snug'>
+          {card.title}
+        </h3>
       </div>
-
-      <h3 className='font-bold text-gray-800 text-[14px] mb-0.5 leading-snug pr-3'>
-        {card.title}
-      </h3>
-      <p className='text-[12px] font-semibold text-gray-400 mb-2'>
-        {card.salary}
-      </p>
-
-      <p className='text-[11px] text-gray-400 line-clamp-1 mb-3.5 font-medium'>
-        {card.description}
-      </p>
-
-      <div className='flex flex-wrap gap-2 mb-4'>
-        {card.tags?.map(tag => (
-          <span
-            key={tag}
-            className='px-2 py-0.5 bg-indigo-50/50 text-[9px] font-bold text-indigo-500 rounded-md tracking-wide'
-          >
-            {tag}
+      <div className='flex-1 min-w-0'>
+        <div className='flex items-center gap-2 mt-0.5'>
+          <span className='text-[12px] text-gray-400 truncate'>
+            {card.company}
           </span>
-        ))}
+          <span className='text-[12px] text-gray-400 truncate ml-2'>
+            {card?.salary}
+          </span>
+          <span className='text-[12px] text-gray-400 truncate ml-2'>
+            {card.location}
+          </span>
+        </div>
+
+        <p className='text-[11px] text-gray-400 line-clamp-1 mb-1 font-medium'>
+          {card.description}
+        </p>
       </div>
 
       <div className='flex items-center justify-between'>
