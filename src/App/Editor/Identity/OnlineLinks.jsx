@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { onlineProfiles } from '../../../utils/links'
 import { ChevronDown, Trash, Trash2 } from 'lucide-react'
 import useClickOutside from '../../../hooks/useClick'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { saveOnlineLinks } from '../../../store/personalSlice'
 
 export default function OnlineLinks () {
@@ -15,6 +15,7 @@ export default function OnlineLinks () {
     }
   ])
   const dispatch = useDispatch()
+  const { appearance } = useSelector(state => state.preferences)
   const popupRef = useClickOutside(() => showLinksBox(false))
 
   function addNewLink (id) {
@@ -70,7 +71,13 @@ export default function OnlineLinks () {
             key={link.id || index}
             className='flex flex-col sm:flex-row gap-3 sm:items-center w-full'
           >
-            <div className='w-full sm:w-40 shrink-0 bg-white border border-gray-200 rounded-xl py-2.5 px-3 shadow-sm hover:shadow-md transition-shadow flex items-center justify-between'>
+            <div
+              className={`w-full sm:w-40 shrink-0 border rounded-xl py-2.5 px-3 shadow-sm hover:shadow-md transition-shadow flex items-center justify-between ${
+                appearance.theme == 'dark'
+                  ? 'bg-[#202020] border-0'
+                  : 'bg-white border-gray-200'
+              }`}
+            >
               <div className='flex items-center gap-2'>
                 {link.path && (
                   <svg
@@ -84,7 +91,11 @@ export default function OnlineLinks () {
                     <path d={link.path} />
                   </svg>
                 )}
-                <span className='text-xs font-medium text-gray-900'>
+                <span
+                  className={`text-xs font-medium ${
+                    appearance.theme == 'dark' ? 'text-white' : 'text-gray-900'
+                  }`}
+                >
                   {link.name}
                 </span>
               </div>
@@ -101,7 +112,11 @@ export default function OnlineLinks () {
               value={link.link}
               onChange={e => handleChange(e, index)}
               placeholder='linkedin.com/in/jthorne'
-              className='flex-1 border border-gray-200 pl-4 pr-3 outline-[#ec5b13] py-2.5 rounded-xl text-xs focus:border-[#ec5b13] focus:shadow-md text-gray-900 shadow-sm transition-shadow'
+              className={`flex-1 border pl-4 pr-3 outline-[#ec5b13] py-2.5 rounded-xl text-xs focus:border-[#ec5b13] focus:shadow-md shadow-sm transition-shadow ${
+                appearance.theme == 'dark'
+                  ? 'border-0 bg-[#202020] text-white placeholder:text-slate-500'
+                  : 'border-gray-200 text-gray-900'
+              }`}
             />
           </div>
         ))}
@@ -111,7 +126,11 @@ export default function OnlineLinks () {
         <div className='w-full sm:w-40 relative shrink-0'>
           <button
             onClick={() => showLinksBox(e => !e)}
-            className='w-full border border-gray-200 pl-4 pr-3 py-2.5 rounded-xl text-xs focus:outline-[#ec5b13] focus:border-[#ec5b13] text-gray-900 font-medium flex items-center justify-between hover:shadow-md transition-all shadow-sm bg-white'
+            className={`w-full border pl-4 pr-3 py-2.5 rounded-xl text-xs focus:outline-[#ec5b13] focus:border-[#ec5b13] font-medium flex items-center justify-between hover:shadow-md transition-all shadow-sm ${
+              appearance.theme == 'dark'
+                ? 'border-0 bg-[#202020] text-white'
+                : 'border-gray-200 bg-white text-gray-900'
+            }`}
           >
             <span>Select Link</span>
             <ChevronDown
@@ -122,7 +141,13 @@ export default function OnlineLinks () {
           </button>
 
           {linksBox && (
-            <div className='absolute z-20 top-full left-0 right-0 mt-2 bg-white border border-gray-200 rounded-xl shadow-lg overflow-hidden'>
+            <div
+              className={`absolute z-20 top-full left-0 right-0 mt-2 border rounded-xl shadow-lg overflow-hidden ${
+                appearance.theme == 'dark'
+                  ? 'bg-[#202020] border-0'
+                  : 'bg-white border-gray-200'
+              }`}
+            >
               <ul className='max-h-48 overflow-y-auto'>
                 {links.map(
                   item =>
@@ -133,7 +158,11 @@ export default function OnlineLinks () {
                           addNewLink(item.id)
                           showLinksBox(false)
                         }}
-                        className='flex items-center gap-2 px-4 py-3 text-xs text-gray-900 hover:bg-[#ec5b13]/5 cursor-pointer transition-colors'
+                        className={`flex items-center gap-2 px-4 py-3 text-xs hover:bg-[#ec5b13]/5 cursor-pointer transition-colors ${
+                          appearance.theme == 'dark'
+                            ? 'text-white'
+                            : 'text-gray-900'
+                        }`}
                       >
                         {item.path && (
                           <svg
@@ -159,7 +188,11 @@ export default function OnlineLinks () {
         <input
           type='text'
           placeholder='Type or paste the link here'
-          className='flex-1 border border-gray-200 pl-4 pr-3 outline-[#ec5b13] py-2.5 rounded-xl text-xs focus:border-[#ec5b13] focus:shadow-md text-gray-900 shadow-sm transition-shadow bg-white'
+          className={`flex-1 border pl-4 pr-3 outline-[#ec5b13] py-2.5 rounded-xl text-xs focus:border-[#ec5b13] focus:shadow-md shadow-sm transition-shadow ${
+            appearance.theme == 'dark'
+              ? 'border-0 bg-[#202020] text-white placeholder:text-slate-500'
+              : 'border-gray-200 bg-white text-gray-900'
+          }`}
         />
       </div>
     </section>

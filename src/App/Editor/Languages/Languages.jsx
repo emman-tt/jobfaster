@@ -9,6 +9,7 @@ export default function Languages () {
   const [isOpen, setIsOpen] = useState(true)
   const dispatch = useDispatch()
   const languages = useSelector(state => state.education.languages)
+  const { appearance } = useSelector(state => state.preferences)
   const [editingLanguageId, setEditingLanguageId] = useState(null)
   const [editingLanguageValue, setEditingLanguageValue] = useState('')
 
@@ -69,18 +70,24 @@ export default function Languages () {
       {/* Header */}
       <div
         onClick={() => setIsOpen(!isOpen)}
-        className='flex items-center justify-between px-4 sm:px-6 md:px-8 lg:px-10 py-4 cursor-pointer border-b border-gray-200 transition-colors'
+        className={`flex items-center justify-between px-4 sm:px-6 md:px-8 lg:px-10 py-4 cursor-pointer border-b transition-colors ${
+          appearance.theme == 'dark' ? 'border-slate-700' : 'border-gray-200'
+        }`}
       >
-        <h2 className='text-lg font-bold text-gray-900 flex items-center'>
+        <h2 className={`text-lg font-bold flex items-center ${
+          appearance.theme == 'dark' ? 'text-white' : 'text-gray-900'
+        }`}>
           <span className='inline-block w-1 h-6 bg-[#f56010] mr-3'></span>
           Languages
         </h2>
-        <button className='p-1 hover:bg-gray-200 rounded-lg transition-colors'>
+        <button className={`p-1 rounded-lg transition-colors ${
+          appearance.theme == 'dark' ? 'hover:bg-slate-700' : 'hover:bg-gray-200'
+        }`}>
           <ChevronDown
             size={20}
             className={`transition-transform duration-200 ${
               isOpen ? 'rotate-0' : '-rotate-180'
-            }`}
+            } ${appearance.theme == 'dark' ? 'text-white' : ''}`}
           />
         </button>
       </div>
@@ -106,7 +113,11 @@ export default function Languages () {
           {/* Add New Language Button */}
           <button
             onClick={handleAddLanguage}
-            className='w-full flex items-center justify-center gap-2 px-4 py-3 border border-dashed border-gray-300 rounded-xl text-gray-600 hover:bg-gray-50 hover:border-gray-400 transition-colors text-sm'
+            className={`w-full flex items-center justify-center gap-2 px-4 py-3 border border-dashed rounded-xl hover:bg-gray-50 hover:border-gray-400 transition-colors text-sm ${
+              appearance.theme == 'dark'
+                ? 'border-slate-700 text-slate-300 hover:bg-slate-700'
+                : 'border-gray-300 text-gray-600'
+            }`}
           >
             <Plus size={18} />
             Add a new language
@@ -119,6 +130,7 @@ export default function Languages () {
 
 function LanguageRow ({ lang, isEditing, editingValue, onStartEditing, onInputChange, onFinishEditing, onKeyDown, onProficiencyChange, onDelete }) {
   const [proficiencyBox, setProficiencyBox] = useState(false)
+  const { appearance } = useSelector(state => state.preferences)
 
   return (
     <div className='flex items-center gap-3 w-full'>
@@ -131,7 +143,11 @@ function LanguageRow ({ lang, isEditing, editingValue, onStartEditing, onInputCh
             onChange={(e) => onInputChange(e.target.value)}
             onBlur={onFinishEditing}
             onKeyDown={onKeyDown}
-            className='w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-1 focus:ring-[#ec5b13] text-gray-900 bg-white shadow-sm'
+            className={`w-full border rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-1 focus:ring-[#ec5b13] shadow-sm ${
+              appearance.theme == 'dark'
+                ? 'border-slate-700 bg-[#202020] text-white'
+                : 'border-gray-200 text-gray-900 bg-white'
+            }`}
           />
         ) : (
           <input
@@ -140,7 +156,11 @@ function LanguageRow ({ lang, isEditing, editingValue, onStartEditing, onInputCh
             onClick={onStartEditing}
             readOnly
             placeholder='Language'
-            className='w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-1 focus:ring-[#ec5b13] placeholder:text-gray-300 transition-all text-gray-900 bg-white shadow-sm hover:shadow-md transition-shadow cursor-text'
+            className={`w-full border rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-1 focus:ring-[#ec5b13] transition-all shadow-sm hover:shadow-md transition-shadow cursor-text ${
+              appearance.theme == 'dark'
+                ? 'border-slate-700 bg-[#202020] text-white placeholder:text-slate-500'
+                : 'border-gray-200 text-gray-900 bg-white placeholder:text-gray-300'
+            }`}
           />
         )}
       </div>
@@ -148,7 +168,11 @@ function LanguageRow ({ lang, isEditing, editingValue, onStartEditing, onInputCh
       <div className='relative w-40 shrink-0'>
         <button
           onClick={() => setProficiencyBox(!proficiencyBox)}
-          className='w-full border border-gray-200 pl-4 pr-3 py-2.5 rounded-xl text-xs focus:outline-[#ec5b13] focus:border-[#ec5b13] text-gray-900 font-medium flex items-center justify-between hover:shadow-md transition-all shadow-sm bg-white'
+          className={`w-full border pl-4 pr-3 py-2.5 rounded-xl text-xs focus:outline-[#ec5b13] focus:border-[#ec5b13] font-medium flex items-center justify-between hover:shadow-md transition-all shadow-sm ${
+            appearance.theme == 'dark'
+              ? 'border-slate-700 bg-[#202020] text-white'
+              : 'border-gray-200 bg-white text-gray-900'
+          }`}
         >
           <span>{lang.proficiency}</span>
           <ChevronDown
@@ -159,7 +183,11 @@ function LanguageRow ({ lang, isEditing, editingValue, onStartEditing, onInputCh
         </button>
 
         {proficiencyBox && (
-          <div className='absolute z-20 top-full left-0 right-0 mt-2 bg-white border border-gray-200 rounded-xl shadow-lg overflow-hidden'>
+          <div className={`absolute z-20 top-full left-0 right-0 mt-2 border rounded-xl shadow-lg overflow-hidden ${
+            appearance.theme == 'dark'
+              ? 'bg-[#202020] border-slate-700'
+              : 'bg-white border-gray-200'
+          }`}>
             <ul className='max-h-48 overflow-y-auto'>
               {proficiencyLevels.map(level => (
                 <li
@@ -168,7 +196,9 @@ function LanguageRow ({ lang, isEditing, editingValue, onStartEditing, onInputCh
                     onProficiencyChange(level)
                     setProficiencyBox(false)
                   }}
-                  className='px-4 py-3 text-xs text-gray-900 hover:bg-[#ec5b13]/5 cursor-pointer transition-colors'
+                  className={`px-4 py-3 text-xs hover:bg-[#ec5b13]/5 cursor-pointer transition-colors ${
+                    appearance.theme == 'dark' ? 'text-white' : 'text-gray-900'
+                  }`}
                 >
                   {level}
                 </li>
@@ -180,7 +210,11 @@ function LanguageRow ({ lang, isEditing, editingValue, onStartEditing, onInputCh
 
       <button
         onClick={onDelete}
-        className='p-2 text-red-500 hover:bg-red-50 rounded-lg transition-colors shrink-0'
+        className={`p-2 rounded-lg transition-colors shrink-0 ${
+          appearance.theme == 'dark'
+            ? 'text-slate-400 hover:bg-red-900/30'
+            : 'text-red-500 hover:bg-red-50'
+        }`}
         title='Delete'
       >
         <Trash2 size={16} />

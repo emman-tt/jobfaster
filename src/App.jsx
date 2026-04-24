@@ -20,6 +20,7 @@ import Editor from './Pages/Editor'
 import { JobListing } from './App/Dashboard/Job-listing/JobListing'
 import Settings from './App/Dashboard/Settings/Settings'
 import Prefrences from './App/Dashboard/Prefrences'
+import JobBoard from './App/Dashboard/Job-board/JobBoard'
 function App () {
   return (
     <BrowserRouter>
@@ -60,6 +61,7 @@ function App () {
             <Route path='settings' element={<Settings />} />
             <Route path='preference' element={<Prefrences />} />
             <Route path='templates' element={<Examples />} />
+            <Route path='board' element={<JobBoard />} />
             {/* <Route path='create/resume' element={<CreateResume />}>
               <Route path='examples' element={<Examples />} />
             </Route> */}

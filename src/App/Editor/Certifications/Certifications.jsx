@@ -97,7 +97,11 @@ export default function Certifications ({ setEditingId }) {
                         e.stopPropagation()
                         openModal(cert.id)
                       }}
-                      className='p-1.5 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors'
+                      className={`p-1.5 rounded-lg transition-colors ${
+                        appearance.theme == 'dark'
+                          ? 'text-slate-400 hover:bg-slate-700'
+                          : 'text-blue-600 hover:bg-blue-50'
+                      }`}
                       title='Edit'
                     >
                       <Edit2 size={16} />
@@ -107,7 +111,11 @@ export default function Certifications ({ setEditingId }) {
                         e.stopPropagation()
                         handleDeleteCertification(cert.id)
                       }}
-                      className='p-1.5 text-red-500 hover:bg-red-50 rounded-lg transition-colors'
+                      className={`p-1.5 rounded-lg transition-colors ${
+                        appearance.theme == 'dark'
+                          ? 'text-slate-400 hover:bg-red-900/30'
+                          : 'text-red-500 hover:bg-red-50'
+                      }`}
                       title='Delete'
                     >
                       <Trash2 size={16} />

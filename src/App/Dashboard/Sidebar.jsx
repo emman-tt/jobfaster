@@ -193,18 +193,24 @@ const processes = [
     name: 'Apply for  job',
     icon: <BadgePlus className='w-4 h-4' />,
     href: 'job'
+  },
+  {
+    id: 5,
+    name: 'Job Board',
+    icon: <Layers className='w-4 h-4' />,
+    href: 'board'
   }
 ]
 
 const tools = [
   {
-    id: 5,
+    id: 6,
     name: 'Create Resume',
     icon: <PlusCircle className='w-4 h-4' />,
     href: 'templates'
   },
   {
-    id: 6,
+    id: 7,
     name: 'Preferences',
     icon: <PlusCircle className='w-4 h-4' />,
     href: 'preference'
@@ -213,13 +219,13 @@ const tools = [
 
 const bottom = [
   {
-    id: 1,
+    id: 8,
     name: 'FAQ',
     icon: <CircleEllipsis className='w-4 h-4' />,
     href: 'faq'
   },
   {
-    id: 2,
+    id: 9,
     name: 'Settings',
     icon: <Settings className='w-4 h-4' />,
     href: 'settings'

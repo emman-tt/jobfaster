@@ -8,6 +8,7 @@ export function Modal ({ editingId }) {
   const [highlightInput, setHighlightInput] = useState('')
   const dispatch = useDispatch()
   const { educations } = useSelector(state => state.education)
+  const { appearance } = useSelector(state => state.preferences)
   const edu = educations.find(item => item.id == editingId) || null
   const derivedData = edu ?? {
     school: '',
@@ -58,14 +59,30 @@ export function Modal ({ editingId }) {
 
   return (
     <div className='fixed inset-0 bg-black/60 flex items-center justify-center p-4 backdrop-blur-sm transition-all animate-in fade-in duration-200'>
-      <div className='bg-white rounded-4xl shadow-2xl max-w-xl w-full overflow-hidden animate-in zoom-in-95 duration-200'>
-        <div className='flex items-center justify-between px-8 py-6'>
-          <h3 className='text-2xl font-bold text-gray-900'>
+      <div className={`rounded-4xl shadow-2xl max-w-xl w-full overflow-hidden animate-in zoom-in-95 duration-200 ${
+        appearance.theme == 'dark'
+          ? 'bg-[#202020]'
+          : 'bg-white'
+      }`}>
+        <div className={`flex items-center justify-between px-8 py-6 border-b ${
+          appearance.theme == 'dark'
+            ? 'border-slate-700'
+            : 'border-gray-200'
+        }`}>
+          <h3 className={`text-2xl font-bold ${
+            appearance.theme == 'dark'
+              ? 'text-white'
+              : 'text-gray-900'
+          }`}>
             {editingId ? 'Edit Education' : 'Add Education'}
           </h3>
           <button
             onClick={closeModal}
-            className='p-2 hover:bg-gray-100 rounded-full transition-colors text-black'
+            className={`p-2 rounded-full transition-colors ${
+              appearance.theme == 'dark'
+                ? 'hover:bg-slate-700 text-white'
+                : 'hover:bg-gray-100 text-black'
+            }`}
           >
             <X size={20} />
           </button>
@@ -74,7 +91,11 @@ export function Modal ({ editingId }) {
         <div className='px-8 pb-8 space-y-3 max-h-[70vh] overflow-y-auto custom-scrollbar'>
           <div className='grid grid-cols-1 sm:grid-cols-2 gap-3'>
             <div>
-              <label className='text-[10px] font-bold text-black uppercase tracking-widest block mb-2'>
+              <label className={`text-[10px] font-bold uppercase tracking-widest block mb-2 ${
+                appearance.theme == 'dark'
+                  ? 'text-slate-400'
+                  : 'text-black'
+              }`}>
                 SCHOOL
               </label>
               <input
@@ -84,11 +105,19 @@ export function Modal ({ editingId }) {
                   setFormData({ ...formData, school: e.target.value })
                 }
                 placeholder='University of Ghana'
-                className='w-full border border-gray-100 bg-white rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-1 focus:ring-[#6B4E42] placeholder:text-gray-300 transition-all text-gray-700'
+                className={`w-full border rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-1 focus:ring-[#6B4E42] transition-all ${
+                  appearance.theme == 'dark'
+                    ? 'border-slate-700 bg-[#2a2a2a] text-white placeholder:text-slate-500'
+                    : 'border-gray-100 bg-white text-gray-700 placeholder:text-gray-300'
+                }`}
               />
             </div>
             <div>
-              <label className='text-[10px] font-bold text-black uppercase tracking-widest block mb-2'>
+              <label className={`text-[10px] font-bold uppercase tracking-widest block mb-2 ${
+                appearance.theme == 'dark'
+                  ? 'text-slate-400'
+                  : 'text-black'
+              }`}>
                 DEGREE
               </label>
               <input
@@ -98,13 +127,21 @@ export function Modal ({ editingId }) {
                   setFormData({ ...formData, degree: e.target.value })
                 }
                 placeholder='Bachelor of Science'
-                className='w-full border border-gray-100 bg-white rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-1 focus:ring-[#6B4E42] placeholder:text-gray-300 transition-all text-gray-700'
+                className={`w-full border rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-1 focus:ring-[#6B4E42] transition-all ${
+                  appearance.theme == 'dark'
+                    ? 'border-slate-700 bg-[#2a2a2a] text-white placeholder:text-slate-500'
+                    : 'border-gray-100 bg-white text-gray-700 placeholder:text-gray-300'
+                }`}
               />
             </div>
           </div>
 
           <div>
-            <label className='text-[10px] font-bold text-black uppercase tracking-widest block mb-2'>
+            <label className={`text-[10px] font-bold uppercase tracking-widest block mb-2 ${
+              appearance.theme == 'dark'
+                ? 'text-slate-400'
+                : 'text-black'
+            }`}>
               FIELD OF STUDY
             </label>
             <input
@@ -114,13 +151,21 @@ export function Modal ({ editingId }) {
                 setFormData({ ...formData, field: e.target.value })
               }
               placeholder='Computer Science'
-              className='w-full border border-gray-100 bg-white rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-1 focus:ring-[#6B4E42] placeholder:text-gray-300 transition-all text-gray-700'
+              className={`w-full border rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-1 focus:ring-[#6B4E42] transition-all ${
+                appearance.theme == 'dark'
+                  ? 'border-slate-700 bg-[#2a2a2a] text-white placeholder:text-slate-500'
+                  : 'border-gray-100 bg-white text-gray-700 placeholder:text-gray-300'
+              }`}
             />
           </div>
 
           <div className='grid grid-cols-1 sm:grid-cols-2 gap-3'>
             <div>
-              <label className='text-[10px] font-bold text-black uppercase tracking-widest block mb-2'>
+              <label className={`text-[10px] font-bold uppercase tracking-widest block mb-2 ${
+                appearance.theme == 'dark'
+                  ? 'text-slate-400'
+                  : 'text-black'
+              }`}>
                 START YEAR
               </label>
               <input
@@ -130,11 +175,19 @@ export function Modal ({ editingId }) {
                   setFormData({ ...formData, startYear: e.target.value })
                 }
                 placeholder='2018'
-                className='w-full border border-gray-100 bg-white rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-1 focus:ring-[#6B4E42] placeholder:text-gray-300 transition-all text-gray-700'
+                className={`w-full border rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-1 focus:ring-[#6B4E42] transition-all ${
+                  appearance.theme == 'dark'
+                    ? 'border-slate-700 bg-[#2a2a2a] text-white placeholder:text-slate-500'
+                    : 'border-gray-100 bg-white text-gray-700 placeholder:text-gray-300'
+                }`}
               />
             </div>
             <div>
-              <label className='text-[10px] font-bold text-black uppercase tracking-widest block mb-2'>
+              <label className={`text-[10px] font-bold uppercase tracking-widest block mb-2 ${
+                appearance.theme == 'dark'
+                  ? 'text-slate-400'
+                  : 'text-black'
+              }`}>
                 END YEAR
               </label>
               <input
@@ -144,27 +197,47 @@ export function Modal ({ editingId }) {
                   setFormData({ ...formData, endYear: e.target.value })
                 }
                 placeholder='2022'
-                className='w-full border border-gray-100 bg-white rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-1 focus:ring-[#6B4E42] placeholder:text-gray-300 transition-all text-gray-700'
+                className={`w-full border rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-1 focus:ring-[#6B4E42] transition-all ${
+                  appearance.theme == 'dark'
+                    ? 'border-slate-700 bg-[#2a2a2a] text-white placeholder:text-slate-500'
+                    : 'border-gray-100 bg-white text-gray-700 placeholder:text-gray-300'
+                }`}
               />
             </div>
           </div>
 
           <div>
-            <label className='text-[10px] font-bold text-black uppercase tracking-widest block mb-2'>
+            <label className={`text-[10px] font-bold uppercase tracking-widest block mb-2 ${
+              appearance.theme == 'dark'
+                ? 'text-slate-400'
+                : 'text-black'
+            }`}>
               HIGHLIGHTS
             </label>
             <div className='space-y-3 mb-4'>
               {formData.highlights.map(highlight => (
                 <div
                   key={highlight.id}
-                  className='flex items-center justify-between gap-4 bg-[#F9F9F9] px-4 py-3 rounded-xl group transition-all'
+                  className={`flex items-center justify-between gap-4 px-4 py-3 rounded-xl group transition-all ${
+                    appearance.theme == 'dark'
+                      ? 'bg-[#2a2a2a]'
+                      : 'bg-[#F9F9F9]'
+                  }`}
                 >
-                  <span className='text-sm text-gray-500 flex-1'>
+                  <span className={`text-sm flex-1 ${
+                    appearance.theme == 'dark'
+                      ? 'text-slate-300'
+                      : 'text-gray-500'
+                  }`}>
                     {highlight.text}
                   </span>
                   <button
                     onClick={() => handleRemoveHighlight(highlight.id)}
-                    className='p-1 text-gray-300 hover:text-red-500 hover:bg-white rounded-lg transition-all'
+                    className={`p-1 rounded-lg transition-all ${
+                      appearance.theme == 'dark'
+                        ? 'text-slate-500 hover:text-red-500 hover:bg-red-900/30'
+                        : 'text-gray-300 hover:text-red-500 hover:bg-white'
+                    }`}
                   >
                     <X size={16} />
                   </button>
@@ -178,7 +251,11 @@ export function Modal ({ editingId }) {
                 value={highlightInput}
                 onChange={e => setHighlightInput(e.target.value)}
                 placeholder='Add a highlight...'
-                className='flex-1 border border-gray-100 bg-white rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-1 focus:ring-[#6B4E42] placeholder:text-gray-300 transition-all text-gray-700'
+                className={`flex-1 border rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-1 focus:ring-[#6B4E42] transition-all ${
+                  appearance.theme == 'dark'
+                    ? 'border-slate-700 bg-[#2a2a2a] text-white placeholder:text-slate-500'
+                    : 'border-gray-100 bg-white text-gray-700 placeholder:text-gray-300'
+                }`}
                 onKeyDown={e =>
                   e.key === 'Enter' && handleAddHighlight()
                 }
@@ -193,10 +270,18 @@ export function Modal ({ editingId }) {
           </div>
         </div>
 
-        <div className='flex items-center justify-end gap-4 px-8 py-6 bg-white'>
+        <div className={`flex items-center justify-end gap-4 px-8 py-6 border-t ${
+          appearance.theme == 'dark'
+            ? 'border-slate-700 bg-[#202020]'
+            : 'border-gray-200 bg-white'
+        }`}>
           <button
             onClick={closeModal}
-            className='px-10 py-3 text-sm font-bold text-gray-600 border border-gray-200 bg-white hover:bg-gray-50 rounded-full transition-all active:scale-95'
+            className={`px-10 py-3 text-sm font-bold rounded-full transition-all active:scale-95 ${
+              appearance.theme == 'dark'
+                ? 'text-slate-300 border border-slate-700 hover:bg-slate-800'
+                : 'text-gray-600 border border-gray-200 bg-white hover:bg-gray-50'
+            }`}
           >
             Cancel
           </button>

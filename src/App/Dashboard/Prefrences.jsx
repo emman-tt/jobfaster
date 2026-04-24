@@ -120,8 +120,8 @@ const Toggle = ({ active, onChange }) => (
     className={`w-11 h-6 rounded-full transition-all
         
          relative ${
-      active ? 'bg-[#f17e27]' : 'bg-slate-200 dark:bg-slate-800'
-    }`}
+           active ? 'bg-[#f17e27]' : 'bg-slate-200 dark:bg-slate-800'
+         }`}
   >
     <div
       className={`absolute top-1 w-4 h-4 bg-white rounded-full shadow-md transition-all ${
@@ -222,7 +222,11 @@ export default function Prefrences () {
             } border-slate-100 `}
           >
             <div className='flex items-center gap-3'>
-              <div className='p-2  dark:bg-slate-800 rounded-lg shadow-sm text-[#f17e27]'>
+              <div
+                className={`p-2  ${
+                  appearance.theme == 'dark' ? 'bg-gray-600' : ' bg-gray-50'
+                }  rounded-lg shadow-sm text-[#f17e27]`}
+              >
                 <Layout size={18} />
               </div>
               <div>
@@ -237,7 +241,7 @@ export default function Prefrences () {
                 </p>
               </div>
             </div>
-            <Toggle 
+            <Toggle
               active={appearance.compactMode}
               onChange={val => dispatch(setCompactMode(val))}
             />
@@ -314,9 +318,9 @@ export default function Prefrences () {
           <select
             value={exportPref.fileNaming}
             onChange={e => dispatch(setFileNaming(e.target.value))}
-            className={`w-full sm:w-72 px-4 py-2.5 rounded-lg border outline-none text-sm transition-all ${
-              appearance.theme === 'dark'
-                ? 'bg-slate-900 border-slate-800 text-white '
+            className={`w-full sm:w-72 px-8 py-2.5 rounded-lg border outline-none text-sm transition-all ${
+              appearance.theme == 'dark'
+                ? 'bg-[#2A2A2A] border-0 text-white '
                 : 'bg-white border-slate-200 text-slate-700 '
             }`}
           >

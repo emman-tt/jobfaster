@@ -41,15 +41,21 @@ export default function Projects ({ setEditingId }) {
             appearance.theme == 'dark' ? 'border-slate-700' : 'border-gray-200'
           }`}
         >
-          <h2 className={`text-lg font-bold flex items-center ${
-            appearance.theme == 'dark' ? 'text-white' : 'text-gray-900'
-          }`}>
+          <h2
+            className={`text-lg font-bold flex items-center ${
+              appearance.theme == 'dark' ? 'text-white' : 'text-gray-900'
+            }`}
+          >
             <span className='inline-block w-1 h-6 bg-[#f56010] mr-3'></span>
             Projects
           </h2>
-          <button className={`p-1 rounded-lg transition-colors ${
-            appearance.theme == 'dark' ? 'hover:bg-slate-700' : 'hover:bg-gray-200'
-          }`}>
+          <button
+            className={`p-1 rounded-lg transition-colors ${
+              appearance.theme == 'dark'
+                ? 'hover:bg-slate-700'
+                : 'hover:bg-gray-200'
+            }`}
+          >
             <ChevronDown
               size={20}
               className={`transition-transform duration-200 ${
@@ -74,18 +80,31 @@ export default function Projects ({ setEditingId }) {
               >
                 <div className='w-full flex items-center justify-between p-4 transition-colors'>
                   <div className='flex items-center gap-3 flex-1'>
-                    <GripVertical size={16} className={`shrink-0 ${
-                      appearance.theme == 'dark' ? 'text-slate-400' : 'text-black'
-                    }`} />
+                    <GripVertical
+                      size={16}
+                      className={`shrink-0 ${
+                        appearance.theme == 'dark'
+                          ? 'text-slate-400'
+                          : 'text-black'
+                      }`}
+                    />
                     <div className='text-left'>
-                      <p className={`text-sm font-semibold ${
-                        appearance.theme == 'dark' ? 'text-white' : 'text-gray-900'
-                      }`}>
+                      <p
+                        className={`text-sm font-semibold ${
+                          appearance.theme == 'dark'
+                            ? 'text-white'
+                            : 'text-gray-900'
+                        }`}
+                      >
                         {project.name || 'Untitled'}
                       </p>
-                      <p className={`text-xs ${
-                        appearance.theme == 'dark' ? 'text-slate-400' : 'text-gray-500'
-                      }`}>
+                      <p
+                        className={`text-xs ${
+                          appearance.theme == 'dark'
+                            ? 'text-slate-400'
+                            : 'text-gray-500'
+                        }`}
+                      >
                         {project.techStack?.length > 0
                           ? project.techStack.map(t => t.name).join(', ')
                           : 'No technologies added'}
@@ -98,7 +117,11 @@ export default function Projects ({ setEditingId }) {
                         e.stopPropagation()
                         openModal(project.id)
                       }}
-                      className='p-1.5 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors'
+                      className={`p-1.5 rounded-lg transition-colors ${
+                        appearance.theme == 'dark'
+                          ? 'text-slate-400 hover:bg-slate-700'
+                          : 'text-blue-600 hover:bg-blue-50'
+                      }`}
                       title='Edit'
                     >
                       <Edit2 size={16} />
@@ -108,7 +131,11 @@ export default function Projects ({ setEditingId }) {
                         e.stopPropagation()
                         handleDeleteProject(project.id)
                       }}
-                      className='p-1.5 text-red-500 hover:bg-red-50 rounded-lg transition-colors'
+                      className={`p-1.5 rounded-lg transition-colors ${
+                        appearance.theme == 'dark'
+                          ? 'text-slate-400 hover:bg-red-900/30'
+                          : 'text-red-500 hover:bg-red-50'
+                      }`}
                       title='Delete'
                     >
                       <Trash2 size={16} />
