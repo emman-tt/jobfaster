@@ -14,6 +14,8 @@ import { boardData } from './boardData'
 import Header from './Header'
 import { DragDropProvider } from '@dnd-kit/react'
 import { Draggable, Droppable } from '../../../components/dragger'
+import { useDispatch } from 'react-redux'
+import { openFileDetails } from '../../../store/modalSlice'
 
 const IconMap = {
   Bookmark: Bookmark,
@@ -25,7 +27,7 @@ const IconMap = {
 
 export default function JobBoard () {
   const [kanban, setKanban] = useState(boardData)
-  const handleDragEnd = (event) => {
+  const handleDragEnd = event => {
     const { operation, canceled } = event
 
     if (canceled || !operation.target) {
@@ -34,7 +36,7 @@ export default function JobBoard () {
 
     const source = operation.source
     const target = operation.target
-    
+
     const sourceData = source.id.split(',')
     const sourceParent = sourceData[0]
     const sourceCardId = sourceData[1]
@@ -64,7 +66,9 @@ export default function JobBoard () {
         return
       }
 
-      const newCards = sourceColumn.cards.filter(item => item.id != sourceCardId)
+      const newCards = sourceColumn.cards.filter(
+        item => item.id != sourceCardId
+      )
       const newSource = { ...sourceColumn, cards: newCards }
 
       setKanban(prev =>
@@ -82,7 +86,7 @@ export default function JobBoard () {
     }
 
     const targetData = targetId.split(',')
-    
+
     if (targetData.length === 2) {
       const targetColId = targetData[0]
       const targetCardId = targetData[1]
@@ -106,7 +110,9 @@ export default function JobBoard () {
       }
 
       if (targetCol) {
-        const newCards = sourceColumn.cards.filter(item => item.id != sourceCardId)
+        const newCards = sourceColumn.cards.filter(
+          item => item.id != sourceCardId
+        )
         const newSource = { ...sourceColumn, cards: newCards }
 
         setKanban(prev =>
@@ -126,7 +132,7 @@ export default function JobBoard () {
   return (
     <div className='flex flex-col h-full w-full bg-white overflow-hidden'>
       <Header />
-      <div className='flex-1 overflow-x-auto p-5 scrollbar-hide'>
+      <div className=' w-[80vw] overflow-x-auto p-5 pr-0 scrollbar-thin '>
         <DragDropProvider onDragEnd={handleDragEnd}>
           <div className='flex gap-4 min-w-max h-full items-start'>
             {kanban.map(column => (
@@ -192,8 +198,23 @@ function BoardColumn ({ column }) {
 }
 
 function JobCard ({ card }) {
+  const dispatch = useDispatch()
+
+  function handleOpenDetails () {
+    const fileData = {
+      id: card.id,
+      metaData: {
+        name: card.title,
+        description: card.description,
+        extension: 'pdf',
+        size: 245000
+      }
+    }
+    dispatch(openFileDetails(fileData))
+  }
+
   return (
-    <div className='bg-white p-1.5 pl-3 h-30 rounded-xl shadow-sm border border-gray-200/50 group relative hover:border-gray-300 transition-all cursor-pointer'>
+    <div onClick={handleOpenDetails} className='bg-white p-1.5 pl-3 h-30 rounded-xl shadow-sm border border-gray-200/50 group relative hover:border-gray-300 transition-all cursor-pointer'>
       <button className='absolute top-3 right-3 text-gray-300 hover:text-gray-500 opacity-0 group-hover:opacity-100 transition-opacity'>
         <MoreHorizontal className='w-3.5 h-3.5' />
       </button>

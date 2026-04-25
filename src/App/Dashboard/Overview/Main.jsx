@@ -12,7 +12,7 @@ import {
 import Folder from '../../../components/Folder'
 import { useDispatch, useSelector } from 'react-redux'
 import { useLocation, useNavigate, useParams } from 'react-router-dom'
-import { toggleModals } from '../../../store/modalSlice'
+import { toggleModals, openFileDetails } from '../../../store/modalSlice'
 import FilePreview from '../Resume/FilePreview'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import {
@@ -522,6 +522,7 @@ export default function Main () {
           mutation={mutation}
           config={menuConfig}
           onOpen={() => openFolder(menuConfig.item)}
+          onEditDetails={() => dispatch(openFileDetails(menuConfig.item))}
           onClose={() => setMenuConfig(prev => ({ ...prev, visible: false }))}
         />
       )}
@@ -529,7 +530,7 @@ export default function Main () {
   )
 }
 
-function FolderMenu ({ config, onClose, onOpen, mutation }) {
+function FolderMenu ({ config, onClose, onOpen, onEditDetails, mutation }) {
   return (
     <div
       className='fixed z-50 bg-white shadow-xl border border-slate-100/50 rounded-2xl py-1.5 w-25 p-0 flex flex-col font-satoshi'
@@ -540,6 +541,17 @@ function FolderMenu ({ config, onClose, onOpen, mutation }) {
       }}
       onClick={e => e.stopPropagation()}
     >
+      <button
+        onClick={() => {
+          onEditDetails()
+          onClose()
+        }}
+        className='flex items-center rounded-[inherit] gap-2 px-4 py-2 hover:bg-slate-50 text-slate-700 text-[10px] font-semibold transition-all cursor-pointer'
+      >
+        <Pencil size={11} strokeWidth={2.5} />
+        <span>Edit Details</span>
+      </button>
+
       <button
         onClick={() => {
           onOpen()
@@ -560,16 +572,6 @@ function FolderMenu ({ config, onClose, onOpen, mutation }) {
         <Download className=' shrink-0' size={11} strokeWidth={2.5} />
 
         <span>Download</span>
-      </button>
-
-      <button
-        onClick={() => {
-          onClose()
-        }}
-        className='flex items-center gap-2 px-4 py-2 hover:bg-slate-50 text-slate-700 text-[10px] font-semibold transition-all cursor-pointer'
-      >
-        <Pencil size={11} strokeWidth={2.5} />
-        <span>Rename</span>
       </button>
 
       <div className='h-px bg-slate-100 my-1 mx-3' />

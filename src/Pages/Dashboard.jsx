@@ -1,4 +1,4 @@
-import { Outlet, useNavigate } from 'react-router-dom'
+import { Outlet, useLocation, useNavigate } from 'react-router-dom'
 import Sidebar from '../App/Dashboard/Sidebar'
 import { useSelector } from 'react-redux'
 import Overlay from '../components/Overlay'
@@ -18,6 +18,7 @@ import { dumpEmailDetails } from '../store/emailSlice'
 import { toast } from 'sonner'
 import { toastPresets } from '../components/toasters'
 import ChooseTemplate from '../App/Dashboard/Overview/Modals/ChooseTemplate'
+import FileDetails from '../App/Dashboard/Overview/Modals/FileDetails'
 import { toggleModals } from '../store/modalSlice'
 import { useQuery } from '@tanstack/react-query'
 import { getActivity } from '../services/activity'
@@ -29,7 +30,8 @@ export default function Dashboard () {
   const { appearance } = useSelector(state => state.preferences)
   const allFilesOnly = getAllFiles(programs)
   const allFilesOnlyRef = useRef(allFilesOnly)
-
+  const location = useLocation()
+  const actualPath = location.pathname.split('/').at(-1)
   const navigate = useNavigate()
   const dispatch = useDispatch()
 
@@ -93,7 +95,7 @@ export default function Dashboard () {
   })
 
   const activities = data?.data
-  //
+
   return (
     <section
       className={`flex relative ${
@@ -114,23 +116,24 @@ export default function Dashboard () {
             appearance.theme == 'dark' ? 'text-white' : 'text-black'
           }`}
         >
-          {!showRightbar ? (
-            <PanelRightOpenIcon
-              onClick={() => {
-                openRightbar()
-              }}
-              className={`w-6  cursor-pointer h-6 mt-5 mr-7   `}
-            />
-          ) : (
-            <PanelLeftOpenIcon
-              onClick={() => {
-                closeRightbar()
-              }}
-              className={`w-6 cursor-pointer h-6 mt-5 `}
-            />
-          )}
+          {actualPath !== 'board' &&
+            (!showRightbar ? (
+              <PanelRightOpenIcon
+                onClick={() => {
+                  openRightbar()
+                }}
+                className={`w-6  cursor-pointer h-6 mt-5 mr-7   `}
+              />
+            ) : (
+              <PanelLeftOpenIcon
+                onClick={() => {
+                  closeRightbar()
+                }}
+                className={`w-6 cursor-pointer h-6 mt-5 `}
+              />
+            ))}
         </div>
-        {showRightbar && (
+        {showRightbar && actualPath !== 'board' && (
           <Rightbar
             data={activities}
             className={
@@ -188,6 +191,16 @@ export default function Dashboard () {
             } backdrop-blur-sm`}
           />
           <ChooseTemplate />
+        </>
+      )}
+      {modals.fileDetails && (
+        <>
+          <Overlay
+            className={` ${
+              appearance.theme == 'dark' ? 'bg-[#00000000]' : 'bg-[#e0e4e582]'
+            } backdrop-blur-sm`}
+          />
+          <FileDetails />
         </>
       )}
     </section>

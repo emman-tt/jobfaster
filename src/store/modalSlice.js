@@ -11,8 +11,10 @@ const initialState = {
     saveResume: false,
     selectResume: false,
     chooseTemplate: false,
-    showTemplates: false
-  }
+    showTemplates: false,
+    fileDetails: false
+  },
+  selectedFile: null
 }
 export const modalSlice = createSlice({
   name: 'modal',
@@ -20,8 +22,16 @@ export const modalSlice = createSlice({
   reducers: {
     toggleModals: (state, action) => {
       state.modals[action.payload] = !state.modals[action.payload]
+    },
+    openFileDetails: (state, action) => {
+      state.modals.fileDetails = true
+      state.selectedFile = action.payload
+    },
+    closeFileDetails: (state) => {
+      state.modals.fileDetails = false
+      state.selectedFile = null
     }
   }
 })
 
-export const { toggleModals, setShowTemplates } = modalSlice.actions
+export const { toggleModals, setShowTemplates, openFileDetails, closeFileDetails } = modalSlice.actions
