@@ -14,7 +14,7 @@ import {
 } from 'lucide-react'
 import { useDispatch, useSelector } from 'react-redux'
 import { toggleModals } from '../../../store/modalSlice'
-import { connector } from '../../../hooks/useSocket'
+import { connector } from '../../../services/useSocket'
 import useClickOutside from '../../../hooks/useClick'
 import { saveJobDetails } from '../../../store/aiSlice'
 export default function Job () {
@@ -96,8 +96,7 @@ export default function Job () {
 
         <form onSubmit={handleSubmit} className='space-y-6'>
           <div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
-            {/* Job Title */}
-            <div className='space-y-2'>
+            {/* <div className='space-y-2'>
               <label
                 htmlFor='title'
                 className={`block text-sm font-bold ml-1 ${
@@ -122,10 +121,10 @@ export default function Job () {
                   }`}
                 />
               </div>
-            </div>
+            </div> */}
 
             {/* Company */}
-            <div className='space-y-2'>
+            {/* <div className='space-y-2'>
               <label
                 htmlFor='company'
                 className={`block text-sm font-bold ml-1 ${
@@ -150,12 +149,11 @@ export default function Job () {
                   }`}
                 />
               </div>
-            </div>
+            </div> */}
           </div>
 
-          <div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
-            {/* Hiring Manager */}
-            <div className='space-y-2'>
+          {/* Hiring Manager */}
+          {/* <div className='space-y-2'>
               <label
                 htmlFor='hiringManager'
                 className={`block text-sm font-bold ml-1 ${
@@ -179,10 +177,10 @@ export default function Job () {
                   }`}
                 />
               </div>
-            </div>
+            </div> */}
 
-            {/* Job Source */}
-            <div className='space-y-2'>
+          {/* Job Source */}
+          {/* <div className='space-y-2'>
               <label
                 htmlFor='source'
                 className={`block text-sm font-bold ml-1 ${
@@ -206,28 +204,92 @@ export default function Job () {
                   }`}
                 />
               </div>
+            </div> */}
+
+          {/* Location & Tone Grid */}
+
+          {/* <div className='space-y-2'>
+            <label
+              htmlFor='location'
+              className={`block text-sm font-bold ml-1 ${
+                appearance.theme == 'dark' ? 'text-white' : 'text-slate-700'
+              }`}
+            >
+              Location
+            </label>
+            <div className='relative'>
+              <input
+                type='text'
+                id='location'
+                name='location'
+                value={job.location}
+                onChange={handleChange}
+                placeholder='e.g. San Francisco (Remote)'
+                className={`w-full pl-5 pr-4 py-3.5 border rounded-2xl outline-none transition-all text-sm font-medium ${
+                  appearance.theme == 'dark'
+                    ? 'bg-[#202020]  border-0 text-white placeholder:text-slate-500 placeholder:text-xs'
+                    : 'border-gray-200 focus:border-orange-400 focus:bg-white'
+                }`}
+              />
+            </div>
+          </div> */}
+
+          {/* Job Description */}
+          <div className='space-y-2'>
+            <label
+              htmlFor='description'
+              className={`block text-sm font-bold ml-1 ${
+                appearance.theme == 'dark' ? 'text-white' : 'text-slate-700'
+              }`}
+            >
+              Job Description <span className='text-orange-500'>*</span>
+            </label>
+            <div className='relative'>
+              <div
+                className={`absolute left-4 top-5 ${
+                  appearance.theme == 'dark'
+                    ? 'text-slate-500'
+                    : 'text-slate-400'
+                }`}
+              >
+                <FileText className='w-4 h-4' />
+              </div>
+              <textarea
+                id='description'
+                name='description'
+                required
+                rows={6}
+                value={job.description}
+                onChange={handleChange}
+                placeholder='Paste the full job description '
+                className={`w-full pl-11 pr-4 py-4 border rounded-3xl outline-none transition-all text-sm font-medium resize-none min-h-40 ${
+                  appearance.theme == 'dark'
+                    ? 'bg-[#202020]  border-0 text-white placeholder:text-slate-500 placeholder:text-xs'
+                    : 'border-gray-200 focus:border-orange-400 focus:bg-white'
+                }`}
+              />
             </div>
           </div>
 
-          {/* Location & Tone Grid */}
-          <div className='grid grid-cols-1 md:grid-cols-2 gap-6' ref={toneRef}>
-            <div className='space-y-2'>
+          {/* Hiring Contact Email */}
+          <div className=' flex w-full gap-5'>
+            <div className='space-y-2 w-full'>
               <label
-                htmlFor='location'
+                htmlFor='email'
                 className={`block text-sm font-bold ml-1 ${
                   appearance.theme == 'dark' ? 'text-white' : 'text-slate-700'
                 }`}
               >
-                Location
+                Hiring Contact Email<span className='text-orange-500'>*</span>
               </label>
               <div className='relative'>
                 <input
-                  type='text'
-                  id='location'
-                  name='location'
-                  value={job.location}
+                  type='email'
+                  id='email'
+                  name='email'
+                  value={job.email}
                   onChange={handleChange}
-                  placeholder='e.g. San Francisco (Remote)'
+                  placeholder='hiring@techcorp.com'
                   className={`w-full pl-5 pr-4 py-3.5 border rounded-2xl outline-none transition-all text-sm font-medium ${
                     appearance.theme == 'dark'
                       ? 'bg-[#202020]  border-0 text-white placeholder:text-slate-500 placeholder:text-xs'
@@ -236,8 +298,7 @@ export default function Job () {
                 />
               </div>
             </div>
-
-            <div className='space-y-2 relative'>
+            <div className='space-y-2 relative w-full'>
               <label
                 className={`block text-sm font-bold ml-1 ${
                   appearance.theme == 'dark' ? 'text-white' : 'text-slate-700'
@@ -300,70 +361,6 @@ export default function Job () {
                   </li>
                 </ul>
               )}
-            </div>
-          </div>
-
-          {/* Job Description */}
-          <div className='space-y-2'>
-            <label
-              htmlFor='description'
-              className={`block text-sm font-bold ml-1 ${
-                appearance.theme == 'dark' ? 'text-white' : 'text-slate-700'
-              }`}
-            >
-              Job Description <span className='text-orange-500'>*</span>
-            </label>
-            <div className='relative'>
-              <div
-                className={`absolute left-4 top-5 ${
-                  appearance.theme == 'dark'
-                    ? 'text-slate-500'
-                    : 'text-slate-400'
-                }`}
-              >
-                <FileText className='w-4 h-4' />
-              </div>
-              <textarea
-                id='description'
-                name='description'
-                required
-                rows={6}
-                value={job.description}
-                onChange={handleChange}
-                placeholder='Paste the full job description or job URL here...'
-                className={`w-full pl-11 pr-4 py-4 border rounded-3xl outline-none transition-all text-sm font-medium resize-none min-h-40 ${
-                  appearance.theme == 'dark'
-                    ? 'bg-[#202020]  border-0 text-white placeholder:text-slate-500 placeholder:text-xs'
-                    : 'border-gray-200 focus:border-orange-400 focus:bg-white'
-                }`}
-              />
-            </div>
-          </div>
-
-          {/* Hiring Contact Email */}
-          <div className='space-y-2'>
-            <label
-              htmlFor='email'
-              className={`block text-sm font-bold ml-1 ${
-                appearance.theme == 'dark' ? 'text-white' : 'text-slate-700'
-              }`}
-            >
-              Hiring Contact Email<span className='text-orange-500'>*</span>
-            </label>
-            <div className='relative'>
-              <input
-                type='email'
-                id='email'
-                name='email'
-                value={job.email}
-                onChange={handleChange}
-                placeholder='hiring@techcorp.com'
-                className={`w-full pl-5 pr-4 py-3.5 border rounded-2xl outline-none transition-all text-sm font-medium ${
-                  appearance.theme == 'dark'
-                    ? 'bg-[#202020]  border-0 text-white placeholder:text-slate-500 placeholder:text-xs'
-                    : 'border-gray-200 focus:border-orange-400 focus:bg-white'
-                }`}
-              />
             </div>
           </div>
 

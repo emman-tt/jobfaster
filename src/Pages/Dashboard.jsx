@@ -11,7 +11,7 @@ import { PanelLeftOpenIcon, PanelRightOpenIcon } from 'lucide-react'
 import { useDispatch } from 'react-redux'
 import { useEffect, useRef } from 'react'
 import SelectResume from '../App/Dashboard/Job/Modals/SelectResume'
-import { onJobApply } from '../hooks/useSocket'
+import { onJobApply } from '../services/useSocket'
 import { saveProgram } from '../store/filesSlice'
 import { getAllFiles } from '../utils/getAllFiles'
 import { dumpEmailDetails } from '../store/emailSlice'
@@ -44,14 +44,13 @@ export default function Dashboard () {
 
   useEffect(() => {
     onJobApply(data => {
+      toast.dismiss('ai-processing')
       if (data) {
-        toast.dismiss('ai-processing')
         const status = data.status
         const response = data.response
         const jobId = data.jobId
         const timestamp = data.timestamp
         const fileId = data.fileId
-
         if (status == true) {
           toast.success('Ready!', {
             ...toastPresets.aiSuccess(

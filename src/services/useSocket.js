@@ -5,8 +5,7 @@ let ws = null
 let isConnecting = false
 
 const callbacks = {
-  JOB_APPLY: null,
-  
+  JOB_APPLY: null
 }
 
 export function connector () {
@@ -36,13 +35,13 @@ export function connector () {
   ws.onmessage = event => {
     const res = JSON.parse(event.data)
 
-    const { type, data } = res
-
-    if (type == 'JOB_APPLY' && callbacks.JOB_APPLY) {
-      return callbacks.JOB_APPLY(data)
-    }  else {
+    console.log(res)
+    const { type, response } = res
+    if (callbacks.JOB_APPLY) {
+      return callbacks.JOB_APPLY(response)
+    } else {
       console.warn(
-        'No registered callback fot this process or callback wasnt called and added'
+        'No registered callback for this process or callback wasnt called and added'
       )
     }
   }
@@ -78,7 +77,8 @@ export function sendMessage (type, data) {
 
   toast.loading(type == 'JOB_APPLY' ? 'AI Processing' : 'Resume Processing', {
     ...toastPresets.aiProcessing(),
-    description: 'Updating and saving resume to our system',
+    description:
+      'Generating a tailored resume and and email template for the job',
     id: 'ai-processing',
     position: 'top-right'
   })
@@ -90,4 +90,3 @@ export function sendMessage (type, data) {
 export function onJobApply (cb) {
   callbacks.JOB_APPLY = cb
 }
-

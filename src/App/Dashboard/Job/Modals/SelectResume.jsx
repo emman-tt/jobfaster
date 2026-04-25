@@ -14,11 +14,9 @@ import {
 import { useDispatch, useSelector } from 'react-redux'
 import { toggleModals } from '../../../../store/modalSlice'
 import UploadResume from './UploadResume'
-
 import { toggleNotification } from '../../../../store/notificationSlice'
-
 import { GetFileIcon } from '../../../../components/getFileIcon'
-import { sendMessage } from '../../../../hooks/useSocket'
+import { sendMessage } from '../../../../services/useSocket'
 import { getAllFiles } from '../../../../utils/getAllFiles'
 
 export default function SelectResume () {
@@ -27,7 +25,7 @@ export default function SelectResume () {
   const [uploadedFile, setUploadedFile] = useState({})
   const dispatch = useDispatch()
   const { appearance } = useSelector(state => state.preferences)
-  
+
   const { programs } = useSelector(state => state.files)
   const { job } = useSelector(state => state.ai)
   const [selected, setSelected] = useState(null)
@@ -36,45 +34,30 @@ export default function SelectResume () {
   }
 
   function navigateNext () {
-    if (activeTab === 'upload') {
-      if (!uploadedFile || !uploadedFile.file) {
-        return console.log('no file exists')
-      }
-
-      dispatch(toggleNotification({ category: 'tailor', value: true }))
-      const formData = new FormData()
-      formData.append('file', uploadedFile.file)
-
-    } else {
-      if (!selected) {
-        return console.log('nothing selected')
-      }
-      const all = getAllFiles(programs)
-      const found = all.find(item => item.id == selected)
-      if (!found) {
-        throw new Error('no data as such found')
-      }
-      const use = found.content
-      const data = {
-        job: {
-          ...job
-        },
-        name: use.name,
-        email: use.email,
-        phone: use.phone,
-        location: use.location,
-        jobTitle: use.jobTitle,
-        education: use.education,
-        skills: use.skills,
-        kindsOfWork: use.kindsOfWork,
-        summary: use.summary,
-        showSummary: use.showSummary,
-        experience: use.experience,
-        fileId: found.id
-      }
-      sendMessage('tailor', data)
-      closeModal()
+    if (!selected) {
+      return console.log('nothing selected')
     }
+    const all = getAllFiles(programs)
+    const found = all.find(item => item.id == selected)
+    if (!found) {
+      throw new Error('no data as such found')
+    }
+    const use = found.content
+    const data = {
+      job: {
+        ...job
+      },
+      name: use.name,
+      email: use.email,
+      phone: use.phone,
+      education: use.education,
+      summary: use.summary,
+      showSummary: use.showSummary,
+      experience: use.experience,
+      fileId: found.id
+    }
+    sendMessage('tailor', data)
+    closeModal()
   }
 
   const getRecentFiles = (programs, limit = 5) => {
@@ -100,42 +83,54 @@ export default function SelectResume () {
   )
 
   return (
-    <div className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-lg rounded-3xl shadow-2xl overflow-hidden font-satoshi min-h-135 z-50 ${
-      appearance.theme == 'dark'
-        ? 'bg-[#2a2a2a] border border-slate-700'
-        : 'bg-white border border-gray-100'
-    }`}>
+    <div
+      className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-lg rounded-3xl shadow-2xl overflow-hidden font-satoshi min-h-135 z-50 ${
+        appearance.theme == 'dark'
+          ? 'bg-[#2a2a2a] border border-slate-700'
+          : 'bg-white border border-gray-100'
+      }`}
+    >
       <div className='p-6'>
         {/* Header */}
         <div className='flex justify-between items-center mb-6'>
-          <h2 className={`text-xl font-bold font-IBM ${
-            appearance.theme == 'dark' ? 'text-white' : 'text-slate-900'
-          }`}>
+          <h2
+            className={`text-xl font-bold font-IBM ${
+              appearance.theme == 'dark' ? 'text-white' : 'text-slate-900'
+            }`}
+          >
             Select Resume
           </h2>
           <button
             onClick={closeModal}
             className={`p-2 rounded-full transition-colors ${
-              appearance.theme == 'dark' ? 'hover:bg-slate-700' : 'hover:bg-gray-100'
+              appearance.theme == 'dark'
+                ? 'hover:bg-slate-700'
+                : 'hover:bg-gray-100'
             }`}
           >
-            <X className={`w-5 h-5 ${
-              appearance.theme == 'dark' ? 'text-slate-400' : 'text-gray-500'
-            }`} />
+            <X
+              className={`w-5 h-5 ${
+                appearance.theme == 'dark' ? 'text-slate-400' : 'text-gray-500'
+              }`}
+            />
           </button>
         </div>
 
         {/* Toggle */}
         <div className='flex items-center justify-between mb-6'>
-          <div className={`flex p-1 rounded-full gap-1 ${
-            appearance.theme == 'dark' ? 'bg-[#202020]' : 'bg-gray-100'
-          }`}>
+          <div
+            className={`flex p-1 rounded-full gap-1 ${
+              appearance.theme == 'dark' ? 'bg-[#202020]' : 'bg-gray-100'
+            }`}
+          >
             <button
               onClick={() => setActiveTab('recent')}
               className={`px-6 py-2 rounded-full text-sm font-semibold transition-all ${
                 activeTab === 'recent'
                   ? 'bg-[#f17e27] text-white'
-                  : appearance.theme == 'dark' ? 'text-slate-400 hover:text-white' : 'text-gray-500 hover:text-slate-700'
+                  : appearance.theme == 'dark'
+                  ? 'text-slate-400 hover:text-white'
+                  : 'text-gray-500 hover:text-slate-700'
               }`}
             >
               Recent
@@ -145,29 +140,37 @@ export default function SelectResume () {
               className={`px-6 py-2 rounded-full text-sm font-semibold transition-all ${
                 activeTab === 'all'
                   ? 'bg-[#f17e27] text-white'
-                  : appearance.theme == 'dark' ? 'text-slate-400 hover:text-white' : 'text-gray-500 hover:text-slate-700'
+                  : appearance.theme == 'dark'
+                  ? 'text-slate-400 hover:text-white'
+                  : 'text-gray-500 hover:text-slate-700'
               }`}
             >
               All
             </button>
           </div>
-          <button className={`p-2 border rounded-full transition-colors ${
-            appearance.theme == 'dark'
-              ? 'border-slate-700 hover:bg-slate-700'
-              : 'border-gray-200 hover:bg-gray-50'
-          }`}>
-            <SlidersHorizontal className={`w-5 h-5 ${
-              appearance.theme == 'dark' ? 'text-slate-400' : 'text-gray-600'
-            }`} />
+          <button
+            className={`p-2 border rounded-full transition-colors ${
+              appearance.theme == 'dark'
+                ? 'border-slate-700 hover:bg-slate-700'
+                : 'border-gray-200 hover:bg-gray-50'
+            }`}
+          >
+            <SlidersHorizontal
+              className={`w-5 h-5 ${
+                appearance.theme == 'dark' ? 'text-slate-400' : 'text-gray-600'
+              }`}
+            />
           </button>
         </div>
 
         {/* Search Bar */}
         {activeTab !== 'upload' && (
           <div className='relative'>
-            <Search className={`absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 ${
-              appearance.theme == 'dark' ? 'text-slate-500' : 'text-gray-400'
-            }`} />
+            <Search
+              className={`absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 ${
+                appearance.theme == 'dark' ? 'text-slate-500' : 'text-gray-400'
+              }`}
+            />
             <input
               type='text'
               placeholder='Search resumes...'
@@ -185,24 +188,26 @@ export default function SelectResume () {
 
       {/* Active View */}
 
-      {activeTab == 'upload' ? (
-        <UploadResume file={uploadedFile} setFile={setUploadedFile} />
-      ) : (
-        <Files
-          selected={selected}
-          setSelected={setSelected}
-          data={activeTab == 'recent' ? filteredRecent : filteredAll}
-        />
-      )}
+      <Files
+        selected={selected}
+        setSelected={setSelected}
+        data={activeTab == 'recent' ? filteredRecent : filteredAll}
+      />
 
       {/* Footer */}
-      <div className={`p-6 py-2 border-t flex justify-between items-center ${
-        appearance.theme == 'dark' ? 'border-slate-700 bg-[#202020]' : 'border-gray-100 bg-gray-50/50'
-      }`}>
+      <div
+        className={`p-6 py-2 border-t flex justify-between items-center ${
+          appearance.theme == 'dark'
+            ? 'border-slate-700 bg-[#202020]'
+            : 'border-gray-100 bg-gray-50/50'
+        }`}
+      >
         <button
           onClick={closeModal}
           className={`px-6 py-2.5 text-sm font-bold transition-colors ${
-            appearance.theme == 'dark' ? 'text-slate-400 hover:text-white' : 'text-slate-500 hover:text-slate-700'
+            appearance.theme == 'dark'
+              ? 'text-slate-400 hover:text-white'
+              : 'text-slate-500 hover:text-slate-700'
           }`}
         >
           Cancel
@@ -234,29 +239,39 @@ function Files ({ data, setSelected, selected }) {
               resume.id == selected
                 ? 'bg-[#f17e27]'
                 : appearance.theme == 'dark'
-                  ? 'hover:bg-[#202020] border-slate-700'
-                  : 'hover:bg-slate-50 border-gray-50'
+                ? 'hover:bg-[#202020] border-slate-700'
+                : 'hover:bg-slate-50 border-gray-50'
             }`}
           >
             <div className='flex items-center gap-4'>
-              <div className={`w-10 h-10 rounded-xl flex items-center justify-center transition-all ${
-                appearance.theme == 'dark' ? 'bg-[#202020]' : 'bg-gray-200'
-              }`}>
+              <div
+                className={`w-10 h-10 rounded-xl flex items-center justify-center transition-all ${
+                  appearance.theme == 'dark' ? 'bg-[#202020]' : 'bg-gray-200'
+                }`}
+              >
                 {<GetFileIcon extension={resume.extension} />}
               </div>
               <div>
-                <h3 className={`text-sm font-bold truncate max-w-45 ${
-                  resume.id == selected
-                    ? 'text-white'
-                    : appearance.theme == 'dark' ? 'text-white' : 'text-slate-900'
-                }`}>
+                <h3
+                  className={`text-sm font-bold truncate max-w-45 ${
+                    resume.id == selected
+                      ? 'text-white'
+                      : appearance.theme == 'dark'
+                      ? 'text-white'
+                      : 'text-slate-900'
+                  }`}
+                >
                   {resume.name}
                 </h3>
-                <p className={`text-[11px] font-medium ${
-                  resume.id == selected
-                    ? 'text-white/70'
-                    : appearance.theme == 'dark' ? 'text-slate-400' : 'text-gray-500'
-                }`}>
+                <p
+                  className={`text-[11px] font-medium ${
+                    resume.id == selected
+                      ? 'text-white/70'
+                      : appearance.theme == 'dark'
+                      ? 'text-slate-400'
+                      : 'text-gray-500'
+                  }`}
+                >
                   {resume.time}
                 </p>
               </div>
@@ -271,35 +286,49 @@ function Files ({ data, setSelected, selected }) {
                   </div>
                 </div>
               ) : (
-                <div className={`px-2 py-1 text-[10px] font-bold rounded ${
-                  resume.id == selected
-                    ? 'bg-white/20 text-white'
-                    : appearance.theme == 'dark'
+                <div
+                  className={`px-2 py-1 text-[10px] font-bold rounded ${
+                    resume.id == selected
+                      ? 'bg-white/20 text-white'
+                      : appearance.theme == 'dark'
                       ? 'bg-[#202020] text-slate-300 border border-slate-700'
                       : 'border border-gray-200 text-gray-600 bg-white'
-                }`}>
+                  }`}
+                >
                   {resume.size}mb
                 </div>
               )}
-              <button className={`p-1 rounded-lg transition-colors ${
-                resume.id == selected
-                  ? 'hover:bg-white/20'
-                  : appearance.theme == 'dark'
+              <button
+                className={`p-1 rounded-lg transition-colors ${
+                  resume.id == selected
+                    ? 'hover:bg-white/20'
+                    : appearance.theme == 'dark'
                     ? 'hover:bg-slate-700'
                     : 'hover:bg-gray-200'
-              }`}>
-                <MoreVertical className={`w-4 h-4 ${
-                  resume.id == selected ? 'text-white' : appearance.theme == 'dark' ? 'text-slate-400' : 'text-gray-400'
-                }`} />
+                }`}
+              >
+                <MoreVertical
+                  className={`w-4 h-4 ${
+                    resume.id == selected
+                      ? 'text-white'
+                      : appearance.theme == 'dark'
+                      ? 'text-slate-400'
+                      : 'text-gray-400'
+                  }`}
+                />
               </button>
             </div>
           </div>
         ))
       ) : (
         <div className='text-center py-10'>
-          <p className={`text-sm ${
-            appearance.theme == 'dark' ? 'text-slate-500' : 'text-gray-400'
-          }`}>No resumes found</p>
+          <p
+            className={`text-sm ${
+              appearance.theme == 'dark' ? 'text-slate-500' : 'text-gray-400'
+            }`}
+          >
+            No resumes found
+          </p>
         </div>
       )}
     </div>

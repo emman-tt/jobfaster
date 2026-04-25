@@ -3,7 +3,6 @@ import { createSlice } from '@reduxjs/toolkit'
 const initialState = {
   corrections: [],
   correctionsAnswers: [],
-  layoutId: 1,
   job: {
     description: '',
     company: '',
@@ -29,7 +28,6 @@ export const aiSlice = createSlice({
     },
     saveJobDetails (state, action) {
       const { category, value } = action.payload
-
       state.job[category] = value
     },
     saveCorrectionAnswers: (state, action) => {
