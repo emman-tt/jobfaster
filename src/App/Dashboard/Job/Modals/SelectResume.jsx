@@ -17,21 +17,29 @@ import UploadResume from './UploadResume'
 import { toggleNotification } from '../../../../store/notificationSlice'
 import { GetFileIcon } from '../../../../components/getFileIcon'
 import { sendMessage } from '../../../../services/useSocket'
-import { getAllFiles } from '../../../../utils/getAllFiles'
+
+import { useQuery } from '@tanstack/react-query'
+import { FetchPrograms } from '../../../../services/Program'
 
 export default function SelectResume () {
   const [activeTab, setActiveTab] = useState('recent')
   const [searchQuery, setSearchQuery] = useState('')
-  const [uploadedFile, setUploadedFile] = useState({})
   const dispatch = useDispatch()
   const { appearance } = useSelector(state => state.preferences)
 
-  const { programs } = useSelector(state => state.files)
   const { job } = useSelector(state => state.ai)
   const [selected, setSelected] = useState(null)
   const closeModal = () => {
     dispatch(toggleModals('selectResume'))
   }
+
+  const { data, isLoading, isFetching } = useQuery({
+    queryKey: ['program'],
+    queryFn: () => FetchPrograms(),
+    staleTime: 3 * 60 * 1000
+  })
+
+  const programs = data?.data
 
   function navigateNext () {
     if (!selected) {
@@ -60,13 +68,25 @@ export default function SelectResume () {
     closeModal()
   }
 
+  const getAllFiles = programs => {
+    const allFiles = []
+    programs?.forEach(item => {
+      if (item?.type.toLowerCase() === 'file') {
+        allFiles.push(item.file)
+      } else if (item?.type.toLowerCase() === 'folder' && item.files) {
+        allFiles.push(...item.folder.files)
+      }
+    })
+
+    return allFiles
+  }
   const getRecentFiles = (programs, limit = 5) => {
     const allFiles = []
-    programs.forEach(item => {
-      if (item.type === 'file') {
-        allFiles.push(item)
-      } else if (item.type === 'folder' && item.files) {
-        allFiles.push(...item.files)
+    programs?.forEach(item => {
+      if (item?.type.toLowerCase() === 'file') {
+        allFiles.push(item.file)
+      } else if (item?.type.toLowerCase() === 'folder' && item.files) {
+        allFiles.push(...item.folder.files)
       }
     })
 
@@ -76,11 +96,13 @@ export default function SelectResume () {
   }
 
   const filteredRecent = getRecentFiles(programs).filter(resume =>
-    resume.name.toLowerCase().includes(searchQuery.toLowerCase())
+    resume?.metaData?.name?.toLowerCase().includes(searchQuery.toLowerCase())
   )
   const filteredAll = getAllFiles(programs).filter(resume =>
-    resume.name.toLowerCase().includes(searchQuery.toLowerCase())
+    resume?.metaData?.name?.toLowerCase().includes(searchQuery.toLowerCase())
   )
+
+ 
 
   return (
     <div
@@ -186,13 +208,17 @@ export default function SelectResume () {
         )}
       </div>
 
-      {/* Active View */}
+      {/* Main View */}
 
-      <Files
-        selected={selected}
-        setSelected={setSelected}
-        data={activeTab == 'recent' ? filteredRecent : filteredAll}
-      />
+      {isLoading || isFetching ? (
+        <div>Loading ..</div>
+      ) : (
+        <Files
+          selected={selected}
+          setSelected={setSelected}
+          data={activeTab == 'recent' ? filteredRecent : filteredAll}
+        />
+      )}
 
       {/* Footer */}
       <div
@@ -249,7 +275,7 @@ function Files ({ data, setSelected, selected }) {
                   appearance.theme == 'dark' ? 'bg-[#202020]' : 'bg-gray-200'
                 }`}
               >
-                {<GetFileIcon extension={resume.extension} />}
+                {<GetFileIcon extension={resume.metaData.extension} />}
               </div>
               <div>
                 <h3
@@ -261,7 +287,7 @@ function Files ({ data, setSelected, selected }) {
                       : 'text-slate-900'
                   }`}
                 >
-                  {resume.name}
+                  {resume.metaData.name}
                 </h3>
                 <p
                   className={`text-[11px] font-medium ${
@@ -272,7 +298,7 @@ function Files ({ data, setSelected, selected }) {
                       : 'text-gray-500'
                   }`}
                 >
-                  {resume.time}
+                  {resume.updatedAt}
                 </p>
               </div>
             </div>
@@ -295,7 +321,7 @@ function Files ({ data, setSelected, selected }) {
                       : 'border border-gray-200 text-gray-600 bg-white'
                   }`}
                 >
-                  {resume.size}mb
+                  {resume.metaData.size}mb
                 </div>
               )}
               <button
