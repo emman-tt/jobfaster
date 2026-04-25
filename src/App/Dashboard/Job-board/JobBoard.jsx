@@ -11,10 +11,9 @@ import {
   Clock
 } from 'lucide-react'
 import { boardData } from './boardData'
-
 import Header from './Header'
 import { DragDropProvider } from '@dnd-kit/react'
-import { Draggable, Droppable, Sortable } from '../../../components/dragger'
+import { Draggable, Droppable } from '../../../components/dragger'
 
 const IconMap = {
   Bookmark: Bookmark,
@@ -24,37 +23,102 @@ const IconMap = {
   CheckCircle: CheckCircle
 }
 
-// const handleDragEnd = event => {
-//   const { source } = event.operation
-//   const { initialIndex, index } = source
-//   if (initialIndex !== index) {
-//     // const newItems = [...educations]
-//     // const [removed] = newItems.splice(initialIndex, 1)
-//     // newItems.splice(index, 0, removed)
-//   }
-// }
-
 export default function JobBoard () {
   const [kanban, setKanban] = useState(boardData)
-  const handleDragEnd = (event, manager) => {
+  const handleDragEnd = (event) => {
     const { operation, canceled } = event
-    console.log(operation)
-    if (canceled) {
-      console.log('Drag cancelled')
+
+    if (canceled || !operation.target) {
       return
     }
 
-    if (operation.target) {
-      const foundColumn = kanban.find(e => e.id === operation.target.id)
-      if (foundColumn) {
-        // const newCard =
+    const source = operation.source
+    const target = operation.target
+    
+    const sourceData = source.id.split(',')
+    const sourceParent = sourceData[0]
+    const sourceCardId = sourceData[1]
 
-        const newColumn = {
-          ...foundColumn,
-          cards: [...foundColumn.cards]
+    const sourceColumn = kanban.find(e => e.id == sourceParent)
+    const sourceCard = sourceColumn?.cards.find(e => e.id == sourceCardId)
+    if (!sourceCard) return
+
+    const targetId = target.id
+    const targetColumn = kanban.find(e => e.id === targetId)
+
+    if (targetColumn) {
+      if (sourceColumn.id == targetColumn.id) {
+        const cards = [...sourceColumn.cards]
+        const currentIndex = cards.findIndex(e => e.id == sourceCardId)
+        const newIndex = currentIndex
+
+        if (newIndex != currentIndex) {
+          const [removed] = cards.splice(currentIndex, 1)
+          cards.splice(newIndex, 0, removed)
+          setKanban(prev =>
+            prev.map(item =>
+              item.id == sourceColumn.id ? { ...item, cards } : item
+            )
+          )
         }
-        console.log(
-          `Dropped ${operation.source.id} onto ${operation.target.id}`
+        return
+      }
+
+      const newCards = sourceColumn.cards.filter(item => item.id != sourceCardId)
+      const newSource = { ...sourceColumn, cards: newCards }
+
+      setKanban(prev =>
+        prev.map(item => {
+          if (item.id == sourceColumn.id) {
+            return newSource
+          }
+          if (item.id == targetColumn.id) {
+            return { ...item, cards: [...item.cards, sourceCard] }
+          }
+          return item
+        })
+      )
+      return
+    }
+
+    const targetData = targetId.split(',')
+    
+    if (targetData.length === 2) {
+      const targetColId = targetData[0]
+      const targetCardId = targetData[1]
+      const targetCol = kanban.find(e => e.id === targetColId)
+
+      if (targetCol && sourceColumn.id == targetColId) {
+        const cards = [...sourceColumn.cards]
+        const currentIndex = cards.findIndex(e => e.id == sourceCardId)
+        const targetIndex = cards.findIndex(e => e.id == targetCardId)
+
+        if (targetIndex !== -1 && currentIndex !== targetIndex) {
+          const [removed] = cards.splice(currentIndex, 1)
+          cards.splice(targetIndex, 0, removed)
+          setKanban(prev =>
+            prev.map(item =>
+              item.id == sourceColumn.id ? { ...item, cards } : item
+            )
+          )
+        }
+        return
+      }
+
+      if (targetCol) {
+        const newCards = sourceColumn.cards.filter(item => item.id != sourceCardId)
+        const newSource = { ...sourceColumn, cards: newCards }
+
+        setKanban(prev =>
+          prev.map(item => {
+            if (item.id == sourceColumn.id) {
+              return newSource
+            }
+            if (item.id == targetCol.id) {
+              return { ...item, cards: [...item.cards, sourceCard] }
+            }
+            return item
+          })
         )
       }
     }
@@ -66,7 +130,7 @@ export default function JobBoard () {
         <DragDropProvider onDragEnd={handleDragEnd}>
           <div className='flex gap-4 min-w-max h-full items-start'>
             {kanban.map(column => (
-              <Droppable id={column.id}>
+              <Droppable className={'h-full'} id={column.id}>
                 <BoardColumn key={column.id} column={column} />
               </Droppable>
             ))}
@@ -114,9 +178,13 @@ function BoardColumn ({ column }) {
 
       <div className='flex flex-col gap-3 scrollbar-none  overflow-y-auto  scrollbar-thin scrollbar-thumb-gray-200'>
         {column.cards.map(card => (
-          <Draggable itemId={card.id}>
-            <JobCard key={card.id} card={card} />
-          </Draggable>
+          <Droppable key={card.id} id={`${column.id},${card.id}`}>
+            <Draggable itemId={`${column.id},${card.id}`}>
+              <div id={`${column.id},${card.id}`}>
+                <JobCard card={card} />
+              </div>
+            </Draggable>
+          </Droppable>
         ))}
       </div>
     </div>
