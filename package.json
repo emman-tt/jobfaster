@@ -22,6 +22,8 @@
     "better-auth": "^1.6.5",
     "cors": "^2.8.6",
     "gsap": "^3.14.2",
+    "html2canvas": "^1.4.1",
+    "jspdf": "^4.2.1",
     "lucide-react": "^0.577.0",
     "pdfjs-dist": "^5.6.205",
     "re-resizable": "^6.11.2",

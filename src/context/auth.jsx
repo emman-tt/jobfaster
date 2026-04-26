@@ -42,9 +42,6 @@ export function AuthProvider ({ children }) {
         setToken(token)
         api.defaults.headers.common['Authorization'] = `Bearer ${token}`
       } catch (error) {
-        console.log(error.response)
-        console.log(error.request)
-        console.log(error)
         if (error.name === 'AbortError') return
         const isNetworkerror =
           !error.response ||
@@ -52,7 +49,6 @@ export function AuthProvider ({ children }) {
           error.code === 'ECONNABORTED'
         if (!isNetworkerror) {
           console.error('Auth refresh failed:', error)
-          navigate('/auth')
         }
       } finally {
         isRefreshing.current = false

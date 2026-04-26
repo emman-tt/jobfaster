@@ -17,8 +17,22 @@ export async function UploadFolder (name) {
   return raw
 }
 
+export async function saveEditorResume (data) {
+  const response = await api.post(`/${base}/file/editor`, data, {
+    timeout: 120000
+  })
+  return response.data
+}
+
+export async function UploadFileEditor (data) {
+  const response = await api.post(`/${base}/file/editor`, data, {
+    timeout: 50000
+  })
+  const raw = await response.data
+  return raw
+}
 export async function UploadFile (formData) {
-  const response = await api.post(`/${base}/file`, formData, {
+  const response = await api.post(`/${base}/file/upload`, formData, {
     timeout: 50000,
     headers: {
       'Content-Type': 'multipart/form-data'

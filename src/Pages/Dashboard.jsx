@@ -50,7 +50,6 @@ export default function Dashboard () {
         const response = data.response
         const jobId = data.jobId
         const timestamp = data.timestamp
-        const fileId = data.fileId
         if (status == true) {
           toast.success('Ready!', {
             ...toastPresets.aiSuccess(
@@ -61,13 +60,11 @@ export default function Dashboard () {
           })
 
           const content = response.resume
-          const match = allFilesOnlyRef.current.find(item => item.id == fileId)
 
           const splitted = jobId.split('-')[0]
           const tobeSaved = {
-            ...match,
             id: splitted,
-            name: `${match.name}-${splitted}`,
+            name: `-${splitted}`,
             content: content,
             createdAt: timestamp
           }

@@ -26,9 +26,9 @@ export default function SelectResume () {
   const [searchQuery, setSearchQuery] = useState('')
   const dispatch = useDispatch()
   const { appearance } = useSelector(state => state.preferences)
-
   const { job } = useSelector(state => state.ai)
   const [selected, setSelected] = useState(null)
+
   const closeModal = () => {
     dispatch(toggleModals('selectResume'))
   }
@@ -40,31 +40,25 @@ export default function SelectResume () {
   })
 
   const programs = data?.data
-
   function navigateNext () {
     if (!selected) {
       return console.log('nothing selected')
     }
-    const all = getAllFiles(programs)
-    const found = all.find(item => item.id == selected)
-    if (!found) {
-      throw new Error('no data as such found')
+
+    const preparedData = {
+      resume: selected.metaData,
+      jobDescription: job.description,
+      tone: job.tone,
+      includeCoverLetter: job.includeCoverLetter,
+      hiringEmail: job.email
     }
-    const use = found.content
-    const data = {
-      job: {
-        ...job
-      },
-      name: use.name,
-      email: use.email,
-      phone: use.phone,
-      education: use.education,
-      summary: use.summary,
-      showSummary: use.showSummary,
-      experience: use.experience,
-      fileId: found.id
+
+    if (selected.source == 'upload') {
+      sendMessage('JOB_APPLY', preparedData)
+      closeModal()
+      return
     }
-    sendMessage('tailor', data)
+
     closeModal()
   }
 
@@ -101,8 +95,6 @@ export default function SelectResume () {
   const filteredAll = getAllFiles(programs).filter(resume =>
     resume?.metaData?.name?.toLowerCase().includes(searchQuery.toLowerCase())
   )
-
- 
 
   return (
     <div
@@ -259,14 +251,14 @@ function Files ({ data, setSelected, selected }) {
           <div
             key={resume.id}
             onClick={() => {
-              setSelected(resume.id)
+              setSelected(resume)
             }}
-            className={`group flex items-center justify-between p-3 py-4 rounded-2xl border-b last:border-0 transition-all cursor-pointer ${
-              resume.id == selected
+            className={`group flex items-center justify-between p-3 py-4 rounded-2xl  transition-all cursor-pointer ${
+              resume.id == selected?.id
                 ? 'bg-[#f17e27]'
                 : appearance.theme == 'dark'
                 ? 'hover:bg-[#202020] border-slate-700'
-                : 'hover:bg-slate-50 border-gray-50'
+                : 'hover:bg-slate-50 '
             }`}
           >
             <div className='flex items-center gap-4'>
@@ -280,7 +272,7 @@ function Files ({ data, setSelected, selected }) {
               <div>
                 <h3
                   className={`text-sm font-bold truncate max-w-45 ${
-                    resume.id == selected
+                    resume.id == selected?.id
                       ? 'text-white'
                       : appearance.theme == 'dark'
                       ? 'text-white'
@@ -291,7 +283,7 @@ function Files ({ data, setSelected, selected }) {
                 </h3>
                 <p
                   className={`text-[11px] font-medium ${
-                    resume.id == selected
+                    resume.id == selected?.id
                       ? 'text-white/70'
                       : appearance.theme == 'dark'
                       ? 'text-slate-400'
@@ -314,11 +306,11 @@ function Files ({ data, setSelected, selected }) {
               ) : (
                 <div
                   className={`px-2 py-1 text-[10px] font-bold rounded ${
-                    resume.id == selected
+                    resume.id == selected?.id
                       ? 'bg-white/20 text-white'
                       : appearance.theme == 'dark'
                       ? 'bg-[#202020] text-slate-300 border border-slate-700'
-                      : 'border border-gray-200 text-gray-600 bg-white'
+                      : ' text-gray-600 bg-white'
                   }`}
                 >
                   {resume.metaData.size}mb
@@ -326,7 +318,7 @@ function Files ({ data, setSelected, selected }) {
               )}
               <button
                 className={`p-1 rounded-lg transition-colors ${
-                  resume.id == selected
+                  resume.id == selected?.id
                     ? 'hover:bg-white/20'
                     : appearance.theme == 'dark'
                     ? 'hover:bg-slate-700'
@@ -335,7 +327,7 @@ function Files ({ data, setSelected, selected }) {
               >
                 <MoreVertical
                   className={`w-4 h-4 ${
-                    resume.id == selected
+                    resume.id == selected?.id
                       ? 'text-white'
                       : appearance.theme == 'dark'
                       ? 'text-slate-400'

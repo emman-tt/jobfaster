@@ -11,7 +11,8 @@ import { setToken } from '../libs/token'
 import { api } from '../libs/axios'
 
 const authClient = createAuthClient({
-  baseURL: 'http://localhost:3000'
+  baseURL: 'http://localhost:3000',
+  cookiePrefix: 'jobber'
 })
 
 export default function Auth () {
@@ -26,13 +27,16 @@ export default function Auth () {
     async function exchangeSession() {
       try {
         const session = await authClient.getSession()
-        if (session?.user) {
-          const res = await api.post('/auth/oauth-to-jwt')
+        const user = session?.data?.user;
+        
+        if (user) {
+          const res = await api.post('/auth/oauth-to-jwt', {}, { withCredentials: true })
           if (res.data.status === 'success') {
             setToken(res.data.accessToken)
+            api.defaults.headers.common['Authorization'] = `Bearer ${res.data.accessToken}`
             toast.success('Welcome back!', {
               position: 'top-center',
-              ...toastPresets.aiSuccess(`Welcome back ${session.user.name}`)
+              ...toastPresets.aiSuccess(`Welcome back ${user.name}`)
             })
             navigate('/dashboard')
           }
@@ -46,10 +50,9 @@ export default function Auth () {
 
   async function handleGoogle() {
     try {
-
       await authClient.signIn.social({
         provider: 'google',
-        callbackURL: `${window.location.origin}/dashboard`, 
+        callbackURL: `${window.location.origin}/auth`, 
       })
     } catch (error) {
       console.error('Google sign in failed:', error)

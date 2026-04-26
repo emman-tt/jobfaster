@@ -33,10 +33,10 @@ api.interceptors.response.use(undefined, async error => {
     })
     throw error
   }
-  if (error.config._retry && error?.response?.status == 401) {
-    window.location.href = '/auth'
-    return Promise.reject(error)
-  }
+  // if (error.config._retry && error?.response?.status == 401) {
+  //   window.location.href = '/auth'
+  //   return Promise.reject(error)
+  // }
 
   if (error?.response?.status == 401 && !error.config._retry) {
     if (error.config._isRefresh) {
