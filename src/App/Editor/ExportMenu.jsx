@@ -14,7 +14,7 @@ export default function ExportMenu ({ onExport }) {
       name: 'DOCX',
       description: 'Editable Word document',
       icon: File,
-      color: 'bg-blue-500'
+      color: 'bg-[#f17e27]'
     }
   ]
 

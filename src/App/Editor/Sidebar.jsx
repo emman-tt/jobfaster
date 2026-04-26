@@ -22,7 +22,7 @@ export function Sidebar ({ activeSection, onSectionChange }) {
   return (
     <aside className={`w-16 h-full flex flex-col items-center py-4 gap-2 pt-20 ${
       appearance.theme == 'dark'
-        ? 'bg-[#2a2a2a] border-r border-slate-700'
+        ? 'bg-[#2a2a2a]'
         : 'bg-white border-r border-gray-200'
     }`}>
       {sections.map(section => {

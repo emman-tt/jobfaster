@@ -118,7 +118,7 @@ export default function Education ({ setEditingId }) {
                       className={`p-1.5 ${
                         appearance.theme == 'dark'
                           ? 'text-white cursor-pointer'
-                          : ' text-white hover:bg-blue-50'
+                          : 'text-[#f17e27] hover:bg-orange-50'
                       }   rounded-lg transition-colors`}
                       title='Edit'
                     >
@@ -143,7 +143,7 @@ export default function Education ({ setEditingId }) {
               onClick={() => openModal()}
               className={`w-full flex items-center justify-center gap-2 px-4 py-3 border border-dashed rounded-xl cursor-pointer transition-colors text-sm ${
                 appearance.theme == 'dark'
-                  ? 'border-slate-700 text-slate-300 '
+                  ? 'border-0 text-slate-300 '
                   : 'border-gray-300 text-gray-600 hover:bg-gray-50 hover:border-gray-400 '
               }`}
             >

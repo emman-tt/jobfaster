@@ -80,7 +80,7 @@ export default function Identity () {
                 name='jobTitle'
                 onChange={handleChange}
                 type='text'
-                className={`w-full h-full px-5 rounded-xl border shadow-sm focus:outline-[#ec5b13] focus:border-[#ec5b13] focus:shadow-md text-xs transition-shadow ${
+                className={`w-full h-full px-5 rounded-xl border shadow-sm focus:outline-none focus:ring-2 focus:ring-[#f17e27] focus:border-[#f17e27] text-xs transition-shadow ${
                   appearance.theme == 'dark'
                     ? 'bg-[#202020] border-0 text-white placeholder:text-slate-500'
                     : 'border-gray-200'

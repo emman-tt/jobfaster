@@ -95,7 +95,7 @@ export function Modal ({ editingId }) {
               placeholder='E-Commerce Platform'
               className={`w-full border rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-1 focus:ring-[#6B4E42] transition-all ${
                 appearance.theme == 'dark'
-                  ? 'border-slate-700 bg-[#202020] text-white placeholder:text-slate-500'
+                  ? 'border-0 bg-[#202020] text-white placeholder:text-slate-500'
                   : 'border-gray-100 bg-white text-gray-700 placeholder:text-gray-300'
               }`}
             />
@@ -115,7 +115,7 @@ export function Modal ({ editingId }) {
               placeholder='Describe your project...'
               className={`w-full border rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-1 focus:ring-[#6B4E42] transition-all resize-none h-24 ${
                 appearance.theme == 'dark'
-                  ? 'border-slate-700 bg-[#202020] text-white placeholder:text-slate-500'
+                  ? 'border-0 bg-[#202020] text-white placeholder:text-slate-500'
                   : 'border-gray-100 bg-white text-gray-700 placeholder:text-gray-300'
               }`}
             />
@@ -137,7 +137,7 @@ export function Modal ({ editingId }) {
                 placeholder='https://example.com'
                 className={`w-full border rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-1 focus:ring-[#6B4E42] transition-all ${
                   appearance.theme == 'dark'
-                    ? 'border-slate-700 bg-[#202020] text-white placeholder:text-slate-500'
+                    ? 'border-0 bg-[#202020] text-white placeholder:text-slate-500'
                     : 'border-gray-100 bg-white text-gray-700 placeholder:text-gray-300'
                 }`}
               />
@@ -157,7 +157,7 @@ export function Modal ({ editingId }) {
                 placeholder='https://github.com/...'
                 className={`w-full border rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-1 focus:ring-[#6B4E42] transition-all ${
                   appearance.theme == 'dark'
-                    ? 'border-slate-700 bg-[#202020] text-white placeholder:text-slate-500'
+                    ? 'border-0 bg-[#202020] text-white placeholder:text-slate-500'
                     : 'border-gray-100 bg-white text-gray-700 placeholder:text-gray-300'
                 }`}
               />
@@ -201,7 +201,7 @@ export function Modal ({ editingId }) {
                 placeholder='Add a technology...'
                 className={`flex-1 border rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-1 focus:ring-[#6B4E42] transition-all ${
                   appearance.theme == 'dark'
-                    ? 'border-slate-700 bg-[#202020] text-white placeholder:text-slate-500'
+                    ? 'border-0 bg-[#202020] text-white placeholder:text-slate-500'
                     : 'border-gray-100 bg-white text-gray-700 placeholder:text-gray-300'
                 }`}
                 onKeyDown={e =>
@@ -225,7 +225,7 @@ export function Modal ({ editingId }) {
             onClick={closeModal}
             className={`px-10 py-3 text-sm font-bold rounded-full transition-all active:scale-95 ${
               appearance.theme == 'dark'
-                ? 'border border-slate-700 text-slate-300 hover:bg-slate-700'
+                ? 'border-0 text-slate-300 hover:bg-slate-700'
                 : 'border border-gray-200 text-gray-600 bg-white hover:bg-gray-50'
             }`}
           >

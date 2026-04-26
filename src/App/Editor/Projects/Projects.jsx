@@ -38,7 +38,7 @@ export default function Projects ({ setEditingId }) {
         <div
           onClick={() => setIsOpen(!isOpen)}
           className={`flex items-center justify-between px-4 sm:px-6 md:px-8 lg:px-10 py-4 cursor-pointer border-b transition-colors ${
-            appearance.theme == 'dark' ? 'border-slate-700' : 'border-gray-200'
+            appearance.theme == 'dark' ? 'border-0' : 'border-gray-200'
           }`}
         >
           <h2
@@ -120,7 +120,7 @@ export default function Projects ({ setEditingId }) {
                       className={`p-1.5 rounded-lg transition-colors ${
                         appearance.theme == 'dark'
                           ? 'text-slate-400 hover:bg-slate-700'
-                          : 'text-blue-600 hover:bg-blue-50'
+                          : 'text-[#f17e27] hover:bg-orange-50'
                       }`}
                       title='Edit'
                     >

@@ -60,10 +60,10 @@ export default function Canvas () {
         <Preview />
       </div>
 
-      <div className={`absolute z-6 bottom-6 left-1/2 -translate-x-1/2 flex items-center gap-2 px-4 py-2.5 rounded-2xl backdrop-blur-xl border shadow-lg ${
+      <div className={`absolute z-6 bottom-6 left-1/2 -translate-x-1/2 flex items-center gap-2 px-4 py-2.5 rounded-2xl backdrop-blur-xl shadow-lg ${
         appearance.theme == 'dark'
-          ? 'bg-black/80 border-slate-700'
-          : 'bg-black/60 border-white/40'
+          ? 'bg-black/80'
+          : 'bg-black/60 border border-white/40'
       }`}>
         <button
           onClick={() => dispatch(setShowTemplates(true))}

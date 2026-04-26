@@ -112,7 +112,7 @@ export default function OnlineLinks () {
               value={link.link}
               onChange={e => handleChange(e, index)}
               placeholder='linkedin.com/in/jthorne'
-              className={`flex-1 border pl-4 pr-3 outline-[#ec5b13] py-2.5 rounded-xl text-xs focus:border-[#ec5b13] focus:shadow-md shadow-sm transition-shadow ${
+              className={`flex-1 border pl-4 pr-3 outline-none py-2.5 rounded-xl text-xs focus:ring-2 focus:ring-[#f17e27] focus:border-[#f17e27] shadow-sm transition-shadow ${
                 appearance.theme == 'dark'
                   ? 'border-0 bg-[#202020] text-white placeholder:text-slate-500'
                   : 'border-gray-200 text-gray-900'
@@ -126,7 +126,7 @@ export default function OnlineLinks () {
         <div className='w-full sm:w-40 relative shrink-0'>
           <button
             onClick={() => showLinksBox(e => !e)}
-            className={`w-full border pl-4 pr-3 py-2.5 rounded-xl text-xs focus:outline-[#ec5b13] focus:border-[#ec5b13] font-medium flex items-center justify-between hover:shadow-md transition-all shadow-sm ${
+            className={`w-full border pl-4 pr-3 py-2.5 rounded-xl text-xs outline-none focus:ring-2 focus:ring-[#f17e27] focus:border-[#f17e27] font-medium flex items-center justify-between hover:shadow-md transition-all shadow-sm ${
               appearance.theme == 'dark'
                 ? 'border-0 bg-[#202020] text-white'
                 : 'border-gray-200 bg-white text-gray-900'
@@ -188,7 +188,7 @@ export default function OnlineLinks () {
         <input
           type='text'
           placeholder='Type or paste the link here'
-          className={`flex-1 border pl-4 pr-3 outline-[#ec5b13] py-2.5 rounded-xl text-xs focus:border-[#ec5b13] focus:shadow-md shadow-sm transition-shadow ${
+          className={`flex-1 border pl-4 pr-3 outline-none py-2.5 rounded-xl text-xs focus:ring-2 focus:ring-[#f17e27] focus:border-[#f17e27] shadow-sm transition-shadow ${
             appearance.theme == 'dark'
               ? 'border-0 bg-[#202020] text-white placeholder:text-slate-500'
               : 'border-gray-200 bg-white text-gray-900'

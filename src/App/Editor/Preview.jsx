@@ -145,7 +145,7 @@ export function Preview () {
   }
 
   return (
-    <section className='bg-white rounded-xl w-[210mm] h-[297mm] shadow-2xl p-12'>
+    <section id="resume-preview" className='bg-white rounded-xl w-[210mm] h-[297mm] shadow-2xl p-12'>
       <SelectedTemplate data={userData} />
     </section>
   )

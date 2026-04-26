@@ -120,7 +120,7 @@ export default function Experience ({ setEditingId }) {
                       className={`p-1.5 ${
                         appearance.theme == 'dark'
                           ? 'text-white cursor-pointer'
-                          : ' text-white hover:bg-blue-50'
+                          : 'text-[#f17e27] hover:bg-orange-50'
                       }   rounded-lg transition-colors`}
                       title='Edit'
                     >
@@ -146,7 +146,7 @@ export default function Experience ({ setEditingId }) {
               onClick={() => openModal()}
               className={`w-full flex items-center justify-center gap-2 px-4 py-3 border border-dashed rounded-xl cursor-pointer  transition-colors text-sm ${
                 appearance.theme == 'dark'
-                  ? 'border-slate-700 text-slate-300 hover:bg-none'
+                  ? 'border-0 text-slate-300 hover:bg-none'
                   : 'border-gray-300 hover:bg-gray-50 hover:border-gray-400  text-gray-600'
               }`}
             >

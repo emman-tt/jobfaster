@@ -71,7 +71,7 @@ export default function Languages () {
       <div
         onClick={() => setIsOpen(!isOpen)}
         className={`flex items-center justify-between px-4 sm:px-6 md:px-8 lg:px-10 py-4 cursor-pointer border-b transition-colors ${
-          appearance.theme == 'dark' ? 'border-slate-700' : 'border-gray-200'
+          appearance.theme == 'dark' ? 'border-0' : 'border-gray-200'
         }`}
       >
         <h2 className={`text-lg font-bold flex items-center ${
@@ -143,7 +143,7 @@ function LanguageRow ({ lang, isEditing, editingValue, onStartEditing, onInputCh
             onChange={(e) => onInputChange(e.target.value)}
             onBlur={onFinishEditing}
             onKeyDown={onKeyDown}
-            className={`w-full border rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-1 focus:ring-[#ec5b13] shadow-sm ${
+            className={`w-full border rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#f17e27] shadow-sm ${
               appearance.theme == 'dark'
                 ? 'border-slate-700 bg-[#202020] text-white'
                 : 'border-gray-200 text-gray-900 bg-white'
@@ -156,7 +156,7 @@ function LanguageRow ({ lang, isEditing, editingValue, onStartEditing, onInputCh
             onClick={onStartEditing}
             readOnly
             placeholder='Language'
-            className={`w-full border rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-1 focus:ring-[#ec5b13] transition-all shadow-sm hover:shadow-md transition-shadow cursor-text ${
+            className={`w-full border rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#f17e27] transition-all shadow-sm hover:shadow-md transition-shadow cursor-text ${
               appearance.theme == 'dark'
                 ? 'border-slate-700 bg-[#202020] text-white placeholder:text-slate-500'
                 : 'border-gray-200 text-gray-900 bg-white placeholder:text-gray-300'
@@ -168,7 +168,7 @@ function LanguageRow ({ lang, isEditing, editingValue, onStartEditing, onInputCh
       <div className='relative w-40 shrink-0'>
         <button
           onClick={() => setProficiencyBox(!proficiencyBox)}
-          className={`w-full border pl-4 pr-3 py-2.5 rounded-xl text-xs focus:outline-[#ec5b13] focus:border-[#ec5b13] font-medium flex items-center justify-between hover:shadow-md transition-all shadow-sm ${
+          className={`w-full border pl-4 pr-3 py-2.5 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-[#f17e27] focus:border-[#f17e27] font-medium flex items-center justify-between hover:shadow-md transition-all shadow-sm ${
             appearance.theme == 'dark'
               ? 'border-slate-700 bg-[#202020] text-white'
               : 'border-gray-200 bg-white text-gray-900'

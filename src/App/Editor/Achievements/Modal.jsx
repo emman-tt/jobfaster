@@ -62,7 +62,7 @@ export function Modal ({ editingId }) {
       }`}>
         <div className={`flex items-center justify-between px-8 py-6 border-b ${
           appearance.theme == 'dark'
-            ? 'border-slate-700'
+            ? 'border-0'
             : 'border-gray-200'
         }`}>
           <h3 className={`text-2xl font-bold ${

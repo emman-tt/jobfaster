@@ -151,7 +151,7 @@ export default function Skills () {
                       }
                       className={`placeholder:text-sm rounded-xl py-2 text-sm font-IBM border px-4 ${
                         appearance.theme == 'dark'
-                          ? 'border-slate-700 bg-[#202020] text-white'
+                          ? 'border-0 bg-[#202020] text-white'
                           : 'border-gray-200 bg-transparent'
                       } ${
                         editingId === skill.id
@@ -192,7 +192,7 @@ export default function Skills () {
                             placeholder='Add skill...'
                             className={`flex-1 rounded-xl px-4 py-2 text-sm ${
                               appearance.theme == 'dark'
-                                ? 'border border-slate-700 bg-[#202020] text-white placeholder:text-slate-500'
+                                ? 'border-0 bg-[#202020] text-white placeholder:text-slate-500'
                                 : 'border border-gray-100 bg-white'
                             }`}
                           />
@@ -225,7 +225,7 @@ export default function Skills () {
                     }}
                     className={`p-1.5 px-3.5 border cursor-pointer rounded-lg transition-colors text-sm ${
                       appearance.theme == 'dark'
-                        ? 'border-slate-700 text-white hover:bg-orange-400 hover:text-white'
+                        ? 'border-0 text-white hover:bg-orange-400 hover:text-white'
                         : 'border-gray-200 text-black hover:bg-orange-400 hover:text-white'
                     }`}
                     title='Edit'

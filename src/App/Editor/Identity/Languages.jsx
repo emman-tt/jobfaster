@@ -101,7 +101,7 @@ export default function Languages () {
       <div className='mt-4 w-full sm:w-48 relative'>
         <button
           onClick={() => showLanguageBox(e => !e)}
-          className='w-full border border-gray-200 pl-4 pr-3 py-2.5 rounded-xl text-xs focus:outline-[#ec5b13] focus:border-[#ec5b13] text-gray-900 font-medium flex items-center justify-between hover:shadow-md transition-all shadow-sm bg-white'
+          className='w-full border border-gray-200 pl-4 pr-3 py-2.5 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-[#f17e27] focus:border-[#f17e27] text-gray-900 font-medium flex items-center justify-between hover:shadow-md transition-all shadow-sm bg-white'
         >
           <span className='flex items-center gap-2'>
             <Plus className='w-4 h-4' />
@@ -166,7 +166,7 @@ function LanguageItem ({
       <div ref={profRef} className='flex-1 relative'>
         <button
           onClick={() => showProficiencyBox(e => !e)}
-          className='w-full border border-gray-200 pl-4 pr-3 py-2.5 rounded-xl text-xs focus:outline-[#ec5b13] focus:border-[#ec5b13] text-gray-900 font-medium flex items-center justify-between hover:shadow-md transition-all shadow-sm bg-white'
+          className='w-full border border-gray-200 pl-4 pr-3 py-2.5 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-[#f17e27] focus:border-[#f17e27] text-gray-900 font-medium flex items-center justify-between hover:shadow-md transition-all shadow-sm bg-white'
         >
           <span>{lang.proficiency}</span>
           <ChevronDown

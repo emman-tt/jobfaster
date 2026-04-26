@@ -14,6 +14,8 @@ import { useDispatch, useSelector } from 'react-redux'
 import Menubar from './Menubar'
 import ExportMenu from './ExportMenu'
 import { exportToPDF, exportToDOCX } from '../../services/export.jsx'
+import { UploadFile } from '../../services/Program'
+import { generatePDFFromHtml } from '../../utils/generatePdf'
 import { toast } from 'sonner'
 
 export function Topbar () {
@@ -21,6 +23,8 @@ export function Topbar () {
   const [isSaving, setIsSaving] = useState(false)
   const [showExportMenu, setShowExportMenu] = useState(false)
   const [menuBar, showMenuBar] = useState(false)
+  const [showSaveModal, setShowSaveModal] = useState(false)
+  const [resumeName, setResumeName] = useState('')
   const dispatch = useDispatch()
   const { appearance } = useSelector(state => state.preferences)
 
@@ -34,8 +38,44 @@ export function Topbar () {
   }
 
   function handleSave () {
+    setResumeName(personal.contactDetails.fullName || '')
+    setShowSaveModal(true)
+  }
+
+  async function confirmSave () {
+    if (!resumeName.trim()) {
+      return
+    }
+
     setIsSaving(true)
-    setTimeout(() => setIsSaving(false), 1500)
+    setShowSaveModal(false)
+
+    try {
+      console.log('Generating PDF...')
+      const pdfFile = await generatePDFFromHtml(
+        'resume-preview',
+        `${resumeName.trim()}.pdf`
+      )
+      console.log('PDF generated, size:', pdfFile.size, 'type:', pdfFile.type)
+
+      const formData = new FormData()
+      formData.append('file', pdfFile)
+      
+      console.log('Uploading...')
+      const result = await UploadFile(formData)
+      console.log('Upload result:', result)
+
+      if (result.status === 'success') {
+        toast.success('Resume saved successfully')
+      } else {
+        toast.error(result.message || 'Failed to save resume')
+      }
+    } catch (error) {
+      console.error('Save resume error:', error)
+      toast.error('Failed to save resume')
+    } finally {
+      setIsSaving(false)
+    }
   }
 
   async function handleExport (format) {
@@ -138,9 +178,13 @@ export function Topbar () {
 
   return (
     <>
-      <header className={`px-4 py-2 ${
-        appearance.theme == 'dark' ? 'bg-[#2a2a2a] border-b border-slate-700' : 'bg-white border-b border-gray-200'
-      }`}>
+      <header
+        className={`px-4 py-2 ${
+          appearance.theme == 'dark'
+            ? 'bg-[#2a2a2a]'
+            : 'bg-white border-b border-gray-200'
+        }`}
+      >
         <div className='flex items-center relative justify-between'>
           <div className='flex items-center gap-2'>
             <button
@@ -163,9 +207,11 @@ export function Topbar () {
               }`}
             >
               <CircleArrowDown size={15} />
-              <span className={`text-sm ${
-                appearance.theme == 'dark' ? 'text-white' : 'text-black'
-              }`}>
+              <span
+                className={`text-sm ${
+                  appearance.theme == 'dark' ? 'text-white' : 'text-black'
+                }`}
+              >
                 Typography
               </span>
             </button>
@@ -215,19 +261,23 @@ export function Topbar () {
                 <span>Export</span>
               </button>
               {showExportMenu && (
-                <div className={`absolute top-full right-0 mt-2 w-80 rounded-2xl shadow-lg py-2 z-50 ${
-                  appearance.theme == 'dark'
-                    ? 'bg-[#2a2a2a] border border-slate-700'
-                    : 'bg-white border border-gray-200'
-                }`}>
+                <div
+                  className={`absolute top-full right-0 mt-2 w-80 rounded-2xl shadow-lg py-2 z-50 ${
+                    appearance.theme == 'dark'
+                      ? 'bg-[#2a2a2a]'
+                      : 'bg-white border border-gray-200'
+                  }`}
+                >
                   <ExportMenu onExport={handleExport} />
                 </div>
               )}
             </div>
 
-            <div className={`w-px h-8 mx-1 ${
-              appearance.theme == 'dark' ? 'bg-slate-700' : 'bg-gray-200'
-            }`} />
+            <div
+              className={`w-px h-8 mx-1 ${
+                appearance.theme == 'dark' ? 'bg-slate-700' : 'bg-gray-200'
+              }`}
+            />
 
             <button
               onClick={handleShare}
@@ -251,6 +301,60 @@ export function Topbar () {
           </div>
         </div>
       </header>
+
+      {showSaveModal && (
+        <div className='fixed inset-0 z-50 flex items-center justify-center'>
+          <div
+            className='absolute inset-0 bg-black/50'
+            onClick={() => setShowSaveModal(false)}
+          />
+          <div
+            className={`relative w-80 rounded-2xl shadow-xl p-6 ${
+              appearance.theme == 'dark' ? 'bg-[#2a2a2a]' : 'bg-white'
+            }`}
+          >
+            <h3
+              className={`text-lg font-semibold mb-4 font-IBM ${
+                appearance.theme == 'dark' ? 'text-white' : 'text-gray-900'
+              }`}
+            >
+              Name your resume
+            </h3>
+            <input
+              type='text'
+              value={resumeName}
+              onChange={e => setResumeName(e.target.value)}
+              placeholder='My Resume'
+              autoFocus
+              className={`w-full px-4 py-3 rounded-xl border outline-none mb-4 focus:outline-none focus:ring-2 focus:ring-[#f17e27] focus:border-[#f17e27] ${
+                appearance.theme == 'dark'
+                  ? 'bg-[#1a1a1a] border-slate-600 text-white placeholder:text-slate-500'
+                  : 'bg-gray-50 border-gray-200 text-gray-900 placeholder:text-gray-400'
+              }`}
+              onKeyDown={e => e.key === 'Enter' && confirmSave()}
+            />
+            <div className='flex gap-3'>
+              <button
+                onClick={() => setShowSaveModal(false)}
+                className={`flex-1 px-4 py-2.5 rounded-xl font-medium transition-colors ${
+                  appearance.theme == 'dark'
+                    ? 'bg-slate-700 text-white hover:bg-slate-600'
+                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                }`}
+              >
+                Cancel
+              </button>
+              <button
+                onClick={confirmSave}
+                disabled={!resumeName.trim()}
+                className='flex-1 px-4 py-2.5 rounded-xl font-medium bg-[#f17e27] text-white hover:bg-[#e16d16] transition-colors disabled:opacity-50 disabled:cursor-not-allowed'
+              >
+                Save
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </>
   )
 }
