@@ -47,7 +47,10 @@ export function connector () {
   ws.onerror = error => {
     console.error('Error:', error)
     toast.dismiss('ai-processing')
-    toast.error('AI Error', toastPresets.aiError())
+    toast.error('AI Error', {
+      id: 'ai-socket-error',
+      ...toastPresets.aiError()
+    })
   }
 
   ws.onclose = () => {
@@ -63,10 +66,10 @@ export function sendMessage (type, data) {
 
   if (!ws || ws.readyState !== WebSocket.OPEN) {
     toast.error('Connection Lost', {
+      id: 'connection-lost',
       ...toastPresets.aiError(
         "We couldn't start the process. Please check your connection and try again."
       ),
-      id: 'ai-error',
       position: 'top-right'
     })
     console.error('Not connected', ws?.readyState)

@@ -98,13 +98,13 @@ export default function SelectResume () {
 
   return (
     <div
-      className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-lg rounded-3xl shadow-2xl overflow-hidden font-satoshi min-h-135 z-50 ${
+      className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full flex justify-between flex-col  max-w-lg rounded-3xl shadow-2xl overflow-hidden font-satoshi min-h-135 h-135 z-50 ${
         appearance.theme == 'dark'
           ? 'bg-[#2a2a2a] border border-slate-700'
           : 'bg-white border border-gray-100'
       }`}
     >
-      <div className='p-6'>
+      <div className='p-6 '>
         {/* Header */}
         <div className='flex justify-between items-center mb-6'>
           <h2
@@ -201,20 +201,20 @@ export default function SelectResume () {
       </div>
 
       {/* Main View */}
-
-      {isLoading || isFetching ? (
-        <div>Loading ..</div>
-      ) : (
-        <Files
-          selected={selected}
-          setSelected={setSelected}
-          data={activeTab == 'recent' ? filteredRecent : filteredAll}
-        />
-      )}
-
+      <div className=' h-full  '>
+        {isLoading || isFetching ? (
+          <div>Loading ..</div>
+        ) : (
+          <Files
+            selected={selected}
+            setSelected={setSelected}
+            data={activeTab == 'recent' ? filteredRecent : filteredAll}
+          />
+        )}
+      </div>
       {/* Footer */}
       <div
-        className={`p-6 py-2 border-t flex justify-between items-center ${
+        className={`p-6 py-4  border-t flex justify-between items-center ${
           appearance.theme == 'dark'
             ? 'border-slate-700 bg-[#202020]'
             : 'border-gray-100 bg-gray-50/50'
@@ -245,7 +245,7 @@ export default function SelectResume () {
 function Files ({ data, setSelected, selected }) {
   const { appearance } = useSelector(state => state.preferences)
   return (
-    <div className='space-y-1 max-h-60 py-5 overflow-y-auto px-1 [scrollbar-width:thin]'>
+    <div className='space-y-1 max-h-60 py-0  overflow-y-auto px-1 [scrollbar-width:thin]'>
       {data.length > 0 ? (
         data.map(resume => (
           <div
@@ -253,7 +253,7 @@ function Files ({ data, setSelected, selected }) {
             onClick={() => {
               setSelected(resume)
             }}
-            className={`group flex items-center justify-between p-3 py-4 rounded-2xl  transition-all cursor-pointer ${
+            className={`group flex items-center justify-between p-3 py-4 rounded-2xl   transition-all cursor-pointer ${
               resume.id == selected?.id
                 ? 'bg-[#f17e27]'
                 : appearance.theme == 'dark'

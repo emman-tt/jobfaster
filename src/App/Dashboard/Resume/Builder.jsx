@@ -1,14 +1,24 @@
 import { Download, Save, Send, Undo2 } from 'lucide-react'
-import { TEMPLATES } from '../CreateResume/templates/layout'
+import { templates } from '../../../libs/templatesData'
 import { useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
+
+const LAYOUT_TO_TEMPLATE = {
+  1: 'classic',
+  2: 'modern',
+  3: 'executive',
+  4: 'technical',
+  5: 'academic',
+  6: 'ats'
+}
 
 export default function Builder ({ layoutId, resume }) {
   const navigate = useNavigate()
   const { previewType } = useSelector(state => state.preview)
-  const Template = TEMPLATES[layoutId]
+  const templateId = LAYOUT_TO_TEMPLATE[layoutId] || 'classic'
+  const template = templates.find(t => t.id === templateId)
 
-  if (!Template) {
+  if (!template) {
     return (
       <div className='flex flex-col items-center justify-center min-h-screen'>
         <h2 className='text-xl font-semibold'>Template not found</h2>
@@ -58,7 +68,7 @@ export default function Builder ({ layoutId, resume }) {
             {resume.name} <span className=' text-sm'>{resume.size}mb</span>
           </div>
           <div style={{ zoom: '1' }} className='shadow-xs max-w-200 pb-10'>
-            <Template userData={resume.content} />
+            <template.component data={resume.content} />
           </div>
         </div>
       </section>

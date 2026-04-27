@@ -1,17 +1,15 @@
 import ReactDOMServer from 'react-dom/server'
-import { TEMPLATES } from '../App/Dashboard/CreateResume/templates/layout'
-import { getLayoutIdFromTemplate } from './templateMap'
+import { templates } from '../libs/templatesData'
 
 export async function renderResumeToHTML (resumeData, templateName) {
-  const layoutId = getLayoutIdFromTemplate(templateName)
-  const Template = TEMPLATES[layoutId]
+  const template = templates.find(t => t.id === templateName)
 
-  if (!Template) {
-    throw new Error(`Template not found for layoutId: ${layoutId}`)
+  if (!template) {
+    throw new Error(`Template not found for: ${templateName}`)
   }
 
   const html = ReactDOMServer.renderToStaticMarkup(
-    <Template userData={resumeData} />
+    <template.component data={resumeData} />
   )
 
   return html

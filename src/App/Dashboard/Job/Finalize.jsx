@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import {
   Mail,
   User,
@@ -16,8 +16,9 @@ import { saveEmailDetails } from '../../../store/emailSlice'
 import { saveJobDetails } from '../../../store/aiSlice'
 import { generateTailoredResumePDF } from '../../../utils/renderResume'
 import { toast } from 'sonner'
+import SendMethodModal from './Modals/SendMethod'
 
-function GetFileIcon ({ extension }) {
+function GetFileIcon () {
   return (
     <svg
       role='img'
@@ -127,9 +128,35 @@ export default function Finalize () {
   const [selectedFile, setSelectedFile] = useState(null)
   const [pdfUrl, setPdfUrl] = useState(null)
   const [isGeneratingPDF, setIsGeneratingPDF] = useState(false)
+  const [showSendMethodModal, setShowSendMethodModal] = useState(false)
 
   const resumeData = tailoredResume?.resume
   const templateName = tailoredResume?.template
+
+  useEffect(() => {
+    const generatePDF = async () => {
+      if (resumeData && templateName && !pdfUrl) {
+        setIsGeneratingPDF(true)
+        try {
+          const fullName = resumeData.personal?.contactDetails?.fullName || 'Tailored Resume'
+          const result = await generateTailoredResumePDF(
+            resumeData,
+            templateName,
+            `${fullName}-Resume`
+          )
+          if (result?.data?.url) {
+            setPdfUrl(result.data.url)
+          }
+        } catch (error) {
+          console.error('Failed to generate PDF:', error)
+        } finally {
+          setIsGeneratingPDF(false)
+        }
+      }
+    }
+    generatePDF()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   const attachedFiles = resumeData
     ? [
@@ -152,42 +179,32 @@ export default function Finalize () {
     setFormData(prev => ({ ...prev, [name]: value }))
   }
 
+  const validateForm = () => {
+    if (!formData.userEmail.trim()) {
+      toast.error('Please provide your email address')
+      return false
+    }
+    if (!formData.userName.trim()) {
+      toast.error('Please provide your display name')
+      return false
+    }
+    return true
+  }
+
+  const handleSendClick = () => {
+    if (validateForm()) {
+      setShowSendMethodModal(true)
+    }
+  }
+
+  const handleSendServer = () => {
+    setShowSendMethodModal(false)
+    toast.success('Application sent successfully!')
+  }
+
   const handleEmailDetailsChange = e => {
     const { name, value } = e.target
     dispatch(saveEmailDetails({ category: name, value: value }))
-  }
-
-  const navigateNext = async () => {
-    if (!formData.userEmail.trim()) {
-      return toast.error('Please provide your email address')
-    }
-    if (!formData.userName.trim()) {
-      return toast.error('Please provide your display name')
-    }
-
-    if (resumeData && templateName && !pdfUrl) {
-      setIsGeneratingPDF(true)
-      try {
-        const fullName = resumeData.personal?.contactDetails?.fullName || 'Tailored Resume'
-        const result = await generateTailoredResumePDF(
-          resumeData,
-          templateName,
-          `${fullName}-Resume`
-        )
-        if (result?.data?.url) {
-          setPdfUrl(result.data.url)
-          toast.success('Resume generated! Ready to send application!')
-          return
-        }
-      } catch (error) {
-        console.error('Failed to generate PDF:', error)
-        toast.error('Failed to generate resume PDF')
-      } finally {
-        setIsGeneratingPDF(false)
-      }
-    }
-
-    toast.success('Ready to send application!')
   }
 
   return (
@@ -458,14 +475,22 @@ export default function Finalize () {
           <div className='flex items-center justify-end pt-6  border-slate-100 mt-8'>
             <button
               type='button'
-              onClick={navigateNext}
-              className='px-10 py-3.5 bg-[#f17e27] hover:bg-[#e16d16] text-white text-sm font-bold rounded-[1.25rem] shadow-lg shadow-orange-100 transition-all flex items-center gap-2 group active:scale-95'
+              onClick={handleSendClick}
+              disabled={isGeneratingPDF}
+              className='px-10 py-3.5 bg-[#f17e27] hover:bg-[#e16d16] text-white text-sm font-bold rounded-[1.25rem] shadow-lg shadow-orange-100 transition-all flex items-center gap-2 group active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed'
             >
-              Send Application
               <Send className='w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform' />
+              {isGeneratingPDF ? 'Processing...' : 'Send Application'}
             </button>
           </div>
         </div>
+
+        <SendMethodModal
+          isOpen={showSendMethodModal}
+          onClose={() => setShowSendMethodModal(false)}
+          onSendServer={handleSendServer}
+          userEmail={formData.userEmail}
+        />
       </div>
     </section>
   )

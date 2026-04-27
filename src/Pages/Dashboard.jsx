@@ -18,7 +18,6 @@ import { dumpEmailDetails } from '../store/emailSlice'
 import { saveTailoredResume } from '../store/aiSlice'
 import { toast } from 'sonner'
 import { toastPresets } from '../components/toasters'
-import ChooseTemplate from '../App/Dashboard/Overview/Modals/ChooseTemplate'
 import FileDetails from '../App/Dashboard/Overview/Modals/FileDetails'
 import { toggleModals } from '../store/modalSlice'
 import { useQuery } from '@tanstack/react-query'
@@ -169,17 +168,7 @@ export default function Dashboard () {
               appearance.theme == 'dark' ? 'bg-[#00000000]' : 'bg-[#e0e4e582]'
             } backdrop-blur-sm`}
           />
-          <Folder />
-        </>
-      )}
-      {modals.chooseTemplate && (
-        <>
-          <Overlay
-            className={` ${
-              appearance.theme == 'dark' ? 'bg-[#00000000]' : 'bg-[#e0e4e582]'
-            } backdrop-blur-sm`}
-          />
-          <ChooseTemplate />
+<Folder />
         </>
       )}
       {modals.fileDetails && (

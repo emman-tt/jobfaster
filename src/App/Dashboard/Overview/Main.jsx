@@ -75,10 +75,10 @@ export default function Main () {
   const { data, isLoading, isFetching } = useQuery({
     queryKey: ['program'],
     queryFn: () => FetchPrograms(),
-    staleTime: 3 * 60 * 1000,
+    staleTime: 10 * 60 * 1000,
+    gcTime: 15 * 60 * 1000,
     refetchOnWindowFocus: false,
-    refetchOnReconnect: false,
-    refetchOnMount: false
+    refetchOnReconnect: false
   })
   const programs = data?.data.sort(
     (a, b) => new Date(b.updatedAt) - new Date(a.updatedAt)

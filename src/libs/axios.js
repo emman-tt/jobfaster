@@ -28,6 +28,7 @@ api.interceptors.response.use(undefined, async error => {
     error.code === 'ECONNABORTED'
   if (isNetworkError) {
     toast.error('Request timed out, please try again', {
+      id: 'network-error',
       ...toastPresets.authError(),
       position: 'top-center'
     })
@@ -76,6 +77,7 @@ api.interceptors.response.use(undefined, async error => {
         err.code === 'ECONNABORTED'
       if (isNetworkError) {
         toast.error('No internet connection, please check your network', {
+          id: 'network-error-refresh',
           ...toastPresets.authError(),
           position: 'top-center'
         })
@@ -89,12 +91,14 @@ api.interceptors.response.use(undefined, async error => {
   switch (status) {
     case 403:
       toast.error('You do not have permission to do this', {
+        id: 'forbidden',
         ...toastPresets.authError(),
         position: 'top-center'
       })
       break
     case 429:
       toast.error('Too many requests, please slow down', {
+        id: 'rate-limit',
         ...toastPresets.authError(),
         position: 'top-center'
       })
@@ -103,6 +107,7 @@ api.interceptors.response.use(undefined, async error => {
     case 502:
     case 503:
       toast.error('Something went wrong, please try again', {
+        id: 'server-error',
         ...toastPresets.authError(),
         position: 'top-center'
       })

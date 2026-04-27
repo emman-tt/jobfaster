@@ -1,53 +1,54 @@
 import { ArrowRight } from 'lucide-react'
-import TwoColumnResume from './templates/TwoColumn'
-import LeftAlligned from './templates/LeftAlligned'
-import SkillsFirstResume from './templates/SkillsFirst'
-import DividedResume from './templates/Divided'
-import Default from './templates/Default'
-import { changeLayout } from '../../../store/aiSlice'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
-import { sampleUserData } from '../../../utils/sample'
-
+import { saveTemplateId } from '../../../store/editorSlice'
+import ClassicImage from '../../../assets/templates/Professional.png'
+import ModernImage from '../../../assets/templates/ModernMinimalist.png'
+import ExecutiveImage from '../../../assets/templates/Executive.png'
+import ATSImage from '../../../assets/templates/ATSOptimized.png'
+import AcademicImage from '../../../assets/templates/Academic.png'
+import TechnicalImage from '../../../assets/templates/Technical.png'
 const views = [
   {
-    id: 1,
-    name: 'Default Classic',
-    Comp: Default
+    name: 'Classic Professional',
+    id: 'classic',
+    image: ClassicImage
   },
   {
-    id: 2,
-    name: 'Left Aligned',
-    Comp: LeftAlligned
+    id: 'modern',
+    name: 'Modern Minimalist',
+
+    image: ModernImage
   },
   {
-    id: 3,
-    name: 'Two Column',
-    Comp: TwoColumnResume
+    id: 'executive',
+    name: 'Executive',
+
+    image: ExecutiveImage
   },
   {
-    id: 4,
-    name: 'Skills First',
-    Comp: SkillsFirstResume
+    id: 'ats',
+    name: 'ATS Optimized',
+
+    image: ATSImage
   },
   {
-    id: 5,
-    name: 'Divided',
-    Comp: DividedResume
+    id: 'academic',
+    name: 'Academic',
+
+    image: AcademicImage
+  },
+  {
+    id: 'technical',
+    name: 'Technical',
+
+    image: TechnicalImage
   }
 ]
 
-const templateStyles = {
-  1: { scale: 0.3, className: 'w-[210mm] min-h-[297mm]' },
-  2: { scale: 0.3, className: 'w-[210mm] min-h-[297mm]' },
-  3: { scale: 0.3, className: 'w-[210mm] min-h-[297mm]' },
-  4: { scale: 0.3, className: 'w-[210mm] min-h-[297mm]' },
-  5: { scale: 0.38, className: 'w-[210mm] min-h-[297mm]' }
-}
-
 export default function Examples () {
   const dispatch = useDispatch()
-  const { layoutId } = useSelector(state => state.ai)
+  const { templateId } = useSelector(state => state.editor)
   const { appearance } = useSelector(state => state.preferences)
   const navigate = useNavigate()
 
@@ -85,16 +86,14 @@ export default function Examples () {
           Next <ArrowRight className='w-4 h-4' />
         </button>
       </div>
-      <section className='grid grid-cols-5 gap-4'>
+      <section className='grid grid-cols-6 gap-4'>
         {views.map(item => {
-          const Component = item.Comp
-          const config = templateStyles[item.id]
           return (
             <div
               key={item.id}
-              onClick={() => dispatch(changeLayout(item.id))}
+              onClick={() => dispatch(saveTemplateId(item.id))}
               className={`cursor-pointer ${
-                item.id == layoutId
+                item.id == templateId
                   ? 'ring-2 ring-orange-500 ring-offset-2 rounded-xl'
                   : ''
               }`}
@@ -104,26 +103,19 @@ export default function Examples () {
                   appearance.theme == 'dark'
                     ? 'bg-[#202020] border-slate-700'
                     : 'bg-white border-slate-200'
-                } ${item.id == layoutId ? 'shadow-lg' : 'shadow-sm'} border`}
+                } ${item.id == templateId ? 'shadow-lg' : 'shadow-sm'} border`}
               >
-                <div
-                  className='overflow-hidden overflow-y-scroll [scrollbar-width:thin] '
-                  style={{ height: '210px' }}
-                >
-                  <div
-                    className='origin-top-left w-full h-60'
-                    style={{ transform: `scale(${config.scale})` }}
-                  >
-                    <Component
-                      className={config.className}
-                      userData={sampleUserData}
-                    />
-                  </div>
+                <div className='h-50 p-1'>
+                  <img
+                    src={item.image}
+                    alt=''
+                    className='w-full object-cover h-auto'
+                  />
                 </div>
               </div>
               <p
                 className={`text-sm font-satoshi font-medium text-center mt-2 ${
-                  item.id == layoutId
+                  item.id == templateId
                     ? 'text-orange-600'
                     : appearance.theme == 'dark'
                     ? 'text-white'
