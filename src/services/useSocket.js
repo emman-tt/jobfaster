@@ -35,10 +35,8 @@ export function connector () {
   ws.onmessage = event => {
     const res = JSON.parse(event.data)
 
-    console.log(res)
-    const { type, response } = res
     if (callbacks.JOB_APPLY) {
-      return callbacks.JOB_APPLY(response)
+      return callbacks.JOB_APPLY(res)
     } else {
       console.warn(
         'No registered callback for this process or callback wasnt called and added'

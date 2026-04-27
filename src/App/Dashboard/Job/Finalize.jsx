@@ -1,13 +1,121 @@
 import { useState } from 'react'
-import { Mail, User, Send, Type, Edit3, Eye } from 'lucide-react'
+import {
+  Mail,
+  User,
+  Send,
+  Type,
+  Edit3,
+  Eye,
+  FileText,
+  RotateCcw,
+  MoreVertical,
+  Loader2
+} from 'lucide-react'
 import { useSelector, useDispatch } from 'react-redux'
 import { saveEmailDetails } from '../../../store/emailSlice'
 import { saveJobDetails } from '../../../store/aiSlice'
+import { generateTailoredResumePDF } from '../../../utils/renderResume'
 import { toast } from 'sonner'
+
+function GetFileIcon ({ extension }) {
+  return (
+    <svg
+      role='img'
+      viewBox='0 0 24 24'
+      fill='none'
+      stroke='currentColor'
+      strokeWidth='1.5'
+      className='w-5 h-5'
+    >
+      <path
+        strokeLinecap='round'
+        strokeLinejoin='round'
+        d='M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m2.25 0H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z'
+      />
+    </svg>
+  )
+}
+
+function AttachedFiles ({ files, selectedFile, onSelectFile, isGenerating }) {
+  const { appearance } = useSelector(state => state.preferences)
+
+  return (
+    <div className='space-y-2 mt-4'>
+      <h4
+        className={`text-xs font-bold uppercase tracking-wider ${
+          appearance.theme == 'dark' ? 'text-slate-400' : 'text-slate-500'
+        }`}
+      >
+        {isGenerating ? 'Generating Resume...' : 'Attached Files'}
+      </h4>
+      <div className='space-y-1'>
+        {files?.length > 0 ? (
+          files.map(file => (
+            <div
+              key={file.id}
+              onClick={() => onSelectFile(file)}
+              className={`flex items-center justify-between p-3 rounded-xl cursor-pointer transition-all ${
+                file.id == selectedFile?.id
+                  ? 'bg-orange-500'
+                  : appearance.theme == 'dark'
+                  ? 'bg-[#202020] hover:bg-[#252525]'
+                  : 'bg-gray-50 hover:bg-gray-100'
+              }`}
+            >
+              <div className='flex items-center gap-3'>
+                <div
+                  className={`w-8 h-8 rounded-lg flex items-center justify-center ${
+                    file.id == selectedFile?.id
+                      ? 'bg-white/20'
+                      : appearance.theme == 'dark'
+                      ? 'bg-[#2a2a2a]'
+                      : 'bg-gray-200'
+                  }`}
+                >
+                  <GetFileIcon extension={file.metaData?.extension} />
+                </div>
+                <div>
+                  <h3
+                    className={`text-sm font-medium truncate max-w-40 ${
+                      file.id == selectedFile?.id
+                        ? 'text-white'
+                        : appearance.theme == 'dark'
+                        ? 'text-white'
+                        : 'text-slate-900'
+                    }`}
+                  >
+                    {file.metaData?.name}
+                  </h3>
+                </div>
+              </div>
+              <MoreVertical
+                className={`w-4 h-4 ${
+                  file.id == selectedFile?.id
+                    ? 'text-white/70'
+                    : appearance.theme == 'dark'
+                    ? 'text-slate-500'
+                    : 'text-gray-400'
+                }`}
+              />
+            </div>
+          ))
+        ) : (
+          <p
+            className={`text-xs ${
+              appearance.theme == 'dark' ? 'text-slate-500' : 'text-gray-400'
+            }`}
+          >
+            No files attached
+          </p>
+        )}
+      </div>
+    </div>
+  )
+}
 
 export default function Finalize () {
   const { emailDetails } = useSelector(state => state.email)
-  const { job } = useSelector(state => state.ai)
+  const { job, tailoredResume } = useSelector(state => state.ai)
   const { appearance } = useSelector(state => state.preferences)
   const dispatch = useDispatch()
 
@@ -15,6 +123,29 @@ export default function Finalize () {
     userEmail: '',
     userName: ''
   })
+
+  const [selectedFile, setSelectedFile] = useState(null)
+  const [pdfUrl, setPdfUrl] = useState(null)
+  const [isGeneratingPDF, setIsGeneratingPDF] = useState(false)
+
+  const resumeData = tailoredResume?.resume
+  const templateName = tailoredResume?.template
+
+  const attachedFiles = resumeData
+    ? [
+        {
+          id: 'tailored-resume',
+          metaData: {
+            name: `${
+              resumeData.personal?.contactDetails?.fullName || 'Tailored Resume'
+            }.pdf`,
+            extension: 'pdf',
+            content: pdfUrl || tailoredResume,
+            url: pdfUrl
+          }
+        }
+      ]
+    : []
 
   const handleChange = e => {
     const { name, value } = e.target
@@ -26,12 +157,34 @@ export default function Finalize () {
     dispatch(saveEmailDetails({ category: name, value: value }))
   }
 
-  const navigateNext = () => {
+  const navigateNext = async () => {
     if (!formData.userEmail.trim()) {
       return toast.error('Please provide your email address')
     }
     if (!formData.userName.trim()) {
       return toast.error('Please provide your display name')
+    }
+
+    if (resumeData && templateName && !pdfUrl) {
+      setIsGeneratingPDF(true)
+      try {
+        const fullName = resumeData.personal?.contactDetails?.fullName || 'Tailored Resume'
+        const result = await generateTailoredResumePDF(
+          resumeData,
+          templateName,
+          `${fullName}-Resume`
+        )
+        if (result?.data?.url) {
+          setPdfUrl(result.data.url)
+          toast.success('Resume generated! Ready to send application!')
+          return
+        }
+      } catch (error) {
+        console.error('Failed to generate PDF:', error)
+        toast.error('Failed to generate resume PDF')
+      } finally {
+        setIsGeneratingPDF(false)
+      }
     }
 
     toast.success('Ready to send application!')
@@ -43,19 +196,25 @@ export default function Finalize () {
         appearance.theme == 'dark' ? 'bg-[#202020]' : 'bg-white'
       }`}
     >
-      <div className={`w-full max-w-5xl h-max my-10 p-10 space-y-8 rounded-3xl shadow-xs ${
-        appearance.theme == 'dark' ? 'bg-[#2a2a2a]' : 'bg-white'
-      }`}>
+      <div
+        className={`w-full max-w-5xl h-max my-10 p-10 space-y-8 rounded-3xl shadow-xs ${
+          appearance.theme == 'dark' ? 'bg-[#2a2a2a]' : 'bg-white'
+        }`}
+      >
         {/* Header */}
         <div className='space-y-2'>
-          <h1 className={`text-2xl font-bold font-IBM flex items-center gap-3 ${
-            appearance.theme == 'dark' ? 'text-white' : 'text-slate-900'
-          }`}>
+          <h1
+            className={`text-2xl font-bold font-IBM flex items-center gap-3 ${
+              appearance.theme == 'dark' ? 'text-white' : 'text-slate-900'
+            }`}
+          >
             Send Application
           </h1>
-          <p className={`text-sm ml-1 ${
-            appearance.theme == 'dark' ? 'text-slate-400' : 'text-slate-500'
-          }`}>
+          <p
+            className={`text-sm ml-1 ${
+              appearance.theme == 'dark' ? 'text-slate-400' : 'text-slate-500'
+            }`}
+          >
             Review your application and send it directly to the recruiter.
           </p>
         </div>
@@ -68,9 +227,6 @@ export default function Finalize () {
                 Your Email <span className='text-orange-500'>*</span>
               </label>
               <div className='relative'>
-                {/* <div className='absolute left-4 top-1/2 -translate-y-1/2 text-slate-400'>
-                  <Mail className='w-4 h-4' />
-                </div> */}
                 <input
                   type='email'
                   name='userEmail'
@@ -88,9 +244,6 @@ export default function Finalize () {
                 Display Name <span className='text-orange-500'>*</span>
               </label>
               <div className='relative'>
-                {/* <div className='absolute left-4 top-1/2 -translate-y-1/2 text-slate-400'>
-                  <User className='w-4 h-4' />
-                </div> */}
                 <input
                   type='text'
                   name='userName'
@@ -113,9 +266,6 @@ export default function Finalize () {
                 To:
               </label>
               <div className='relative'>
-                {/* <div className='absolute left-4 top-1/2 -translate-y-1/2 text-slate-400'>
-                  <Mail className='w-4 h-4' />
-                </div> */}
                 <input
                   type='email'
                   id='email'
@@ -144,9 +294,6 @@ export default function Finalize () {
                 Subject:
               </label>
               <div className='relative'>
-                {/* <div className='absolute left-4 top-1/2 -translate-y-1/2 text-slate-400'>
-                  <Type className='w-4 h-4' />
-                </div> */}
                 <input
                   type='text'
                   id='subjectLine'
@@ -264,8 +411,8 @@ export default function Finalize () {
             </div>
 
             {/* Right Column: Live Preview */}
-            <div className=' p-8 shadow-md  pointer-events-none rounded-3xl flex flex-col h-[80%]'>
-              <div className='flex justify-between items-center mb-6 pb-4 border-b border-slate-200'>
+            <div className=' p-8 shadow-md  pointer-events-none rounded-3xl flex flex-col h-full'>
+              <div className='flex justify-between items-center mb-4 pb-4 border-b border-slate-200'>
                 <h3 className='font-bold text-slate-800 flex items-center gap-2'>
                   <Eye className='w-4 h-4 text-orange-500' />
                   Live Preview
@@ -297,6 +444,13 @@ export default function Finalize () {
                   {formData.userName || 'John Doe'}
                 </p>
               </div>
+
+              <AttachedFiles
+                files={attachedFiles}
+                selectedFile={selectedFile}
+                onSelectFile={setSelectedFile}
+                isGenerating={isGeneratingPDF}
+              />
             </div>
           </div>
 

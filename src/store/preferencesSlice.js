@@ -15,7 +15,7 @@ const initialState = {
     strengthenVerbs: 'ask'
   },
   appearance: {
-    theme: 'dark',
+    theme: 'light',
     sidebar: 'expanded',
     compactMode: false
   },

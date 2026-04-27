@@ -14,8 +14,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import Menubar from './Menubar'
 import ExportMenu from './ExportMenu'
 import { exportToPDF, exportToDOCX } from '../../services/export.jsx'
-import { UploadFile } from '../../services/Program'
-import { generatePDFFromHtml } from '../../utils/generatePdf'
+import { saveResumeFromHTML } from '../../services/Program'
 import { toast } from 'sonner'
 
 export function Topbar () {
@@ -51,19 +50,13 @@ export function Topbar () {
     setShowSaveModal(false)
 
     try {
-      console.log('Generating PDF...')
-      const pdfFile = await generatePDFFromHtml(
-        'resume-preview',
-        `${resumeName.trim()}.pdf`
-      )
-      console.log('PDF generated, size:', pdfFile.size, 'type:', pdfFile.type)
+      const previewElement = document.getElementById('resume-preview')
+      if (!previewElement) {
+        throw new Error('Preview element not found')
+      }
 
-      const formData = new FormData()
-      formData.append('file', pdfFile)
-      
-      console.log('Uploading...')
-      const result = await UploadFile(formData)
-      console.log('Upload result:', result)
+      const html = previewElement.outerHTML
+      const result = await saveResumeFromHTML(html, resumeName.trim())
 
       if (result.status === 'success') {
         toast.success('Resume saved successfully')

@@ -17,7 +17,8 @@ const initialState = {
   uploadedUserFileData: {
     layoutId: 1,
     data: {}
-  }
+  },
+  tailoredResume: null
 }
 export const aiSlice = createSlice({
   name: 'ai',
@@ -39,6 +40,9 @@ export const aiSlice = createSlice({
     saveUserFileData (state, action) {
       const { option, value } = action.payload
       state.uploadedUserFileData[option] = value
+    },
+    saveTailoredResume (state, action) {
+      state.tailoredResume = action.payload
     }
   }
 })
@@ -48,5 +52,6 @@ export const {
   saveJobDetails,
   saveCorrectionAnswers,
   changeLayout,
-  saveUserFileData
+  saveUserFileData,
+  saveTailoredResume
 } = aiSlice.actions

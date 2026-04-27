@@ -15,6 +15,7 @@ import { onJobApply } from '../services/useSocket'
 import { saveProgram } from '../store/filesSlice'
 import { getAllFiles } from '../utils/getAllFiles'
 import { dumpEmailDetails } from '../store/emailSlice'
+import { saveTailoredResume } from '../store/aiSlice'
 import { toast } from 'sonner'
 import { toastPresets } from '../components/toasters'
 import ChooseTemplate from '../App/Dashboard/Overview/Modals/ChooseTemplate'
@@ -48,9 +49,7 @@ export default function Dashboard () {
       if (data) {
         const status = data.status
         const response = data.response
-        const jobId = data.jobId
-        const timestamp = data.timestamp
-        if (status == true) {
+        if (status == 'success') {
           toast.success('Ready!', {
             ...toastPresets.aiSuccess(
               'Resume processed successfully! Redirecting you to your tailored resume...'
@@ -60,21 +59,15 @@ export default function Dashboard () {
           })
 
           const content = response.resume
-
-          const splitted = jobId.split('-')[0]
-          const tobeSaved = {
-            id: splitted,
-            name: `-${splitted}`,
-            content: content,
-            createdAt: timestamp
-          }
-
-          dispatch(saveProgram(tobeSaved))
+          console.log('resume', content)
           dispatch(dumpEmailDetails(response.email))
-          navigate(`/dashboard/file/?resumeID=${splitted}`)
+          dispatch(saveTailoredResume(response))
+          console.log('email', response.email)
+          navigate('finalize')
+
+          return
         } else {
           toastPresets.aiError()
-          navigate('/dashboard/job')
           console.log(' Status false or not true')
         }
       }

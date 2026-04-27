@@ -1,7 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit'
 import { ResumeHtml } from '../assets/templates/ResumeHtml'
 
-
 const initialState = {
   programs: [
     {
@@ -18,7 +17,8 @@ const initialState = {
           extension: 'pdf',
           name: 'Google_Senior_Developer',
           size: 0.8,
-          content: 'https://res.cloudinary.com/drpnhajh9/image/upload/v1775417800/Jobfaster/1775417796836-Emmanuel%20Resume.pdf',
+          content:
+            'https://res.cloudinary.com/drpnhajh9/image/upload/v1775417800/Jobfaster/1775417796836-Emmanuel%20Resume.pdf',
           layoutId: 3,
           createdAt: '2025-03-20T10:00:00Z'
         }
@@ -67,7 +67,8 @@ const initialState = {
       extension: 'pdf',
       name: 'Google_Senior_Developer',
       size: 0.8,
-      content: 'https://res.cloudinary.com/drpnhajh9/image/upload/v1775417800/Jobfaster/1775417796836-Emmanuel%20Resume.pdf',
+      content:
+        'https://res.cloudinary.com/drpnhajh9/image/upload/v1775417800/Jobfaster/1775417796836-Emmanuel%20Resume.pdf',
       layoutId: 3,
       createdAt: '2025-03-20T10:00:00Z'
     },
