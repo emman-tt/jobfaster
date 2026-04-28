@@ -32,8 +32,8 @@ export async function generateTailoredResumePDF (
   const { saveResumeFromHTML } = await import('../services/Program')
 
   const html = await renderResumeToHTML(resumeData, templateName)
-  console.log('html result', html)
+ 
   const result = await saveResumeFromHTML(html, fileName)
-  console.log('pupeteer result', result)
+
   return result
 }

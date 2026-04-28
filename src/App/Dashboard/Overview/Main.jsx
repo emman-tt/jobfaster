@@ -48,8 +48,8 @@ export default function Main () {
     visible: false,
     x: 0,
     y: 0,
-
-    id: null
+    id: null,
+    type: ''
   })
 
   useEffect(() => {
@@ -61,15 +61,15 @@ export default function Main () {
     return () => window.removeEventListener('click', handleClickOutside)
   }, [menuConfig.visible])
 
-  function handleClick (e, item) {
+  function handleClick (e, itemId, type) {
     e.preventDefault()
     e.stopPropagation()
     setMenuConfig({
       visible: true,
       x: e.clientX,
       y: e.clientY,
-      id: item.folder?.id || item.file?.id,
-      item
+      id: itemId,
+      type: type
     })
   }
 
@@ -81,7 +81,7 @@ export default function Main () {
     refetchOnWindowFocus: false,
     refetchOnReconnect: false
   })
-  const programs = data?.data.sort(
+  const programs = data?.sort(
     (a, b) => new Date(b.updatedAt) - new Date(a.updatedAt)
   )
 
@@ -109,30 +109,66 @@ export default function Main () {
     dispatch(toggleModals('folder'))
   }
 
-  function handleDragEnd (event) {
-    console.log(event)
-    console.log(event.operation)
-    const { active, over } = event.operation
-    if (!over) return
+  const moveFileMutation = useMutation({
+    mutationFn: MoveFile,
 
-    const activeId = active.id
-    const overId = over.id
+    onMutate: async variables => {
+      const { fileId, folderId } = variables
 
-    console.log('active', active, 'over', over)
+      await queryClient.cancelQueries({ queryKey: ['program'] })
+      const cachedProgram = queryClient.getQueryData(['program'])
 
-    if (String(activeId) === String(overId)) return
+      queryClient.setQueryData(['program'], old => {
+        if (!old) return old
 
-    const activeData = active.data
-    if (activeData?.type === 'file') {
-      setMovingFiles(prev => [...prev, activeId])
-      toast.loading('Moving file...', {
-        ...toastPresets.generalLoading('Moving file to folder'),
-        position: 'top-center'
+        return old.map(item => {
+          if (item.file?.id === fileId) {
+            return {
+              ...item,
+              file: {
+                ...item.file,
+                folderId: folderId
+              }
+            }
+          }
+          return item
+        })
       })
+
+      return { cachedProgram }
+    },
+
+    onError: (err, variables, context) => {
+      queryClient.setQueryData(['program'], context.cachedProgram)
+      toast.error('Move failed')
+    },
+
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['program'] })
     }
+  })
+
+  function handleDragEnd (event, cancelled) {
+    if (cancelled) {
+      return
+    }
+    const { source, target } = event.operation
+
+    if (!target.id) {
+      return
+    }
+    // const sourceFile = source?.data
+    // const targetFolder = target?.data
+
+    moveFileMutation.mutate({ fileId: source.id, folderId: target.id })
+
+    // console.log('folder', targetFolder)
+    // console.log('file', sourceFile)
+    // console.log('source', source?.id)
+    // console.log('target', target?.id)
   }
 
-  const mutation = useMutation({
+  const deleteMutation = useMutation({
     mutationFn: deleteProgram,
     onSuccess: () => {
       // const program = data.data
@@ -252,7 +288,7 @@ export default function Main () {
         </div>
 
         <section
-          className={`grid   gap-4 transform-gpu transition-all duration-150 ease-in-out mt-0 pt-5 pl-10 overflow-hidden 
+          className={`grid   gap-4 transform-gpu transition-all duration-150 ease-in-out mt-0 pt-5 pl-10 overflow-hidden  min-h-screen 
             
             ${
               showRightbar ? 'grid-cols-6' : 'grid-cols-8'
@@ -262,18 +298,24 @@ export default function Main () {
            } [scrollbar-width:thin] w-full`}
         >
           {/* specific files in an opened folder  */}
-          {openedFolder && id && (
-            <section className='col-span-7 grid grid-cols-7 gap-4 w-full'>
-              {openedFolder?.files?.map(item => (
+          {
+            openedFolder &&
+              id &&
+              // <section className='col-span-7 grid grid-cols-7 gap-4 w-full'>{
+              openedFolder?.files?.map(item => (
                 <Draggable
+                  data={item}
                   key={item.id}
                   itemId={item.id}
-                  parentId={openedFolder.id}
                   disabled={movingFiles.includes(item.id)}
                 >
                   <section
-                    onClick={() => {
-                      openFile(openedFolder.id, item.id)
+                    onClick={e => {
+                      console.log(item)
+                      handleClick(e, item.id, 'file')
+                    }}
+                    onDoubleClick={() => {
+                      openFile(null, item.id)
                     }}
                     className={`pl-2 gap-2 h-26 w-35 shrink-0 flex flex-col items-start ${
                       movingFiles.includes(item.id) ? 'opacity-50' : ''
@@ -314,9 +356,9 @@ export default function Main () {
                     </div>
                   </section>
                 </Draggable>
-              ))}
-            </section>
-          )}
+              ))
+            //} </section>
+          }
           {isFetching && (
             <div className='custom-loader absolute bottom-0 top-0 left-0 right-0 w-full '></div>
           )}
@@ -337,7 +379,7 @@ export default function Main () {
                 >
                   <div
                     onDoubleClick={() => openFolder(item)}
-                    onClick={e => handleClick(e, item)}
+                    onClick={e => handleClick(e, item.folder.id, 'folder')}
                     className='w-28 shrink-0 cursor-pointer'
                   >
                     <Folder files={item?.folder.files} />
@@ -359,14 +401,14 @@ export default function Main () {
                     data={item.file}
                     key={item.file.id}
                     itemId={item.file.id}
-                    disabled={movingFiles.includes(item.file.id)}
+                    disabled={movingFiles.includes(item.id)}
                   >
                     <section
-                      onClick={e => handleClick(e, item)}
-                      onDoubleClick={() => openFile(null, item.file.id)}
-                      className={`cursor-pointer pl-2 gap-2 h-26 w-32 shrink-0 flex flex-col items-start ${
-                        movingFiles.includes(item.file.id) ? 'opacity-50' : ''
-                      }`}
+                      onClick={e => handleClick(e, item.file.id, 'file')}
+                      onDoubleClick={() => {
+                        openFile(null, item.file.id)
+                      }}
+                      className={`cursor-pointer pl-2 gap-2 h-26 w-32 shrink-0 flex flex-col items-start`}
                     >
                       <div className='bg-[#c4c7cc15] shadow-sm rounded-xl w-full h-full flex'>
                         <div className='mt-5'>
@@ -409,9 +451,9 @@ export default function Main () {
               )
             )}
         </section>
-        {menuConfig.visible && !openedFolder && (
+        {menuConfig.visible && (
           <ContextMenu
-            mutation={mutation}
+            mutation={deleteMutation}
             menuConfig={menuConfig}
             onClose={() => setMenuConfig(prev => ({ ...prev, visible: false }))}
           />
@@ -422,8 +464,7 @@ export default function Main () {
 }
 
 function ContextMenu ({ onClose, menuConfig, mutation }) {
-  const item = menuConfig?.item
-  console.log(item)
+  const item = menuConfig?.type
   const dispatch = useDispatch()
   const navigate = useNavigate()
 
@@ -450,10 +491,10 @@ function ContextMenu ({ onClose, menuConfig, mutation }) {
 
       <button
         onClick={() => {
-          if (item?.file) {
-            navigate(`/dashboard/file/?resumeID=${item.file.id}`)
+          if (item == 'file') {
+            navigate(`/dashboard/file/?resumeID=${menuConfig.id}`)
           } else {
-            navigate(`/dashboard/folder/${item.folder.id}`)
+            navigate(`/dashboard/folder/${menuConfig.id}`)
           }
           onClose()
         }}
@@ -475,7 +516,7 @@ function ContextMenu ({ onClose, menuConfig, mutation }) {
 
       <button
         onClick={() => {
-          mutation.mutate(item?.folder?.id || item?.file?.id)
+          mutation.mutate(menuConfig.id)
           onClose()
         }}
         className='flex items-center gap-2 px-4 py-2 hover:bg-rose-50 text-rose-500 text-[10px] font-semibold transition-all cursor-pointer'

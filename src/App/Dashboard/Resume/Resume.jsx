@@ -1,10 +1,9 @@
 import Builder from './Builder'
 import Iframe from './Iframe'
 import { useSearchParams } from 'react-router-dom'
-import { useSelector } from 'react-redux'
 import { useQuery } from '@tanstack/react-query'
 import { FetchPrograms } from '../../../services/Program'
-export default function Resume ({ data }) {
+export default function Resume () {
   const [searchParams] = useSearchParams()
   const resumeId = searchParams.get('resumeID')
   const folderId = searchParams.get('folderID')
@@ -13,11 +12,11 @@ export default function Resume ({ data }) {
     queryKey: ['program'],
     queryFn: FetchPrograms
   })
-  const programs = output?.data
+  const programs = output
 
   const findResume = () => {
     if (!programs) return null
-    
+
     if (folderId) {
       const folder = programs.find(item => item.folder?.id == folderId)
       if (folder?.files) {
@@ -26,12 +25,12 @@ export default function Resume ({ data }) {
     }
     return programs.find(item => item.file?.id == resumeId)?.file
   }
-  
+
   const resume = findResume()
   const type = resume?.source
 
-  if (isLoading) return <div>Loading...</div>
-  if (!resume) return <div>Resume not found</div>
+  if (isLoading) return <div className=' text-center'>Loading...</div>
+  if (!resume) return <div className=' text-center'>Resume not found</div>
 
   if (type == 'builder') {
     return <Builder resume={resume} layoutId={resume.layoutId} />

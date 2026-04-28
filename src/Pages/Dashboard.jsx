@@ -96,7 +96,7 @@ export default function Dashboard () {
         }  p-5 `}
       />
       <section className='w-full h-full '>
-        <Outlet />
+        <Outlet  />
       </section>
       <section className='flex gap-4  pt-3 pr-3 pb-3'>
         <div

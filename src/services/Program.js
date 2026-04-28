@@ -32,11 +32,12 @@ export async function FetchPrograms () {
   const response = await api.get(`/${base}`, {
     timeout: 20000
   })
-  return response.data
+  return response.data.data
 }
 
-export async function MoveFile (fileId, folderId) {
-  const response = await api.put(`/${base}/file/move`, {
+export async function MoveFile (data) {
+  const { fileId, folderId } = data
+  const response = await api.patch(`/${base}/file`, {
     fileId,
     folderId
   })

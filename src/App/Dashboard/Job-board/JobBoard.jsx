@@ -214,7 +214,10 @@ function JobCard ({ card }) {
   }
 
   return (
-    <div onClick={handleOpenDetails} className='bg-white p-1.5 pl-3 h-30 rounded-xl shadow-sm border border-gray-200/50 group relative hover:border-gray-300 transition-all cursor-pointer'>
+    <div
+      onClick={handleOpenDetails}
+      className='bg-white p-1.5 pl-3 h-30 rounded-xl shadow-sm border border-gray-200/50 group relative hover:border-gray-300 transition-all cursor-pointer'
+    >
       <button className='absolute top-3 right-3 text-gray-300 hover:text-gray-500 opacity-0 group-hover:opacity-100 transition-opacity'>
         <MoreHorizontal className='w-3.5 h-3.5' />
       </button>

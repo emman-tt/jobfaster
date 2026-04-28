@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import {
   Mail,
   User,
@@ -17,7 +17,8 @@ import { saveJobDetails } from '../../../store/aiSlice'
 import { generateTailoredResumePDF } from '../../../utils/renderResume'
 import { toast } from 'sonner'
 import SendMethodModal from './Modals/SendMethod'
-
+import { useQueryClient } from '@tanstack/react-query'
+import { QueryClient } from '@tanstack/react-query'
 function GetFileIcon () {
   return (
     <svg
@@ -119,6 +120,7 @@ export default function Finalize () {
   const { job, tailoredResume } = useSelector(state => state.ai)
   const { appearance } = useSelector(state => state.preferences)
   const dispatch = useDispatch()
+  const queryClient = useQueryClient()
 
   const [formData, setFormData] = useState({
     userEmail: '',
@@ -129,14 +131,34 @@ export default function Finalize () {
   const [pdfUrl, setPdfUrl] = useState(null)
   const [isGeneratingPDF, setIsGeneratingPDF] = useState(false)
   const [showSendMethodModal, setShowSendMethodModal] = useState(false)
+  const hasGeneratedRef = useRef(false)
+
+  // const deleteMutation = useMutation({
+  //   mutationFn: deleteProgram,
+  //   onSuccess: () => {
+  //     // const program = data.data
+  //     queryClient.invalidateQueries({ queryKey: ['program'] })
+  //     queryClient.invalidateQueries({ queryKey: ['activity'] })
+  //     toast.success(`Program deleted  succesfully`, {
+  //       ...toastPresets.aiSuccess(),
+  //       position: 'top-center'
+  //     })
+  //   },
+  //   onError: () => {
+  //     toast.error('Failed to delete program', {
+  //       ...toastPresets.generalError('Please try again'),
+  //       position: 'top-center'
+  //     })
+  //   }
+  // })
 
   const resumeData = tailoredResume?.resume
   const templateName = tailoredResume?.template
 
-
   useEffect(() => {
     const generatePDF = async () => {
-      if (resumeData && templateName && !pdfUrl) {
+      if (resumeData && templateName && !hasGeneratedRef.current) {
+        hasGeneratedRef.current = true
         setIsGeneratingPDF(true)
         try {
           const fullName =
@@ -147,17 +169,19 @@ export default function Finalize () {
             `${fullName}-Resume`
           )
           if (result?.data?.url) {
+            queryClient.invalidateQueries(['program'])
             setPdfUrl(result.data.url)
           }
         } catch (error) {
           console.error('Failed to generate PDF:', error)
+          hasGeneratedRef.current = false
         } finally {
           setIsGeneratingPDF(false)
         }
       }
     }
     generatePDF()
-  }, [pdfUrl, resumeData, templateName])
+  }, [resumeData, templateName])
 
   const attachedFiles = resumeData
     ? [

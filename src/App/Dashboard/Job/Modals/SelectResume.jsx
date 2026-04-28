@@ -39,7 +39,7 @@ export default function SelectResume () {
     staleTime: 3 * 60 * 1000
   })
 
-  const programs = data?.data
+  const programs = data
   function navigateNext () {
     if (!selected) {
       return console.log('nothing selected')
