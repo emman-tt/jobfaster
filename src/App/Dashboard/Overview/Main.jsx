@@ -23,6 +23,8 @@ import {
 import { useState, useEffect } from 'react'
 import { toast } from 'sonner'
 import { toastPresets } from '../../../components/toasters'
+import { DragDropProvider } from '@dnd-kit/react'
+import { Draggable, Droppable } from '../../../components/dragger'
 
 function formatBytes (bytes) {
   if (!bytes || bytes === 0) return '0 B'
@@ -41,8 +43,6 @@ export default function Main () {
   const navigate = useNavigate()
   const location = useLocation()
   const actualPath = location.pathname.split('/').at(-1)
-  const [, setDraggedItem] = useState(null)
-  const [touchDrag, setTouchDrag] = useState(null)
   const [movingFiles, setMovingFiles] = useState([])
   const [menuConfig, setMenuConfig] = useState({
     visible: false,
@@ -68,7 +68,8 @@ export default function Main () {
       visible: true,
       x: e.clientX,
       y: e.clientY,
-      id: item
+      id: item.folder?.id || item.file?.id,
+      item
     })
   }
 
@@ -97,7 +98,7 @@ export default function Main () {
   }
 
   function openFolder (item) {
-    // queryClient.invalidateQueries({ queryKey: ['program'] })
+    queryClient.invalidateQueries({ queryKey: ['program'] })
     navigate(`/dashboard/folder/${item.folder.id}`)
   }
 
@@ -108,66 +109,33 @@ export default function Main () {
     dispatch(toggleModals('folder'))
   }
 
-  function handleDragStart (e, item, type) {
-    e.dataTransfer.setData(
-      'itemId',
-      type === 'folder' ? item.folder.id : item.file.id
-    )
-    e.dataTransfer.setData('itemType', type)
-    setDraggedItem({ item, type })
-  }
+  function handleDragEnd (event) {
+    console.log(event)
+    console.log(event.operation)
+    const { active, over } = event.operation
+    if (!over) return
 
-  function handleDragOver (e) {
-    e.preventDefault()
-  }
+    const activeId = active.id
+    const overId = over.id
 
-  async function handleDrop (e, targetFolderId) {
-    e.preventDefault()
-    const itemId = e.dataTransfer.getData('itemId')
-    const itemType = e.dataTransfer.getData('itemType')
+    console.log('active', active, 'over', over)
 
-    if (itemType === 'file') {
-      setMovingFiles(prev => [...prev, itemId])
-      const loadingToast = toast.loading('Moving file...', {
+    if (String(activeId) === String(overId)) return
+
+    const activeData = active.data
+    if (activeData?.type === 'file') {
+      setMovingFiles(prev => [...prev, activeId])
+      toast.loading('Moving file...', {
         ...toastPresets.generalLoading('Moving file to folder'),
         position: 'top-center'
       })
-
-      try {
-        await MoveFile(itemId, targetFolderId)
-        toast.dismiss(loadingToast)
-        toast.success('File moved', {
-          ...toastPresets.generalSuccess('File moved to folder'),
-          position: 'top-center'
-        })
-        queryClient.invalidateQueries({ queryKey: ['program'] })
-      } catch {
-        toast.dismiss(loadingToast)
-        toast.error('Failed to move file', {
-          ...toastPresets.generalError('Please try again'),
-          position: 'top-center'
-        })
-      } finally {
-        setMovingFiles(prev => prev.filter(id => id !== itemId))
-      }
     }
-  }
-
-  function handleTouchStart (e, item, type) {
-    const touch = e.touches[0]
-    setTouchDrag({
-      itemId: type === 'folder' ? item.folder.id : item.file.id,
-      itemType: type,
-      startX: touch.clientX,
-      startY: touch.clientY
-    })
-    setDraggedItem({ item, type })
   }
 
   const mutation = useMutation({
     mutationFn: deleteProgram,
-    onSuccess: data => {
-      const program = data.data
+    onSuccess: () => {
+      // const program = data.data
       queryClient.invalidateQueries({ queryKey: ['program'] })
       queryClient.invalidateQueries({ queryKey: ['activity'] })
       toast.success(`Program deleted  succesfully`, {
@@ -183,178 +151,108 @@ export default function Main () {
     }
   })
 
-  function handleTouchMove (e) {
-    if (!touchDrag) return
-
-    e.preventDefault()
-    const touch = e.touches[0]
-    const elementUnder = document.elementFromPoint(touch.clientX, touch.clientY)
-    const dropZone = elementUnder?.closest('[data-droppable="true"]')
-
-    document.querySelectorAll('[data-droppable="true"]').forEach(el => {
-      el.classList.remove('ring-2', 'ring-orange-400')
-    })
-
-    if (dropZone) {
-      dropZone.classList.add('ring-2', 'ring-orange-400')
-    }
-  }
-
-  async function handleTouchEnd (e) {
-    if (!touchDrag) return
-
-    const touch = e.changedTouches[0]
-    let dropZone = null
-
-    if (touch.clientX > 0 && touch.clientY > 0) {
-      const elementUnder = document.elementFromPoint(
-        touch.clientX,
-        touch.clientY
-      )
-      dropZone = elementUnder?.closest('[data-droppable="true"]')
-    }
-
-    document.querySelectorAll('[data-droppable="true"]').forEach(el => {
-      el.classList.remove('ring-2', 'ring-orange-400')
-    })
-
-    if (dropZone) {
-      const targetFolderId = dropZone.getAttribute('data-folder-id')
-      if (touchDrag.itemType === 'file' && targetFolderId) {
-        setMovingFiles(prev => [...prev, touchDrag.itemId])
-        const loadingToast = toast.loading('Moving file...', {
-          ...toastPresets.generalLoading('Moving file to folder'),
-          position: 'top-center'
-        })
-
-        try {
-          await MoveFile(touchDrag.itemId, targetFolderId)
-          toast.dismiss(loadingToast)
-          toast.success('File moved', {
-            ...toastPresets.generalSuccess('File moved to folder'),
-            position: 'top-center'
-          })
-          queryClient.invalidateQueries({ queryKey: ['program'] })
-        } catch (err) {
-          console.error('Failed to move file:', err)
-          toast.dismiss(loadingToast)
-          toast.error('Failed to move file', {
-            ...toastPresets.generalError('Please try again'),
-            position: 'top-center'
-          })
-        } finally {
-          setMovingFiles(prev => prev.filter(id => id !== touchDrag.itemId))
-        }
-      }
-    }
-
-    setTouchDrag(null)
-    setDraggedItem(null)
-  }
-
   return (
-    <section className='flex flex-col  pl-5   gap-0 pt-0'>
-      <div className='px-5'>
-        <div className='w-full flex justify-between items-center pr-15'>
-          <h2
-            className={`w-full text-2xl font-IBM ${
-              appearance.theme == 'dark' ? 'text-white' : 'text-black'
-            }`}
-          >
-            {headerText}
-          </h2>
-
-          <div className=' flex w-full   items-center  gap-5'>
-            {!openedFolder && (
-              <button
-                onClick={() => {
-                  openFolderModal()
-                }}
-                className=' text-xs font-satoshi flex gap-2 shadow-sm shadow-black/40 bg-orange-300 hover:bg-amber-500 px-4 w-max cursor-pointer py-3 text-white items-center h-full rounded-xl'
-              >
-                <FolderCodeIcon className=' w-4 h-4' />
-                New Folder
-              </button>
-            )}
-
-            <button
-              onClick={() => {
-                openFileModal()
-              }}
-              className=' text-xs font-satoshi w-max  px-4 shadow-sm shadow-black/40 flex gap-2 bg-orange-300 hover:bg-amber-500 cursor-pointer py-3 text-white items-center h-full rounded-xl'
-            >
-              <FilePlusCornerIcon className=' w-4 h-4' />
-              Add File
-            </button>
-            <div
-              className={`w-70 grow  p-3 py-2.5 rounded-xl items-center gap-5 border flex ${
-                appearance.theme == 'dark'
-                  ? 'bg-[#2a2a2a] border-slate-700'
-                  : 'border-slate-200 bg-white'
+    <DragDropProvider onDragEnd={handleDragEnd}>
+      <section className='flex flex-col  pl-5   gap-0 pt-0'>
+        <div className='px-5'>
+          <div className='w-full flex justify-between items-center pr-15'>
+            <h2
+              className={`w-full text-2xl font-IBM ${
+                appearance.theme == 'dark' ? 'text-white' : 'text-black'
               }`}
             >
-              <Search
-                className={`w-5 h-5 ${
-                  appearance.theme == 'dark' ? 'text-white' : 'text-black'
-                }`}
-              />
-              <input
-                type='text'
-                placeholder='Search by Folder or File name'
-                className={`w-full text-xs font-satoshi h-full outline-0 ${
+              {headerText}
+            </h2>
+
+            <div className=' flex w-full   items-center  gap-5'>
+              {!openedFolder && (
+                <button
+                  onClick={() => {
+                    openFolderModal()
+                  }}
+                  className=' text-xs font-satoshi flex gap-2 shadow-sm shadow-black/40 bg-orange-300 hover:bg-amber-500 px-4 w-max cursor-pointer py-3 text-white items-center h-full rounded-xl'
+                >
+                  <FolderCodeIcon className=' w-4 h-4' />
+                  New Folder
+                </button>
+              )}
+
+              <button
+                onClick={() => {
+                  openFileModal()
+                }}
+                className=' text-xs font-satoshi w-max  px-4 shadow-sm shadow-black/40 flex gap-2 bg-orange-300 hover:bg-amber-500 cursor-pointer py-3 text-white items-center h-full rounded-xl'
+              >
+                <FilePlusCornerIcon className=' w-4 h-4' />
+                Add File
+              </button>
+              <div
+                className={`w-70 grow  p-3 py-2.5 rounded-xl items-center gap-5 border flex ${
                   appearance.theme == 'dark'
-                    ? 'bg-transparent text-white placeholder:text-slate-400'
-                    : 'text-black'
+                    ? 'bg-[#2a2a2a] border-slate-700'
+                    : 'border-slate-200 bg-white'
                 }`}
-                name=''
-                id=''
-              />
+              >
+                <Search
+                  className={`w-5 h-5 ${
+                    appearance.theme == 'dark' ? 'text-white' : 'text-black'
+                  }`}
+                />
+                <input
+                  type='text'
+                  placeholder='Search by Folder or File name'
+                  className={`w-full text-xs font-satoshi h-full outline-0 ${
+                    appearance.theme == 'dark'
+                      ? 'bg-transparent text-white placeholder:text-slate-400'
+                      : 'text-black'
+                  }`}
+                  name=''
+                  id=''
+                />
+              </div>
             </div>
+          </div>
+
+          <div
+            className={`flex gap-5 mt-5 items-center pl-5 text-xs font-semibold font-satoshi ${
+              appearance.theme == 'dark' ? 'text-slate-400' : 'text-black'
+            }`}
+          >
+            <p
+              onClick={() => {
+                if (id) navigate(-1)
+              }}
+              className={`cursor-pointer border-white hover:border-black border-b ${
+                id
+                  ? 'text-slate-400'
+                  : appearance.theme == 'dark'
+                  ? 'text-white'
+                  : 'text-black'
+              }`}
+            >
+              Home
+            </p>
+            {id && (
+              <>
+                <ChevronRight
+                  className={`w-4 h-4 ${
+                    appearance.theme == 'dark' ? 'text-white' : 'text-black'
+                  }`}
+                />
+                <p
+                  className={`capitalize ${
+                    appearance.theme == 'dark' ? 'text-white' : 'text-black'
+                  }`}
+                >
+                  {openedFolder?.metaData?.name}
+                </p>
+              </>
+            )}
           </div>
         </div>
 
-        <div
-          className={`flex gap-5 mt-5 items-center pl-5 text-xs font-semibold font-satoshi ${
-            appearance.theme == 'dark' ? 'text-slate-400' : 'text-black'
-          }`}
-        >
-          <p
-            onClick={() => {
-              if (id) navigate(-1)
-            }}
-            className={`cursor-pointer border-white hover:border-black border-b ${
-              id
-                ? 'text-slate-400'
-                : appearance.theme == 'dark'
-                ? 'text-white'
-                : 'text-black'
-            }`}
-          >
-            Home
-          </p>
-          {id && (
-            <>
-              <ChevronRight
-                className={`w-4 h-4 ${
-                  appearance.theme == 'dark' ? 'text-white' : 'text-black'
-                }`}
-              />
-              <p
-                className={`capitalize ${
-                  appearance.theme == 'dark' ? 'text-white' : 'text-black'
-                }`}
-              >
-                {openedFolder?.metaData?.name}
-              </p>
-            </>
-          )}
-        </div>
-      </div>
-
-      <section
-        onTouchMove={handleTouchMove}
-        onTouchEnd={handleTouchEnd}
-        className={`grid   gap-4 transform-gpu transition-all duration-150 ease-in-out mt-0 pt-5 pl-10 overflow-hidden 
+        <section
+          className={`grid   gap-4 transform-gpu transition-all duration-150 ease-in-out mt-0 pt-5 pl-10 overflow-hidden 
             
             ${
               showRightbar ? 'grid-cols-6' : 'grid-cols-8'
@@ -362,199 +260,201 @@ export default function Main () {
            ${
              actualPath == 'resumes' && ' min-h-max overflow-y-auto'
            } [scrollbar-width:thin] w-full`}
-      >
-        {/* specific files in an opened folder  */}
-        {openedFolder && id && (
-          <section className='col-span-7 grid grid-cols-7 gap-4 w-full'>
-            {openedFolder?.files?.map(item => (
-              <section
-                key={item.id}
-                draggable={!movingFiles.includes(item.id)}
-                onDragStart={e => handleDragStart(e, { file: item }, 'file')}
-                onTouchStart={e => handleTouchStart(e, { file: item }, 'file')}
-                onClick={() => {
-                  openFile(openedFolder.id, item.id)
-                }}
-                className={`pl-2 gap-2 h-26 w-35 shrink-0 flex flex-col items-start ${
-                  movingFiles.includes(item.id) ? 'opacity-50' : ''
-                }`}
-              >
-                <div className='bg-[#c4c7cc15] shadow-sm  rounded-xl w-full h-full flex'>
-                  <div className=' mt-5'>
-                    {item.metaData.extension == 'pdf' ? (
-                      <img
-                        width='23'
-                        height='23'
-                        src='https://img.icons8.com/color/48/pdf-2--v1.png'
-                        alt='pdf-2--v1'
-                      />
-                    ) : (
-                      <img
-                        width='23'
-                        height='23'
-                        src='https://img.icons8.com/color/48/microsoft-word-2019--v2.png'
-                        alt='microsoft-word-2019--v2'
-                      />
-                    )}
-                  </div>
-
-                  {item.source == 'upload' ? (
-                    <MiniIframe src={item.metaData.content} />
-                  ) : (
-                    <FilePreview
-                      data={item.metaData.content}
-                      layoutId={item.layoutId}
-                    />
-                  )}
-                </div>
-                <div
-                  className={`flex w-[90%] mt-1 pl-2 items-center text-[10px] justify-center font-semibold gap-1 ${
-                    appearance.theme == 'dark' ? 'text-white' : 'text-gray-700'
-                  }`}
+        >
+          {/* specific files in an opened folder  */}
+          {openedFolder && id && (
+            <section className='col-span-7 grid grid-cols-7 gap-4 w-full'>
+              {openedFolder?.files?.map(item => (
+                <Draggable
+                  key={item.id}
+                  itemId={item.id}
+                  parentId={openedFolder.id}
+                  disabled={movingFiles.includes(item.id)}
                 >
-                  <p className='truncate'>{item.metaData.name}.pdf</p>
-                  <p className='whitespace-nowrap'>
-                    {formatBytes(item.metaData.size)}
-                  </p>
-                </div>
-              </section>
-            ))}
-          </section>
-        )}
-        {isFetching && (
-          <div className='custom-loader absolute bottom-0 top-0 left-0 right-0 w-full '></div>
-        )}
-
-        {/* All folders and files in overview and resumes */}
-        {!isLoading && !id && (!programs || programs.length === 0) && (
-          <EmptyState onUpload={openFileModal} />
-        )}
-        {!isLoading &&
-          !id &&
-          programs?.length > 0 &&
-          programs?.map(item =>
-            item?.type === 'FOLDER' ? (
-              <div
-                data-droppable='true'
-                data-folder-id={item.folder.id}
-                onTouchMove={handleTouchMove}
-                onTouchEnd={handleTouchEnd}
-                onDoubleClick={() => {
-                  openFolder(item)
-                }}
-                onDragOver={handleDragOver}
-                onDrop={e => handleDrop(e, item.folder.id)}
-                onClick={e => handleClick(e, item.folder.id)}
-                key={item.folder.id}
-                className='w-28 shrink-0  cursor-pointer'
-              >
-                <Folder files={item?.folder.files} />
-                <div
-                  className={`flex w-full text-xs mt-2 items-center text-[10px] justify-center font-semibold gap-1 ${
-                    appearance.theme == 'dark' ? 'text-white' : 'text-gray-700'
-                  }`}
-                >
-                  <p className='truncate'>{item.folder.metaData.name}</p>
-                  <p>{formatBytes(item.folder.metaData.size)}</p>
-                </div>
-              </div>
-            ) : (
-              !item.file?.folderId?.length > 0 && (
-                <section
-                  draggable={!movingFiles.includes(item.file.id)}
-                  onDragStart={e => handleDragStart(e, item, 'file')}
-                  onTouchStart={e => handleTouchStart(e, item, 'file')}
-                  key={item.file.id}
-                  onClick={() => {
-                    openFile(null, item.file.id)
-                  }}
-                  className={`cursor-pointer pl-2 gap-2 h-26 w-32 shrink-0 flex flex-col items-start ${
-                    movingFiles.includes(item.file.id) ? 'opacity-50' : ''
-                  }`}
-                >
-                  <div className='bg-[#c4c7cc15] shadow-sm  rounded-xl w-full h-full flex'>
-                    <div className=' mt-5'>
-                      {item.file.metaData.extension == 'pdf' ? (
-                        <img
-                          width='23'
-                          height='23'
-                          src='https://img.icons8.com/color/48/pdf-2--v1.png'
-                          alt='pdf-2--v1'
-                        />
-                      ) : (
-                        <img
-                          width='23'
-                          height='23'
-                          src='https://img.icons8.com/color/48/microsoft-word-2019--v2.png'
-                          alt='microsoft-word-2019--v2'
-                        />
-                      )}
-                    </div>
-                    {item?.file.source == 'upload' ? (
-                      <MiniIframe src={item.file.metaData.content} />
-                    ) : (
-                      <FilePreview
-                        className={'h-26'}
-                        data={item?.file?.metaData?.content}
-                        layoutId={item?.file?.metaData?.layoutId}
-                      />
-                    )}
-                  </div>
-                  <div
-                    className={`flex w-full mt-1 pl-2 items-center text-[10px] justify-center font-semibold gap-1 ${
-                      appearance.theme == 'dark'
-                        ? 'text-white'
-                        : 'text-gray-700'
+                  <section
+                    onClick={() => {
+                      openFile(openedFolder.id, item.id)
+                    }}
+                    className={`pl-2 gap-2 h-26 w-35 shrink-0 flex flex-col items-start ${
+                      movingFiles.includes(item.id) ? 'opacity-50' : ''
                     }`}
                   >
-                    <p className='truncate'>{item.file.metaData.name}.pdf</p>
-                    <p className='whitespace-nowrap'>
-                      {formatBytes(item.file.metaData.size)}
-                    </p>
-                  </div>
-                </section>
-              )
-            )
+                    <div className='bg-[#c4c7cc15] shadow-sm  rounded-xl w-full h-full flex'>
+                      <div className=' mt-5'>
+                        {item.metaData.extension == 'pdf' ? (
+                          <img
+                            width='23'
+                            height='23'
+                            src='https://img.icons8.com/color/48/pdf-2--v1.png'
+                            alt='pdf-2--v1'
+                          />
+                        ) : (
+                          <img
+                            width='23'
+                            height='23'
+                            src='https://img.icons8.com/color/48/microsoft-word-2019--v2.png'
+                            alt='microsoft-word-2019--v2'
+                          />
+                        )}
+                      </div>
+
+                      <MiniIframe src={item.metaData.content} />
+                    </div>
+                    <div
+                      className={`flex w-[90%] mt-1 pl-2 items-center text-[10px] justify-center font-semibold gap-1 ${
+                        appearance.theme == 'dark'
+                          ? 'text-white'
+                          : 'text-gray-700'
+                      }`}
+                    >
+                      <p className='truncate'>{item.metaData.name}.pdf</p>
+                      <p className='whitespace-nowrap'>
+                        {formatBytes(item.metaData.size)}
+                      </p>
+                    </div>
+                  </section>
+                </Draggable>
+              ))}
+            </section>
           )}
+          {isFetching && (
+            <div className='custom-loader absolute bottom-0 top-0 left-0 right-0 w-full '></div>
+          )}
+
+          {/* All folders and files in overview and resumes */}
+          {!isLoading && (!programs || programs.length === 0) && (
+            <EmptyState onUpload={openFileModal} />
+          )}
+          {!isLoading &&
+            !id &&
+            programs?.length > 0 &&
+            programs?.map(item =>
+              item?.type === 'FOLDER' ? (
+                <Droppable
+                  data={item.folder}
+                  id={item.folder.id}
+                  key={item.folder.id}
+                >
+                  <div
+                    onDoubleClick={() => openFolder(item)}
+                    onClick={e => handleClick(e, item)}
+                    className='w-28 shrink-0 cursor-pointer'
+                  >
+                    <Folder files={item?.folder.files} />
+                    <div
+                      className={`flex w-full text-xs mt-2 items-center text-[10px] justify-center font-semibold gap-1 ${
+                        appearance.theme == 'dark'
+                          ? 'text-white'
+                          : 'text-gray-700'
+                      }`}
+                    >
+                      <p className='truncate'>{item.folder.metaData.name}</p>
+                      <p>{formatBytes(item.folder.metaData.size)}</p>
+                    </div>
+                  </div>
+                </Droppable>
+              ) : (
+                !item.file?.folderId?.length > 0 && (
+                  <Draggable
+                    data={item.file}
+                    key={item.file.id}
+                    itemId={item.file.id}
+                    disabled={movingFiles.includes(item.file.id)}
+                  >
+                    <section
+                      onClick={e => handleClick(e, item)}
+                      onDoubleClick={() => openFile(null, item.file.id)}
+                      className={`cursor-pointer pl-2 gap-2 h-26 w-32 shrink-0 flex flex-col items-start ${
+                        movingFiles.includes(item.file.id) ? 'opacity-50' : ''
+                      }`}
+                    >
+                      <div className='bg-[#c4c7cc15] shadow-sm rounded-xl w-full h-full flex'>
+                        <div className='mt-5'>
+                          {item.file.metaData.extension == 'pdf' ? (
+                            <img
+                              width='23'
+                              height='23'
+                              src='https://img.icons8.com/color/48/pdf-2--v1.png'
+                              alt='pdf'
+                            />
+                          ) : (
+                            <img
+                              width='23'
+                              height='23'
+                              src='https://img.icons8.com/color/48/microsoft-word-2019--v2.png'
+                              alt='word'
+                            />
+                          )}
+                        </div>
+
+                        <MiniIframe src={item.file.metaData.content} />
+                      </div>
+                      <div
+                        className={`flex w-full mt-1 pl-2 items-center text-[10px] justify-center font-semibold gap-1 ${
+                          appearance.theme == 'dark'
+                            ? 'text-white'
+                            : 'text-gray-700'
+                        }`}
+                      >
+                        <p className='truncate'>
+                          {item.file.metaData.name}.pdf
+                        </p>
+                        <p className='whitespace-nowrap'>
+                          {formatBytes(item.file.metaData.size)}
+                        </p>
+                      </div>
+                    </section>
+                  </Draggable>
+                )
+              )
+            )}
+        </section>
+        {menuConfig.visible && !openedFolder && (
+          <ContextMenu
+            mutation={mutation}
+            menuConfig={menuConfig}
+            onClose={() => setMenuConfig(prev => ({ ...prev, visible: false }))}
+          />
+        )}
       </section>
-      {menuConfig.visible && !openedFolder && (
-        <FolderMenu
-          mutation={mutation}
-          config={menuConfig}
-          onOpen={() => openFolder(menuConfig.item)}
-          onEditDetails={() => dispatch(openFileDetails(menuConfig.item))}
-          onClose={() => setMenuConfig(prev => ({ ...prev, visible: false }))}
-        />
-      )}
-    </section>
+    </DragDropProvider>
   )
 }
 
-function FolderMenu ({ config, onClose, onOpen, onEditDetails, mutation }) {
+function ContextMenu ({ onClose, menuConfig, mutation }) {
+  const item = menuConfig?.item
+  console.log(item)
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
+
   return (
     <div
       className='fixed z-50 bg-white shadow-xl border border-slate-100/50 rounded-2xl py-1.5 w-25 p-0 flex flex-col font-satoshi'
       style={{
-        top: config.y,
-        left: config.x,
+        top: menuConfig.y,
+        left: menuConfig.x,
         transform: 'translate(10px, 10px)'
       }}
       onClick={e => e.stopPropagation()}
     >
       <button
         onClick={() => {
-          onEditDetails()
+          dispatch(openFileDetails(item))
           onClose()
         }}
         className='flex items-center rounded-[inherit] gap-2 px-4 py-2 hover:bg-slate-50 text-slate-700 text-[10px] font-semibold transition-all cursor-pointer'
       >
         <Pencil size={11} strokeWidth={2.5} />
-        <span>Edit Details</span>
+        <span>Edit </span>
       </button>
 
       <button
         onClick={() => {
-          onOpen()
+          if (item?.file) {
+            navigate(`/dashboard/file/?resumeID=${item.file.id}`)
+          } else {
+            navigate(`/dashboard/folder/${item.folder.id}`)
+          }
           onClose()
         }}
         className='flex items-center rounded-[inherit] gap-2 px-4 py-2 hover:bg-slate-50 text-slate-700 text-[10px] font-semibold transition-all cursor-pointer'
@@ -564,13 +464,10 @@ function FolderMenu ({ config, onClose, onOpen, onEditDetails, mutation }) {
       </button>
 
       <button
-        onClick={() => {
-          onClose()
-        }}
+        onClick={() => onClose()}
         className='flex items-center gap-2 px-4 py-2 hover:bg-slate-50 text-slate-700 text-[10px] font-semibold transition-all cursor-pointer'
       >
-        <Download className=' shrink-0' size={11} strokeWidth={2.5} />
-
+        <Download className='shrink-0' size={11} strokeWidth={2.5} />
         <span>Download</span>
       </button>
 
@@ -578,7 +475,7 @@ function FolderMenu ({ config, onClose, onOpen, onEditDetails, mutation }) {
 
       <button
         onClick={() => {
-          mutation.mutate(config.id)
+          mutation.mutate(item?.folder?.id || item?.file?.id)
           onClose()
         }}
         className='flex items-center gap-2 px-4 py-2 hover:bg-rose-50 text-rose-500 text-[10px] font-semibold transition-all cursor-pointer'
@@ -589,6 +486,7 @@ function FolderMenu ({ config, onClose, onOpen, onEditDetails, mutation }) {
     </div>
   )
 }
+
 function MiniIframe ({ src }) {
   const thumbnailUrl = src.replace(
     '/upload/',

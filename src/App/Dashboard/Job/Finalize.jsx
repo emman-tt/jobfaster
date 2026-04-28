@@ -133,12 +133,14 @@ export default function Finalize () {
   const resumeData = tailoredResume?.resume
   const templateName = tailoredResume?.template
 
+
   useEffect(() => {
     const generatePDF = async () => {
       if (resumeData && templateName && !pdfUrl) {
         setIsGeneratingPDF(true)
         try {
-          const fullName = resumeData.personal?.contactDetails?.fullName || 'Tailored Resume'
+          const fullName =
+            resumeData.personal?.contactDetails?.fullName || 'Tailored Resume'
           const result = await generateTailoredResumePDF(
             resumeData,
             templateName,
@@ -155,8 +157,7 @@ export default function Finalize () {
       }
     }
     generatePDF()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [pdfUrl, resumeData, templateName])
 
   const attachedFiles = resumeData
     ? [

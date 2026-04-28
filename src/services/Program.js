@@ -44,8 +44,12 @@ export async function MoveFile (fileId, folderId) {
 }
 
 export async function saveResumeFromHTML (html, name) {
-  const response = await api.post(`/${base}/file/save`, { html, name }, {
-    timeout: 60000
-  })
+  const response = await api.post(
+    `/${base}/file/save`,
+    { html, name },
+    {
+      timeout: 60000
+    }
+  )
   return response.data
 }

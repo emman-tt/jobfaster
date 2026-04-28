@@ -16,17 +16,22 @@ export default function Resume ({ data }) {
   const programs = output?.data
 
   const findResume = () => {
+    if (!programs) return null
+    
     if (folderId) {
-      const folder = programs.find(item => item.id === Number(folderId))
-      if (folder && folder.files) {
-        return folder.files.find(file => file.id === Number(resumeId))
+      const folder = programs.find(item => item.folder?.id == folderId)
+      if (folder?.files) {
+        return folder.files.find(file => file.id == resumeId)
       }
     }
-
-    return programs?.find(item => item?.file?.id == resumeId)
+    return programs.find(item => item.file?.id == resumeId)?.file
   }
-  const resume = findResume()?.file
+  
+  const resume = findResume()
   const type = resume?.source
+
+  if (isLoading) return <div>Loading...</div>
+  if (!resume) return <div>Resume not found</div>
 
   if (type == 'builder') {
     return <Builder resume={resume} layoutId={resume.layoutId} />
@@ -37,8 +42,7 @@ export default function Resume ({ data }) {
 
   return (
     <div className='flex flex-col items-center justify-center min-h-screen'>
-      <h2 className='text-xl font-semibold'>Template not found</h2>
-      <p>Layout ID: {data?.layoutId}</p>
+      <h2 className='text-xl font-semibold'>Unknown type</h2>
     </div>
   )
 }

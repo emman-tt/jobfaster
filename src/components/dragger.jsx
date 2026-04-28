@@ -12,20 +12,24 @@ export function Sortable ({ id, index, children, className }) {
   )
 }
 
-export function Draggable ({ itemId, children, parentId }) {
+export function Draggable ({ itemId, children, parentId, disabled, data }) {
   const { ref } = useDraggable({
     id: itemId,
-    data: {
-      parentId: parentId || null
-    }
+    data: data,
+    disabled
   })
 
-  return <div ref={ref} data-item-id={itemId}>{children}</div>
+  return (
+    <div ref={ref} data-item-id={itemId}>
+      {children}
+    </div>
+  )
 }
 
-export function Droppable ({ id, children, className }) {
+export function Droppable ({ id, children, className, data }) {
   const { ref } = useDroppable({
-    id: id
+    id: id,
+    data: data
   })
 
   return (
