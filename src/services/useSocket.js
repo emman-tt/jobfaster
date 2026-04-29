@@ -5,7 +5,8 @@ let ws = null
 let isConnecting = false
 
 const callbacks = {
-  JOB_APPLY: null
+  JOB_APPLY: null,
+  JOB_MAIL: null
 }
 
 export function connector () {
@@ -34,8 +35,12 @@ export function connector () {
 
   ws.onmessage = event => {
     const res = JSON.parse(event.data)
+    const type = res.type
+    if (callbacks.JOB_MAIL && type == 'JOB_MAIL') {
+      return callbacks.JOB_MAIL(res)
+    }
 
-    if (callbacks.JOB_APPLY) {
+    if (callbacks.JOB_APPLY && type == 'JOB_APPLY') {
       return callbacks.JOB_APPLY(res)
     } else {
       console.warn(
@@ -76,13 +81,24 @@ export function sendMessage (type, data) {
     return false
   }
 
-  toast.loading(type == 'JOB_APPLY' ? 'AI Processing' : 'Resume Processing', {
-    ...toastPresets.aiProcessing(),
-    description:
-      'Generating a tailored resume and and email template for the job',
-    id: 'ai-processing',
-    position: 'top-right'
-  })
+  if (type == 'JOB_APPLY') {
+    toast.loading('Tailoring Resume', {
+      ...toastPresets.aiProcessing(),
+      description:
+        'Generating a tailored resume and and email template for the job',
+      id: 'ai-processing',
+      position: 'top-right'
+    })
+  } else if (type == 'JOB_MAIL') {
+    console.log('sedning job mail')
+    // toast.loading('', {
+    //   ...toastPresets.aiProcessing(),
+    //   description:
+    //     'Generating a tailored resume and and email template for the job',
+    //   id: 'ai-processing',
+    //   position: 'top-right'
+    // })
+  }
 
   ws.send(JSON.stringify({ type, data }))
   return true
@@ -90,4 +106,7 @@ export function sendMessage (type, data) {
 
 export function onJobApply (cb) {
   callbacks.JOB_APPLY = cb
+}
+export function onSendJobMail (cb) {
+  callbacks.JOB_MAIL = cb
 }

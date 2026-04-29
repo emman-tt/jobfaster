@@ -19,6 +19,8 @@ import { toast } from 'sonner'
 import SendMethodModal from './Modals/SendMethod'
 import { useQueryClient } from '@tanstack/react-query'
 import { QueryClient } from '@tanstack/react-query'
+import { toastPresets } from '../../../components/toasters'
+import { sendMessage } from '../../../services/useSocket'
 function GetFileIcon () {
   return (
     <svg
@@ -133,25 +135,6 @@ export default function Finalize () {
   const [showSendMethodModal, setShowSendMethodModal] = useState(false)
   const hasGeneratedRef = useRef(false)
 
-  // const deleteMutation = useMutation({
-  //   mutationFn: deleteProgram,
-  //   onSuccess: () => {
-  //     // const program = data.data
-  //     queryClient.invalidateQueries({ queryKey: ['program'] })
-  //     queryClient.invalidateQueries({ queryKey: ['activity'] })
-  //     toast.success(`Program deleted  succesfully`, {
-  //       ...toastPresets.aiSuccess(),
-  //       position: 'top-center'
-  //     })
-  //   },
-  //   onError: () => {
-  //     toast.error('Failed to delete program', {
-  //       ...toastPresets.generalError('Please try again'),
-  //       position: 'top-center'
-  //     })
-  //   }
-  // })
-
   const resumeData = tailoredResume?.resume
   const templateName = tailoredResume?.template
 
@@ -181,7 +164,7 @@ export default function Finalize () {
       }
     }
     generatePDF()
-  }, [resumeData, templateName])
+  }, [resumeData, templateName, queryClient])
 
   const attachedFiles = resumeData
     ? [
@@ -224,7 +207,22 @@ export default function Finalize () {
 
   const handleSendServer = () => {
     setShowSendMethodModal(false)
-    toast.success('Application sent successfully!')
+    sendMessage('JOB_MAIL', {
+      to: job.email,
+      userName: formData.userName,
+      userEmail: formData.userEmail,
+      subject: emailDetails.subjectLine,
+      greeting: emailDetails.greeting,
+      body: emailDetails.body,
+      callToAction: emailDetails.callToAction,
+      attachmentNote: emailDetails.attachmentNote,
+      signOff: emailDetails.signOff,
+      pdfUrl: pdfUrl
+    })
+    toast.loading('Processing and sending mail!', {
+      id: 'job-mail',
+      ...toastPresets.generalSuccess()
+    })
   }
 
   const handleEmailDetailsChange = e => {

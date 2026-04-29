@@ -2,7 +2,12 @@ import { X, Mail, Edit2, Copy } from 'lucide-react'
 import { useSelector } from 'react-redux'
 import { toast } from 'sonner'
 
-export default function SendMethodModal ({ isOpen, onClose, onSendServer, userEmail }) {
+export default function SendMethodModal ({
+  isOpen,
+  onClose,
+  onSendServer,
+  userEmail
+}) {
   const { appearance } = useSelector(state => state.preferences)
   const { emailDetails } = useSelector(state => state.email)
 
@@ -10,7 +15,11 @@ export default function SendMethodModal ({ isOpen, onClose, onSendServer, userEm
 
   const handleCopyToClipboard = () => {
     const subject = emailDetails?.subjectLine || 'Application'
-    const body = `${emailDetails?.greeting || 'Dear Hiring Manager,'}\n\n${emailDetails?.body || ''}\n\n${emailDetails?.callToAction || ''}\n\n${emailDetails?.attachmentNote || ''}\n\n${emailDetails?.signOff || 'Best regards,'}`
+    const body = `${emailDetails?.greeting || 'Dear Hiring Manager,'}\n\n${
+      emailDetails?.body || ''
+    }\n\n${emailDetails?.callToAction || ''}\n\n${
+      emailDetails?.attachmentNote || ''
+    }\n\n${emailDetails?.signOff || 'Best regards,'}`
     const text = `Subject: ${subject}\n\n${body}`
     navigator.clipboard.writeText(text)
     toast.success('Copied to clipboard! Paste in your email client.')
@@ -35,26 +44,54 @@ export default function SendMethodModal ({ isOpen, onClose, onSendServer, userEm
         </button>
 
         <div className='space-y-4 mb-6'>
-          <h2 className={`text-xl font-bold ${appearance.theme == 'dark' ? 'text-white' : 'text-slate-900'}`}>
+          <h2
+            className={`text-xl font-bold ${
+              appearance.theme == 'dark' ? 'text-white' : 'text-slate-900'
+            }`}
+          >
             REVIEW & SEND
           </h2>
         </div>
 
-        <div className={`p-4 rounded-2xl ${appearance.theme == 'dark' ? 'bg-[#1a1a1a]' : 'bg-slate-50'}`}>
+        <div
+          className={`p-4 rounded-2xl ${
+            appearance.theme == 'dark' ? 'bg-[#1a1a1a]' : 'bg-slate-50'
+          }`}
+        >
           <div className='space-y-3'>
             <div>
-              <p className={`text-xs ${appearance.theme == 'dark' ? 'text-slate-500' : 'text-slate-400'}`}>
+              <p
+                className={`text-xs ${
+                  appearance.theme == 'dark'
+                    ? 'text-slate-500'
+                    : 'text-slate-400'
+                }`}
+              >
                 Email will be sent from:
               </p>
-              <p className={`text-sm font-medium ${appearance.theme == 'dark' ? 'text-white' : 'text-slate-900'}`}>
+              <p
+                className={`text-sm font-medium ${
+                  appearance.theme == 'dark' ? 'text-white' : 'text-slate-900'
+                }`}
+              >
                 applications@autoapply.com
               </p>
             </div>
             <div>
-              <p className={`text-xs ${appearance.theme == 'dark' ? 'text-slate-500' : 'text-slate-400'}`}>
+              <p
+                className={`text-xs ${
+                  appearance.theme == 'dark'
+                    ? 'text-slate-500'
+                    : 'text-slate-400'
+                }`}
+              >
                 Replies will go to:
               </p>
-              <p className={`text-sm font-medium ${appearance.theme == 'dark' ? 'text-white' : 'text-slate-900'}`}>
+              <p
+                className={`text-sm font-medium ${
+                  appearance.theme == 'dark' ? 'text-white' : 'text-slate-900'
+                }`}
+              >
                 {userEmail || 'your.email@gmail.com'}
               </p>
             </div>
@@ -78,8 +115,16 @@ export default function SendMethodModal ({ isOpen, onClose, onSendServer, userEm
           </button>
         </div>
 
-        <div className={`mt-5 pt-5 border-t ${appearance.theme == 'dark' ? 'border-slate-700' : 'border-slate-200'}`}>
-          <p className={`text-sm ${appearance.theme == 'dark' ? 'text-slate-400' : 'text-slate-500'}`}>
+        <div
+          className={`mt-5 pt-5 border-t ${
+            appearance.theme == 'dark' ? 'border-slate-700' : 'border-slate-200'
+          }`}
+        >
+          <p
+            className={`text-sm ${
+              appearance.theme == 'dark' ? 'text-slate-400' : 'text-slate-500'
+            }`}
+          >
             Need to send from your own email?
           </p>
           <button

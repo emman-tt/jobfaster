@@ -11,7 +11,7 @@ import { PanelLeftOpenIcon, PanelRightOpenIcon } from 'lucide-react'
 import { useDispatch } from 'react-redux'
 import { useEffect, useRef } from 'react'
 import SelectResume from '../App/Dashboard/Job/Modals/SelectResume'
-import { onJobApply } from '../services/useSocket'
+import { onJobApply, onSendJobMail } from '../services/useSocket'
 import { saveProgram } from '../store/filesSlice'
 import { getAllFiles } from '../utils/getAllFiles'
 import { dumpEmailDetails } from '../store/emailSlice'
@@ -73,6 +73,14 @@ export default function Dashboard () {
     })
   }, [dispatch, navigate, allFilesOnly])
 
+  useEffect(() => {
+    onSendJobMail(data => {
+      if (data) {
+        console.log(data)
+      }
+    })
+  }, [])
+
   const { data } = useQuery({
     queryKey: ['activity'],
     queryFn: () => getActivity(),
@@ -96,7 +104,7 @@ export default function Dashboard () {
         }  p-5 `}
       />
       <section className='w-full h-full '>
-        <Outlet  />
+        <Outlet />
       </section>
       <section className='flex gap-4  pt-3 pr-3 pb-3'>
         <div
@@ -168,7 +176,7 @@ export default function Dashboard () {
               appearance.theme == 'dark' ? 'bg-[#00000000]' : 'bg-[#e0e4e582]'
             } backdrop-blur-sm`}
           />
-<Folder />
+          <Folder />
         </>
       )}
       {modals.fileDetails && (
