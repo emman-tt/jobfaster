@@ -21,6 +21,7 @@ import { useQueryClient } from '@tanstack/react-query'
 import { QueryClient } from '@tanstack/react-query'
 import { toastPresets } from '../../../components/toasters'
 import { sendMessage } from '../../../services/useSocket'
+import { connector } from '../../../services/useSocket'
 function GetFileIcon () {
   return (
     <svg
@@ -206,6 +207,7 @@ export default function Finalize () {
   }
 
   const handleSendServer = () => {
+    connector()
     setShowSendMethodModal(false)
     sendMessage('JOB_MAIL', {
       to: job.email,
@@ -221,6 +223,8 @@ export default function Finalize () {
     })
     toast.loading('Processing and sending mail!', {
       id: 'job-mail',
+      position: 'top-right',
+      description: 'On success, email will be recieved by the hiring address',
       ...toastPresets.generalSuccess()
     })
   }

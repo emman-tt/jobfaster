@@ -24,20 +24,22 @@ export default function Auth () {
   const navigate = useNavigate()
 
   useEffect(() => {
-    async function exchangeSession() {
+    async function exchangeSession () {
       try {
         const session = await authClient.getSession()
-        const user = session?.data?.user;
-        
+        const user = session?.data?.user
+
         if (user) {
-          const res = await api.post('/auth/oauth-to-jwt', {}, { withCredentials: true })
+          const res = await api.post(
+            '/auth/oauth-to-jwt',
+            {},
+            { withCredentials: true }
+          )
           if (res.data.status === 'success') {
             setToken(res.data.accessToken)
-            api.defaults.headers.common['Authorization'] = `Bearer ${res.data.accessToken}`
-            toast.success('Welcome back!', {
-              position: 'top-center',
-              ...toastPresets.aiSuccess(`Welcome back ${user.name}`)
-            })
+            api.defaults.headers.common[
+              'Authorization'
+            ] = `Bearer ${res.data.accessToken}`
             navigate('/dashboard')
           }
         }
@@ -48,11 +50,11 @@ export default function Auth () {
     exchangeSession()
   }, [navigate])
 
-  async function handleGoogle() {
+  async function handleGoogle () {
     try {
       await authClient.signIn.social({
         provider: 'google',
-        callbackURL: `${window.location.origin}/auth`, 
+        callbackURL: `${window.location.origin}/auth`
       })
     } catch (error) {
       console.error('Google sign in failed:', error)

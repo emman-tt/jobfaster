@@ -45,30 +45,26 @@ export default function Dashboard () {
   useEffect(() => {
     onJobApply(data => {
       toast.dismiss('ai-processing')
-      if (data) {
-        const status = data.status
-        const response = data.response
-        if (status == 'success') {
-          toast.success('Ready!', {
-            ...toastPresets.aiSuccess(
-              'Resume processed successfully! Redirecting you to your tailored resume...'
-            ),
-            id: 'ai-success',
-            position: 'top-right'
-          })
-
-          const content = response.resume
-          console.log('resume', content)
-          dispatch(dumpEmailDetails(response.email))
-          dispatch(saveTailoredResume(response))
-          console.log('email', response.email)
-          navigate('finalize')
-
-          return
-        } else {
-          toastPresets.aiError()
-          console.log(' Status false or not true')
-        }
+      const status = data?.status
+      const response = data?.response
+      if (status == 'success') {
+        toast.success('Ready!', {
+          ...toastPresets.aiSuccess(
+            'Resume processed successfully! Redirecting you to your tailored resume...'
+          ),
+          id: 'ai-success',
+          position: 'top-right'
+        })
+        const content = response.resume
+        console.log('resume', content)
+        dispatch(dumpEmailDetails(response.email))
+        dispatch(saveTailoredResume(response))
+        console.log('email', response.email)
+        navigate('finalize')
+        return
+      } else {
+        toastPresets.aiError()
+        console.log(' Status false or not true')
       }
     })
   }, [dispatch, navigate, allFilesOnly])
@@ -76,7 +72,25 @@ export default function Dashboard () {
   useEffect(() => {
     onSendJobMail(data => {
       if (data) {
-        console.log(data)
+        toast.dismiss('job-mail')
+        const status = data?.status
+        if (status == 'success') {
+          toast.success('Email sent!', {
+            ...toastPresets.generalSuccess(
+              'Email processed and sent successfully to the hiring address'
+            ),
+            id: 'job-mail',
+            position: 'top-right'
+          })
+        } else {
+          toast.error('Unable to send mail!', {
+            ...toastPresets.generalError(
+              'Resume processed successfully! Redirecting you to your tailored resume...'
+            ),
+            id: 'job-mail',
+            position: 'top-right'
+          })
+        }
       }
     })
   }, [])

@@ -1,12 +1,33 @@
 import React, { useState } from 'react'
-import { MapPin, Sparkles, ArrowRight, Globe, Clock } from 'lucide-react'
+import {
+  MapPin,
+  Sparkles,
+  ArrowRight,
+  Globe,
+  Clock,
+  Bookmark
+} from 'lucide-react'
 import { findEmail, getApplyInfo } from '../../../utils/findEmail'
 import { useSelector } from 'react-redux'
+import { useMutation } from '@tanstack/react-query'
+import { saveJobTrack } from '../../../services/jobs'
+import { toast } from 'sonner'
 import ApplyDialog from './ApplyDialog'
 
 export default function JobDetailView ({ job }) {
   const [showApplyDialog, setShowApplyDialog] = useState(false)
   const { appearance } = useSelector(state => state.preferences)
+
+  const saveMutation = useMutation({
+    mutationFn: job => saveJobTrack(job),
+    onSuccess: () => {
+      toast.success('Job saved to your tracked jobs')
+    },
+    onError: error => {
+      console.error('Failed to save job:', error)
+      toast.error('Failed to save job, please try again')
+    }
+  })
 
   if (!job) return null
 
@@ -157,7 +178,7 @@ export default function JobDetailView ({ job }) {
           )}
         </div>
 
-        <div className='flex flex-col justify-center  items-center '>
+        <div className='flex  justify-center items-center gap-3'>
           <button
             className={`w-[80%] cursor-pointer flex items-center justify-center gap-2 px-5 py-4.5 bg-[#f17e27] hover:bg-[#e16d16] text-white text-xs font-bold rounded-xl ${
               appearance.theme == 'dark' && 'shadow-none'
@@ -166,6 +187,19 @@ export default function JobDetailView ({ job }) {
           >
             <ArrowRight className='w-4 h-4' />
             APPLY NOW
+          </button>
+
+          <button
+            className={`w-[80%] cursor-pointer flex items-center justify-center gap-2 px-5 py-3 rounded-xl text-xs font-bold transition-all active:scale-[0.98] border ${
+              appearance.theme == 'dark'
+                ? 'border-slate-600 text-slate-300 hover:bg-slate-800'
+                : 'border-gray-200 text-slate-600 hover:bg-gray-50'
+            }`}
+            onClick={() => saveMutation.mutate(job)}
+            disabled={saveMutation.isPending}
+          >
+            <Bookmark className='w-4 h-4' />
+            {saveMutation.isPending ? 'Saving...' : 'SAVE JOB'}
           </button>
         </div>
 

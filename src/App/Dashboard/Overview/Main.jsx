@@ -162,10 +162,7 @@ export default function Main () {
 
     moveFileMutation.mutate({ fileId: source.id, folderId: target.id })
 
-    // console.log('folder', targetFolder)
-    // console.log('file', sourceFile)
-    // console.log('source', source?.id)
-    // console.log('target', target?.id)
+   
   }
 
   const deleteMutation = useMutation({

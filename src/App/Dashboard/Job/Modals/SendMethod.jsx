@@ -74,7 +74,7 @@ export default function SendMethodModal ({
                   appearance.theme == 'dark' ? 'text-white' : 'text-slate-900'
                 }`}
               >
-                applications@autoapply.com
+                applications@emmanverse.uk.com
               </p>
             </div>
             <div>
