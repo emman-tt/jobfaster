@@ -111,7 +111,6 @@ export default function Main () {
 
   const moveFileMutation = useMutation({
     mutationFn: MoveFile,
-
     onMutate: async variables => {
       const { fileId, folderId } = variables
 
@@ -159,10 +158,7 @@ export default function Main () {
     }
     // const sourceFile = source?.data
     // const targetFolder = target?.data
-
     moveFileMutation.mutate({ fileId: source.id, folderId: target.id })
-
-   
   }
 
   const deleteMutation = useMutation({

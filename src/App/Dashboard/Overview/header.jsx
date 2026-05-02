@@ -1,7 +1,6 @@
 import paper from '../../../assets/img/paper.png'
 import apply from '../../../assets/img/applied.png'
 import { useDispatch } from 'react-redux'
-import { toggleModals } from '../../../store/modalSlice'
 import { useEffect, useRef } from 'react'
 import { gsap } from '../../../libs/gsap'
 import { useSelector } from 'react-redux'
@@ -14,9 +13,6 @@ export const Header = () => {
   const headerRef = useRef()
   const location = useLocation()
   const navigate = useNavigate()
-  function openModal (item) {
-    dispatch(toggleModals(item))
-  }
 
   useEffect(() => {
     const path = location.pathname.split('/')

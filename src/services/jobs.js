@@ -7,7 +7,7 @@ export async function getJobs () {
 
 export async function getJobTracks () {
   const res = await api.get('/job/track')
-  return res.data
+  return res.data.data
 }
 
 export async function saveJobTrack (job) {
