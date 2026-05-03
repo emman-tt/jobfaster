@@ -88,7 +88,7 @@ export function Preview () {
     phone: personal.contactDetails.phone,
     location: personal.contactDetails.location,
     jobTitle: personal.contactDetails.jobTitle,
-    linkedin: personal.onlineLinks?.linkedin || '',
+    onlineLinks: personal.onlineLinks || [],
     summary: personal.summary,
     experience: work.experiences
       .filter(exp => exp.company || exp.position)
@@ -145,7 +145,10 @@ export function Preview () {
   }
 
   return (
-    <section id="resume-preview" className='bg-white rounded-xl w-[210mm] h-[297mm] shadow-2xl p-12'>
+    <section
+      id='resume-preview'
+      className='bg-white rounded-xl w-[210mm] h-[297mm] shadow-2xl p-12'
+    >
       <SelectedTemplate data={userData} />
     </section>
   )

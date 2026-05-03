@@ -78,7 +78,7 @@ export function Topbar () {
       phone: personal.contactDetails.phone,
       location: personal.contactDetails.location,
       jobTitle: personal.contactDetails.jobTitle,
-      linkedin: personal.onlineLinks?.linkedin || '',
+      linkedin: personal.onlineLinks?.find(l => l.name.toLowerCase() === 'linkedin')?.link || '',
       summary: personal.summary,
       experience: work.experiences
         .filter(exp => exp.company || exp.position)

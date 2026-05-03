@@ -1,6 +1,7 @@
 import React from 'react'
 
 const ModernMinimalist = ({ data }) => {
+  console.log(data)
   const styles = data?.styles || {}
   const fontFamily = styles.fontFamily || 'Arial, sans-serif'
   const nameStyles = styles.name || {}
@@ -10,6 +11,7 @@ const ModernMinimalist = ({ data }) => {
   const bodyStyles = styles.bodyText || {}
   const dateStyles = styles.date || {}
   const contactStyles = styles.contact || {}
+  const links = data?.onlineLinks
 
   const bodyLeading = bodyStyles.leading ? Number(bodyStyles.leading) : 1.6
 
@@ -60,17 +62,18 @@ const ModernMinimalist = ({ data }) => {
         >
           {data?.email} {data?.email && '|'} {data?.location}
         </div>
-        {data?.linkedin?.length > 0 && (
-          <div
-            style={{
-              fontSize: `${contactStyles.size || 11}pt`,
-              color: contactStyles.color || '#666',
-              marginBottom: '8px'
-            }}
-          >
-            LinkedIn: {data?.linkedin}
-          </div>
-        )}
+        {links?.length > 0 &&
+          links.map(item => (
+            <div
+              style={{
+                fontSize: `${contactStyles.size || 11}pt`,
+                color: contactStyles.color || '#666',
+                marginBottom: '8px'
+              }}
+            >
+              {item.name}: {item.link}
+            </div>
+          ))}
         {data?.summary && data.summary.length > 0 && (
           <p
             style={{
@@ -125,7 +128,7 @@ const ModernMinimalist = ({ data }) => {
                     fontStyle: dateStyles.style || 'normal'
                   }}
                 >
-                  {exp.startYear} – {exp.endYear}
+                  {exp.startYear} - {exp.endYear}
                 </span>
               </div>
               <p

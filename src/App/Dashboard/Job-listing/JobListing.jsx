@@ -104,10 +104,16 @@ export function JobListing () {
                   </div>
                 ) : jobs.length === 0 ? (
                   <div className='col-span-full flex flex-col items-center justify-center py-20 gap-4'>
-                    <p className={appearance.theme == 'dark' ? 'text-slate-400' : 'text-slate-500'}>No jobs found</p>
-                    <button
-                      className='px-4 py-2 bg-[#f17e27] text-white rounded-lg text-sm font-semibold'
+                    <p
+                      className={
+                        appearance.theme == 'dark'
+                          ? 'text-slate-400'
+                          : 'text-slate-500'
+                      }
                     >
+                      No jobs found
+                    </p>
+                    <button className='px-4 py-2 bg-[#f17e27] text-white rounded-lg text-sm font-semibold'>
                       Fetch Jobs
                     </button>
                   </div>
@@ -130,7 +136,9 @@ export function JobListing () {
                               <img
                                 src={prepared.employerLogo}
                                 className={`w-full h-full object-contain rounded-lg ${
-                                  appearance.theme == 'dark' ? 'bg-[#202020]' : 'bg-gray-50'
+                                  appearance.theme == 'dark'
+                                    ? 'bg-[#202020]'
+                                    : 'bg-gray-50'
                                 }`}
                                 alt=''
                               />
@@ -142,9 +150,13 @@ export function JobListing () {
                           </div>
 
                           <div className='flex-1 min-w-0'>
-                            <h3 className={`text-sm font-bold font-IBM truncate ${
-                              appearance.theme == 'dark' ? 'text-white' : 'text-slate-900'
-                            }`}>
+                            <h3
+                              className={`text-sm font-bold font-IBM truncate ${
+                                appearance.theme == 'dark'
+                                  ? 'text-white'
+                                  : 'text-slate-900'
+                              }`}
+                            >
                               {prepared.jobTitle}
                             </h3>
                             <p className='text-xs font-bold text-[#f17e27] uppercase tracking-wide mt-0.5'>
@@ -157,18 +169,24 @@ export function JobListing () {
                           <span className='px-2.5 py-1 bg-[#fff7ed] text-[#f17e27] rounded-full text-[10px] font-bold'>
                             {prepared.jobEmploymentType}
                           </span>
-                          <span className={`px-2.5 py-1 rounded-full text-[10px] font-medium ${
-                            appearance.theme == 'dark'
-                              ? 'bg-[#202020] text-slate-300'
-                              : 'bg-gray-100 text-slate-600'
-                          }`}>
+                          <span
+                            className={`px-2.5 py-1 rounded-full text-[10px] font-medium ${
+                              appearance.theme == 'dark'
+                                ? 'bg-[#202020] text-slate-300'
+                                : 'bg-gray-100 text-slate-600'
+                            }`}
+                          >
                             {getJobSalary(prepared)}
                           </span>
                         </div>
 
-                        <div className={`flex items-center gap-2 mt-3 text-xs ${
-                          appearance.theme == 'dark' ? 'text-slate-400' : 'text-slate-500'
-                        }`}>
+                        <div
+                          className={`flex items-center gap-2 mt-3 text-xs ${
+                            appearance.theme == 'dark'
+                              ? 'text-slate-400'
+                              : 'text-slate-500'
+                          }`}
+                        >
                           <span className='flex items-center gap-1'>
                             <MapPin className='w-3 h-3' />
                             {prepared.jobLocation}
@@ -177,9 +195,13 @@ export function JobListing () {
                           <span>{prepared.jobPostedHumanReadable}</span>
                         </div>
 
-                        <p className={`text-xs mt-3 line-clamp-2 leading-relaxed ${
-                          appearance.theme == 'dark' ? 'text-slate-400' : 'text-slate-500'
-                        }`}>
+                        <p
+                          className={`text-xs mt-3 line-clamp-2 leading-relaxed ${
+                            appearance.theme == 'dark'
+                              ? 'text-slate-400'
+                              : 'text-slate-500'
+                          }`}
+                        >
                           {prepared.jobDescription}
                         </p>
                       </div>
@@ -194,20 +216,25 @@ export function JobListing () {
 
       {selectedJob && (
         <div className='fixed inset-0 z-40'>
+          <div className='absolute inset-0 bg-black/20' onClick={closeDetail} />
           <div
-            className='absolute inset-0 bg-black/20'
-            onClick={closeDetail}
-          />
-          <div className={`absolute right-2 rounded-2xl top-2 bottom-10 h-[97%] w-full max-w-xl scrollbar-none shadow-2xl overflow-y-auto ${
-            appearance.theme == 'dark' ? 'bg-[#2a2a2a]' : 'bg-white'
-          }`}>
+            className={`absolute right-2 rounded-2xl top-2 bottom-10 h-[97%] w-full max-w-xl scrollbar-none shadow-2xl overflow-y-auto ${
+              appearance.theme == 'dark' ? 'bg-[#2a2a2a]' : 'bg-white'
+            }`}
+          >
             <button
               onClick={closeDetail}
               className={`absolute top-4 right-4 p-2 rounded-full shadow-lg transition-all z-10 ${
-                appearance.theme == 'dark' ? 'bg-[#202020] hover:bg-slate-800' : 'bg-white hover:bg-gray-50'
+                appearance.theme == 'dark'
+                  ? 'bg-[#202020] hover:bg-slate-800'
+                  : 'bg-white hover:bg-gray-50'
               }`}
             >
-              <X className={`w-5 h-5 ${appearance.theme == 'dark' ? 'text-white' : 'text-slate-600'}`} />
+              <X
+                className={`w-5 h-5 ${
+                  appearance.theme == 'dark' ? 'text-white' : 'text-slate-600'
+                }`}
+              />
             </button>
             <JobDetailView job={selectedJob} />
           </div>

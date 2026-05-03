@@ -7,10 +7,8 @@ import {
   Transition
 } from '@headlessui/react'
 import { ChevronDown, Plus, Filter } from 'lucide-react'
-import { useQuery } from '@tanstack/react-query'
-import { getJobTracks } from '../../../services/jobs'
 
-export default function Header () {
+export default function Header ({ isFetching }) {
   const [selectedFilter, setSelectedFilter] = useState('All')
 
   const filters = [
@@ -21,15 +19,6 @@ export default function Header () {
     'Rejected Jobs',
     'Offered Jobs'
   ]
-
-  const { isFetching } = useQuery({
-    queryKey: ['jobTracks'],
-    queryFn: () => getJobTracks(),
-    staleTime: 10 * 60 * 1000,
-    gcTime: 15 * 60 * 1000,
-    refetchOnWindowFocus: false,
-    refetchOnReconnect: false
-  })
 
   return (
     <div className='w-full bg-white border-b border-gray-300 px-8 pt-8 pb-5 relative'>

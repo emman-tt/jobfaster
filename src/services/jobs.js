@@ -16,6 +16,7 @@ export async function saveJobTrack (job) {
 }
 
 export async function updateJobTrack (job) {
+  const { jobId, status } = job
   const res = await api.patch('/job/track', { job })
   return res.data
 }
