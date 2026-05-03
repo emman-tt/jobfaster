@@ -62,18 +62,22 @@ const ModernMinimalist = ({ data }) => {
         >
           {data?.email} {data?.email && '|'} {data?.location}
         </div>
-        {links?.length > 0 &&
-          links.map(item => (
-            <div
-              style={{
-                fontSize: `${contactStyles.size || 11}pt`,
-                color: contactStyles.color || '#666',
-                marginBottom: '8px'
-              }}
-            >
-              {item.name}: {item.link}
-            </div>
-          ))}
+        {links?.length > 0 && (
+          <div
+            style={{
+              fontSize: `${contactStyles.size || 11}pt`,
+              color: contactStyles.color || '#666',
+              marginBottom: '8px'
+            }}
+          >
+            {links.map((item, index) => (
+              <span key={item.name}>
+                {index > 0 && ' | '}
+                {item.link}
+              </span>
+            ))}
+          </div>
+        )}
         {data?.summary && data.summary.length > 0 && (
           <p
             style={{

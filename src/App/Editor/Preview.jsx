@@ -1,12 +1,13 @@
 import { useSelector } from 'react-redux'
 import { templates } from '../../libs/templatesData'
 import ClassicProfessional from '../../assets/templates/ClassicProfessional'
+import { THEME_COLORS } from './ThemeSelector'
 export function Preview () {
   const personal = useSelector(state => state.personal)
   const work = useSelector(state => state.work)
   const education = useSelector(state => state.education)
   const credentials = useSelector(state => state.credentials)
-  const { templateId, size, font, weight, height } = useSelector(
+  const { templateId, size, font, weight, height, theme } = useSelector(
     state => state.editor
   )
   const SelectedTemplate =
@@ -28,6 +29,8 @@ export function Preview () {
     700: 'font-bold'
   }
 
+  const themeColors = THEME_COLORS[theme || 'monochrome'] || THEME_COLORS.monochrome
+
   const styles = {
     fontFamily: font,
     name: {
@@ -35,28 +38,32 @@ export function Preview () {
       weight: weightMap[weight] || 'font-bold',
       style: 'normal',
       case: 'none',
-      spacing: 2
+      spacing: 2,
+      color: themeColors.name
     },
     sectionHeader: {
       size: typeScale.sectionHead,
       weight: weightMap[weight] || 'font-bold',
       style: 'normal',
       case: 'uppercase',
-      spacing: 1
+      spacing: 1,
+      color: themeColors.sectionHeader
     },
     company: {
       size: typeScale.body,
       weight: weightMap[weight] || 'font-medium',
       style: 'normal',
       case: 'none',
-      spacing: 0
+      spacing: 0,
+      color: themeColors.company
     },
     jobTitle: {
       size: typeScale.jobTitle,
       weight: weightMap[weight] || 'font-medium',
       style: 'italic',
       case: 'none',
-      spacing: 0
+      spacing: 0,
+      color: themeColors.jobTitle
     },
     bodyText: {
       size: typeScale.body,
@@ -64,21 +71,24 @@ export function Preview () {
       style: 'normal',
       case: 'none',
       spacing: 0,
-      leading: height
+      leading: height,
+      color: themeColors.bodyText
     },
     date: {
       size: typeScale.subtle,
       weight: 'font-normal',
       style: 'italic',
       case: 'none',
-      spacing: 0
+      spacing: 0,
+      color: themeColors.date
     },
     contact: {
       size: typeScale.subtle,
       weight: 'font-normal',
       style: 'normal',
       case: 'none',
-      spacing: 0
+      spacing: 0,
+      color: themeColors.contact
     }
   }
 

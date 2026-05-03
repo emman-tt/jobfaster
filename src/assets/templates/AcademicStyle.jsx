@@ -9,6 +9,7 @@ const AcademicStyle = ({ data }) => {
   const bodyStyles = styles.bodyText || {}
   const dateStyles = styles.date || {}
   const contactStyles = styles.contact || {}
+  const links = data?.onlineLinks
 
   const bodyLeading = bodyStyles.leading ? Number(bodyStyles.leading) : 1.5
 
@@ -42,15 +43,20 @@ const AcademicStyle = ({ data }) => {
         <p style={{ fontSize: `${contactStyles.size || 11}pt`, margin: '0' }}>
           {data?.email} • {data?.phone} • {data?.location}
         </p>
-        {data?.linkedin?.length > 0 && (
-          <p
+        {links?.length > 0 && (
+          <div
             style={{
               fontSize: `${contactStyles.size || 10}pt`,
               margin: '4px 0 0 0'
             }}
           >
-            LinkedIn: {data?.linkedin}
-          </p>
+            {links.map((item, index) => (
+              <span key={item.name}>
+                {index > 0 && ' | '}
+                {item.link}
+              </span>
+            ))}
+          </div>
         )}
       </div>
 

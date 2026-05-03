@@ -6,6 +6,7 @@ const initialState = {
   size: 14,
   height: 1.2,
   align: 'left',
+  theme: 'monochrome',
   templateId: 'classic',
   isPreview: false,
   modal: null,
@@ -39,6 +40,9 @@ export const editorSlice = createSlice({
     },
     setModal: (state, action) => {
       state.modal = action.payload
+    },
+    setTheme: (state, action) => {
+      state.theme = action.payload
     }
   }
 })
@@ -51,5 +55,6 @@ export const {
   setHeight,
   setAlign,
   togglePreview,
-  setModal
+  setModal,
+  setTheme
 } = editorSlice.actions

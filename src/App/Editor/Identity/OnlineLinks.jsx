@@ -42,11 +42,11 @@ export default function OnlineLinks () {
     })
   }
 
-  function handleChange (e, index) {
+  function handleChange (e, name) {
     const { value } = e.target
     setSavedLinks(prev => {
-      return prev.map((item, i) =>
-        i === index ? { ...item, link: value } : item
+      return prev.map(item =>
+        item.name === name ? { ...item, link: value } : item
       )
     })
   }
@@ -66,11 +66,11 @@ export default function OnlineLinks () {
     <section ref={popupRef} className='w-full'>
       {/* Selected Links */}
       <div className='space-y-3'>
-        {savedLinks.map((link, index) => (
-          <div
-            key={link.id || index}
-            className='flex flex-col sm:flex-row gap-3 sm:items-center w-full'
-          >
+           {savedLinks.map((link) => (
+           <div
+             key={link.name}
+             className='flex flex-col sm:flex-row gap-3 sm:items-center w-full'
+           >
             <div
               className={`w-full sm:w-40 shrink-0 border rounded-xl py-2.5 px-3 shadow-sm hover:shadow-md transition-shadow flex items-center justify-between ${
                 appearance.theme == 'dark'
@@ -110,7 +110,7 @@ export default function OnlineLinks () {
             <input
               type='text'
               value={link.link}
-              onChange={e => handleChange(e, index)}
+              onChange={e => handleChange(e, link.name)}
               placeholder='linkedin.com/in/jthorne'
               className={`flex-1 border pl-4 pr-3 outline-none py-2.5 rounded-xl text-xs focus:ring-2 focus:ring-[#f17e27] focus:border-[#f17e27] shadow-sm transition-shadow ${
                 appearance.theme == 'dark'

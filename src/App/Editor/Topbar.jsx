@@ -12,6 +12,7 @@ import {
 import { toggleModals } from '../../store/modalSlice'
 import { useDispatch, useSelector } from 'react-redux'
 import Menubar from './Menubar'
+import ThemeSelector from './ThemeSelector'
 import ExportMenu from './ExportMenu'
 import { exportToPDF, exportToDOCX } from '../../services/export.jsx'
 import { saveResumeFromHTML } from '../../services/Program'
@@ -213,6 +214,10 @@ export function Topbar () {
                 <Menubar />
               </div>
             )}
+
+            <div className='ml-2'>
+              <ThemeSelector />
+            </div>
           </div>
 
           <div className='flex items-center gap-1.5'>

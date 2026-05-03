@@ -12,6 +12,7 @@ const TechnicalFocused = ({ data }) => {
   const bodyStyles = styles.bodyText || {}
   const dateStyles = styles.date || {}
   const contactStyles = styles.contact || {}
+  const links = data?.onlineLinks
 
   const bodyLeading = bodyStyles.leading ? Number(bodyStyles.leading) : 1.5
 
@@ -63,7 +64,7 @@ const TechnicalFocused = ({ data }) => {
         >
           {data?.location} | {data?.email} | {data?.phone}
         </div>
-        {data?.linkedin?.length > 0 && (
+        {links?.length > 0 && (
           <div
             style={{
               marginTop: '4px',
@@ -72,7 +73,12 @@ const TechnicalFocused = ({ data }) => {
               color: contactStyles.color || '#666'
             }}
           >
-            LinkedIn: {data?.linkedin}
+            {links.map((item, index) => (
+              <span key={item.name}>
+                {index > 0 && ' | '}
+                {item.link}
+              </span>
+            ))}
           </div>
         )}
       </div>

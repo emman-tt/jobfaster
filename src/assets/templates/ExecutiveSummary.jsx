@@ -12,6 +12,7 @@ const ExecutiveSummary = ({ data }) => {
   const bodyStyles = styles.bodyText || {}
   const dateStyles = styles.date || {}
   const contactStyles = styles.contact || {}
+  const links = data?.onlineLinks
 
   const bodyLeading = bodyStyles.leading ? Number(bodyStyles.leading) : 1.6
 
@@ -62,16 +63,21 @@ const ExecutiveSummary = ({ data }) => {
         >
           {data?.phone} • {data?.email} • {data?.location}
         </p>
-        {data?.linkedin?.length > 0 && (
-          <p
+        {links?.length > 0 && (
+          <div
             style={{
               fontSize: `${contactStyles.size || 11}pt`,
               margin: '8px 0 0 0',
               color: contactStyles.color || '#666'
             }}
           >
-            LinkedIn: {data?.linkedin}
-          </p>
+            {links.map((item, index) => (
+              <span key={item.name}>
+                {index > 0 && ' | '}
+                {item.link}
+              </span>
+            ))}
+          </div>
         )}
       </div>
 
