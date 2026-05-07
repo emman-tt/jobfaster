@@ -51,13 +51,17 @@ export default function Auth () {
   }, [navigate])
 
   async function handleGoogle () {
+  
     try {
+        showLoader(true)
       await authClient.signIn.social({
         provider: 'google',
         callbackURL: `${window.location.origin}/auth`
       })
     } catch (error) {
       console.error('Google sign in failed:', error)
+    } finally {
+      showLoader(false)
     }
   }
 

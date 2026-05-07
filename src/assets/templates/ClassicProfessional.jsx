@@ -17,7 +17,7 @@ const ClassicProfessional = ({ data }) => {
     <div
       style={{
         lineHeight: bodyLeading,
-        color: '#333',
+        color: bodyStyles.color || '#333',
         maxWidth: '850px'
       }}
       className={`${fontFamily}`}
@@ -34,7 +34,8 @@ const ClassicProfessional = ({ data }) => {
             fontSize: `${nameStyles.size || 32}pt`,
             margin: '0 0 4px 0',
             fontWeight: nameStyles.weight === 'font-bold' ? 'bold' : 'normal',
-            letterSpacing: nameStyles.spacing || 0
+            letterSpacing: nameStyles.spacing || 0,
+            color: nameStyles.color || '#333'
           }}
         >
           {data?.name}
@@ -87,7 +88,8 @@ const ClassicProfessional = ({ data }) => {
               borderBottom: '1px solid #999',
               paddingBottom: '6px',
               marginBottom: '8px',
-              letterSpacing: sectionStyles.spacing || 0
+              letterSpacing: sectionStyles.spacing || 0,
+              color: sectionStyles.color || '#333'
             }}
           >
             Professional Summary
@@ -114,7 +116,8 @@ const ClassicProfessional = ({ data }) => {
               borderBottom: '1px solid #999',
               paddingBottom: '6px',
               marginBottom: '8px',
-              letterSpacing: sectionStyles.spacing || 0
+              letterSpacing: sectionStyles.spacing || 0,
+              color: sectionStyles.color || '#333'
             }}
           >
             Experience
@@ -127,7 +130,8 @@ const ClassicProfessional = ({ data }) => {
                     fontSize: `${companyStyles.size || 12}pt`,
                     fontWeight:
                       companyStyles.weight === 'font-medium' ? 500 : 'bold',
-                    margin: '0'
+                    margin: '0',
+                    color: companyStyles.color || '#333'
                   }}
                 >
                   {exp.position}
@@ -179,7 +183,8 @@ const ClassicProfessional = ({ data }) => {
               borderBottom: '1px solid #999',
               paddingBottom: '6px',
               marginBottom: '8px',
-              letterSpacing: sectionStyles.spacing || 0
+              letterSpacing: sectionStyles.spacing || 0,
+              color: sectionStyles.color || '#333'
             }}
           >
             Projects
@@ -222,19 +227,20 @@ const ClassicProfessional = ({ data }) => {
         <div style={{ flex: 1, marginBottom: '20px' }}>
           {data?.education?.length > 0 && (
             <>
-              <h2
-                style={{
-                  fontSize: `${sectionStyles.size || 14}pt`,
-                  fontWeight: 'bold',
-                  textTransform: 'uppercase',
-                  borderBottom: '1px solid #999',
-                  paddingBottom: '6px',
-                  marginBottom: '8px',
-                  letterSpacing: sectionStyles.spacing || 0
-                }}
-              >
-                Education
-              </h2>
+          <h2
+            style={{
+              fontSize: `${sectionStyles.size || 14}pt`,
+              fontWeight: 'bold',
+              textTransform: 'uppercase',
+              borderBottom: '1px solid #999',
+              paddingBottom: '6px',
+              marginBottom: '8px',
+              letterSpacing: sectionStyles.spacing || 0,
+              color: sectionStyles.color || '#333'
+            }}
+          >
+            Education
+          </h2>
               {data.education.map(edu => (
                 <div key={edu.id} style={{ marginBottom: '10px' }}>
                   <h3
@@ -273,15 +279,16 @@ const ClassicProfessional = ({ data }) => {
           )}
           {data?.languages?.length > 0 && (
             <div style={{ marginTop: data.education.length > 0 ? '16px' : 0 }}>
-              <h3
-                style={{
-                  fontSize: `${companyStyles.size || 12}pt`,
-                  fontWeight: 'bold',
-                  margin: '0 0 4px 0'
-                }}
-              >
-                Languages
-              </h3>
+          <h3
+            style={{
+              fontSize: `${companyStyles.size || 12}pt`,
+              fontWeight: 'bold',
+              margin: '0 0 4px 0',
+              color: companyStyles.color || '#333'
+            }}
+          >
+            Languages
+          </h3>
               <p
                 style={{
                   fontSize: `${bodyStyles.size || 11}pt`,
@@ -299,19 +306,20 @@ const ClassicProfessional = ({ data }) => {
         <div style={{ flex: 1, marginBottom: '20px' }}>
           {data?.skills?.length > 0 && (
             <>
-              <h2
-                style={{
-                  fontSize: `${sectionStyles.size || 14}pt`,
-                  fontWeight: 'bold',
-                  textTransform: 'uppercase',
-                  borderBottom: '1px solid #999',
-                  paddingBottom: '6px',
-                  marginBottom: '8px',
-                  letterSpacing: sectionStyles.spacing || 0
-                }}
-              >
-                Skills
-              </h2>
+          <h2
+            style={{
+              fontSize: `${sectionStyles.size || 14}pt`,
+              fontWeight: 'bold',
+              textTransform: 'uppercase',
+              borderBottom: '1px solid #999',
+              paddingBottom: '6px',
+              marginBottom: '8px',
+              letterSpacing: sectionStyles.spacing || 0,
+              color: sectionStyles.color || '#333'
+            }}
+          >
+            Skills
+          </h2>
               <p
                 style={{
                   fontSize: `${bodyStyles.size || 11}pt`,
@@ -336,7 +344,8 @@ const ClassicProfessional = ({ data }) => {
               borderBottom: '1px solid #999',
               paddingBottom: '6px',
               marginBottom: '8px',
-              letterSpacing: sectionStyles.spacing || 0
+              letterSpacing: sectionStyles.spacing || 0,
+              color: sectionStyles.color || '#333'
             }}
           >
             Certifications
@@ -367,7 +376,8 @@ const ClassicProfessional = ({ data }) => {
               borderBottom: '1px solid #999',
               paddingBottom: '6px',
               marginBottom: '8px',
-              letterSpacing: sectionStyles.spacing || 0
+              letterSpacing: sectionStyles.spacing || 0,
+              color: sectionStyles.color || '#333'
             }}
           >
             Achievements

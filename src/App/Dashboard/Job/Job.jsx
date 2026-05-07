@@ -66,6 +66,10 @@ export default function Job () {
     )
   }
 
+  function navigateNext () {
+    connector()
+  }
+
   const handleSubmit = e => {
     e.preventDefault()
     dispatch(toggleModals('selectResume'))
@@ -316,7 +320,7 @@ export default function Job () {
             </button>
             <button
               onClick={() => {
-                connector()
+                navigateNext()
               }}
               type='submit'
               className={`px-10 py-3.5 bg-[#f17e27] hover:bg-[#e16d16] text-white text-sm font-bold rounded-[1.25rem] shadow-lg shadow-orange-100 transition-all flex items-center gap-2 group active:scale-95 ${

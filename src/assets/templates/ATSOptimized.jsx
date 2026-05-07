@@ -19,7 +19,7 @@ const ATSOptimized = ({ data }) => {
   return (
     <div
       style={{
-        color: '#000',
+        color: bodyStyles.color || '#000',
         maxWidth: '900px',
         fontSize: `${bodyStyles.size || 11}pt`,
         lineHeight: bodyLeading
@@ -39,7 +39,8 @@ const ATSOptimized = ({ data }) => {
             fontSize: `${nameStyles.size || 14}pt`,
             fontWeight: 'bold',
             marginBottom: '2px',
-            letterSpacing: nameStyles.spacing || 0
+            letterSpacing: nameStyles.spacing || 0,
+            color: nameStyles.color || '#000'
           }}
         >
           {data?.name}
@@ -89,7 +90,8 @@ const ATSOptimized = ({ data }) => {
               fontWeight: 'bold',
               marginBottom: '4px',
               textTransform: 'uppercase',
-              letterSpacing: sectionStyles.spacing || 0
+              letterSpacing: sectionStyles.spacing || 0,
+              color: sectionStyles.color || '#000'
             }}
           >
             Summary
@@ -113,21 +115,23 @@ const ATSOptimized = ({ data }) => {
               fontWeight: 'bold',
               marginBottom: '4px',
               textTransform: 'uppercase',
-              letterSpacing: sectionStyles.spacing || 0
+              letterSpacing: sectionStyles.spacing || 0,
+              color: sectionStyles.color || '#000'
             }}
           >
             Experience
           </div>
           {data.experience.map(exp => (
             <div key={exp.id} style={{ marginBottom: '8px' }}>
-              <div
-                style={{
-                  fontWeight: 'bold',
-                  fontSize: `${companyStyles.size || 10}pt`
-                }}
-              >
-                {exp.position}
-              </div>
+                <div
+                  style={{
+                    fontWeight: 'bold',
+                    fontSize: `${companyStyles.size || 10}pt`,
+                    color: companyStyles.color || '#000'
+                  }}
+                >
+                  {exp.position}
+                </div>
               <div style={{ fontSize: `${companyStyles.size || 10}pt` }}>
                 {exp.company} | {exp.location}
               </div>
@@ -166,7 +170,8 @@ const ATSOptimized = ({ data }) => {
               fontWeight: 'bold',
               marginBottom: '4px',
               textTransform: 'uppercase',
-              letterSpacing: sectionStyles.spacing || 0
+              letterSpacing: sectionStyles.spacing || 0,
+              color: sectionStyles.color || '#000'
             }}
           >
             Projects
@@ -205,7 +210,8 @@ const ATSOptimized = ({ data }) => {
               fontWeight: 'bold',
               marginBottom: '4px',
               textTransform: 'uppercase',
-              letterSpacing: sectionStyles.spacing || 0
+              letterSpacing: sectionStyles.spacing || 0,
+              color: sectionStyles.color || '#000'
             }}
           >
             Education
@@ -246,7 +252,8 @@ const ATSOptimized = ({ data }) => {
               fontWeight: 'bold',
               marginBottom: '4px',
               textTransform: 'uppercase',
-              letterSpacing: sectionStyles.spacing || 0
+              letterSpacing: sectionStyles.spacing || 0,
+              color: sectionStyles.color || '#000'
             }}
           >
             Skills
@@ -265,7 +272,8 @@ const ATSOptimized = ({ data }) => {
               fontWeight: 'bold',
               marginBottom: '4px',
               textTransform: 'uppercase',
-              letterSpacing: sectionStyles.spacing || 0
+              letterSpacing: sectionStyles.spacing || 0,
+              color: sectionStyles.color || '#000'
             }}
           >
             Certifications
@@ -284,7 +292,8 @@ const ATSOptimized = ({ data }) => {
               fontWeight: 'bold',
               marginBottom: '4px',
               textTransform: 'uppercase',
-              letterSpacing: sectionStyles.spacing || 0
+              letterSpacing: sectionStyles.spacing || 0,
+              color: sectionStyles.color || '#000'
             }}
           >
             Languages
@@ -305,7 +314,8 @@ const ATSOptimized = ({ data }) => {
               fontWeight: 'bold',
               marginBottom: '4px',
               textTransform: 'uppercase',
-              letterSpacing: sectionStyles.spacing || 0
+              letterSpacing: sectionStyles.spacing || 0,
+              color: sectionStyles.color || '#000'
             }}
           >
             Achievements

@@ -1,5 +1,6 @@
 import { toast } from 'sonner'
 import { toastPresets } from '../components/toasters'
+import { getToken } from '../libs/token'
 
 let ws = null
 let isConnecting = false
@@ -26,7 +27,7 @@ export function connector () {
   }
 
   console.log('Creating new connection...')
-  ws = new WebSocket('ws://localhost:5000/')
+  ws = new WebSocket(`ws://localhost:5000?accessToken=${getToken()}`)
 
   ws.onopen = () => {
     console.log('Connected')
@@ -89,15 +90,15 @@ export function sendMessage (type, data) {
       id: 'ai-processing',
       position: 'top-right'
     })
-  } else if (type == 'JOB_MAIL') {
-    console.log('sedning job mail')
-    // toast.loading('', {
-    //   ...toastPresets.aiProcessing(),
-    //   description:
-    //     'Generating a tailored resume and and email template for the job',
-    //   id: 'ai-processing',
-    //   position: 'top-right'
-    // })
+  }
+  if (type == 'JOB_MAIL') {
+    toast.loading('Processing and sending mail!', {
+      ...toastPresets.aiProcessing(),
+      id: 'job-mail',
+  
+      position: 'top-right',
+      description: 'On success, email will be recieved by the hiring address'
+    })
   }
 
   ws.send(JSON.stringify({ type, data }))

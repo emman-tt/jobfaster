@@ -71,8 +71,8 @@ export default function Dashboard () {
 
   useEffect(() => {
     onSendJobMail(data => {
+      toast.dismiss('job-mail')
       if (data) {
-        toast.dismiss('job-mail')
         const status = data?.status
         if (status == 'success') {
           toast.success('Email sent!', {
@@ -82,7 +82,10 @@ export default function Dashboard () {
             id: 'job-mail',
             position: 'top-right'
           })
-        } else {
+          return
+        }
+
+        if (status == 'failed') {
           toast.error('Unable to send mail!', {
             ...toastPresets.generalError(
               'Resume processed successfully! Redirecting you to your tailored resume...'
@@ -90,6 +93,7 @@ export default function Dashboard () {
             id: 'job-mail',
             position: 'top-right'
           })
+          return
         }
       }
     })

@@ -19,8 +19,8 @@ const ExecutiveSummary = ({ data }) => {
   return (
     <div
       style={{
-      
-        color: '#1a1a1a',
+
+        color: bodyStyles.color || '#1a1a1a',
         maxWidth: '850px'
       }}
       className={`${fontFamily}`}
@@ -39,7 +39,8 @@ const ExecutiveSummary = ({ data }) => {
             fontSize: `${nameStyles.size || 28}pt`,
             margin: '0 0 4px 0',
             fontWeight: nameStyles.weight === 'font-bold' ? 'bold' : 'normal',
-            letterSpacing: nameStyles.spacing || 0
+            letterSpacing: nameStyles.spacing || 0,
+            color: nameStyles.color || '#1a1a1a'
           }}
         >
           {data?.name}
@@ -48,7 +49,7 @@ const ExecutiveSummary = ({ data }) => {
           style={{
             fontSize: `${jobTitleStyles.size || 16}pt`,
             margin: '0 0 12px 0',
-            color: '#003366',
+            color: jobTitleStyles.color || '#003366',
             fontWeight: 600
           }}
         >
@@ -88,7 +89,7 @@ const ExecutiveSummary = ({ data }) => {
               fontSize: `${sectionStyles.size || 12}pt`,
               fontWeight: 'bold',
               textTransform: 'uppercase',
-              color: '#003366',
+              color: sectionStyles.color || '#003366',
               borderBottom: '2px solid #003366',
               paddingBottom: '4px',
               marginBottom: '8px',
@@ -112,20 +113,20 @@ const ExecutiveSummary = ({ data }) => {
       {data?.experience?.length > 0 && (
         <>
           <div style={{ marginBottom: '20px' }}>
-            <h3
-              style={{
-                fontSize: `${sectionStyles.size || 12}pt`,
-                fontWeight: 'bold',
-                textTransform: 'uppercase',
-                color: '#003366',
-                borderBottom: '2px solid #003366',
-                paddingBottom: '4px',
-                marginBottom: '8px',
-                letterSpacing: sectionStyles.spacing || 0
-              }}
-            >
-              Key Achievements
-            </h3>
+          <h3
+            style={{
+              fontSize: `${sectionStyles.size || 12}pt`,
+              fontWeight: 'bold',
+              textTransform: 'uppercase',
+              color: sectionStyles.color || '#003366',
+              borderBottom: '2px solid #003366',
+              paddingBottom: '4px',
+              marginBottom: '8px',
+              letterSpacing: sectionStyles.spacing || 0
+            }}
+          >
+            Key Achievements
+          </h3>
             <ul
               style={{
                 fontSize: `${bodyStyles.size || 12}pt`,
@@ -142,32 +143,33 @@ const ExecutiveSummary = ({ data }) => {
           </div>
 
           <div style={{ marginBottom: '20px' }}>
-            <h3
-              style={{
-                fontSize: `${sectionStyles.size || 12}pt`,
-                fontWeight: 'bold',
-                textTransform: 'uppercase',
-                color: '#003366',
-                borderBottom: '2px solid #003366',
-                paddingBottom: '4px',
-                marginBottom: '8px',
-                letterSpacing: sectionStyles.spacing || 0
-              }}
-            >
-              Professional Experience
-            </h3>
+          <h3
+            style={{
+              fontSize: `${sectionStyles.size || 12}pt`,
+              fontWeight: 'bold',
+              textTransform: 'uppercase',
+              color: sectionStyles.color || '#003366',
+              borderBottom: '2px solid #003366',
+              paddingBottom: '4px',
+              marginBottom: '8px',
+              letterSpacing: sectionStyles.spacing || 0
+            }}
+          >
+            Professional Experience
+          </h3>
             {data.experience.map(exp => (
               <div key={exp.id} style={{ marginBottom: '10px' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                  <h4
-                    style={{
-                      fontSize: `${companyStyles.size || 12}pt`,
-                      fontWeight: 'bold',
-                      margin: '0'
-                    }}
-                  >
-                    {exp.position}
-                  </h4>
+                <h4
+                  style={{
+                    fontSize: `${companyStyles.size || 12}pt`,
+                    fontWeight: 'bold',
+                    margin: '0',
+                    color: companyStyles.color || '#1a1a1a'
+                  }}
+                >
+                  {exp.position}
+                </h4>
                   <span
                     style={{
                       fontSize: `${dateStyles.size || 11}pt`,
@@ -200,7 +202,7 @@ const ExecutiveSummary = ({ data }) => {
               fontSize: `${sectionStyles.size || 12}pt`,
               fontWeight: 'bold',
               textTransform: 'uppercase',
-              color: '#003366',
+              color: sectionStyles.color || '#003366',
               borderBottom: '2px solid #003366',
               paddingBottom: '4px',
               marginBottom: '8px',
@@ -250,7 +252,7 @@ const ExecutiveSummary = ({ data }) => {
               fontSize: `${sectionStyles.size || 12}pt`,
               fontWeight: 'bold',
               textTransform: 'uppercase',
-              color: '#003366',
+              color: sectionStyles.color || '#003366',
               borderBottom: '2px solid #003366',
               paddingBottom: '4px',
               marginBottom: '8px',
@@ -281,7 +283,7 @@ const ExecutiveSummary = ({ data }) => {
               fontSize: `${sectionStyles.size || 12}pt`,
               fontWeight: 'bold',
               textTransform: 'uppercase',
-              color: '#003366',
+              color: sectionStyles.color || '#003366',
               borderBottom: '2px solid #003366',
               paddingBottom: '4px',
               marginBottom: '8px',
@@ -323,20 +325,20 @@ const ExecutiveSummary = ({ data }) => {
           <div>
             {data?.certificates?.length > 0 && (
               <>
-                <h3
-                  style={{
-                    fontSize: `${sectionStyles.size || 12}pt`,
-                    fontWeight: 'bold',
-                    textTransform: 'uppercase',
-                    color: '#003366',
-                    borderBottom: '2px solid #003366',
-                    paddingBottom: '4px',
-                    marginBottom: '8px',
-                    letterSpacing: sectionStyles.spacing || 0
-                  }}
-                >
-                  Certifications
-                </h3>
+                  <h3
+                    style={{
+                      fontSize: `${sectionStyles.size || 12}pt`,
+                      fontWeight: 'bold',
+                      textTransform: 'uppercase',
+                      color: sectionStyles.color || '#003366',
+                      borderBottom: '2px solid #003366',
+                      paddingBottom: '4px',
+                      marginBottom: '8px',
+                      letterSpacing: sectionStyles.spacing || 0
+                    }}
+                  >
+                    Certifications
+                  </h3>
                 <ul
                   style={{
                     fontSize: `${bodyStyles.size || 11}pt`,
@@ -354,20 +356,20 @@ const ExecutiveSummary = ({ data }) => {
           <div>
             {data?.achievements?.length > 0 && (
               <>
-                <h3
-                  style={{
-                    fontSize: `${sectionStyles.size || 12}pt`,
-                    fontWeight: 'bold',
-                    textTransform: 'uppercase',
-                    color: '#003366',
-                    borderBottom: '2px solid #003366',
-                    paddingBottom: '4px',
-                    marginBottom: '8px',
-                    letterSpacing: sectionStyles.spacing || 0
-                  }}
-                >
-                  Awards & Recognition
-                </h3>
+                  <h3
+                    style={{
+                      fontSize: `${sectionStyles.size || 12}pt`,
+                      fontWeight: 'bold',
+                      textTransform: 'uppercase',
+                      color: sectionStyles.color || '#003366',
+                      borderBottom: '2px solid #003366',
+                      paddingBottom: '4px',
+                      marginBottom: '8px',
+                      letterSpacing: sectionStyles.spacing || 0
+                    }}
+                  >
+                    Awards & Recognition
+                  </h3>
                 <ul
                   style={{
                     fontSize: `${bodyStyles.size || 11}pt`,

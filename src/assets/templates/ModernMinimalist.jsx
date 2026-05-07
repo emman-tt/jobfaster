@@ -18,7 +18,7 @@ const ModernMinimalist = ({ data }) => {
   return (
     <div
       style={{
-        color: '#2c3e50',
+        color: bodyStyles.color || '#2c3e50',
         maxWidth: '850px'
       }}
       className={`${fontFamily}`}
@@ -29,7 +29,8 @@ const ModernMinimalist = ({ data }) => {
             fontSize: `${nameStyles.size || 36}pt`,
             margin: '0',
             fontWeight: 300,
-            letterSpacing: nameStyles.spacing || 2
+            letterSpacing: nameStyles.spacing || 2,
+            color: nameStyles.color || '#2c3e50'
           }}
         >
           {data?.name}
@@ -101,7 +102,7 @@ const ModernMinimalist = ({ data }) => {
               textTransform: 'uppercase',
               letterSpacing: sectionStyles.spacing || 1,
               marginBottom: '16px',
-              color: '#2c3e50'
+              color: sectionStyles.color || '#2c3e50'
             }}
           >
             Experience
@@ -116,15 +117,16 @@ const ModernMinimalist = ({ data }) => {
                   marginBottom: '4px'
                 }}
               >
-                <h3
-                  style={{
-                    fontSize: `${companyStyles.size || 13}pt`,
-                    fontWeight: 'bold',
-                    margin: '0'
-                  }}
-                >
-                  {exp.position}
-                </h3>
+                  <h3
+                    style={{
+                      fontSize: `${companyStyles.size || 13}pt`,
+                      fontWeight: 'bold',
+                      margin: '0',
+                      color: companyStyles.color || '#2c3e50'
+                    }}
+                  >
+                    {exp.position}
+                  </h3>
                 <span
                   style={{
                     fontSize: `${dateStyles.size || 12}pt`,
@@ -139,7 +141,7 @@ const ModernMinimalist = ({ data }) => {
                 style={{
                   fontSize: `${bodyStyles.size || 12}pt`,
                   margin: '0 0 8px 0',
-                  color: bodyStyles.color || '#999'
+                  color: companyStyles.color || '#999'
                 }}
               >
                 {exp.company} | {exp.location}
@@ -171,7 +173,7 @@ const ModernMinimalist = ({ data }) => {
               textTransform: 'uppercase',
               letterSpacing: sectionStyles.spacing || 1,
               marginBottom: '16px',
-              color: '#2c3e50'
+              color: sectionStyles.color || '#2c3e50'
             }}
           >
             Projects
@@ -229,7 +231,7 @@ const ModernMinimalist = ({ data }) => {
                     textTransform: 'uppercase',
                     letterSpacing: sectionStyles.spacing || 1,
                     marginBottom: '12px',
-                    color: '#2c3e50'
+                    color: sectionStyles.color || '#2c3e50'
                   }}
                 >
                   Education
@@ -306,7 +308,7 @@ const ModernMinimalist = ({ data }) => {
                     textTransform: 'uppercase',
                     letterSpacing: sectionStyles.spacing || 1,
                     marginBottom: '12px',
-                    color: '#2c3e50'
+                    color: sectionStyles.color || '#2c3e50'
                   }}
                 >
                   Skills
@@ -348,18 +350,18 @@ const ModernMinimalist = ({ data }) => {
             <div>
               {data?.certificates?.length > 0 && (
                 <>
-                  <h2
-                    style={{
-                      fontSize: `${sectionStyles.size || 13}pt`,
-                      fontWeight: 'bold',
-                      textTransform: 'uppercase',
-                      letterSpacing: sectionStyles.spacing || 1,
-                      marginBottom: '12px',
-                      color: '#2c3e50'
-                    }}
-                  >
-                    Certifications
-                  </h2>
+                    <h2
+                      style={{
+                        fontSize: `${sectionStyles.size || 13}pt`,
+                        fontWeight: 'bold',
+                        textTransform: 'uppercase',
+                        letterSpacing: sectionStyles.spacing || 1,
+                        marginBottom: '12px',
+                        color: sectionStyles.color || '#2c3e50'
+                      }}
+                    >
+                      Certifications
+                    </h2>
                   <ul
                     style={{
                       fontSize: `${bodyStyles.size || 12}pt`,
@@ -380,18 +382,18 @@ const ModernMinimalist = ({ data }) => {
             <div>
               {data?.achievements?.length > 0 && (
                 <>
-                  <h2
-                    style={{
-                      fontSize: `${sectionStyles.size || 13}pt`,
-                      fontWeight: 'bold',
-                      textTransform: 'uppercase',
-                      letterSpacing: sectionStyles.spacing || 1,
-                      marginBottom: '12px',
-                      color: '#2c3e50'
-                    }}
-                  >
-                    Achievements
-                  </h2>
+                    <h2
+                      style={{
+                        fontSize: `${sectionStyles.size || 13}pt`,
+                        fontWeight: 'bold',
+                        textTransform: 'uppercase',
+                        letterSpacing: sectionStyles.spacing || 1,
+                        marginBottom: '12px',
+                        color: sectionStyles.color || '#2c3e50'
+                      }}
+                    >
+                      Achievements
+                    </h2>
                   <ul
                     style={{
                       fontSize: `${bodyStyles.size || 12}pt`,

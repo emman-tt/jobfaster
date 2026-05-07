@@ -45,7 +45,6 @@ export default function SelectResume () {
       return console.log('nothing selected')
     }
 
-
     const preparedData = {
       fileId: selected.id,
       resume: selected.metaData,

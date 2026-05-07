@@ -19,7 +19,7 @@ const TechnicalFocused = ({ data }) => {
   return (
     <div
       style={{
-        color: '#333',
+        color: bodyStyles.color || '#333',
         maxWidth: '850px',
         fontSize: `${bodyStyles.size || 13}pt`
       }}
@@ -38,7 +38,8 @@ const TechnicalFocused = ({ data }) => {
             margin: '0',
             fontFamily: 'Arial, sans-serif',
             fontWeight: nameStyles.weight === 'font-bold' ? 'bold' : 'normal',
-            letterSpacing: nameStyles.spacing || 0
+            letterSpacing: nameStyles.spacing || 0,
+            color: nameStyles.color || '#333'
           }}
         >
           {data?.name}
@@ -93,7 +94,8 @@ const TechnicalFocused = ({ data }) => {
               background: '#f0f0f0',
               padding: '6px 8px',
               margin: '0 0 8px 0',
-              letterSpacing: sectionStyles.spacing || 0
+              letterSpacing: sectionStyles.spacing || 0,
+              color: sectionStyles.color || '#333'
             }}
           >
             &gt; Professional Summary
@@ -120,7 +122,8 @@ const TechnicalFocused = ({ data }) => {
               background: '#f0f0f0',
               padding: '6px 8px',
               margin: '0 0 8px 0',
-              letterSpacing: sectionStyles.spacing || 0
+              letterSpacing: sectionStyles.spacing || 0,
+              color: sectionStyles.color || '#333'
             }}
           >
             &gt; Technical Skills
@@ -148,7 +151,8 @@ const TechnicalFocused = ({ data }) => {
               background: '#f0f0f0',
               padding: '6px 8px',
               margin: '0 0 8px 0',
-              letterSpacing: sectionStyles.spacing || 0
+              letterSpacing: sectionStyles.spacing || 0,
+              color: sectionStyles.color || '#333'
             }}
           >
             &gt; Professional Experience
@@ -194,7 +198,8 @@ const TechnicalFocused = ({ data }) => {
               background: '#f0f0f0',
               padding: '6px 8px',
               margin: '0 0 8px 0',
-              letterSpacing: sectionStyles.spacing || 0
+              letterSpacing: sectionStyles.spacing || 0,
+              color: sectionStyles.color || '#333'
             }}
           >
             &gt; Projects
@@ -261,7 +266,8 @@ const TechnicalFocused = ({ data }) => {
               background: '#f0f0f0',
               padding: '6px 8px',
               margin: '0 0 8px 0',
-              letterSpacing: sectionStyles.spacing || 0
+              letterSpacing: sectionStyles.spacing || 0,
+              color: sectionStyles.color || '#333'
             }}
           >
             &gt; Education
@@ -298,7 +304,8 @@ const TechnicalFocused = ({ data }) => {
               background: '#f0f0f0',
               padding: '6px 8px',
               margin: '0 0 8px 0',
-              letterSpacing: sectionStyles.spacing || 0
+              letterSpacing: sectionStyles.spacing || 0,
+              color: sectionStyles.color || '#333'
             }}
           >
             &gt; Languages
@@ -322,19 +329,20 @@ const TechnicalFocused = ({ data }) => {
           <div>
             {data?.certificates?.length > 0 && (
               <>
-                <h2
-                  style={{
-                    fontSize: `${sectionStyles.size || 12}pt`,
-                    fontWeight: 'bold',
-                    textTransform: 'uppercase',
-                    background: '#f0f0f0',
-                    padding: '6px 8px',
-                    margin: '0 0 8px 0',
-                    letterSpacing: sectionStyles.spacing || 0
-                  }}
-                >
-                  &gt; Certifications
-                </h2>
+                    <h2
+                      style={{
+                        fontSize: `${sectionStyles.size || 12}pt`,
+                        fontWeight: 'bold',
+                        textTransform: 'uppercase',
+                        background: '#f0f0f0',
+                        padding: '6px 8px',
+                        margin: '0 0 8px 0',
+                        letterSpacing: sectionStyles.spacing || 0,
+                        color: sectionStyles.color || '#333'
+                      }}
+                    >
+                      &gt; Certifications
+                    </h2>
                 <ul
                   style={{
                     fontSize: `${bodyStyles.size || 11}pt`,
@@ -354,19 +362,20 @@ const TechnicalFocused = ({ data }) => {
           <div>
             {data?.achievements?.length > 0 && (
               <>
-                <h2
-                  style={{
-                    fontSize: `${sectionStyles.size || 12}pt`,
-                    fontWeight: 'bold',
-                    textTransform: 'uppercase',
-                    background: '#f0f0f0',
-                    padding: '6px 8px',
-                    margin: '0 0 8px 0',
-                    letterSpacing: sectionStyles.spacing || 0
-                  }}
-                >
-                  &gt; Achievements
-                </h2>
+                    <h2
+                      style={{
+                        fontSize: `${sectionStyles.size || 12}pt`,
+                        fontWeight: 'bold',
+                        textTransform: 'uppercase',
+                        background: '#f0f0f0',
+                        padding: '6px 8px',
+                        margin: '0 0 8px 0',
+                        letterSpacing: sectionStyles.spacing || 0,
+                        color: sectionStyles.color || '#333'
+                      }}
+                    >
+                      &gt; Achievements
+                    </h2>
                 <ul
                   style={{
                     fontSize: `${bodyStyles.size || 11}pt`,

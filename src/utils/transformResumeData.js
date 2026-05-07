@@ -17,7 +17,7 @@ export function transformResumeData (aiResponse) {
     phone: personal?.contactDetails?.phone || '',
     location: personal?.contactDetails?.location || '',
     jobTitle: personal?.contactDetails?.jobTitle || '',
-    linkedin: personal?.onlineLinks?.find(l => l.name.toLowerCase() === 'linkedin')?.link || '',
+    linkedin: personal.onlineLinks || [],
     summary: personal?.summary || '',
     experience:
       work?.experiences

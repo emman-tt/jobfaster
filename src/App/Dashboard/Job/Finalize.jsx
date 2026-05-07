@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, useCallback } from 'react'
 import {
   Mail,
   User,
@@ -138,34 +138,34 @@ export default function Finalize () {
 
   const resumeData = tailoredResume?.resume
   const templateName = tailoredResume?.template
+  const generatePDF = useCallback(async () => {
+    if (resumeData && templateName && !hasGeneratedRef.current) {
+      hasGeneratedRef.current = true
+      setIsGeneratingPDF(true)
+      try {
+        const fullName =
+          resumeData.personal?.contactDetails?.fullName || 'Tailored Resume'
+        const result = await generateTailoredResumePDF(
+          resumeData,
+          templateName,
+          `${fullName}-Resume`
+        )
 
-  useEffect(() => {
-    const generatePDF = async () => {
-      if (resumeData && templateName && !hasGeneratedRef.current) {
-        hasGeneratedRef.current = true
-        setIsGeneratingPDF(true)
-        try {
-          const fullName =
-            resumeData.personal?.contactDetails?.fullName || 'Tailored Resume'
-          const result = await generateTailoredResumePDF(
-            resumeData,
-            templateName,
-            `${fullName}-Resume`
-          )
-          if (result?.data?.url) {
-            queryClient.invalidateQueries(['program'])
-            setPdfUrl(result.data.url)
-          }
-        } catch (error) {
-          console.error('Failed to generate PDF:', error)
-          hasGeneratedRef.current = false
-        } finally {
-          setIsGeneratingPDF(false)
+        if (result?.data?.url) {
+          queryClient.invalidateQueries(['program'])
+          setPdfUrl(result.data.url)
         }
+      } catch (error) {
+        console.error('Failed to generate PDF:', error)
+        hasGeneratedRef.current = false
+      } finally {
+        setIsGeneratingPDF(false)
       }
     }
-    generatePDF()
   }, [resumeData, templateName, queryClient])
+  useEffect(() => {
+    generatePDF()
+  }, [generatePDF])
 
   const attachedFiles = resumeData
     ? [
@@ -206,8 +206,9 @@ export default function Finalize () {
     }
   }
 
-  const handleSendServer = () => {
+  const handleSendServer = async () => {
     connector()
+    await generatePDF()
     setShowSendMethodModal(false)
     sendMessage('JOB_MAIL', {
       to: job.email,
@@ -219,13 +220,9 @@ export default function Finalize () {
       callToAction: emailDetails.callToAction,
       attachmentNote: emailDetails.attachmentNote,
       signOff: emailDetails.signOff,
-      pdfUrl: pdfUrl
-    })
-    toast.loading('Processing and sending mail!', {
-      id: 'job-mail',
-      position: 'top-right',
-      description: 'On success, email will be recieved by the hiring address',
-      ...toastPresets.generalSuccess()
+      pdfUrl: pdfUrl,
+      company: emailDetails.companyName || 'Unknown',
+      jobTitle: emailDetails.jobTitle
     })
   }
 
