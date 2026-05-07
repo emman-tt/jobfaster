@@ -57,8 +57,7 @@ const ClassicProfessional = ({ data }) => {
             color: contactStyles.color || '#666'
           }}
         >
-          {data?.location} {data?.location && '|'} {data?.phone}
-          {data?.phone && '|'} {data?.email}
+          {[data?.location, data?.phone, data?.email].filter(Boolean).join(' | ')}
         </p>
         {links?.length > 0 && (
           <div
@@ -260,7 +259,7 @@ const ClassicProfessional = ({ data }) => {
                       color: bodyStyles.color || '#666'
                     }}
                   >
-                    {edu.school} • {edu.startYear} - {edu.endYear}
+                    {[edu.school, `${edu.startYear} - ${edu.endYear}`].filter(Boolean).join(' • ')}
                   </p>
                   {edu.highlights?.length > 0 && (
                     <p

@@ -63,7 +63,7 @@ const TechnicalFocused = ({ data }) => {
             color: contactStyles.color || '#666'
           }}
         >
-          {data?.location} | {data?.email} | {data?.phone}
+          {[data?.location, data?.email, data?.phone].filter(Boolean).join(' | ')}
         </div>
         {links?.length > 0 && (
           <div

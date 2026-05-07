@@ -61,7 +61,7 @@ const ModernMinimalist = ({ data }) => {
             marginBottom: '8px'
           }}
         >
-          {data?.email} {data?.email && '|'} {data?.location}
+          {[data?.email, data?.location].filter(Boolean).join(' | ')}
         </div>
         {links?.length > 0 && (
           <div

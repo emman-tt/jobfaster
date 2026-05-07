@@ -60,7 +60,7 @@ const ATSOptimized = ({ data }) => {
             marginBottom: '2px'
           }}
         >
-          {data?.phone} | {data?.email}
+          {[data?.phone, data?.email].filter(Boolean).join(' | ')}
         </div>
         <div style={{ fontSize: `${contactStyles.size || 10}pt` }}>
           {data?.location}
@@ -133,7 +133,7 @@ const ATSOptimized = ({ data }) => {
                   {exp.position}
                 </div>
               <div style={{ fontSize: `${companyStyles.size || 10}pt` }}>
-                {exp.company} | {exp.location}
+                {[exp.company, exp.location].filter(Boolean).join(' | ')}
               </div>
               <div
                 style={{
@@ -227,7 +227,7 @@ const ATSOptimized = ({ data }) => {
                 {edu.degree} {edu.field && `in ${edu.field}`}
               </div>
               <div style={{ fontSize: `${bodyStyles.size || 10}pt` }}>
-                {edu.school} | {edu.startYear} - {edu.endYear}
+                {[edu.school, `${edu.startYear} - ${edu.endYear}`].filter(Boolean).join(' | ')}
               </div>
               {edu.highlights?.length > 0 && (
                 <div

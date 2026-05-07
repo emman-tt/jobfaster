@@ -1,6 +1,5 @@
 import React from 'react'
 
-
 const AcademicStyle = ({ data }) => {
   const styles = data?.styles || {}
   const fontFamily = styles.fontFamily || 'Times New Roman, serif'
@@ -41,8 +40,14 @@ const AcademicStyle = ({ data }) => {
         >
           {data?.name}
         </h1>
-        <p style={{ fontSize: `${contactStyles.size || 11}pt`, margin: '0', color: contactStyles.color || '#666' }}>
-          {data?.email} • {data?.phone} • {data?.location}
+        <p
+          style={{
+            fontSize: `${contactStyles.size || 11}pt`,
+            margin: '0',
+            color: contactStyles.color || '#666'
+          }}
+        >
+          {[data?.email, data?.phone, data?.location].filter(Boolean).join(' • ')}
         </p>
         {links?.length > 0 && (
           <div
@@ -62,16 +67,16 @@ const AcademicStyle = ({ data }) => {
       </div>
 
       <div style={{ marginBottom: '16px' }}>
-           <h2
-             style={{
-               fontSize: `${sectionStyles.size || 12}pt`,
-               fontWeight: 'bold',
-               margin: '12px 0 6px 0',
-               color: sectionStyles.color || '#1a1a1a'
-             }}
-           >
-             PROFESSIONAL SUMMARY
-           </h2>
+        <h2
+          style={{
+            fontSize: `${sectionStyles.size || 12}pt`,
+            fontWeight: 'bold',
+            margin: '12px 0 6px 0',
+            color: sectionStyles.color || '#1a1a1a'
+          }}
+        >
+          PROFESSIONAL SUMMARY
+        </h2>
         <p
           style={{ margin: '0', lineHeight: bodyLeading, textAlign: 'justify' }}
         >
@@ -81,16 +86,16 @@ const AcademicStyle = ({ data }) => {
 
       {data?.experience?.length > 0 && (
         <div style={{ marginBottom: '16px' }}>
-           <h2
-             style={{
-               fontSize: `${sectionStyles.size || 12}pt`,
-               fontWeight: 'bold',
-               margin: '12px 0 6px 0',
-               color: sectionStyles.color || '#1a1a1a'
-             }}
-           >
-             PROFESSIONAL EXPERIENCE
-           </h2>
+          <h2
+            style={{
+              fontSize: `${sectionStyles.size || 12}pt`,
+              fontWeight: 'bold',
+              margin: '12px 0 6px 0',
+              color: sectionStyles.color || '#1a1a1a'
+            }}
+          >
+            PROFESSIONAL EXPERIENCE
+          </h2>
           {data.experience.map((exp, idx) => (
             <div
               key={exp.id}
@@ -98,20 +103,25 @@ const AcademicStyle = ({ data }) => {
                 marginBottom: idx !== data.experience.length - 1 ? '12px' : '0'
               }}
             >
-               <p style={{ margin: '0 0 2px 0', color: companyStyles.color || '#1a1a1a' }}>
-                 <strong>{exp.position}</strong>, <em>{exp.company}</em>,{' '}
-                 {exp.location}
-               </p>
-               <p
-                 style={{
-                   margin: '0 0 6px 0',
-                   fontSize: `${dateStyles.size || 11}pt`,
-                   color: dateStyles.color || '#666',
-                   fontStyle: dateStyles.style || 'italic'
-                 }}
-               >
-                 {exp.startYear} - {exp.endYear}
-               </p>
+              <p
+                style={{
+                  margin: '0 0 2px 0',
+                  color: companyStyles.color || '#1a1a1a'
+                }}
+              >
+                <strong>{exp.position}</strong>, <em>{exp.company}</em>,{' '}
+                {exp.location}
+              </p>
+              <p
+                style={{
+                  margin: '0 0 6px 0',
+                  fontSize: `${dateStyles.size || 11}pt`,
+                  color: dateStyles.color || '#666',
+                  fontStyle: dateStyles.style || 'italic'
+                }}
+              >
+                {exp.startYear} - {exp.endYear}
+              </p>
               <ul style={{ margin: '0 0 6px 0', paddingLeft: '24px' }}>
                 {exp.accomplishments?.map((acc, i) => (
                   <li
@@ -132,16 +142,16 @@ const AcademicStyle = ({ data }) => {
 
       {data?.projects?.length > 0 && (
         <div style={{ marginBottom: '16px' }}>
-           <h2
-             style={{
-               fontSize: `${sectionStyles.size || 12}pt`,
-               fontWeight: 'bold',
-               margin: '12px 0 6px 0',
-               color: sectionStyles.color || '#1a1a1a'
-             }}
-           >
-             PROJECTS
-           </h2>
+          <h2
+            style={{
+              fontSize: `${sectionStyles.size || 12}pt`,
+              fontWeight: 'bold',
+              margin: '12px 0 6px 0',
+              color: sectionStyles.color || '#1a1a1a'
+            }}
+          >
+            PROJECTS
+          </h2>
           {data.projects.map(proj => (
             <div key={proj.id} style={{ marginBottom: '8px' }}>
               <p style={{ margin: '0' }}>
@@ -193,16 +203,16 @@ const AcademicStyle = ({ data }) => {
 
       {data?.education?.length > 0 && (
         <div style={{ marginBottom: '16px' }}>
-           <h2
-             style={{
-               fontSize: `${sectionStyles.size || 12}pt`,
-               fontWeight: 'bold',
-               margin: '12px 0 6px 0',
-               color: sectionStyles.color || '#1a1a1a'
-             }}
-           >
-             EDUCATION
-           </h2>
+          <h2
+            style={{
+              fontSize: `${sectionStyles.size || 12}pt`,
+              fontWeight: 'bold',
+              margin: '12px 0 6px 0',
+              color: sectionStyles.color || '#1a1a1a'
+            }}
+          >
+            EDUCATION
+          </h2>
           {data.education.map((edu, idx) => (
             <div
               key={edu.id}
@@ -234,16 +244,16 @@ const AcademicStyle = ({ data }) => {
 
       {data?.skills?.length > 0 && (
         <div style={{ marginBottom: '16px' }}>
-           <h2
-             style={{
-               fontSize: `${sectionStyles.size || 12}pt`,
-               fontWeight: 'bold',
-               margin: '12px 0 6px 0',
-               color: sectionStyles.color || '#1a1a1a'
-             }}
-           >
-             TECHNICAL PROFICIENCIES
-           </h2>
+          <h2
+            style={{
+              fontSize: `${sectionStyles.size || 12}pt`,
+              fontWeight: 'bold',
+              margin: '12px 0 6px 0',
+              color: sectionStyles.color || '#1a1a1a'
+            }}
+          >
+            TECHNICAL PROFICIENCIES
+          </h2>
           <p
             style={{
               margin: '0',
@@ -258,16 +268,16 @@ const AcademicStyle = ({ data }) => {
 
       {data?.languages?.length > 0 && (
         <div style={{ marginBottom: '16px' }}>
-           <h2
-             style={{
-               fontSize: `${sectionStyles.size || 12}pt`,
-               fontWeight: 'bold',
-               margin: '12px 0 6px 0',
-               color: sectionStyles.color || '#1a1a1a'
-             }}
-           >
-             LANGUAGES
-           </h2>
+          <h2
+            style={{
+              fontSize: `${sectionStyles.size || 12}pt`,
+              fontWeight: 'bold',
+              margin: '12px 0 6px 0',
+              color: sectionStyles.color || '#1a1a1a'
+            }}
+          >
+            LANGUAGES
+          </h2>
           <p style={{ margin: '0', fontSize: `${bodyStyles.size || 11}pt` }}>
             {data.languages
               .map(lang => `${lang.name} (${lang.proficiency})`)
@@ -278,16 +288,16 @@ const AcademicStyle = ({ data }) => {
 
       {(data?.certificates?.length > 0 || data?.achievements?.length > 0) && (
         <div>
-           <h2
-             style={{
-               fontSize: `${sectionStyles.size || 12}pt`,
-               fontWeight: 'bold',
-               margin: '12px 0 6px 0',
-               color: sectionStyles.color || '#1a1a1a'
-             }}
-           >
-             CERTIFICATIONS & AWARDS
-           </h2>
+          <h2
+            style={{
+              fontSize: `${sectionStyles.size || 12}pt`,
+              fontWeight: 'bold',
+              margin: '12px 0 6px 0',
+              color: sectionStyles.color || '#1a1a1a'
+            }}
+          >
+            CERTIFICATIONS & AWARDS
+          </h2>
           <ul
             style={{
               margin: '0',

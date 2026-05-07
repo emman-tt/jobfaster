@@ -14,7 +14,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import Menubar from './Menubar'
 import ThemeSelector from './ThemeSelector'
 import ExportMenu from './ExportMenu'
-import { exportToPDF, exportToDOCX } from '../../services/export.jsx'
+import { renderResumeToHTML, transformResumeData } from '../../utils/renderResume'
 import { saveResumeFromHTML } from '../../services/Program'
 import { toast } from 'sonner'
 
@@ -72,87 +72,41 @@ export function Topbar () {
     }
   }
 
+  const templateId = useSelector(state => state.editor.templateId || 'classic')
+
   async function handleExport (format) {
-    const resumeData = {
-      name: personal.contactDetails.fullName,
-      email: personal.contactDetails.email,
-      phone: personal.contactDetails.phone,
-      location: personal.contactDetails.location,
-      jobTitle: personal.contactDetails.jobTitle,
-      linkedin: personal.onlineLinks?.find(l => l.name.toLowerCase() === 'linkedin')?.link || '',
-      summary: personal.summary,
-      experience: work.experiences
-        .filter(exp => exp.company || exp.position)
-        .map(exp => ({
-          company: exp.company,
-          position: exp.position,
-          location: exp.location,
-          startYear: exp.startYear,
-          endYear: exp.endYear,
-          accomplishments: exp.accomplishments
-            .filter(acc => acc.text)
-            .map(acc => acc.text)
-        })),
-      education: education.educations
-        .filter(edu => edu.school || edu.degree)
-        .map(edu => ({
-          school: edu.school,
-          degree: edu.degree,
-          field: edu.field,
-          startYear: edu.startYear,
-          endYear: edu.endYear,
-          highlights: edu.highlights.filter(h => h.text).map(h => h.text)
-        })),
-      skills: credentials.skills.flatMap(skill => skill.list || []),
-      languages: education.languages
-        .filter(lang => lang.language)
-        .map(lang => ({
-          name: lang.language,
-          proficiency: lang.proficiency
-        })),
-      projects: work.projects
-        .filter(proj => proj.name || proj.description)
-        .map(proj => ({
-          name: proj.name,
-          description: proj.description,
-          techStack: proj.techStack.filter(t => t.name).map(t => t.name),
-          link: proj.link,
-          github: proj.github
-        })),
-      certificates: credentials.certifications
-        .filter(cert => cert.name)
-        .map(cert => ({
-          name: cert.name,
-          issuer: cert.organization,
-          year: cert.year
-        })),
-      achievements: credentials.achievements
-        .filter(ach => ach.achievement)
-        .map(ach => ach.achievement)
+    if (format !== 'pdf') {
+      toast.error('DOCX export coming soon')
+      setShowExportMenu(false)
+      return
     }
 
     setShowExportMenu(false)
 
-    if (format === 'pdf') {
-      const success = await exportToPDF(
-        resumeData,
-        personal.contactDetails.fullName || 'resume'
-      )
-      if (success) {
-        toast.success('PDF exported successfully')
-      } else {
-        toast.error('Failed to export PDF')
-      }
-    } else if (format === 'docx') {
-      const success = await exportToDOCX(
-        resumeData,
-        personal.contactDetails.fullName || 'resume'
-      )
-      if (success) {
-        toast.success('DOCX exported successfully')
-      } else {
-        toast.error('DOCX export coming soon')
-      }
+    const rawData = {
+      personal,
+      work,
+      education,
+      credentials
+    }
+
+    const transformedData = transformResumeData(rawData)
+
+    try {
+      const html = await renderResumeToHTML(transformedData, templateId)
+      const blob = new Blob([html], { type: 'text/html' })
+      const url = URL.createObjectURL(blob)
+      const link = document.createElement('a')
+      link.href = url
+      link.download = `${transformedData.name || 'resume'}.html`
+      document.body.appendChild(link)
+      link.click()
+      document.body.removeChild(link)
+      URL.revokeObjectURL(url)
+      toast.success('Resume exported successfully')
+    } catch (error) {
+      console.error('Export error:', error)
+      toast.error('Failed to export resume')
     }
   }
 

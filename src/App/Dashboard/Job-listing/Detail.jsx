@@ -7,7 +7,7 @@ import {
   Clock,
   Bookmark
 } from 'lucide-react'
-import { findEmail, getApplyInfo } from '../../../utils/findEmail'
+import {  getApplyInfo } from '../../../utils/findEmail'
 import { useSelector } from 'react-redux'
 import { useMutation } from '@tanstack/react-query'
 import { saveJobTrack } from '../../../services/jobs'

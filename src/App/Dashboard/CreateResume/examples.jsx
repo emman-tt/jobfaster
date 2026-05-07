@@ -2,12 +2,12 @@ import { ArrowRight } from 'lucide-react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { saveTemplateId } from '../../../store/editorSlice'
-import ClassicImage from '../../../assets/templates/Professional.png'
-import ModernImage from '../../../assets/templates/ModernMinimalist.png'
-import ExecutiveImage from '../../../assets/templates/Executive.png'
-import ATSImage from '../../../assets/templates/ATSOptimized.png'
-import AcademicImage from '../../../assets/templates/Academic.png'
-import TechnicalImage from '../../../assets/templates/Technical.png'
+import ClassicImage from '../../../assets/templates/images/Professional.png'
+import ModernImage from '../../../assets/templates/images/ModernMinimalist.png'
+import ExecutiveImage from '../../../assets/templates/images/Executive.png'
+import ATSImage from '../../../assets/templates/images/ATSOptimized.png'
+import AcademicImage from '../../../assets/templates/images/Academic.png'
+import TechnicalImage from '../../../assets/templates/images/Technical.png'
 const views = [
   {
     name: 'Classic Professional',

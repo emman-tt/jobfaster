@@ -1,6 +1,5 @@
 import { personalSlice } from './personalSlice'
 import { configureStore } from '@reduxjs/toolkit'
-import { filesSlice } from './filesSlice'
 import { modalSlice } from './modalSlice'
 import { dashboardSlice } from './dashboardSlice'
 import { aiSlice } from './aiSlice'
@@ -20,7 +19,6 @@ export const store = configureStore({
     education: educationSlice.reducer,
     credentials: credentialsSlice.reducer,
 
-    files: filesSlice.reducer,
     modal: modalSlice.reducer,
     dashboard: dashboardSlice.reducer,
     ai: aiSlice.reducer,
@@ -28,6 +26,6 @@ export const store = configureStore({
     notification: notificationSlice.reducer,
     email: emailSlice.reducer,
     editor: editorSlice.reducer,
-    preferences: preferencesSlice.reducer,
+    preferences: preferencesSlice.reducer
   }
 })

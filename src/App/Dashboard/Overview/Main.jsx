@@ -35,7 +35,7 @@ function formatBytes (bytes) {
 }
 
 export default function Main () {
-  const { showRightbar } = useSelector(state => state.dashboard)
+  const { showRightbar,showHeader } = useSelector(state => state.dashboard)
   const { appearance } = useSelector(state => state.preferences)
   const { id } = useParams()
   const dispatch = useDispatch()
@@ -113,7 +113,6 @@ export default function Main () {
     mutationFn: MoveFile,
     onMutate: async variables => {
       const { fileId, folderId } = variables
-
       await queryClient.cancelQueries({ queryKey: ['program'] })
       const cachedProgram = queryClient.getQueryData(['program'])
 
@@ -281,20 +280,15 @@ export default function Main () {
         </div>
 
         <section
-          className={`grid   gap-4 transform-gpu transition-all duration-150 ease-in-out mt-0 pt-5 pl-10 overflow-hidden  min-h-screen 
-            
+          className={`grid   gap-4 transform-gpu transition-all duration-150 ease-in-out mt-0 pt-5 pr-10 pl-5 justify-items-center
             ${
               showRightbar ? 'grid-cols-6' : 'grid-cols-8'
-            } pb-0 mb-0    gap-y-10
-           ${
-             actualPath == 'resumes' && ' min-h-max overflow-y-auto'
-           } [scrollbar-width:thin] w-full`}
+            } pb-0 mb-0 gap-y-8 w-full`}
         >
           {/* specific files in an opened folder  */}
           {
             openedFolder &&
               id &&
-              // <section className='col-span-7 grid grid-cols-7 gap-4 w-full'>{
               openedFolder?.files?.map(item => (
                 <Draggable
                   data={item}
@@ -363,7 +357,8 @@ export default function Main () {
           {!isLoading &&
             !id &&
             programs?.length > 0 &&
-            programs?.map(item =>
+
+            programs?.slice(0, showHeader ? 10 : programs.length).map(item =>
               item?.type === 'FOLDER' ? (
                 <Droppable
                   data={item.folder}

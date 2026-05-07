@@ -62,7 +62,7 @@ const ExecutiveSummary = ({ data }) => {
             lineHeight: bodyLeading
           }}
         >
-          {data?.phone} • {data?.email} • {data?.location}
+          {[data?.phone, data?.email, data?.location].filter(Boolean).join(' • ')}
         </p>
         {links?.length > 0 && (
           <div

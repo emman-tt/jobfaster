@@ -12,24 +12,20 @@ import { useDispatch } from 'react-redux'
 import { useEffect, useRef } from 'react'
 import SelectResume from '../App/Dashboard/Job/Modals/SelectResume'
 import { onJobApply, onSendJobMail } from '../services/useSocket'
-import { saveProgram } from '../store/filesSlice'
-import { getAllFiles } from '../utils/getAllFiles'
+
 import { dumpEmailDetails } from '../store/emailSlice'
 import { saveTailoredResume } from '../store/aiSlice'
 import { toast } from 'sonner'
 import { toastPresets } from '../components/toasters'
 import FileDetails from '../App/Dashboard/Overview/Modals/FileDetails'
-import { toggleModals } from '../store/modalSlice'
+
 import { useQuery } from '@tanstack/react-query'
 import { getActivity } from '../services/activity'
 
 export default function Dashboard () {
   const { modals } = useSelector(state => state.modal)
   const { showRightbar } = useSelector(state => state.dashboard)
-  const { programs } = useSelector(state => state.files)
   const { appearance } = useSelector(state => state.preferences)
-  const allFilesOnly = getAllFiles(programs)
-  const allFilesOnlyRef = useRef(allFilesOnly)
   const location = useLocation()
   const actualPath = location.pathname.split('/').at(-1)
   const navigate = useNavigate()
@@ -67,7 +63,7 @@ export default function Dashboard () {
         console.log(' Status false or not true')
       }
     })
-  }, [dispatch, navigate, allFilesOnly])
+  }, [dispatch, navigate])
 
   useEffect(() => {
     onSendJobMail(data => {
@@ -81,7 +77,7 @@ export default function Dashboard () {
 
         if (status == 'success') {
           toast.dismiss('job-mail')
-           navigate('/dashboard/board')
+          navigate('/dashboard/board')
           toast.success('Email sent!', {
             ...toastPresets.generalSuccess(
               'Email processed and sent successfully to the hiring address'
@@ -129,7 +125,7 @@ export default function Dashboard () {
           appearance.theme == 'dark' ? 'bg-[#2a2a2a]' : 'bg-[#f8f8f8]'
         }  p-5 `}
       />
-      <section className='w-full h-full '>
+      <section className='w-full h-full'>
         <Outlet />
       </section>
       <section className='flex gap-4  pt-3 pr-3 pb-3'>
