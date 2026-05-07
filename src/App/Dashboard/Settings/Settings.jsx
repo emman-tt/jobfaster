@@ -11,6 +11,7 @@ import {
 } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
+import { toast } from 'sonner'
 
 const SectionHeading = ({ children }) => {
   const { appearance } = useSelector(state => state.preferences)
@@ -40,8 +41,9 @@ const Toggle = ({ active, onClick }) => (
   </button>
 )
 
-const TabButton = ({ id, activeTab, setActiveTab, label, icon: Icon }) => {
+const TabButton = ({ id, activeTab, setActiveTab, label, icon }) => {
   const { appearance } = useSelector(state => state.preferences)
+  const Icon = icon
   return (
     <button
       onClick={() => setActiveTab(id)}
@@ -62,20 +64,32 @@ const TabButton = ({ id, activeTab, setActiveTab, label, icon: Icon }) => {
 export default function Settings () {
   const navigate = useNavigate()
   const [activeTab, setActiveTab] = useState('profile')
-  const { appearance } = useSelector(state => state.preferences)
-  const [notifications, setNotifications] = useState({
-    email: {
-      newJobs: true,
-      resumeAnalysis: true,
-      messages: true,
-      newsletter: false,
-      productUpdates: true
-    },
-    push: {
-      jobAlerts: true,
-      appStatus: false,
-      messages: false,
-      reminders: true
+  const { appearance, editor: editorPrefs } = useSelector(state => state.preferences)
+  const [notifications, setNotifications] = useState(() => {
+    const saved = localStorage.getItem('settings-notifications')
+    return saved ? JSON.parse(saved) : {
+      email: {
+        newJobs: true,
+        resumeAnalysis: true,
+        messages: true,
+        newsletter: false,
+        productUpdates: true
+      },
+      push: {
+        jobAlerts: true,
+        appStatus: false,
+        messages: false,
+        reminders: true
+      }
+    }
+  })
+
+  const [profile, setProfile] = useState(() => {
+    const saved = localStorage.getItem('settings-profile')
+    return saved ? JSON.parse(saved) : {
+      firstName: 'Emmanuel',
+      lastName: 'Acquah',
+      email: 'emmanuelacquah.dev@gmail.com'
     }
   })
 
@@ -84,6 +98,17 @@ export default function Settings () {
       ...prev,
       [type]: { ...prev[type], [key]: !prev[type][key] }
     }))
+  }
+
+  function handleSave () {
+    localStorage.setItem('settings-notifications', JSON.stringify(notifications))
+    localStorage.setItem('settings-profile', JSON.stringify(profile))
+    localStorage.setItem('settings-theme', appearance.theme)
+    localStorage.setItem('settings-sidebar', appearance.sidebar)
+    localStorage.setItem('settings-compact', editorPrefs.compactMode ? 'true' : 'false')
+    localStorage.setItem('settings-autosave', editorPrefs.autoSave ? 'true' : 'false')
+    localStorage.setItem('settings-spellcheck', editorPrefs.spellCheck ? 'true' : 'false')
+    toast.success('Settings saved successfully')
   }
 
   return (
@@ -117,7 +142,9 @@ export default function Settings () {
             >
               Cancel
             </button>
-            <button className='px-4 py-2 bg-[#f17e27] hover:bg-[#e16d16] text-white text-sm font-medium rounded-lg transition-colors'>
+            <button
+              onClick={handleSave}
+              className='px-4 py-2 bg-[#f17e27] hover:bg-[#e16d16] text-white text-sm font-medium rounded-lg transition-colors'>
               Save Changes
             </button>
           </div>
@@ -229,6 +256,8 @@ export default function Settings () {
                     </label>
                     <input
                       type='text'
+                      value={profile.firstName}
+                      onChange={e => setProfile(prev => ({ ...prev, firstName: e.target.value }))}
                       placeholder='Emmanuel'
                       className={`w-full px-4 py-2.5 rounded-lg border outline-none transition-all text-sm ${
                         appearance.theme == 'dark'
@@ -249,6 +278,8 @@ export default function Settings () {
                     </label>
                     <input
                       type='text'
+                      value={profile.lastName}
+                      onChange={e => setProfile(prev => ({ ...prev, lastName: e.target.value }))}
                       placeholder='Acquah'
                       className={`w-full px-4 py-2.5 rounded-lg border outline-none transition-all text-sm ${
                         appearance.theme == 'dark'
@@ -280,6 +311,8 @@ export default function Settings () {
                     />
                     <input
                       type='email'
+                      value={profile.email}
+                      onChange={e => setProfile(prev => ({ ...prev, email: e.target.value }))}
                       placeholder='emmanuelacquah.dev@gmail.com'
                       className={`w-full pl-10 pr-4 py-2.5 rounded-lg border outline-none transition-all text-sm ${
                         appearance.theme == 'dark'

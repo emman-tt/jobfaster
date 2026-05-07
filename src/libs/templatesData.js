@@ -5,6 +5,13 @@ import ExecutiveSummary from '../assets/templates/ExecutiveSummary'
 import ModernMinimalist from '../assets/templates/ModernMinimalist'
 import TechnicalFocused from '../assets/templates/TechnicalFocused'
 
+import ClassicImage from '../assets/templates/images/Professional.png'
+import ModernImage from '../assets/templates/images/ModernMinimalist.png'
+import ExecutiveImage from '../assets/templates/images/Executive.png'
+import ATSImage from '../assets/templates/images/ATSOptimized.png'
+import AcademicImage from '../assets/templates/images/Academic.png'
+import TechnicalImage from '../assets/templates/images/Technical.png'
+
 const ClassicProfessionalMeta = {
   name: 'Classic Professional',
   description:
@@ -89,41 +96,47 @@ export const templates = [
     name: ClassicProfessionalMeta.name,
     description: ClassicProfessionalMeta.description,
     features: ClassicProfessionalMeta.features,
-    component: ClassicProfessional
+    component: ClassicProfessional,
+    thumbnail: ClassicImage
   },
   {
     id: 'modern',
     name: ModernMinimalistMeta.name,
     description: ModernMinimalistMeta.description,
     features: ModernMinimalistMeta.features,
-    component: ModernMinimalist
+    component: ModernMinimalist,
+    thumbnail: ModernImage
   },
   {
     id: 'executive',
     name: ExecutiveSummaryMeta.name,
     description: ExecutiveSummaryMeta.description,
     features: ExecutiveSummaryMeta.features,
-    component: ExecutiveSummary
+    component: ExecutiveSummary,
+    thumbnail: ExecutiveImage
   },
   {
     id: 'technical',
     name: TechnicalFocusedMeta.name,
     description: TechnicalFocusedMeta.description,
     features: TechnicalFocusedMeta.features,
-    component: TechnicalFocused
+    component: TechnicalFocused,
+    thumbnail: TechnicalImage
   },
   {
     id: 'academic',
     name: AcademicStyleMeta.name,
     description: AcademicStyleMeta.description,
     features: AcademicStyleMeta.features,
-    component: AcademicStyle
+    component: AcademicStyle,
+    thumbnail: AcademicImage
   },
   {
     id: 'ats',
     name: ATSOptimizedMeta.name,
     description: ATSOptimizedMeta.description,
     features: ATSOptimizedMeta.features,
-    component: ATSOptimized
+    component: ATSOptimized,
+    thumbnail: ATSImage
   }
 ]

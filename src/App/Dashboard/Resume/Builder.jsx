@@ -3,26 +3,15 @@ import { templates } from '../../../libs/templatesData'
 import { useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 
-const LAYOUT_TO_TEMPLATE = {
-  1: 'classic',
-  2: 'modern',
-  3: 'executive',
-  4: 'technical',
-  5: 'academic',
-  6: 'ats'
-}
-
-export default function Builder ({ layoutId, resume }) {
+export default function Builder ({ resume }) {
   const navigate = useNavigate()
   const { previewType } = useSelector(state => state.preview)
-  const templateId = LAYOUT_TO_TEMPLATE[layoutId] || 'classic'
-  const template = templates.find(t => t.id === templateId)
+  const template = templates.find(t => t.id === resume.content?.templateId) || templates.find(t => t.id === 'classic')
 
   if (!template) {
     return (
       <div className='flex flex-col items-center justify-center min-h-screen'>
         <h2 className='text-xl font-semibold'>Template not found</h2>
-        <p>Layout ID: {resume?.layoutId}</p>
       </div>
     )
   }

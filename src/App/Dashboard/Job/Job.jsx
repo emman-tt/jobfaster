@@ -15,8 +15,6 @@ import {
 import { useDispatch, useSelector } from 'react-redux'
 import { toggleModals } from '../../../store/modalSlice'
 import { connector } from '../../../services/useSocket'
-import useClickOutside from '../../../hooks/useClick'
-import { findEmail } from '../../../utils/findEmail'
 import { saveJobDetails } from '../../../store/aiSlice'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { updateJobTrack } from '../../../services/jobs'
@@ -38,12 +36,6 @@ export default function Job () {
         value: value
       })
     )
-    if (name === 'description' && !job.email) {
-      const email = findEmail(value)
-      if (email) {
-        dispatch(saveJobDetails({ category: 'email', value: email }))
-      }
-    }
   }
 
   const queryClient = useQueryClient()

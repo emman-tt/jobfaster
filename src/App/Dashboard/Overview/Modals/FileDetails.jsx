@@ -3,7 +3,6 @@ import { X, Paperclip } from 'lucide-react'
 import { useDispatch, useSelector } from 'react-redux'
 import { closeFileDetails } from '../../../../store/modalSlice'
 import TextBox from '../../../../components/Textbox'
-import FilePreview from '../../Resume/FilePreview'
 
 function formatBytes (bytes) {
   if (!bytes || bytes === 0) return '0 B'

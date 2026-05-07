@@ -17,7 +17,6 @@ export const Header = () => {
   useEffect(() => {
     const path = location.pathname.split('/')
     const actualPath = path.at(-1)
-    console.log(actualPath)
 
     if (actualPath === 'resumes') {
       dispatch(toggleHeader(false))

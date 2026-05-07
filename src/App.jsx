@@ -1,4 +1,7 @@
 import { Route, Routes, BrowserRouter, Navigate } from 'react-router-dom'
+import { useEffect } from 'react'
+import { useDispatch } from 'react-redux'
+import { setTheme, setSidebar, setAutoSave, setSpellCheck, setCompactMode } from './store/preferencesSlice'
 
 import Format from './App/Onboarding/Format-step5/Format'
 
@@ -21,6 +24,24 @@ import { JobListing } from './App/Dashboard/Job-listing/JobListing'
 import Settings from './App/Dashboard/Settings/Settings'
 import Prefrences from './App/Dashboard/Prefrences'
 import JobBoard from './App/Dashboard/Job-board/JobBoard'
+
+function PreferenceLoader () {
+  const dispatch = useDispatch()
+  useEffect(() => {
+    const theme = localStorage.getItem('settings-theme')
+    if (theme) dispatch(setTheme(theme))
+    const sidebar = localStorage.getItem('settings-sidebar')
+    if (sidebar) dispatch(setSidebar(sidebar))
+    const compact = localStorage.getItem('settings-compact')
+    if (compact !== null) dispatch(setCompactMode(compact === 'true'))
+    const autoSave = localStorage.getItem('settings-autosave')
+    if (autoSave !== null) dispatch(setAutoSave(autoSave === 'true'))
+    const spellCheck = localStorage.getItem('settings-spellcheck')
+    if (spellCheck !== null) dispatch(setSpellCheck(spellCheck === 'true'))
+  }, [dispatch])
+  return null
+}
+
 function App () {
   return (
     <BrowserRouter>
@@ -36,6 +57,7 @@ function App () {
         }}
       />
       <AuthProvider>
+        <PreferenceLoader />
         <Routes>
           <Route path='/' element={<Navigate to={'/dashboard'} />} />
           <Route path='/correction' element={<Correction />} />

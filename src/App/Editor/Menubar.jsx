@@ -13,7 +13,8 @@ import {
   setFont,
   setHeight,
   setSize,
-  setWeight
+  setWeight,
+  setContrast
 } from '../../store/editorSlice'
 
 const fontList = [
@@ -36,6 +37,13 @@ const lineHeightOptions = [
   { name: '1.4 - Normal', value: 1.4 },
   { name: '1.5 - Normal', value: 1.5 },
   { name: '1.6 - Relaxed', value: 1.6 }
+]
+
+const contrastOptions = [
+  { name: '90% - Light', value: 0.9 },
+  { name: '100% - Default', value: 1 },
+  { name: '115% - Medium', value: 1.15 },
+  { name: '130% - Dark', value: 1.3 }
 ]
 
 const alignList = [
@@ -116,9 +124,98 @@ function Alignment ({ onSelect, align }) {
   )
 }
 
+function TextContrast ({ onSelect, contrast }) {
+  const [isOpen, setIsOpen] = useState(false)
+
+  return (
+    <div className='w-full sm:w-36 relative shrink-0'>
+      <label className='text-sm text-gray-600'>Text Contrast</label>
+      <button
+        onClick={() => setIsOpen(prev => !prev)}
+        className='w-full border border-gray-200 pl-4 pr-3 py-2.5 rounded-xl text-xs text-gray-900 font-medium flex items-center justify-between transition-all shadow-sm bg-white'
+      >
+        <span>{contrast === 1 ? 'Default' : `${Math.round(contrast * 100)}%`}</span>
+        <ChevronDown
+          className={`w-4 h-4 transition-transform duration-150 ${
+            isOpen ? 'rotate-180' : ''
+          }`}
+        />
+      </button>
+
+      <div
+        className={`absolute z-20 top-full left-0 right-0 mt-2 bg-white ${
+          isOpen ? 'border border-gray-200' : ''
+        } cursor-pointer rounded-xl shadow-lg overflow-hidden`}
+      >
+        <ul className='max-h-48 overflow-y-auto'>
+          {isOpen &&
+            contrastOptions.map(item => (
+              <li
+                key={item.value}
+                onClick={() => {
+                  onSelect(item.value)
+                  setIsOpen(false)
+                }}
+                className={`flex items-center gap-2 px-4 py-3 text-xs text-gray-900 ${
+                  item.value == contrast && 'bg-orange-500 text-white'
+                } cursor-pointer transition-colors`}
+              >
+                {item.name}
+              </li>
+            ))}
+        </ul>
+      </div>
+    </div>
+  )
+}
+
+function LineHeight ({ onSelect, height }) {
+  const [isOpen, setIsOpen] = useState(false)
+
+  return (
+    <div className='w-full sm:w-36 relative shrink-0'>
+      <button
+        onClick={() => setIsOpen(prev => !prev)}
+        className='w-full border border-gray-200 pl-4 pr-3 py-2.5 rounded-xl text-xs text-gray-900 font-medium flex items-center justify-between transition-all shadow-sm bg-white'
+      >
+        <span>Line height</span>
+        <ChevronDown
+          className={`w-4 h-4 transition-transform duration-150 ${
+            isOpen ? 'rotate-180' : ''
+          }`}
+        />
+      </button>
+
+      <div
+        className={`absolute z-20 top-full left-0 right-0 mt-2 bg-white ${
+          isOpen ? 'border border-gray-200' : ''
+        } cursor-pointer rounded-xl shadow-lg overflow-hidden`}
+      >
+        <ul className='max-h-48 overflow-y-auto'>
+          {isOpen &&
+            lineHeightOptions.map(item => (
+              <li
+                key={item.value}
+                onClick={() => {
+                  onSelect(item.value)
+                  setIsOpen(false)
+                }}
+                className={`flex items-center gap-2 px-4 py-3 text-xs text-gray-900 ${
+                  item.value == height && 'bg-orange-500 text-white'
+                } cursor-pointer transition-colors`}
+              >
+                {item.name}
+              </li>
+            ))}
+        </ul>
+      </div>
+    </div>
+  )
+}
+
 export default function Menubar () {
   const dispatch = useDispatch()
-  const { font, align, weight, height } = useSelector(state => state.editor)
+  const { font, align, weight, height, contrast } = useSelector(state => state.editor)
   function SelectFont (item) {
     dispatch(setFont(item))
   }
@@ -176,50 +273,7 @@ export default function Menubar () {
         />
       </div>
       <Alignment align={align} onSelect={val => dispatch(setAlign(val))} />
+      <TextContrast contrast={contrast} onSelect={val => dispatch(setContrast(val))} />
     </section>
-  )
-}
-
-function LineHeight ({ onSelect, height }) {
-  const [isOpen, setIsOpen] = useState(false)
-
-  return (
-    <div className='w-full sm:w-36 relative shrink-0'>
-      <button
-        onClick={() => setIsOpen(prev => !prev)}
-        className='w-full border border-gray-200 pl-4 pr-3 py-2.5 rounded-xl text-xs text-gray-900 font-medium flex items-center justify-between transition-all shadow-sm bg-white'
-      >
-        <span>Line height</span>
-        <ChevronDown
-          className={`w-4 h-4 transition-transform duration-150 ${
-            isOpen ? 'rotate-180' : ''
-          }`}
-        />
-      </button>
-
-      <div
-        className={`absolute z-20 top-full left-0 right-0 mt-2 bg-white ${
-          isOpen ? 'border border-gray-200' : ''
-        } cursor-pointer rounded-xl shadow-lg overflow-hidden`}
-      >
-        <ul className='max-h-48 overflow-y-auto'>
-          {isOpen &&
-            lineHeightOptions.map(item => (
-              <li
-                key={item.value}
-                onClick={() => {
-                  onSelect(item.value)
-                  setIsOpen(false)
-                }}
-                className={`flex items-center gap-2 px-4 py-3 text-xs text-gray-900 ${
-                  item.value == height && 'bg-orange-500 text-white'
-                } cursor-pointer transition-colors`}
-              >
-                {item.name}
-              </li>
-            ))}
-        </ul>
-      </div>
-    </div>
   )
 }

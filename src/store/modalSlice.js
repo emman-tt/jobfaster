@@ -34,4 +34,4 @@ export const modalSlice = createSlice({
   }
 })
 
-export const { toggleModals, setShowTemplates, openFileDetails, closeFileDetails } = modalSlice.actions
+export const { toggleModals, openFileDetails, closeFileDetails } = modalSlice.actions

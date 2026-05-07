@@ -2,12 +2,14 @@ import { useSelector } from 'react-redux'
 import { templates } from '../../libs/templatesData'
 import ClassicProfessional from '../../assets/templates/ClassicProfessional'
 import { THEME_COLORS } from './ThemeSelector'
+import { transformResumeData } from '../../utils/renderResume'
+
 export function Preview () {
   const personal = useSelector(state => state.personal)
   const work = useSelector(state => state.work)
   const education = useSelector(state => state.education)
   const credentials = useSelector(state => state.credentials)
-  const { templateId, size, font, weight, height, theme } = useSelector(
+  const { templateId, size, font, weight, height, theme, contrast } = useSelector(
     state => state.editor
   )
   const SelectedTemplate =
@@ -31,6 +33,16 @@ export function Preview () {
 
   const themeColors = THEME_COLORS[theme || 'monochrome'] || THEME_COLORS.monochrome
 
+  const applyContrast = hex => {
+    if (!hex) return hex
+    const factor = Number(contrast) || 1
+    const num = parseInt(hex.replace('#', ''), 16)
+    const r = Math.min(255, Math.max(0, Math.floor(((num >> 16) & 0xff) / factor)))
+    const g = Math.min(255, Math.max(0, Math.floor(((num >> 8) & 0xff) / factor)))
+    const b = Math.min(255, Math.max(0, Math.floor((num & 0xff) / factor)))
+    return `#${((r << 16) | (g << 8) | b).toString(16).padStart(6, '0')}`
+  }
+
   const styles = {
     fontFamily: font,
     name: {
@@ -39,7 +51,7 @@ export function Preview () {
       style: 'normal',
       case: 'none',
       spacing: 2,
-      color: themeColors.name
+      color: applyContrast(themeColors.name)
     },
     sectionHeader: {
       size: typeScale.sectionHead,
@@ -47,7 +59,7 @@ export function Preview () {
       style: 'normal',
       case: 'uppercase',
       spacing: 1,
-      color: themeColors.sectionHeader
+      color: applyContrast(themeColors.sectionHeader)
     },
     company: {
       size: typeScale.body,
@@ -55,7 +67,7 @@ export function Preview () {
       style: 'normal',
       case: 'none',
       spacing: 0,
-      color: themeColors.company
+      color: applyContrast(themeColors.company)
     },
     jobTitle: {
       size: typeScale.jobTitle,
@@ -63,7 +75,7 @@ export function Preview () {
       style: 'italic',
       case: 'none',
       spacing: 0,
-      color: themeColors.jobTitle
+      color: applyContrast(themeColors.jobTitle)
     },
     bodyText: {
       size: typeScale.body,
@@ -72,7 +84,7 @@ export function Preview () {
       case: 'none',
       spacing: 0,
       leading: height,
-      color: themeColors.bodyText
+      color: applyContrast(themeColors.bodyText)
     },
     date: {
       size: typeScale.subtle,
@@ -80,7 +92,7 @@ export function Preview () {
       style: 'italic',
       case: 'none',
       spacing: 0,
-      color: themeColors.date
+      color: applyContrast(themeColors.date)
     },
     contact: {
       size: typeScale.subtle,
@@ -88,71 +100,14 @@ export function Preview () {
       style: 'normal',
       case: 'none',
       spacing: 0,
-      color: themeColors.contact
+      color: applyContrast(themeColors.contact)
     }
   }
 
-  const userData = {
-    name: personal.contactDetails.fullName,
-    email: personal.contactDetails.email,
-    phone: personal.contactDetails.phone,
-    location: personal.contactDetails.location,
-    jobTitle: personal.contactDetails.jobTitle,
-    onlineLinks: personal.onlineLinks || [],
-    summary: personal.summary,
-    experience: work.experiences
-      .filter(exp => exp.company || exp.position)
-      .map(exp => ({
-        id: exp.id,
-        company: exp.company,
-        position: exp.position,
-        location: exp.location,
-        startYear: exp.startYear,
-        endYear: exp.endYear,
-        accomplishments: exp.accomplishments
-          .filter(acc => acc.text)
-          .map(acc => acc.text)
-      })),
-    education: education.educations
-      .filter(edu => edu.school || edu.degree)
-      .map(edu => ({
-        id: edu.id,
-        school: edu.school,
-        degree: edu.degree,
-        field: edu.field,
-        startYear: edu.startYear,
-        endYear: edu.endYear,
-        highlights: edu.highlights.filter(h => h.text).map(h => h.text)
-      })),
-    skills: credentials.skills.flatMap(skill => skill.list || []),
-    languages: education.languages
-      .filter(lang => lang.language)
-      .map(lang => ({
-        name: lang.language,
-        proficiency: lang.proficiency
-      })),
-    projects: work.projects
-      .filter(proj => proj.name || proj.description)
-      .map(proj => ({
-        id: proj.id,
-        name: proj.name,
-        description: proj.description,
-        techStack: proj.techStack.filter(t => t.name).map(t => t.name),
-        link: proj.link,
-        github: proj.github
-      })),
-    certificates: credentials.certifications
-      .filter(cert => cert.name)
-      .map(cert => ({
-        name: cert.name,
-        issuer: cert.organization,
-        year: cert.year
-      })),
-    achievements: credentials.achievements
-      .filter(ach => ach.achievement)
-      .map(ach => ach.achievement),
-    styles
-  }
+  const userData = transformResumeData(
+    { personal, work, education, credentials },
+    { styles }
+  )
 
   return (
     <section

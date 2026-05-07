@@ -14,7 +14,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import Menubar from './Menubar'
 import ThemeSelector from './ThemeSelector'
 import ExportMenu from './ExportMenu'
-import { renderResumeToHTML, transformResumeData } from '../../utils/renderResume'
+import { renderResumeToHTML } from '../../utils/renderResume'
 import { saveResumeFromHTML } from '../../services/Program'
 import { toast } from 'sonner'
 
@@ -37,8 +37,10 @@ export function Topbar () {
     navigate('/dashboard')
   }
 
+  const [savedResumeName, setSavedResumeName] = useState(() => localStorage.getItem('editor-resume-name') || '')
+
   function handleSave () {
-    setResumeName(personal.contactDetails.fullName || '')
+    setResumeName(savedResumeName || personal.contactDetails.fullName || '')
     setShowSaveModal(true)
   }
 
@@ -49,6 +51,8 @@ export function Topbar () {
 
     setIsSaving(true)
     setShowSaveModal(false)
+    setSavedResumeName(resumeName.trim())
+    localStorage.setItem('editor-resume-name', resumeName.trim())
 
     try {
       const previewElement = document.getElementById('resume-preview')
@@ -90,20 +94,18 @@ export function Topbar () {
       credentials
     }
 
-    const transformedData = transformResumeData(rawData)
-
     try {
-      const html = await renderResumeToHTML(transformedData, templateId)
-      const blob = new Blob([html], { type: 'text/html' })
-      const url = URL.createObjectURL(blob)
-      const link = document.createElement('a')
-      link.href = url
-      link.download = `${transformedData.name || 'resume'}.html`
-      document.body.appendChild(link)
-      link.click()
-      document.body.removeChild(link)
-      URL.revokeObjectURL(url)
-      toast.success('Resume exported successfully')
+      const resumeHTML = await renderResumeToHTML(rawData, templateId)
+      const fullHTML = `<!DOCTYPE html><html><head><meta charset="utf-8"><title>${
+        personal.contactDetails.fullName || 'Resume'
+      }</title><style>body{margin:0;padding:0;display:flex;justify-content:center;background:#f5f5f5;}@media print{body{background:white;padding:0;}}</style></head><body>${resumeHTML}<script>setTimeout(()=>{window.print()},200)</script></body></html>`
+      const printWindow = window.open('', '_blank')
+      if (!printWindow) {
+        toast.error('Please allow popups to export your resume')
+        return
+      }
+      printWindow.document.write(fullHTML)
+      printWindow.document.close()
     } catch (error) {
       console.error('Export error:', error)
       toast.error('Failed to export resume')

@@ -83,7 +83,7 @@ export default function Activity ({ data }) {
         ) : (
           <section className='flex flex-col gap-2'>
             {data.length > 0 &&
-              data.map(item => (
+              data.reverse().map(item => (
                 <section className='flex flex-col gap-2' key={item.id}>
                   <div className='flex w-full gap-2 items-center'>
                     <p

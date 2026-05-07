@@ -2,59 +2,13 @@ import { ArrowRight } from 'lucide-react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { saveTemplateId } from '../../../store/editorSlice'
-import ClassicImage from '../../../assets/templates/images/Professional.png'
-import ModernImage from '../../../assets/templates/images/ModernMinimalist.png'
-import ExecutiveImage from '../../../assets/templates/images/Executive.png'
-import ATSImage from '../../../assets/templates/images/ATSOptimized.png'
-import AcademicImage from '../../../assets/templates/images/Academic.png'
-import TechnicalImage from '../../../assets/templates/images/Technical.png'
-const views = [
-  {
-    name: 'Classic Professional',
-    id: 'classic',
-    image: ClassicImage
-  },
-  {
-    id: 'modern',
-    name: 'Modern Minimalist',
-
-    image: ModernImage
-  },
-  {
-    id: 'executive',
-    name: 'Executive',
-
-    image: ExecutiveImage
-  },
-  {
-    id: 'ats',
-    name: 'ATS Optimized',
-
-    image: ATSImage
-  },
-  {
-    id: 'academic',
-    name: 'Academic',
-
-    image: AcademicImage
-  },
-  {
-    id: 'technical',
-    name: 'Technical',
-
-    image: TechnicalImage
-  }
-]
+import { templates } from '../../../libs/templatesData'
 
 export default function Examples () {
   const dispatch = useDispatch()
   const { templateId } = useSelector(state => state.editor)
   const { appearance } = useSelector(state => state.preferences)
   const navigate = useNavigate()
-
-  function navigateNext () {
-    navigate('/editor')
-  }
 
   return (
     <section
@@ -80,14 +34,14 @@ export default function Examples () {
           </p>
         </div>
         <button
-          onClick={() => navigateNext()}
+          onClick={() => navigate('/editor')}
           className='bg-orange-500 text-white cursor-pointer rounded-xl px-6 py-3 flex items-center gap-2 hover:bg-orange-600 transition-colors font-satoshi font-medium'
         >
           Next <ArrowRight className='w-4 h-4' />
         </button>
       </div>
       <section className='grid grid-cols-6 gap-4'>
-        {views.map(item => {
+        {templates.map(item => {
           return (
             <div
               key={item.id}
@@ -107,7 +61,7 @@ export default function Examples () {
               >
                 <div className='h-50 p-1'>
                   <img
-                    src={item.image}
+                    src={item.thumbnail}
                     alt=''
                     className='w-full object-cover h-auto'
                   />

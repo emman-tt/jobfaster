@@ -13,7 +13,6 @@ import Folder from '../../../components/Folder'
 import { useDispatch, useSelector } from 'react-redux'
 import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import { toggleModals, openFileDetails } from '../../../store/modalSlice'
-import FilePreview from '../Resume/FilePreview'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import {
   deleteProgram,
@@ -35,7 +34,8 @@ function formatBytes (bytes) {
 }
 
 export default function Main () {
-  const { showRightbar,showHeader } = useSelector(state => state.dashboard)
+  const { showRightbar } = useSelector(state => state.dashboard)
+  const { showHeader } = useSelector(state => state.dashboard)
   const { appearance } = useSelector(state => state.preferences)
   const { id } = useParams()
   const dispatch = useDispatch()
@@ -43,7 +43,7 @@ export default function Main () {
   const navigate = useNavigate()
   const location = useLocation()
   const actualPath = location.pathname.split('/').at(-1)
-  const [movingFiles, setMovingFiles] = useState([])
+  const [movingFiles] = useState([])
   const [menuConfig, setMenuConfig] = useState({
     visible: false,
     x: 0,
@@ -298,7 +298,6 @@ export default function Main () {
                 >
                   <section
                     onClick={e => {
-                      console.log(item)
                       handleClick(e, item.id, 'file')
                     }}
                     onDoubleClick={() => {
@@ -443,6 +442,7 @@ export default function Main () {
           <ContextMenu
             mutation={deleteMutation}
             menuConfig={menuConfig}
+            programs={programs}
             onClose={() => setMenuConfig(prev => ({ ...prev, visible: false }))}
           />
         )}
@@ -451,10 +451,39 @@ export default function Main () {
   )
 }
 
-function ContextMenu ({ onClose, menuConfig, mutation }) {
+function ContextMenu ({ onClose, menuConfig, mutation, programs }) {
   const item = menuConfig?.type
   const dispatch = useDispatch()
   const navigate = useNavigate()
+
+  function handleDownload () {
+    if (item !== 'file') return onClose()
+
+    const findFile = () => {
+      for (const prog of programs || []) {
+        if (prog?.type === 'FOLDER' && prog.folder?.files) {
+          const found = prog.folder.files.find(f => f.id === menuConfig.id)
+          if (found) return found
+        }
+        if (prog?.file?.id === menuConfig.id) return prog.file
+      }
+      return null
+    }
+
+    const file = findFile()
+    if (!file?.metaData?.content) {
+      return onClose()
+    }
+
+    const link = document.createElement('a')
+    link.href = file.metaData.content
+    link.download = `${file.metaData.name}.pdf`
+    link.target = '_blank'
+    document.body.appendChild(link)
+    link.click()
+    document.body.removeChild(link)
+    onClose()
+  }
 
   return (
     <div
@@ -493,7 +522,7 @@ function ContextMenu ({ onClose, menuConfig, mutation }) {
       </button>
 
       <button
-        onClick={() => onClose()}
+        onClick={handleDownload}
         className='flex items-center gap-2 px-4 py-2 hover:bg-slate-50 text-slate-700 text-[10px] font-semibold transition-all cursor-pointer'
       >
         <Download className='shrink-0' size={11} strokeWidth={2.5} />

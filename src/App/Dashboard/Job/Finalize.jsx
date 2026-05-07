@@ -18,7 +18,6 @@ import { generateTailoredResumePDF } from '../../../utils/renderResume'
 import { toast } from 'sonner'
 import SendMethodModal from './Modals/SendMethod'
 import { useQueryClient } from '@tanstack/react-query'
-import { QueryClient } from '@tanstack/react-query'
 import { toastPresets } from '../../../components/toasters'
 import { sendMessage } from '../../../services/useSocket'
 import { connector } from '../../../services/useSocket'
@@ -226,36 +225,36 @@ export default function Finalize () {
       company: emailDetails.companyName || 'Unknown',
       jobTitle: emailDetails.jobTitle
     })
- 
-    console.log('response in finalize', res)
 
-    // if(!res.status){
-    //   return console.log('still loading')
-    // }
+    if (!res?.status) {
+      toast.dismiss('job-mail')
+      return toast.error('Unable to send mail!', {
+        ...toastPresets.generalError('Failed to process and send email'),
+        id: 'job-mail',
+        position: 'top-right'
+      })
+    }
 
-      
+    if (res?.status == 'success') {
+      toast.dismiss('job-mail')
+      toast.success('Email sent!', {
+        ...toastPresets.generalSuccess(
+          'Email processed and sent successfully to the hiring address'
+        ),
+        id: 'job-mail',
+        position: 'top-right'
+      })
+      return navigate('/dashboard/board')
+    }
 
-    // if (res?.status == 'success') {
-    //    toast.dismiss('job-mail')
-    //   toast.success('Email sent!', {
-    //     ...toastPresets.generalSuccess(
-    //       'Email processed and sent successfully to the hiring address'
-    //     ),
-    //     id: 'job-mail',
-    //     position: 'top-right'
-    //   })
-
-    //   return navigate('/dashboard/board')
-    // }
-
-    // if (res?.status == 'failed') {
-    //    toast.dismiss('job-mail')
-    //   return toast.error('Unable to send mail!', {
-    //     ...toastPresets.generalError('Failed to process and send email'),
-    //     id: 'job-mail',
-    //     position: 'top-right'
-    //   })
-    // }
+    if (res?.status == 'failed') {
+      toast.dismiss('job-mail')
+      return toast.error('Unable to send mail!', {
+        ...toastPresets.generalError('Failed to process and send email'),
+        id: 'job-mail',
+        position: 'top-right'
+      })
+    }
   }
 
   const handleEmailDetailsChange = e => {

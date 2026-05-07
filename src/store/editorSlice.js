@@ -7,6 +7,7 @@ const initialState = {
   height: 1.2,
   align: 'left',
   theme: 'monochrome',
+  contrast: 1,
   templateId: 'classic',
   isPreview: false,
   modal: null,
@@ -43,6 +44,9 @@ export const editorSlice = createSlice({
     },
     setTheme: (state, action) => {
       state.theme = action.payload
+    },
+    setContrast: (state, action) => {
+      state.contrast = action.payload
     }
   }
 })
@@ -56,5 +60,6 @@ export const {
   setAlign,
   togglePreview,
   setModal,
-  setTheme
+  setTheme,
+  setContrast
 } = editorSlice.actions
