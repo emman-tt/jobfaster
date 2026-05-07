@@ -22,6 +22,7 @@ import { QueryClient } from '@tanstack/react-query'
 import { toastPresets } from '../../../components/toasters'
 import { sendMessage } from '../../../services/useSocket'
 import { connector } from '../../../services/useSocket'
+import { useNavigate } from 'react-router-dom'
 function GetFileIcon () {
   return (
     <svg
@@ -124,7 +125,7 @@ export default function Finalize () {
   const { appearance } = useSelector(state => state.preferences)
   const dispatch = useDispatch()
   const queryClient = useQueryClient()
-
+  const navigate = useNavigate()
   const [formData, setFormData] = useState({
     userEmail: '',
     userName: ''
@@ -210,13 +211,14 @@ export default function Finalize () {
     connector()
     await generatePDF()
     setShowSendMethodModal(false)
-    sendMessage('JOB_MAIL', {
+    const res = await sendMessage('JOB_MAIL', {
       to: job.email,
       userName: formData.userName,
       userEmail: formData.userEmail,
       subject: emailDetails.subjectLine,
       greeting: emailDetails.greeting,
       body: emailDetails.body,
+      jobDescription: job.description,
       callToAction: emailDetails.callToAction,
       attachmentNote: emailDetails.attachmentNote,
       signOff: emailDetails.signOff,
@@ -224,6 +226,36 @@ export default function Finalize () {
       company: emailDetails.companyName || 'Unknown',
       jobTitle: emailDetails.jobTitle
     })
+ 
+    console.log('response in finalize', res)
+
+    // if(!res.status){
+    //   return console.log('still loading')
+    // }
+
+      
+
+    // if (res?.status == 'success') {
+    //    toast.dismiss('job-mail')
+    //   toast.success('Email sent!', {
+    //     ...toastPresets.generalSuccess(
+    //       'Email processed and sent successfully to the hiring address'
+    //     ),
+    //     id: 'job-mail',
+    //     position: 'top-right'
+    //   })
+
+    //   return navigate('/dashboard/board')
+    // }
+
+    // if (res?.status == 'failed') {
+    //    toast.dismiss('job-mail')
+    //   return toast.error('Unable to send mail!', {
+    //     ...toastPresets.generalError('Failed to process and send email'),
+    //     id: 'job-mail',
+    //     position: 'top-right'
+    //   })
+    // }
   }
 
   const handleEmailDetailsChange = e => {

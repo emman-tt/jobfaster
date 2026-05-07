@@ -71,10 +71,17 @@ export default function Dashboard () {
 
   useEffect(() => {
     onSendJobMail(data => {
-      toast.dismiss('job-mail')
       if (data) {
         const status = data?.status
+
+        console.log('status in dashboard', status)
+        if (!status) {
+          return console.log('still loading')
+        }
+
         if (status == 'success') {
+          toast.dismiss('job-mail')
+           navigate('/dashboard/board')
           toast.success('Email sent!', {
             ...toastPresets.generalSuccess(
               'Email processed and sent successfully to the hiring address'
@@ -86,6 +93,7 @@ export default function Dashboard () {
         }
 
         if (status == 'failed') {
+          toast.dismiss('job-mail')
           toast.error('Unable to send mail!', {
             ...toastPresets.generalError(
               'Resume processed successfully! Redirecting you to your tailored resume...'
@@ -97,7 +105,7 @@ export default function Dashboard () {
         }
       }
     })
-  }, [])
+  }, [navigate])
 
   const { data } = useQuery({
     queryKey: ['activity'],

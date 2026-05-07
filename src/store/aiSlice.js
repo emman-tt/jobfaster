@@ -7,9 +7,7 @@ const initialState = {
     description: '',
     company: '',
     hiringManager: '',
-    source: '',
     location: '',
-    title: '',
     tone: 'Formal',
     email: '',
     includeCoverLetter: false

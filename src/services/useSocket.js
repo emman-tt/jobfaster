@@ -10,6 +10,8 @@ const callbacks = {
   JOB_MAIL: null
 }
 
+const pendingPromises = {}
+
 export function connector () {
   if (ws && ws.readyState === WebSocket.OPEN) {
     console.log('Already connected')
@@ -37,16 +39,18 @@ export function connector () {
   ws.onmessage = event => {
     const res = JSON.parse(event.data)
     const type = res.type
+
+    if (pendingPromises[type]) {
+      pendingPromises[type](res)
+      delete pendingPromises[type]
+    }
+
     if (callbacks.JOB_MAIL && type == 'JOB_MAIL') {
       return callbacks.JOB_MAIL(res)
     }
 
     if (callbacks.JOB_APPLY && type == 'JOB_APPLY') {
       return callbacks.JOB_APPLY(res)
-    } else {
-      console.warn(
-        'No registered callback for this process or callback wasnt called and added'
-      )
     }
   }
 
@@ -62,6 +66,10 @@ export function connector () {
   ws.onclose = () => {
     console.log('Disconnected')
     ws = null
+    Object.keys(pendingPromises).forEach(key => {
+      pendingPromises[key]({ status: 'failed', error: 'Connection closed' })
+      delete pendingPromises[key]
+    })
   }
 }
 
@@ -88,21 +96,30 @@ export function sendMessage (type, data) {
       description:
         'Generating a tailored resume and and email template for the job',
       id: 'ai-processing',
-      position: 'top-right'
+      position: 'top-right',
+      duration: Infinity
     })
   }
   if (type == 'JOB_MAIL') {
     toast.loading('Processing and sending mail!', {
       ...toastPresets.aiProcessing(),
       id: 'job-mail',
-  
       position: 'top-right',
-      description: 'On success, email will be recieved by the hiring address'
+      description: 'On success, email will be recieved by the hiring address',
+      duration: Infinity
     })
   }
 
   ws.send(JSON.stringify({ type, data }))
-  return true
+
+  return new Promise(resolve => {
+    pendingPromises[type] = res => {
+      resolve(res)
+      if (callbacks[type]) {
+        callbacks[type](res)
+      }
+    }
+  })
 }
 
 export function onJobApply (cb) {
