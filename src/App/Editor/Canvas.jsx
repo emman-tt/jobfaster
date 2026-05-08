@@ -5,7 +5,7 @@ import { ZoomIn, ZoomOut, RotateCcw, Layout } from 'lucide-react'
 import { Preview } from './Preview'
 
 export default function Canvas () {
-  // const dispatch = useDispatch()
+ 
   const { appearance } = useSelector(state => state.preferences)
   const [scale, setScale] = useState(50)
   const [position, setPosition] = useState({ x: 50, y: 0 })

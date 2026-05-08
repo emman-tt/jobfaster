@@ -15,6 +15,8 @@ import {
 import { NavLink } from 'react-router-dom'
 import { useLocation } from 'react-router-dom'
 import { useSelector } from 'react-redux'
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
+import { getUser } from '../../services/user'
 
 export default function Sidebar ({ className }) {
   const pathname = useLocation().pathname
@@ -23,6 +25,18 @@ export default function Sidebar ({ className }) {
   const isActive =
     processes.find(item => item.href.includes(actualPath))?.id ||
     tools.find(item => item.href.includes(actualPath))?.id
+
+  const { data, isLoading, isFetching } = useQuery({
+    queryKey: ['user'],
+    queryFn: () => getUser(),
+    staleTime: 5 * 60 * 1000,
+    gcTime: 10 * 60 * 1000,
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false
+  })
+
+  console.log(data)
+
   return (
     <section className={`flex flex-col h-full justify-between ${className}`}>
       <div>
@@ -142,19 +156,25 @@ export default function Sidebar ({ className }) {
               appearance.theme == 'dark' ? 'bg-[#202020]' : 'bg-white'
             }`}
           >
-            <User2
-              className={`w-6 h-6 ${
-                appearance.theme == 'dark' ? 'text-white' : 'text-black'
-              }`}
-            />
+            {data?.image ? (
+              <div className=' w-full h-full'>
+                <img src='' className=' w-full h-full object-cover' alt='' />
+              </div>
+            ) : (
+              <User2
+                className={`w-6 h-6 ${
+                  appearance.theme == 'dark' ? 'text-white' : 'text-black'
+                }`}
+              />
+            )}
           </div>
           <div
             className={`flex w-[60%] flex-col text-xs ${
               appearance.theme == 'dark' ? 'text-white' : 'text-black'
             }`}
           >
-            <p className='font-satoshi font-semibold'>Emmanuel Acquah</p>
-            <p className='truncate'>emmanuelacquah.dev@gmail.com</p>
+            <p className='font-satoshi font-semibold'>{data?.name}</p>
+            <p className='truncate'>{data?.email}</p>
           </div>
           <div className='w-[20%]'>
             <ArrowUpDown
