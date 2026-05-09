@@ -10,13 +10,17 @@ import {
   PanelLeftClose,
   PlusCircle,
   Settings,
-  User2
+  User2,
+  ListCollapse,
+  SquarePen,
+  ScanEye
 } from 'lucide-react'
 import { NavLink } from 'react-router-dom'
 import { useLocation } from 'react-router-dom'
 import { useSelector } from 'react-redux'
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
+import { useQuery } from '@tanstack/react-query'
 import { getUser } from '../../services/user'
+import UserMenu from './UserMenu'
 
 export default function Sidebar ({ className }) {
   const pathname = useLocation().pathname
@@ -146,44 +150,7 @@ export default function Sidebar ({ className }) {
             </NavLink>
           ))}
         </div>
-        <div
-          className={`w-full flex gap-3 px-2 rounded-xl py-3 items-center ${
-            appearance.theme == 'dark' ? 'bg-[#2a2a2a]' : 'bg-[#e8e7ea]'
-          }`}
-        >
-          <div
-            className={`w-[20%] p-2 rounded-xl flex justify-center items-center ${
-              appearance.theme == 'dark' ? 'bg-[#202020]' : 'bg-white'
-            }`}
-          >
-            {data?.image ? (
-              <div className=' w-full h-full'>
-                <img src='' className=' w-full h-full object-cover' alt='' />
-              </div>
-            ) : (
-              <User2
-                className={`w-6 h-6 ${
-                  appearance.theme == 'dark' ? 'text-white' : 'text-black'
-                }`}
-              />
-            )}
-          </div>
-          <div
-            className={`flex w-[60%] flex-col text-xs ${
-              appearance.theme == 'dark' ? 'text-white' : 'text-black'
-            }`}
-          >
-            <p className='font-satoshi font-semibold'>{data?.name}</p>
-            <p className='truncate'>{data?.email}</p>
-          </div>
-          <div className='w-[20%]'>
-            <ArrowUpDown
-              className={`h-4 w-4 ${
-                appearance.theme == 'dark' ? 'text-white' : 'text-black'
-              }`}
-            />
-          </div>
-        </div>
+        <UserMenu data={data} appearance={appearance} />
       </div>
     </section>
   )
@@ -217,37 +184,36 @@ const processes = [
   {
     id: 5,
     name: 'Job Board',
-    icon: <Layers className='w-4 h-4' />,
+    icon: <ListCollapse className='w-4 h-4' />,
     href: 'board'
+  },
+  {
+    id: 6,
+    name: 'Create Resume',
+    icon: <SquarePen className='w-4 h-4' />,
+    href: 'templates'
   }
 ]
 
 const tools = [
   {
-    id: 6,
-    name: 'Create Resume',
-    icon: <PlusCircle className='w-4 h-4' />,
-    href: 'templates'
-  },
-  {
     id: 7,
     name: 'Preferences',
-    icon: <PlusCircle className='w-4 h-4' />,
+    icon: <ScanEye className='w-4 h-4' />,
     href: 'preference'
-  }
-]
-
-const bottom = [
-  {
-    id: 8,
-    name: 'FAQ',
-    icon: <CircleEllipsis className='w-4 h-4' />,
-    href: 'faq'
   },
   {
-    id: 9,
+    id: 8,
     name: 'Settings',
     icon: <Settings className='w-4 h-4' />,
     href: 'settings'
+  },
+  {
+    id: 9,
+    name: 'FAQ',
+    icon: <CircleEllipsis className='w-4 h-4' />,
+    href: 'faq'
   }
 ]
+
+const bottom = []

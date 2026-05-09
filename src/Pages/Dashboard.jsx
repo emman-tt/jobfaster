@@ -134,7 +134,7 @@ export default function Dashboard () {
             appearance.theme == 'dark' ? 'text-white' : 'text-black'
           }`}
         >
-          {actualPath !== 'board' &&
+          {(actualPath == 'resumes' || actualPath == 'overview') &&
             (!showRightbar ? (
               <PanelRightOpenIcon
                 onClick={() => {
@@ -151,14 +151,15 @@ export default function Dashboard () {
               />
             ))}
         </div>
-        {showRightbar && actualPath !== 'board' && (
-          <Rightbar
-            data={activities}
-            className={
-              'w-80 transition-all duration-200 transform-gpu ease-linear  rounded-xl shadow-[#23232389] shadow-sm '
-            }
-          />
-        )}
+        {showRightbar &&
+          (actualPath == 'resumes' || actualPath == 'overview') && (
+            <Rightbar
+              data={activities}
+              className={
+                'w-80 transition-all duration-200 transform-gpu ease-linear  rounded-xl shadow-[#23232389] shadow-sm '
+              }
+            />
+          )}
       </section>
 
       {modals.selectResume && (
