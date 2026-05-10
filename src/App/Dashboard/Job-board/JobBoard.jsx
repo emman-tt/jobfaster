@@ -226,7 +226,7 @@ export default function JobBoard () {
   return (
     <div className='flex flex-col h-full w-full bg-white overflow-hidden relative'>
       <Header isFetching={isFetching} />
-      <div className=' w-[80vw] h-full  overflow-x-auto p-5 pr-0 scrollbar-thin '>
+      <div className=' w-screen pr-10 sm:w-[80vw] h-full  overflow-x-auto p-5 sm:pr-0 scrollbar-thin '>
         <DragDropProvider onDragEnd={handleDragEnd}>
           <div className='flex gap-4 min-w-max h-full items-start'>
             {kanban.map(column => (
@@ -246,7 +246,7 @@ export default function JobBoard () {
         <div className='fixed inset-0 z-40'>
           <div className='absolute inset-0 bg-black/20' onClick={closeDetail} />
           <div
-            className={`absolute right-2 rounded-2xl top-2 bottom-2 h-[97%] w-full max-w-xl scrollbar-none shadow-2xl overflow-y-auto ${
+            className={`absolute inset-x-0 sm:inset-x-2 rounded-t-2xl sm:rounded-2xl top-[30%] sm:top-2 bottom-0 sm:bottom-2 sm:h-[97%] w-full max-w-xl scrollbar-none shadow-2xl overflow-y-auto ${
               appearance.theme == 'dark' ? 'bg-[#2a2a2a]' : 'bg-white'
             }`}
           >

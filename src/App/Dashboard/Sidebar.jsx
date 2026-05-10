@@ -30,7 +30,7 @@ export default function Sidebar ({ className }) {
     processes.find(item => item.href.includes(actualPath))?.id ||
     tools.find(item => item.href.includes(actualPath))?.id
 
-  const { data, isLoading, isFetching } = useQuery({
+  const { data } = useQuery({
     queryKey: ['user'],
     queryFn: () => getUser(),
     staleTime: 5 * 60 * 1000,

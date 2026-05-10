@@ -5,9 +5,8 @@ import { toggleModals } from '../../../../store/modalSlice'
 import { useState } from 'react'
 import { toast } from 'sonner'
 import { toastPresets } from '../../../../components/toasters'
-import { useQuery } from '@tanstack/react-query'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { FetchPrograms, UploadFolder } from '../../../../services/Program'
+import { UploadFolder } from '../../../../services/Program'
 export default function Folder () {
   const dispatch = useDispatch()
   const queryClient = useQueryClient()
@@ -51,9 +50,11 @@ export default function Folder () {
   }
 
   return (
-    <section className={`absolute h-130 p-2 pb-5 transition-all duration-200 ease-in-out translate-x-130 translate-y-15 z-51 shadow-xl w-[28%] rounded-2xl flex flex-col gap-4 ${
-      appearance.theme == 'dark' ? 'bg-[#2a2a2a]' : 'bg-white'
-    }`}>
+    <section
+      className={`fixed inset-0 m-auto z-51 w-[calc(100%-2rem)] sm:w-[28%] max-w-md max-h-[90vh] sm:h-max h-auto p-4 sm:p-6 pb-5 shadow-xl rounded-2xl flex flex-col gap-4 ${
+        appearance.theme == 'dark' ? 'bg-[#2a2a2a]' : 'bg-white'
+      }`}
+    >
       <div
         onClick={() => {
           closeFolderModal()
@@ -64,9 +65,11 @@ export default function Folder () {
       >
         <X className={appearance.theme == 'dark' ? 'text-slate-400' : ''} />
       </div>
-      <div className={`w-full h-[70%] rounded-xl flex justify-center items-center ${
-        appearance.theme == 'dark' ? 'bg-[#202020]' : 'bg-gray-50'
-      }`}>
+      <div
+        className={`w-full h-[70%] rounded-xl flex justify-center items-center ${
+          appearance.theme == 'dark' ? 'bg-[#202020]' : 'bg-gray-50'
+        }`}
+      >
         <img src={folderImage} className='w-[70%] h-auto' alt='' />
       </div>
       <div className='w-full px-10 mt-4'>
@@ -90,7 +93,11 @@ export default function Folder () {
       <div onClick={navigateNext} className='px-15 w-full'>
         <button
           className={`cursor-pointer rounded-xl w-full py-3 flex justify-center items-center ${
-            saving ? 'bg-gray-400 text-white' : appearance.theme == 'dark' ? 'bg-[#f17e27] text-white' : 'bg-orange-200 text-black'
+            saving
+              ? 'bg-gray-400 text-white'
+              : appearance.theme == 'dark'
+              ? 'bg-[#f17e27] text-white'
+              : 'bg-orange-200 text-black'
           }`}
         >
           {saving ? 'Saving ...' : 'Create Folder'}

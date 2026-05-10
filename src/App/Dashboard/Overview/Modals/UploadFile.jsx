@@ -142,7 +142,7 @@ export default function UploadFile () {
 
   return (
     <section
-      className={`absolute min-h-140 p-8 pb-5 transition-all duration-200 ease-in-out translate-x-120 translate-y-10 z-51 shadow-xl w-[38%] rounded-2xl flex flex-col gap-4 ${
+      className={`fixed inset-0 m-auto z-51 w-[calc(100%-2rem)] sm:w-[38%] max-w-lg max-h-[90vh] h-max max-sm:-translate-y-15 sm:h-max min-h-0 p-4 sm:p-8 pb-5 shadow-xl rounded-2xl flex flex-col gap-4 overflow-y-auto ${
         appearance.theme == 'dark' ? 'bg-[#2a2a2a]' : 'bg-white'
       }`}
     >

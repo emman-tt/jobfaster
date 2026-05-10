@@ -7,7 +7,7 @@ import {
   Clock,
   Bookmark
 } from 'lucide-react'
-import {  getApplyInfo } from '../../../utils/findEmail'
+import { getApplyInfo } from '../../../utils/findEmail'
 import { useSelector } from 'react-redux'
 import { useMutation } from '@tanstack/react-query'
 import { saveJobTrack } from '../../../services/jobs'
@@ -39,8 +39,11 @@ export default function JobDetailView ({ job }) {
   const jobWithApplyInfo = { ...job, applyInfo }
 
   return (
-    <div className='p-6 pb-20'>
-      <div className='space-y-6 pt-15'>
+    <div className='p-4 sm:p-6 relative pb-20'>
+      <div className='h-6 left-0 right-0 bg-inherit sticky top-0 w-full sm:hidden z-10 flex items-center justify-center'>
+        <div className='w-8 h-1 rounded-full bg-slate-300' />
+      </div>
+      <div className='space-y-6 pt-2 sm:pt-15'>
         <div>
           <h2
             className={`text-lg font-bold leading-tight font-IBM ${
@@ -178,9 +181,9 @@ export default function JobDetailView ({ job }) {
           )}
         </div>
 
-        <div className='flex  justify-center items-center gap-3'>
+        <div className='flex flex-col sm:flex-row justify-center items-center gap-3'>
           <button
-            className={`w-[80%] cursor-pointer flex items-center justify-center gap-2 px-5 py-4.5 bg-[#f17e27] hover:bg-[#e16d16] text-white text-xs font-bold rounded-xl ${
+            className={`w-full sm:w-[80%] cursor-pointer flex items-center justify-center gap-2 px-5 py-4.5 bg-[#f17e27] hover:bg-[#e16d16] text-white text-xs font-bold rounded-xl ${
               appearance.theme == 'dark' && 'shadow-none'
             } shadow-lg shadow-orange-100/50 transition-all active:scale-[0.98]`}
             onClick={() => setShowApplyDialog(true)}
@@ -190,7 +193,7 @@ export default function JobDetailView ({ job }) {
           </button>
 
           <button
-            className={`w-[80%] cursor-pointer flex items-center justify-center gap-2 px-5 py-3 rounded-xl text-xs font-bold transition-all active:scale-[0.98] border ${
+            className={`w-full sm:w-[80%] cursor-pointer flex items-center justify-center gap-2 px-5 py-3 rounded-xl text-xs font-bold transition-all active:scale-[0.98] border ${
               appearance.theme == 'dark'
                 ? 'border-slate-600 text-slate-300 hover:bg-slate-800'
                 : 'border-gray-200 text-slate-600 hover:bg-gray-50'

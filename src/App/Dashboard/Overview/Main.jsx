@@ -181,55 +181,57 @@ export default function Main () {
 
   return (
     <DragDropProvider onDragEnd={handleDragEnd}>
-      <section className='flex flex-col  pl-5   gap-0 pt-0'>
-        <div className='px-5'>
-          <div className='w-full flex justify-between items-center pr-15'>
+      <section className='flex flex-col pl-4 sm:pl-5 gap-0 pt-0'>
+        <div className='pr-4 sm:px-5'>
+          <div className='w-full flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 sm:gap-0'>
             <h2
-              className={`w-full text-2xl font-IBM ${
+              className={`text-2xl font-IBM shrink-0 ${
                 appearance.theme == 'dark' ? 'text-white' : 'text-black'
               }`}
             >
               {headerText}
             </h2>
 
-            <div className=' flex w-full   items-center  gap-5'>
-              {!openedFolder && (
+            <div className='flex flex-row w-full sm:w-auto items-center gap-3 sm:gap-5'>
+              <div className='flex gap-3 shrink-0'>
+                {!openedFolder && (
+                  <button
+                    onClick={() => {
+                      openFolderModal()
+                    }}
+                    className='text-xs font-satoshi flex gap-2 shadow-sm shadow-black/40 bg-orange-300 hover:bg-amber-500 px-5 sm:px-4 cursor-pointer py-3 text-white items-center justify-center h-full rounded-xl'
+                  >
+                    <FolderCodeIcon className='w-4 h-4 sm:w-5 sm:h-5' />
+                    <span className='hidden sm:inline'>New Folder</span>
+                  </button>
+                )}
+
                 <button
                   onClick={() => {
-                    openFolderModal()
+                    openFileModal()
                   }}
-                  className=' text-xs font-satoshi flex gap-2 shadow-sm shadow-black/40 bg-orange-300 hover:bg-amber-500 px-4 w-max cursor-pointer py-3 text-white items-center h-full rounded-xl'
+                  className='text-xs font-satoshi flex gap-2 shadow-sm shadow-black/40 bg-orange-300 hover:bg-amber-500 px-5 sm:px-4 cursor-pointer py-3 text-white items-center justify-center h-full rounded-xl'
                 >
-                  <FolderCodeIcon className=' w-4 h-4' />
-                  New Folder
+                  <FilePlusCornerIcon className='w-4 h-4 sm:w-5 sm:h-5' />
+                  <span className='hidden sm:inline'>Add File</span>
                 </button>
-              )}
-
-              <button
-                onClick={() => {
-                  openFileModal()
-                }}
-                className=' text-xs font-satoshi w-max  px-4 shadow-sm shadow-black/40 flex gap-2 bg-orange-300 hover:bg-amber-500 cursor-pointer py-3 text-white items-center h-full rounded-xl'
-              >
-                <FilePlusCornerIcon className=' w-4 h-4' />
-                Add File
-              </button>
+              </div>
               <div
-                className={`w-70 grow  p-3 py-2.5 rounded-xl items-center gap-5 border flex ${
+                className={`flex-1 min-w-0 sm:w-70 sm:flex-none sm:p-3 py-2.5 rounded-xl items-center gap-3 sm:gap-5 border flex ${
                   appearance.theme == 'dark'
                     ? 'bg-[#2a2a2a] border-slate-700'
                     : 'border-slate-200 bg-white'
                 }`}
               >
                 <Search
-                  className={`w-5 h-5 ${
+                  className={`w-5 h-5 shrink-0 ml-5 ${
                     appearance.theme == 'dark' ? 'text-white' : 'text-black'
                   }`}
                 />
                 <input
                   type='text'
                   placeholder='Search by Folder or File name'
-                  className={`w-full text-xs font-satoshi h-full outline-0 ${
+                  className={`w-full  text-xs font-satoshi h-full outline-0 ${
                     appearance.theme == 'dark'
                       ? 'bg-transparent text-white placeholder:text-slate-400'
                       : 'text-black'
@@ -242,7 +244,7 @@ export default function Main () {
           </div>
 
           <div
-            className={`flex gap-5 mt-5 items-center pl-5 text-xs font-semibold font-satoshi ${
+            className={`flex gap-3 sm:gap-5 mt-5 items-center pl-2 sm:pl-5 text-xs font-semibold font-satoshi flex-wrap ${
               appearance.theme == 'dark' ? 'text-slate-400' : 'text-black'
             }`}
           >
@@ -280,10 +282,10 @@ export default function Main () {
         </div>
 
         <section
-          className={`grid   gap-4 transform-gpu transition-all duration-150 ease-in-out mt-0 pt-5 pr-10 pl-5 justify-items-center
-            ${
-              showRightbar ? 'grid-cols-6' : 'grid-cols-8'
-            } pb-0 mb-0 gap-y-8 w-full`}
+          className={`grid gap-3  pl-0 sm:gap-4 transform-gpu transition-all duration-150 ease-in-out mt-0 pt-5 px-4 sm:px-3 sm:pl-5 sm:pr-10 justify-items-center
+            grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 ${
+              showRightbar ? 'xl:grid-cols-6' : 'xl:grid-cols-8'
+            } pb-0 mb-0 gap-y-10 sm:gap-y-8 w-full`}
         >
           {/* specific files in an opened folder  */}
           {
@@ -303,7 +305,7 @@ export default function Main () {
                     onDoubleClick={() => {
                       openFile(null, item.id)
                     }}
-                    className={`pl-2 gap-2 h-26 w-35 shrink-0 flex flex-col items-start ${
+                    className={`pl-2 gap-2 h-26 w-full max-w-35 shrink-0 flex flex-col items-start ${
                       movingFiles.includes(item.id) ? 'opacity-50' : ''
                     }`}
                   >
@@ -366,7 +368,7 @@ export default function Main () {
                   <div
                     onDoubleClick={() => openFolder(item)}
                     onClick={e => handleClick(e, item.folder.id, 'folder')}
-                    className='w-28 shrink-0 cursor-pointer'
+                    className='w-full max-w-28 shrink-0 cursor-pointer'
                   >
                     <Folder files={item?.folder.files} />
                     <div
@@ -394,7 +396,7 @@ export default function Main () {
                       onDoubleClick={() => {
                         openFile(null, item.file.id)
                       }}
-                      className={`cursor-pointer pl-2 gap-2 h-26 w-32 shrink-0 flex flex-col items-start`}
+                      className={`cursor-pointer pl-2 gap-2 h-26 w-full max-w-32 shrink-0 flex flex-col items-start`}
                     >
                       <div className='bg-[#c4c7cc15] shadow-sm rounded-xl w-full h-full flex'>
                         <div className='mt-5'>
@@ -559,7 +561,7 @@ function MiniIframe ({ src }) {
 function EmptyState () {
   const { appearance } = useSelector(state => state.preferences)
   return (
-    <div className='col-span-8 flex flex-col items-center justify-center h-75 gap-4'>
+    <div className='col-span-full flex flex-col items-center justify-center h-75 gap-4'>
       <div
         className={`w-10 h-10 rounded-full flex items-center justify-center ${
           appearance.theme == 'dark' ? 'bg-[#2a2a2a]' : 'bg-orange-50'

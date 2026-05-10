@@ -78,12 +78,12 @@ export default function Job () {
 
   return (
     <section
-      className={`w-full h-screen overflow-y-scroll [scrollbar-width:none] flex justify-center p-6 font-satoshi ${
+      className={`w-full  h-screen overflow-y-scroll [scrollbar-width:none] flex justify-center px-4 py-2 max-sm:pb-20 sm:p-6 font-satoshi ${
         appearance.theme == 'dark' ? 'bg-[#202020]' : 'bg-white'
       }`}
     >
       <div
-        className={`w-full max-w-3xl h-max my-10 p-10 space-y-8 rounded-3xl shadow-xs ${
+        className={`w-full max-w-3xl h-max my-0 sm:my-10 p-4 sm:p-10 space-y-6 sm:space-y-8 rounded-3xl shadow-xs ${
           appearance.theme == 'dark' ? 'bg-[#2a2a2a]' : 'bg-white'
         }`}
       >
@@ -145,7 +145,7 @@ export default function Job () {
           </div>
 
           {/* Hiring Contact Email */}
-          <div className=' flex w-full gap-5'>
+          <div className='flex flex-col sm:flex-row w-full gap-5'>
             <div className='space-y-2 w-full'>
               <label
                 htmlFor='email'
@@ -246,7 +246,7 @@ export default function Job () {
             >
               Include a tailored cover letter?
             </label>
-            <ul className='grid grid-cols-2 gap-4'>
+            <ul className='grid grid-cols-1 sm:grid-cols-2 gap-4'>
               <li
                 onClick={() => toggleCoverLetter(true)}
                 className={`flex gap-4 w-full border cursor-pointer rounded-2xl py-4 px-6 transition-all duration-200 ease items-center ${
@@ -308,7 +308,7 @@ export default function Job () {
           </div>
 
           {/* Footer Actions */}
-          <div className='flex items-center justify-between pt-6 border-t border-slate-100'>
+          <div className='flex  sm:flex-row items-center justify-between gap-3 pt-6 border-t border-slate-100'>
             <button
               type='button'
               className={`px-8 py-3 text-sm font-bold text-slate-500 hover:text-slate-800 ${

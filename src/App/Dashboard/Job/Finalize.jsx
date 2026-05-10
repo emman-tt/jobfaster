@@ -264,12 +264,12 @@ export default function Finalize () {
 
   return (
     <section
-      className={`w-full h-screen overflow-y-scroll [scrollbar-width:none] flex justify-center p-6 font-satoshi ${
+      className={`w-full  h-screen max-sm:pb-20 overflow-y-scroll [scrollbar-width:none] flex justify-center px-4 py-4 sm:p-6 font-satoshi ${
         appearance.theme == 'dark' ? 'bg-[#202020]' : 'bg-white'
       }`}
     >
       <div
-        className={`w-full max-w-5xl h-max my-10 p-10 space-y-8 rounded-3xl shadow-xs ${
+        className={`w-full max-w-5xl h-max my-0 sm:my-10 p-4 sm:p-10 space-y-6 sm:space-y-8 rounded-3xl shadow-xs ${
           appearance.theme == 'dark' ? 'bg-[#2a2a2a]' : 'bg-white'
         }`}
       >

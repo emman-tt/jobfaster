@@ -18,7 +18,6 @@ export const store = configureStore({
     work: workSlice.reducer,
     education: educationSlice.reducer,
     credentials: credentialsSlice.reducer,
-
     modal: modalSlice.reducer,
     dashboard: dashboardSlice.reducer,
     ai: aiSlice.reducer,

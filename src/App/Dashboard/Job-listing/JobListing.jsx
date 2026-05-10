@@ -69,13 +69,13 @@ export function JobListing () {
       }`}
     >
       <div
-        className={`w-full h-full overflow-y-auto [scrollbar-width:none] p-5 ${
+        className={`w-full h-full overflow-y-auto [scrollbar-width:none] p-3 sm:p-5 ${
           appearance.theme == 'dark' ? 'bg-[#202020]' : 'bg-white'
         }`}
       >
-        <div className='max-w-7xl h-full   mx-auto space-y-5'>
-          <div className='space-y-4 h-full justify-between flex  flex-col  '>
-            <section className=' flex flex-col p-10 gap-5'>
+        <div className='max-w-7xl h-full mx-auto space-y-5'>
+          <div className='space-y-4 h-full justify-between flex flex-col'>
+            <section className='flex flex-col p-4 sm:p-10 gap-5'>
               <div className='flex items-center justify-between px-1'>
                 <h2
                   className={`text-[13px] font-medium font-satoshi ${
@@ -218,13 +218,13 @@ export function JobListing () {
         <div className='fixed inset-0 z-40'>
           <div className='absolute inset-0 bg-black/20' onClick={closeDetail} />
           <div
-            className={`absolute right-2 rounded-2xl top-2 bottom-10 h-[97%] w-full max-w-xl scrollbar-none shadow-2xl overflow-y-auto ${
+            className={`absolute inset-x-0 sm:inset-x-2 rounded-t-2xl sm:rounded-2xl top-[30%] sm:top-2 bottom-0 sm:bottom-10 sm:h-[97%] w-full max-w-xl scrollbar-none shadow-2xl overflow-y-auto ${
               appearance.theme == 'dark' ? 'bg-[#2a2a2a]' : 'bg-white'
             }`}
           >
             <button
               onClick={closeDetail}
-              className={`absolute top-4 right-4 p-2 rounded-full shadow-lg transition-all z-10 ${
+              className={`absolute top-4 right-4 p-2 rounded-full shadow transition-all z-10 ${
                 appearance.theme == 'dark'
                   ? 'bg-[#202020] hover:bg-slate-800'
                   : 'bg-white hover:bg-gray-50'

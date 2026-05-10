@@ -21,10 +21,10 @@ export default function Header ({ isFetching }) {
   ]
 
   return (
-    <div className='w-full bg-white border-b border-gray-300 px-8 pt-8 pb-5 relative'>
-      <div className='flex items-center justify-between mb-2'>
+    <div className='w-full bg-white border-b border-gray-300 px-4 sm:px-8 pt-5 sm:pt-8 pb-5 relative'>
+      <div className='flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 mb-2'>
         <div>
-          <h1 className='text-2xl font-bold text-gray-900 leading-tight'>
+          <h1 className='text-xl sm:text-2xl font-bold text-gray-900 leading-tight'>
             Jobs
           </h1>
           <p className='text-sm text-gray-400 mt-0.5'>
@@ -32,7 +32,7 @@ export default function Header ({ isFetching }) {
           </p>
         </div>
 
-        <div className='flex items-center gap-3'>
+        <div className='flex items-center gap-3 w-full sm:w-auto'>
           {/* Filter Dropdown */}
           <Menu as='div' className='relative inline-block text-left'>
             <MenuButton className='inline-flex items-center justify-between w-48 gap-x-1.5 rounded-lg bg-white px-3 py-2 text-sm font-semibold text-gray-700 shadow-sm ring-1 ring-inset ring-gray-200 hover:bg-gray-50 transition-all'>

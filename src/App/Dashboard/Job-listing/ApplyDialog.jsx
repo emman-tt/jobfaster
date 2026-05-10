@@ -1,7 +1,13 @@
 import React from 'react'
 import { Mail, ExternalLink, X, AlertCircle } from 'lucide-react'
 
-export default function ApplyDialog ({ isOpen, onClose, job, onApplyOnApp, onApplyExternal }) {
+export default function ApplyDialog ({
+  isOpen,
+  onClose,
+  job,
+  onApplyOnApp,
+  onApplyExternal
+}) {
   if (!isOpen) return null
 
   const { applyInfo } = job
@@ -13,7 +19,7 @@ export default function ApplyDialog ({ isOpen, onClose, job, onApplyOnApp, onApp
         onClick={onClose}
       />
       <div className='relative bg-white rounded-3xl shadow-2xl w-full max-w-md mx-4 overflow-hidden'>
-        <div className='p-6'>
+        <div className='p-4 sm:p-6'>
           <div className='flex justify-between items-center mb-6'>
             <h2 className='text-xl font-bold text-slate-900 font-IBM'>
               How to Apply
@@ -39,7 +45,8 @@ export default function ApplyDialog ({ isOpen, onClose, job, onApplyOnApp, onApp
                   <div>
                     <h3 className='text-lg font-bold'>Apply On App</h3>
                     <p className='text-sm text-white/80 mt-1'>
-                      Send your resume directly to: <strong>{applyInfo.email}</strong>
+                      Send your resume directly to:{' '}
+                      <strong>{applyInfo.email}</strong>
                     </p>
                   </div>
                 </div>
@@ -51,7 +58,9 @@ export default function ApplyDialog ({ isOpen, onClose, job, onApplyOnApp, onApp
                     <Mail className='w-6 h-6 text-gray-400' />
                   </div>
                   <div>
-                    <h3 className='text-lg font-bold text-gray-500'>Apply On App</h3>
+                    <h3 className='text-lg font-bold text-gray-500'>
+                      Apply On App
+                    </h3>
                     <p className='text-sm text-gray-400 mt-1'>
                       No email found in job description
                     </p>
@@ -70,7 +79,9 @@ export default function ApplyDialog ({ isOpen, onClose, job, onApplyOnApp, onApp
                     <ExternalLink className='w-6 h-6' />
                   </div>
                   <div>
-                    <h3 className='text-lg font-bold'>Apply on External Site</h3>
+                    <h3 className='text-lg font-bold'>
+                      Apply on External Site
+                    </h3>
                     <p className='text-sm text-white/60 mt-1'>
                       Apply directly on employer's website
                     </p>

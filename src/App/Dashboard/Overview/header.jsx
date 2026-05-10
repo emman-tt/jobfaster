@@ -6,6 +6,8 @@ import { gsap } from '../../../libs/gsap'
 import { useSelector } from 'react-redux'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { toggleHeader } from '../../../store/dashboardSlice'
+import { useQuery } from '@tanstack/react-query'
+import { getUser } from '../../../services/user'
 export const Header = () => {
   const dispatch = useDispatch()
   const { showHeader, showRightbar } = useSelector(state => state.dashboard)
@@ -13,6 +15,21 @@ export const Header = () => {
   const headerRef = useRef()
   const location = useLocation()
   const navigate = useNavigate()
+  const { data: user } = useQuery({
+    queryKey: ['user'],
+    queryFn: () => getUser(),
+    staleTime: 5 * 60 * 1000,
+    gcTime: 10 * 60 * 1000,
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false
+  })
+
+  function getGreeting () {
+    const hour = new Date().getHours()
+    if (hour < 12) return 'Good Morning'
+    if (hour < 17) return 'Good Afternoon'
+    return 'Good Evening'
+  }
 
   useEffect(() => {
     const path = location.pathname.split('/')
@@ -51,13 +68,16 @@ export const Header = () => {
   }, [showHeader])
 
   return (
-    <section ref={headerRef} className='flex flex-col p-10 pr-0 pt-5'>
+    <section
+      ref={headerRef}
+      className='flex flex-col pt-0  p-5 sm:p-10 sm:pr-0 sm:pt-5'
+    >
       <h2
         className={`text-3xl font-garamond ${
           appearance.theme == 'dark' ? 'text-white' : 'text-black'
         }`}
       >
-        Good Morning, Emmanuel
+        {getGreeting()}, {user?.name || 'there'}
       </h2>
       <p
         className={`font-semibold mt-1 text-xs font-satoshi ${
@@ -68,30 +88,30 @@ export const Header = () => {
       </p>
 
       <nav
-        className={`flex w-full justify-between h-37 mt-5 gap-5 ${
-          !showRightbar && 'pr-20'
+        className={`flex flex-row w-full h-37 mt-5 gap-5 overflow-x-auto pl-0 pr-5 sm:px-0 ${
+          !showRightbar && 'sm:pr-20'
         }`}
       >
         <section
           onClick={() => navigate('/dashboard/templates')}
-          className={`w-full  cursor-pointer ${
+          className={`sm:w-full min-w-70   cursor-pointer ${
             appearance.theme == 'dark'
               ? 'bg-[#090711]'
               : 'bg-[#f8f8f8] hover:bg-gray-100'
-          }  overflow-hidden rounded-xl  flex h-full p-2`}
+          } overflow-hidden rounded-xl flex h-full p-2`}
         >
           <div
             className={`w-full ${
               appearance.theme == 'dark' ? 'text-white' : 'text-black'
-            } pl-5 py-2  font-semibold h-full flex flex-col justify-between rounded-l-[inherit]`}
+            } pl-5 py-2 font-semibold h-full flex flex-col justify-between rounded-l-[inherit]`}
           >
             <p>Help me build my resume</p>
             <p className={`text-xs text-gray-400`}>
               Start afresh or let Ai do the heavy lifting
             </p>
           </div>
-          <div className='w-full px-5 relative  rounded-r-[inherit]'>
-            <p className=' absolute top-6  text-sm left-10 z-12 font-music font-light'>
+          <div className='w-full px-5 relative rounded-r-[inherit]'>
+            <p className='absolute top-6 text-sm left-10 z-12 font-music font-light'>
               Resume
             </p>
             <img
@@ -108,7 +128,7 @@ export const Header = () => {
           </div>
         </section>
         <section
-          className={`w-full cursor-pointer overflow-hidden rounded-xl flex h-full p-2 ${
+          className={`sm:w-full min-w-70  sm:min-w-0  cursor-pointer overflow-hidden rounded-xl flex h-full p-2 ${
             appearance.theme == 'dark'
               ? 'bg-[#090711]'
               : 'bg-[#f8f8f8] hover:bg-gray-100'
@@ -128,7 +148,7 @@ export const Header = () => {
               Generate a personalized cover letter based on the job.
             </p>
           </div>
-          <div className='w-full px-5 relative  rounded-r-[inherit]'>
+          <div className='w-full px-5 relative rounded-r-[inherit]'>
             <img
               src={paper}
               className='w-30 h-36 z-11 shadow-xl -rotate-35 translate-x-10 translate-y-6 absolute bottom-0'
@@ -137,14 +157,14 @@ export const Header = () => {
 
             <img
               src={paper}
-              className='w-30 h-36 translate-x-15  shadow-xl translate-y-2 absolute bottom-0'
+              className='w-30 h-36 translate-x-15 shadow-xl translate-y-2 absolute bottom-0'
               alt='paper'
             />
           </div>
         </section>
 
         <section
-          className={`w-full relative cursor-pointer overflow-hidden rounded-xl flex h-full p-2 ${
+          className={`sm:w-full min-w-70  sm:min-w-0  relative cursor-pointer overflow-hidden rounded-xl flex h-full p-2 ${
             appearance.theme == 'dark'
               ? 'bg-[#090711]'
               : 'bg-[#f8f8f8] hover:bg-gray-100'

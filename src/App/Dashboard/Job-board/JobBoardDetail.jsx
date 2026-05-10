@@ -44,8 +44,12 @@ export default function JobBoardDetail({ job, onSave, onDelete, isSaving, isDele
 
   return (
     <div className={`w-full h-full flex flex-col ${appearance.theme === 'dark' ? 'bg-[#2a2a2a] text-white' : 'bg-white text-slate-900'}`}>
+      {/* Grip bar for mobile */}
+      <div className='h-6 left-0 right-0 bg-inherit sticky top-0 w-full sm:hidden z-10 flex items-center justify-center'>
+        <div className='w-8 h-1 rounded-full bg-slate-300' />
+      </div>
       {/* Header */}
-      <div className="p-6 pb-4">
+      <div className="p-6 pb-4 pt-2 sm:pt-6">
         <div className="flex gap-4 items-start">
           <div className="w-16 h-16 shrink-0 rounded-xl bg-gray-100 flex items-center justify-center overflow-hidden border border-gray-200">
             {job.employerLogo ? (
@@ -78,7 +82,7 @@ export default function JobBoardDetail({ job, onSave, onDelete, isSaving, isDele
       </div>
 
       {/* Tags / Meta */}
-      <div className="px-6 grid grid-cols-2 gap-3 pb-4">
+      <div className="px-6 grid grid-cols-1 sm:grid-cols-2 gap-3 pb-4">
         <div className="flex items-center gap-2">
           <MapPin className="w-4 h-4 text-gray-400" />
           <input
@@ -134,7 +138,7 @@ export default function JobBoardDetail({ job, onSave, onDelete, isSaving, isDele
       </div>
 
       {/* Actions */}
-      <div className="p-6 pt-4 flex gap-3">
+      <div className="p-6 pt-4 flex flex-col sm:flex-row gap-3">
         {job.jobApplyLink && (
           <a
             href={job.jobApplyLink}

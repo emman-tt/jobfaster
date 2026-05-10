@@ -5,7 +5,10 @@ import { useSelector } from 'react-redux'
 import Profile from './Profile'
 import Notifications from './Notifications'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
-import { updateProfile as saveProfile, updateNotification as saveNotification } from '../../../services/settings'
+import {
+  updateProfile as saveProfile,
+  updateNotification as saveNotification
+} from '../../../services/settings'
 import { fetchSettingsData } from '../../../services/user'
 import { toast } from 'sonner'
 
@@ -128,7 +131,7 @@ export default function Settings () {
       })
       queryClient.invalidateQueries({ queryKey: ['settings'] })
       toast.success('Settings saved successfully')
-      navigate('/dashboard')
+      
     } catch (err) {
       console.error('Failed to save settings:', err)
       toast.error('Failed to save settings')

@@ -7,9 +7,9 @@ import { toggleRightbar } from '../store/dashboardSlice'
 import UploadFile from '../App/Dashboard/Overview/Modals/UploadFile'
 import Folder from '../App/Dashboard/Overview/Modals/Folder'
 import Rightbar from '../App/Dashboard/Rightbar/Rightbar'
-import { PanelLeftOpenIcon, PanelRightOpenIcon } from 'lucide-react'
+import { Menu, X, PanelLeftOpenIcon, PanelRightOpenIcon } from 'lucide-react'
 import { useDispatch } from 'react-redux'
-import { useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import SelectResume from '../App/Dashboard/Job/Modals/SelectResume'
 import { onJobApply, onSendJobMail } from '../services/useSocket'
 
@@ -30,6 +30,7 @@ export default function Dashboard () {
   const actualPath = location.pathname.split('/').at(-1)
   const navigate = useNavigate()
   const dispatch = useDispatch()
+  const [showMobileSidebar, setShowMobileSidebar] = useState(false)
 
   function openRightbar () {
     dispatch(toggleRightbar(true))
@@ -120,47 +121,93 @@ export default function Dashboard () {
         appearance.theme == 'dark' ? 'bg-[#202020]' : 'bg-white'
       }  overflow-hidden   w-full h-screen `}
     >
+      {/* Desktop sidebar */}
       <Sidebar
-        className={`w-70 ${
+        className={`hidden md:flex w-70 ${
           appearance.theme == 'dark' ? 'bg-[#2a2a2a]' : 'bg-[#f8f8f8]'
-        }  p-5 `}
+        } p-5`}
       />
-      <section className='w-full h-full'>
-        <Outlet />
-      </section>
-      <section className='flex gap-4  pt-3 pr-3 pb-3'>
-        <div
-          className={` ${
+
+      <section className='  w-full  relative     sm:h-full sm:border-0 max-sm:border-b max-sm:py-4 border-white min-w-0'>
+        {/* Mobile hamburger */}
+        <button
+          onClick={() => setShowMobileSidebar(true)}
+          className={`md:hidden  left-3 p-4  rounded-full  top-2 z-20 cursor-pointer ${
             appearance.theme == 'dark' ? 'text-white' : 'text-black'
           }`}
         >
-          {(actualPath == 'resumes' || actualPath == 'overview') &&
-            (!showRightbar ? (
-              <PanelRightOpenIcon
-                onClick={() => {
-                  openRightbar()
-                }}
-                className={`w-6  cursor-pointer h-6 mt-5 mr-7   `}
-              />
+          <Menu className='sm:w-6 sm:h-6 w-8 h-8' />
+        </button>
+
+        {(actualPath == 'resumes' || actualPath == 'overview') && (
+          <button
+            onClick={() => {
+              showRightbar ? closeRightbar() : openRightbar()
+            }}
+            className={`absolute right-3 max-sm:p-4  max-sm:rounded-full  md:right-0 top-4 z-20 cursor-pointer ${
+              appearance.theme == 'dark' ? 'text-white' : 'text-black'
+            }`}
+          >
+            {showRightbar ? (
+              <PanelLeftOpenIcon className='sm:w-6 sm:h-6' />
             ) : (
-              <PanelLeftOpenIcon
-                onClick={() => {
-                  closeRightbar()
-                }}
-                className={`w-6 cursor-pointer h-6 mt-5 `}
-              />
-            ))}
+              <PanelRightOpenIcon className='sm:w-6 sm:h-6  w-8 h-8' />
+            )}
+          </button>
+        )}
+        <Outlet />
+      </section>
+
+      {/* Mobile sidebar overlay */}
+      {showMobileSidebar && (
+        <div className='fixed inset-0 z-50 md:hidden'>
+          <div
+            className='absolute inset-0 bg-black/50'
+            onClick={() => setShowMobileSidebar(false)}
+          />
+          <aside
+            className={`absolute left-0 top-0 bottom-0 w-70 p-5 overflow-y-auto ${
+              appearance.theme == 'dark' ? 'bg-[#2a2a2a]' : 'bg-[#f8f8f8]'
+            }`}
+          >
+            <div className='flex justify-end mb-4'>
+              <button
+                onClick={() => setShowMobileSidebar(false)}
+                className={`cursor-pointer ${
+                  appearance.theme == 'dark' ? 'text-white' : 'text-black'
+                }`}
+              >
+                <X className='w-5 h-5' />
+              </button>
+            </div>
+            <Sidebar className='' />
+          </aside>
         </div>
-        {showRightbar &&
-          (actualPath == 'resumes' || actualPath == 'overview') && (
+      )}
+
+      {showRightbar && (actualPath == 'resumes' || actualPath == 'overview') && (
+        <>
+          {/* Mobile overlay */}
+          <div className='fixed inset-0 z-50 md:hidden' onClick={closeRightbar}>
+            <div className='absolute inset-0 bg-black/50' />
+            <aside
+              className={`absolute right-0 top-0 bottom-0 w-80 transition-all duration-200 rounded-xl shadow-[#23232389] shadow-sm ${
+                appearance.theme == 'dark' ? 'bg-[#2a2a2a]' : 'bg-white'
+              }`}
+              onClick={e => e.stopPropagation()}
+            >
+              <Rightbar data={activities} className='' />
+            </aside>
+          </div>
+          {/* Desktop inline */}
+          <div className='hidden md:block'>
             <Rightbar
               data={activities}
-              className={
-                'w-80 transition-all duration-200 transform-gpu ease-linear  rounded-xl shadow-[#23232389] shadow-sm '
-              }
+              className='w-80 transition-all duration-200 transform-gpu ease-linear rounded-xl shadow-[#23232389] shadow-sm'
             />
-          )}
-      </section>
+          </div>
+        </>
+      )}
 
       {modals.selectResume && (
         <>

@@ -99,7 +99,7 @@ export default function SelectResume () {
 
   return (
     <div
-      className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full flex justify-between flex-col  max-w-lg rounded-3xl shadow-2xl overflow-hidden font-satoshi min-h-135 h-135 z-50 ${
+      className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 sm:w-full flex w-[95%]  justify-between flex-col  max-w-lg rounded-3xl shadow-2xl overflow-hidden font-satoshi min-h-135 h-135 z-50 ${
         appearance.theme == 'dark'
           ? 'bg-[#2a2a2a] border border-slate-700'
           : 'bg-white border border-gray-100'
@@ -246,7 +246,7 @@ export default function SelectResume () {
 function Files ({ data, setSelected, selected }) {
   const { appearance } = useSelector(state => state.preferences)
   return (
-    <div className='space-y-1 max-h-60 py-0  overflow-y-auto px-1 [scrollbar-width:thin]'>
+    <div className='space-y-1 max-h-60 max-sm:py-3  overflow-y-auto px-1 [scrollbar-width:thin]'>
       {data.length > 0 ? (
         data.map(resume => (
           <div
