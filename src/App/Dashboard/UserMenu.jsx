@@ -70,7 +70,7 @@ export default function UserMenu ({ data, appearance }) {
         }`}
       >
         <div
-          className={`w-[20%] p-2 rounded-xl flex justify-center items-center ${
+          className={`w-[30%] p-1 rounded-xl flex justify-center items-center ${
             appearance.theme == 'dark' ? 'bg-[#202020]' : 'bg-white'
           }`}
         >

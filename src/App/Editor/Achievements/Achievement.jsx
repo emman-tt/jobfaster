@@ -54,7 +54,7 @@ export default function Achievements ({ setEditingId }) {
           onClick={() => setIsOpen(!isOpen)}
           className={`flex items-center justify-between px-4 sm:px-6 md:px-8 lg:px-10 py-4 cursor-pointer border-b transition-colors ${
             appearance.theme == 'dark'
-              ? 'border-0'
+              ? 'border-white/50'
               : 'border-gray-200'
           }`}
         >
@@ -136,9 +136,9 @@ export default function Achievements ({ setEditingId }) {
 
             <button
               onClick={() => openModal()}
-              className={`w-full flex items-center justify-center gap-2 px-4 py-3 border border-dashed rounded-xl hover:bg-gray-50 hover:border-gray-400 transition-colors text-sm ${
+              className={`w-full flex items-center justify-center gap-2 px-4 py-3 border cursor-pointer border-dashed rounded-xl hover:bg-gray-50 hover:border-gray-400 transition-colors text-sm ${
                 appearance.theme == 'dark'
-                  ? 'border-slate-700 text-slate-300 hover:bg-slate-700 hover:border-slate-600'
+                  ? 'border-slate-700 text-slate-300 hover:bg-slate-800 hover:border-slate-600'
                   : 'border-gray-300 text-gray-600'
               }`}
             >

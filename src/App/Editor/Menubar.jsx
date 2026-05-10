@@ -8,6 +8,7 @@ import {
   AlignJustify
 } from 'lucide-react'
 import { useDispatch, useSelector } from 'react-redux'
+import useClickOutside from '../../hooks/useClick'
 import {
   setAlign,
   setFont,
@@ -55,9 +56,10 @@ const alignList = [
 
 function FontWeight ({ onSelect, weight }) {
   const [isOpen, setIsOpen] = useState(false)
+  const ref = useClickOutside(() => setIsOpen(false))
 
   return (
-    <div className='w-full sm:w-30 relative shrink-0'>
+    <div ref={ref} className='w-full sm:w-30 relative shrink-0'>
       <button
         onClick={() => setIsOpen(prev => !prev)}
         className='w-full border border-gray-200 pl-4 pr-3 py-2.5 rounded-xl text-xs text-gray-900 font-medium flex items-center justify-between  transition-all shadow-sm bg-white'
@@ -126,9 +128,10 @@ function Alignment ({ onSelect, align }) {
 
 function TextContrast ({ onSelect, contrast }) {
   const [isOpen, setIsOpen] = useState(false)
+  const ref = useClickOutside(() => setIsOpen(false))
 
   return (
-    <div className='w-full sm:w-36 relative shrink-0'>
+    <div ref={ref} className='w-full sm:w-36 relative shrink-0'>
       <label className='text-sm text-gray-600'>Text Contrast</label>
       <button
         onClick={() => setIsOpen(prev => !prev)}
@@ -171,9 +174,10 @@ function TextContrast ({ onSelect, contrast }) {
 
 function LineHeight ({ onSelect, height }) {
   const [isOpen, setIsOpen] = useState(false)
+  const ref = useClickOutside(() => setIsOpen(false))
 
   return (
-    <div className='w-full sm:w-36 relative shrink-0'>
+    <div ref={ref} className='w-full sm:w-36 relative shrink-0'>
       <button
         onClick={() => setIsOpen(prev => !prev)}
         className='w-full border border-gray-200 pl-4 pr-3 py-2.5 rounded-xl text-xs text-gray-900 font-medium flex items-center justify-between transition-all shadow-sm bg-white'

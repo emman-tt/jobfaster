@@ -47,7 +47,7 @@ export function Modal ({ editingId }) {
       }`}>
         <div className={`flex items-center justify-between px-8 py-6 border-b ${
           appearance.theme == 'dark'
-            ? 'border-0'
+            ? 'border-white/30'
             : 'border-gray-200'
         }`}>
           <h3 className={`text-2xl font-bold ${
@@ -73,7 +73,7 @@ export function Modal ({ editingId }) {
           <div>
             <label className={`text-[10px] font-bold uppercase tracking-widest block mb-2 ${
               appearance.theme == 'dark'
-                ? 'text-slate-400'
+                ? 'text-white'
                 : 'text-black'
             }`}>
               CERTIFICATION NAME <span className='text-red-500'>*</span>
@@ -85,7 +85,7 @@ export function Modal ({ editingId }) {
               placeholder='AWS Certified Solutions Architect'
               className={`w-full border rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-1 focus:ring-[#ec5b13] transition-all ${
                 appearance.theme == 'dark'
-                  ? 'border-slate-700 bg-[#2a2a2a] text-white placeholder:text-slate-500'
+                  ? 'border-0 bg-[#2a2a2a] text-white placeholder:text-slate-500'
                   : 'border-gray-100 bg-white text-gray-700 placeholder:text-gray-300'
               }`}
             />
@@ -94,7 +94,7 @@ export function Modal ({ editingId }) {
           <div>
             <label className={`text-[10px] font-bold uppercase tracking-widest block mb-2 ${
               appearance.theme == 'dark'
-                ? 'text-slate-400'
+                ? 'text-white'
                 : 'text-black'
             }`}>
               ISSUING ORGANIZATION
@@ -106,7 +106,7 @@ export function Modal ({ editingId }) {
               placeholder='Amazon Web Services (AWS)'
               className={`w-full border rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-1 focus:ring-[#ec5b13] transition-all ${
                 appearance.theme == 'dark'
-                  ? 'border-slate-700 bg-[#2a2a2a] text-white placeholder:text-slate-500'
+                  ? 'border-0 bg-[#2a2a2a] text-white placeholder:text-slate-500'
                   : 'border-gray-100 bg-white text-gray-700 placeholder:text-gray-300'
               }`}
             />
@@ -115,7 +115,7 @@ export function Modal ({ editingId }) {
           <div>
             <label className={`text-[10px] font-bold uppercase tracking-widest block mb-2 ${
               appearance.theme == 'dark'
-                ? 'text-slate-400'
+                ? 'text-white'
                 : 'text-black'
             }`}>
               YEAR OBTAINED
@@ -129,7 +129,7 @@ export function Modal ({ editingId }) {
                 placeholder='Select Year'
                 className={`w-full border rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-1 focus:ring-[#ec5b13] transition-all cursor-pointer ${
                   appearance.theme == 'dark'
-                    ? 'border-slate-700 bg-[#2a2a2a] text-white placeholder:text-slate-500'
+                    ? 'border-0 bg-[#2a2a2a] text-white placeholder:text-slate-500'
                     : 'border-gray-100 bg-white text-gray-700 placeholder:text-gray-300'
                 }`}
               />
@@ -191,7 +191,7 @@ export function Modal ({ editingId }) {
             <div>
               <label className={`text-[10px] font-bold uppercase tracking-widest block mb-2 ${
                 appearance.theme == 'dark'
-                  ? 'text-slate-400'
+                  ? 'text-white'
                   : 'text-black'
               }`}>
                 EXPIRY YEAR
@@ -205,7 +205,7 @@ export function Modal ({ editingId }) {
                   placeholder='Select Expiry Year'
                   className={`w-full border rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-1 focus:ring-[#ec5b13] transition-all cursor-pointer ${
                     appearance.theme == 'dark'
-                      ? 'border-slate-700 bg-[#2a2a2a] text-white placeholder:text-slate-500'
+                      ? 'border-0 bg-[#2a2a2a] text-white placeholder:text-slate-500'
                       : 'border-gray-100 bg-white text-gray-700 placeholder:text-gray-300'
                   }`}
                 />

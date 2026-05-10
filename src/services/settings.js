@@ -1,5 +1,16 @@
 import { api } from '../libs/axios'
 
+
+
+
+
+export async function fetchSettings (data) {
+  const res = await api.get('settings', {
+    data
+  })
+
+  return res.data.data
+}
 export async function updateProfile (data) {
   const res = await api.patch('settings/profile', {
     data

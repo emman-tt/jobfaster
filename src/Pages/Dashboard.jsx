@@ -9,7 +9,7 @@ import Folder from '../App/Dashboard/Overview/Modals/Folder'
 import Rightbar from '../App/Dashboard/Rightbar/Rightbar'
 import { PanelLeftOpenIcon, PanelRightOpenIcon } from 'lucide-react'
 import { useDispatch } from 'react-redux'
-import { useEffect, useRef } from 'react'
+import { useEffect } from 'react'
 import SelectResume from '../App/Dashboard/Job/Modals/SelectResume'
 import { onJobApply, onSendJobMail } from '../services/useSocket'
 
@@ -121,7 +121,7 @@ export default function Dashboard () {
       }  overflow-hidden   w-full h-screen `}
     >
       <Sidebar
-        className={`w-[18%] ${
+        className={`w-70 ${
           appearance.theme == 'dark' ? 'bg-[#2a2a2a]' : 'bg-[#f8f8f8]'
         }  p-5 `}
       />

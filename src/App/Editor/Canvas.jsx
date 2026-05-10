@@ -5,7 +5,6 @@ import { ZoomIn, ZoomOut, RotateCcw, Layout } from 'lucide-react'
 import { Preview } from './Preview'
 
 export default function Canvas () {
- 
   const { appearance } = useSelector(state => state.preferences)
   const [scale, setScale] = useState(50)
   const [position, setPosition] = useState({ x: 50, y: 0 })
@@ -65,7 +64,7 @@ export default function Canvas () {
       <div
         className={`absolute z-6 bottom-6 left-1/2 -translate-x-1/2 flex items-center gap-2 px-4 py-2.5 rounded-2xl backdrop-blur-xl shadow-lg ${
           appearance.theme == 'dark'
-            ? 'bg-black/80'
+            ? 'bg-black/80 '
             : 'bg-black/60 border border-white/40'
         }`}
       >

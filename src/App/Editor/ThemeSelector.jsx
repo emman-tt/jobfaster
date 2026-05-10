@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { ChevronDown } from 'lucide-react'
 import { useDispatch, useSelector } from 'react-redux'
+import useClickOutside from '../../hooks/useClick'
 import { setTheme } from '../../store/editorSlice'
 
 export const THEME_COLORS = {
@@ -15,34 +16,34 @@ export const THEME_COLORS = {
     contact: '#6B7280'
   },
   navy: {
-    base: '#1B2A4A',
-    name: '#1B2A4A',
-    sectionHeader: '#1B2A4A',
-    company: '#1B2A4A',
-    jobTitle: '#2F4A7A',
+    base: '#1B3A6B',
+    name: '#1B3A6B',
+    sectionHeader: '#1B3A6B',
+    company: '#1B3A6B',
+    jobTitle: '#2C5F8A',
     bodyText: '#2d2d2d',
-    date: '#6B7280',
-    contact: '#6B7280'
+    date: '#5A7A9A',
+    contact: '#5A7A9A'
   },
   slate: {
-    base: '#2F3E55',
-    name: '#2F3E55',
-    sectionHeader: '#2F3E55',
-    company: '#2F3E55',
-    jobTitle: '#4A6080',
-    bodyText: '#333333',
-    date: '#6B7280',
-    contact: '#6B7280'
+    base: '#3D5278',
+    name: '#3D5278',
+    sectionHeader: '#3D5278',
+    company: '#3D5278',
+    jobTitle: '#5A7A9A',
+    bodyText: '#2d2d2d',
+    date: '#7A8FA8',
+    contact: '#7A8FA8'
   },
   forest: {
-    base: '#1B3A2A',
-    name: '#1B3A2A',
-    sectionHeader: '#1B3A2A',
-    company: '#1B3A2A',
-    jobTitle: '#2D6A4F',
+    base: '#2D6A4F',
+    name: '#2D6A4F',
+    sectionHeader: '#2D6A4F',
+    company: '#2D6A4F',
+    jobTitle: '#40916C',
     bodyText: '#2d2d2d',
-    date: '#6B7280',
-    contact: '#6B7280'
+    date: '#5A8A72',
+    contact: '#5A8A72'
   },
   charcoal: {
     base: '#1C1C1C',
@@ -53,6 +54,36 @@ export const THEME_COLORS = {
     bodyText: '#333333',
     date: '#777777',
     contact: '#777777'
+  },
+  burgundy: {
+    base: '#6B2D3D',
+    name: '#6B2D3D',
+    sectionHeader: '#6B2D3D',
+    company: '#6B2D3D',
+    jobTitle: '#8B4A5A',
+    bodyText: '#2d2d2d',
+    date: '#7A5A62',
+    contact: '#7A5A62'
+  },
+  ocean: {
+    base: '#1A6B6B',
+    name: '#1A6B6B',
+    sectionHeader: '#1A6B6B',
+    company: '#1A6B6B',
+    jobTitle: '#2D8A8A',
+    bodyText: '#2d2d2d',
+    date: '#5A8A8A',
+    contact: '#5A8A8A'
+  },
+  plum: {
+    base: '#4A2D6B',
+    name: '#4A2D6B',
+    sectionHeader: '#4A2D6B',
+    company: '#4A2D6B',
+    jobTitle: '#6B4A8B',
+    bodyText: '#2d2d2d',
+    date: '#7A6A8A',
+    contact: '#7A6A8A'
   }
 }
 
@@ -62,12 +93,13 @@ export default function ThemeSelector () {
   const dispatch = useDispatch()
   const { theme } = useSelector(state => state.editor)
   const [isOpen, setIsOpen] = useState(false)
+  const ref = useClickOutside(() => setIsOpen(false))
 
   const currentTheme = theme || 'monochrome'
   const currentColor = THEME_COLORS[currentTheme]?.base || '#111111'
 
   return (
-    <div className='w-full sm:w-40 relative shrink-0'>
+    <div ref={ref} className='w-full sm:w-40 relative shrink-0'>
       <button
         onClick={() => setIsOpen(prev => !prev)}
         className='w-full border border-gray-200 pl-3 pr-3 py-2.5 rounded-xl text-xs text-gray-900 font-medium flex items-center justify-between hover:shadow-md transition-all shadow-sm bg-white'

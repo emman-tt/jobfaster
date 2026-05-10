@@ -144,9 +144,9 @@ export default function Experience ({ setEditingId }) {
             {/* Add New Experience Button */}
             <button
               onClick={() => openModal()}
-              className={`w-full flex items-center justify-center gap-2 px-4 py-3 border border-dashed rounded-xl cursor-pointer  transition-colors text-sm ${
+              className={`w-full flex items-center justify-center gap-2 px-4 py-3 border  border-dashed rounded-xl cursor-pointer  transition-colors text-sm ${
                 appearance.theme == 'dark'
-                  ? 'border-0 text-slate-300 hover:bg-none'
+                  ? 'border-slate-700 text-slate-300 hover:bg-slate-800 hover:border-slate-600'
                   : 'border-gray-300 hover:bg-gray-50 hover:border-gray-400  text-gray-600'
               }`}
             >

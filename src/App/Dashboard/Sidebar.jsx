@@ -39,11 +39,9 @@ export default function Sidebar ({ className }) {
     refetchOnReconnect: false
   })
 
-  console.log(data)
-
   return (
-    <section className={`flex flex-col h-full justify-between ${className}`}>
-      <div>
+    <section className={`flex flex-col h-full ${className}`}>
+      <div className='flex-1'>
         <section
           className={`w-full flex justify-between items-center rounded-xl text-xs p-2 `}
         >
@@ -64,11 +62,7 @@ export default function Sidebar ({ className }) {
               <p className='font-light'>Free plan</p>
             </div>
           </div>
-          <PanelLeftClose
-            className={`w-5 h-5 ${
-              appearance.theme == 'dark' ? 'text-white' : 'text-black'
-            }`}
-          />
+      
         </section>
 
         <section className='flex flex-col w-full p-2 mt-5 gap-2'>
@@ -126,7 +120,7 @@ export default function Sidebar ({ className }) {
       </div>
 
       <div className='flex flex-col gap-4'>
-        <div className='px-2 flex flex-col gap-3'>
+        <div className='px-2  flex flex-col gap-3'>
           {bottom.map(item => (
             <NavLink
               to={item.href || '#'}

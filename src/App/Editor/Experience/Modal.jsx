@@ -68,9 +68,9 @@ export function Modal ({ editingId }) {
           ? 'bg-[#202020]'
           : 'bg-white'
       }`}>
-        <div className={`flex items-center justify-between px-8 py-6 border-b ${
+        <div className={`flex items-center justify-between px-8 pb-3 py-6 border-b ${
           appearance.theme == 'dark'
-            ? 'border-0'
+            ? 'border-white/30'
             : 'border-gray-200'
         }`}>
           <h3 className={`text-2xl font-bold ${
@@ -92,12 +92,12 @@ export function Modal ({ editingId }) {
           </button>
         </div>
 
-        <div className='px-8 pb-8 space-y-3 max-h-[70vh] overflow-y-auto custom-scrollbar'>
+        <div className='px-8 pb-8 pt-7 space-y-3 max-h-[70vh] overflow-y-auto custom-scrollbar'>
           <div className='grid grid-cols-1 sm:grid-cols-2 gap-3'>
             <div>
               <label className={`text-[10px] font-bold uppercase tracking-widest block mb-2 ${
                 appearance.theme == 'dark'
-                  ? 'text-slate-400'
+                  ? 'text-white'
                   : 'text-black'
               }`}>
                 COMPANY
@@ -111,7 +111,7 @@ export function Modal ({ editingId }) {
                 placeholder='Paystack'
                 className={`w-full border rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-1 focus:ring-[#6B4E42] transition-all ${
                   appearance.theme == 'dark'
-                    ? 'border-slate-700 bg-[#2a2a2a] text-white placeholder:text-slate-500'
+                    ? 'border-0 bg-[#2a2a2a] text-white placeholder:text-slate-500'
                     : 'border-gray-100 bg-white text-gray-700 placeholder:text-gray-300'
                 }`}
               />
@@ -119,7 +119,7 @@ export function Modal ({ editingId }) {
             <div>
               <label className={`text-[10px] font-bold uppercase tracking-widest block mb-2 ${
                 appearance.theme == 'dark'
-                  ? 'text-slate-400'
+                  ? 'text-white'
                   : 'text-black'
               }`}>
                 ROLE
@@ -133,7 +133,7 @@ export function Modal ({ editingId }) {
                 placeholder='Frontend Developer'
                 className={`w-full border rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-1 focus:ring-[#6B4E42] transition-all ${
                   appearance.theme == 'dark'
-                    ? 'border-slate-700 bg-[#2a2a2a] text-white placeholder:text-slate-500'
+                    ? 'border-0 bg-[#2a2a2a] text-white placeholder:text-slate-500'
                     : 'border-gray-100 bg-white text-gray-700 placeholder:text-gray-300'
                 }`}
               />
@@ -142,7 +142,7 @@ export function Modal ({ editingId }) {
           <div>
             <label className={`text-[10px] font-bold uppercase tracking-widest block mb-2 ${
               appearance.theme == 'dark'
-                ? 'text-slate-400'
+                ? 'text-white'
                 : 'text-black'
             }`}>
               LOCATION
@@ -156,7 +156,7 @@ export function Modal ({ editingId }) {
               placeholder='Accra, Ghana'
               className={`w-full border rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-1 focus:ring-[#6B4E42] transition-all ${
                 appearance.theme == 'dark'
-                  ? 'border-slate-700 bg-[#2a2a2a] text-white placeholder:text-slate-500'
+                  ? 'border-0 bg-[#2a2a2a] text-white placeholder:text-slate-500'
                   : 'border-gray-100 bg-white text-gray-700 placeholder:text-gray-300'
               }`}
             />
@@ -166,7 +166,7 @@ export function Modal ({ editingId }) {
             <div>
               <label className={`text-[10px] font-bold uppercase tracking-widest block mb-2 ${
                 appearance.theme == 'dark'
-                  ? 'text-slate-400'
+                  ? 'text-white'
                   : 'text-black'
               }`}>
                 START YEAR
@@ -180,7 +180,7 @@ export function Modal ({ editingId }) {
                 placeholder='2022'
                 className={`w-full border rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-1 focus:ring-[#6B4E42] transition-all ${
                   appearance.theme == 'dark'
-                    ? 'border-slate-700 bg-[#2a2a2a] text-white placeholder:text-slate-500'
+                    ? 'border-0 bg-[#2a2a2a] text-white placeholder:text-slate-500'
                     : 'border-gray-100 bg-white text-gray-700 placeholder:text-gray-300'
                 }`}
               />
@@ -188,7 +188,7 @@ export function Modal ({ editingId }) {
             <div>
               <label className={`text-[10px] font-bold uppercase tracking-widest block mb-2 ${
                 appearance.theme == 'dark'
-                  ? 'text-slate-400'
+                  ? 'text-white'
                   : 'text-black'
               }`}>
                 END YEAR
@@ -203,7 +203,7 @@ export function Modal ({ editingId }) {
                   placeholder='Present'
                   className={`w-full border rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-1 focus:ring-[#6B4E42] transition-all ${
                     appearance.theme == 'dark'
-                      ? 'border-slate-700 bg-[#2a2a2a] text-white placeholder:text-slate-500'
+                      ? 'border-0 bg-[#2a2a2a] text-white placeholder:text-slate-500'
                       : 'border-gray-100 bg-white text-gray-700 placeholder:text-gray-300'
                   }`}
                 />
@@ -222,7 +222,7 @@ export function Modal ({ editingId }) {
           <div>
             <label className={`text-[10px] font-bold uppercase tracking-widest block mb-2 ${
               appearance.theme == 'dark'
-                ? 'text-slate-400'
+                ? 'text-white'
                 : 'text-black'
             }`}>
               KEY ACCOMPLISHMENTS
@@ -273,7 +273,7 @@ export function Modal ({ editingId }) {
                   placeholder='Detail your accomplishment...'
                   className={`flex-1 border rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-1 focus:ring-[#6B4E42] transition-all ${
                     appearance.theme == 'dark'
-                      ? 'border-slate-700 bg-[#2a2a2a] text-white placeholder:text-slate-500'
+                      ? 'border-0 bg-[#2a2a2a] text-white placeholder:text-slate-500'
                       : 'border-gray-100 bg-white text-gray-700 placeholder:text-gray-300'
                   }`}
                   onKeyDown={e => {
@@ -306,14 +306,14 @@ export function Modal ({ editingId }) {
         {/* Modal Footer */}
         <div className={`flex items-center justify-end gap-4 px-8 py-6 border-t ${
           appearance.theme == 'dark'
-            ? 'border-slate-700 bg-[#202020]'
+            ? 'border-white/30 bg-[#202020]'
             : 'border-gray-200 bg-white'
         }`}>
           <button
             onClick={closeModal}
             className={`px-10 py-3 text-sm font-bold rounded-full transition-all active:scale-95 ${
               appearance.theme == 'dark'
-                ? 'text-slate-300 border border-slate-700 hover:bg-slate-800'
+                ? 'text-slate-300 border-0 hover:bg-slate-800'
                 : 'text-gray-600 border border-gray-200 bg-white hover:bg-gray-50'
             }`}
           >

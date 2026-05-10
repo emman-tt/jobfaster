@@ -1,18 +1,13 @@
-import React, { useEffect, useState } from 'react'
-import { User, Bell, Activity as ActivityIcon } from 'lucide-react'
-import { data, useNavigate } from 'react-router-dom'
+import React, { useState } from 'react'
+import { User, Bell } from 'lucide-react'
+import { useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
-import { toast } from 'sonner'
 import Profile from './Profile'
 import Notifications from './Notifications'
-import Activity from './Activity'
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
-import {
-  updateActivity,
-  updateNotification,
-  updateProfile
-} from '../../../services/settings'
-import { fetchSettingsData, getUser } from '../../../services/user'
+import { useQuery, useQueryClient } from '@tanstack/react-query'
+import { updateProfile as saveProfile, updateNotification as saveNotification } from '../../../services/settings'
+import { fetchSettingsData } from '../../../services/user'
+import { toast } from 'sonner'
 
 const SectionHeader = ({ title, description, children }) => {
   const { appearance } = useSelector(state => state.preferences)
@@ -63,35 +58,86 @@ export default function Settings () {
   const [activeTab, setActiveTab] = useState('profile')
   const queryClient = useQueryClient()
   const { appearance } = useSelector(state => state.preferences)
-  const [draftChanges, setDraftChanges] = useState({})
-  const { data, isLoading, isFetching } = useQuery({
+
+  const { data } = useQuery({
     queryKey: ['settings'],
     queryFn: () => fetchSettingsData()
   })
 
-  const currentActivity = {
-    ...data?.activity,
-    ...draftChanges
+  const profileData = {
+    userName: data?.user?.name || '',
+    email: data?.user?.email || ''
   }
 
-  const updateMutation = useMutation({
-    mutationFn: ({ tab, data }) => {
-      if (tab == 'profile') {
-        return updateProfile(data)
-      }
-      if (tab == 'notification') {
-        return updateNotification(data)
-      }
-      if (tab == 'activity') {
-        return updateActivity(data)
-      }
-      return console.warn('unknown tab used', tab)
-    },
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['settings'] })
-  })
+  const notificationData = {
+    aiOptimizationComplete: !!data?.aiTailoringComplete,
+    emailSentFailed: !!data?.jobEmailSendAlert,
+    newJobs: !!data?.newJobsAlert
+  }
 
-  function handleSave (changes) {
-    updateMutation.mutate({ activeTab, changes })
+  const apiFieldMap = {
+    aiOptimizationComplete: 'aiTailoringComplete',
+    emailSentFailed: 'jobEmailSendAlert',
+    newJobs: 'newJobsAlert'
+  }
+
+  function updateProfile (username, email) {
+    queryClient.setQueryData(['settings'], old => {
+      if (!old) return old
+      return { ...old, user: { ...old.user, name: username, email } }
+    })
+  }
+
+  function updatePhoto (dataUrl) {
+    queryClient.setQueryData(['settings'], old => {
+      if (!old) return old
+      return { ...old, user: { ...old.user, photo: dataUrl } }
+    })
+  }
+
+  function updatePhotoRemove () {
+    queryClient.setQueryData(['settings'], old => {
+      if (!old) return old
+      const user = { ...old.user }
+      delete user.photo
+      return { ...old, user }
+    })
+  }
+
+  function updateNotification (key) {
+    const apiField = apiFieldMap[key]
+    queryClient.setQueryData(['settings'], old => {
+      if (!old) return old
+      return { ...old, [apiField]: !old[apiField] }
+    })
+  }
+
+  async function handleSaveChanges () {
+    const current = queryClient.getQueryData(['settings'])
+    if (!current) return
+
+    try {
+      await saveProfile({
+        name: current.user?.name,
+        email: current.user?.email
+      })
+      await saveNotification({
+        aiTailoringComplete: current.aiTailoringComplete,
+        jobEmailSendAlert: current.jobEmailSendAlert,
+        newJobsAlert: current.newJobsAlert
+      })
+      queryClient.invalidateQueries({ queryKey: ['settings'] })
+      toast.success('Settings saved successfully')
+      navigate('/dashboard')
+    } catch (err) {
+      console.error('Failed to save settings:', err)
+      toast.error('Failed to save settings')
+    }
+  }
+
+  function handleCancel () {
+    queryClient.invalidateQueries({ queryKey: ['settings'] })
+    navigate('/dashboard')
   }
 
   return (
@@ -107,7 +153,17 @@ export default function Settings () {
         >
           <div className='flex items-center gap-2'>
             <button
-              onClick={() => navigate('/dashboard')}
+              onClick={handleSaveChanges}
+              className={`px-4 py-2 text-sm font-medium rounded-lg transition-colors bg-[#f17e27] text-white shadow-sm ${
+                appearance.theme === 'dark'
+                  ? 'text-slate-300 '
+                  : 'text-slate-600 '
+              }`}
+            >
+              Save Changes
+            </button>
+            <button
+              onClick={handleCancel}
               className={`px-4 py-2 text-sm font-medium rounded-lg transition-colors ${
                 appearance.theme === 'dark'
                   ? 'text-slate-300 hover:bg-slate-800'
@@ -115,12 +171,6 @@ export default function Settings () {
               }`}
             >
               Cancel
-            </button>
-            <button
-              onClick={handleSave}
-              className='px-4 py-2 bg-[#f17e27] hover:bg-[#e16d16] text-white text-sm font-medium rounded-lg transition-colors'
-            >
-              Save Changes
             </button>
           </div>
         </SectionHeader>
@@ -146,31 +196,22 @@ export default function Settings () {
             label='Notifications'
             icon={Bell}
           />
-          <TabButton
-            activeTab={activeTab}
-            setActiveTab={setActiveTab}
-            id='activity'
-            label='Activity'
-            icon={ActivityIcon}
-          />
         </div>
 
-        {/* {activeTab === 'profile' && (
+        {activeTab === 'profile' && (
           <Profile
-            profile={profile}
-            setProfile={setProfile}
-            handleUpdate={handleUpdate}
+            profile={profileData}
+            onUpdateProfile={updateProfile}
+            onPhotoUpload={updatePhoto}
+            onRemovePhoto={updatePhotoRemove}
           />
-        )} */}
-        {/* {activeTab === 'notifications' && (
+        )}
+        {activeTab === 'notifications' && (
           <Notifications
-            notifications={notifications}
-            toggleNotification={toggleNotification}
+            data={notificationData}
+            toggleNotification={updateNotification}
           />
-        )} */}
-        {/* {activeTab === 'activity' && (
-          <Activity activity={activity} toggleActivity={toggleActivity} />
-        )} */}
+        )}
       </div>
     </section>
   )

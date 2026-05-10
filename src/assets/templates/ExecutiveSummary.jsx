@@ -26,6 +26,16 @@ const ExecutiveSummary = ({ data }) => {
       className={`${fontFamily}`}
 
     >
+      {data?.pageNumber > 1 && (
+        <div style={{ marginBottom: '12px' }}>
+          <div style={{ borderTop: '1px solid #999', marginBottom: '6px' }} />
+          <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '10pt', color: '#666' }}>
+            <span style={{ fontWeight: 'bold' }}>{data?.name}</span>
+            <span>Page {data?.pageNumber} of {data?.totalPages}</span>
+          </div>
+          <div style={{ borderTop: '1px solid #999', marginTop: '6px' }} />
+        </div>
+      )}
       <div
         style={{
           background: '#f5f5f5',
@@ -158,7 +168,7 @@ const ExecutiveSummary = ({ data }) => {
             Professional Experience
           </h3>
             {data.experience.map(exp => (
-              <div key={exp.id} style={{ marginBottom: '10px' }}>
+              <div key={exp.id} data-section="experience" style={{ marginBottom: '10px' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                 <h4
                   style={{
@@ -212,7 +222,7 @@ const ExecutiveSummary = ({ data }) => {
             Notable Projects
           </h3>
           {data.projects.map(proj => (
-            <div key={proj.id} style={{ marginBottom: '8px' }}>
+            <div key={proj.id} data-section="projects" style={{ marginBottom: '8px' }}>
               <p
                 style={{
                   fontSize: `${companyStyles.size || 12}pt`,
@@ -295,6 +305,7 @@ const ExecutiveSummary = ({ data }) => {
           {data.education?.map(edu => (
             <div
               key={edu.id}
+              data-section="education"
               style={{
                 marginBottom: '6px',
                 fontSize: `${bodyStyles.size || 11}pt`

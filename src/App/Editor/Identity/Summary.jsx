@@ -40,6 +40,11 @@ export default function Summary () {
         width='w-full'
         height='h-64'
         placeholder=''
+        className={`${
+          appearance.theme == 'dark'
+            ? 'bg-black text-white border-0'
+            : 'bg-gray-50 text-gray-900 border-white'
+        }`}
         value={summary}
         onChange={handleSummaryChange}
       />

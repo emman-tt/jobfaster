@@ -27,6 +27,16 @@ const ATSOptimized = ({ data }) => {
       className={`${fontFamily}`}
 
     >
+      {data?.pageNumber > 1 && (
+        <div style={{ marginBottom: '12px' }}>
+          <div style={{ borderTop: '1px solid #999', marginBottom: '6px' }} />
+          <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '10pt', color: '#666' }}>
+            <span style={{ fontWeight: 'bold' }}>{data?.name}</span>
+            <span>Page {data?.pageNumber} of {data?.totalPages}</span>
+          </div>
+          <div style={{ borderTop: '1px solid #999', marginTop: '6px' }} />
+        </div>
+      )}
       <div
         style={{
           marginBottom: '12px',
@@ -122,7 +132,7 @@ const ATSOptimized = ({ data }) => {
             Experience
           </div>
           {data.experience.map(exp => (
-            <div key={exp.id} style={{ marginBottom: '8px' }}>
+            <div key={exp.id} data-section="experience" style={{ marginBottom: '8px' }}>
                 <div
                   style={{
                     fontWeight: 'bold',
@@ -177,7 +187,7 @@ const ATSOptimized = ({ data }) => {
             Projects
           </div>
           {data.projects.map(proj => (
-            <div key={proj.id} style={{ marginBottom: '6px' }}>
+            <div key={proj.id} data-section="projects" style={{ marginBottom: '6px' }}>
               <div
                 style={{
                   fontSize: `${companyStyles.size || 10}pt`,
@@ -217,7 +227,7 @@ const ATSOptimized = ({ data }) => {
             Education
           </div>
           {data.education.map(edu => (
-            <div key={edu.id} style={{ marginBottom: '4px' }}>
+            <div key={edu.id} data-section="education" style={{ marginBottom: '4px' }}>
               <div
                 style={{
                   fontWeight: 'bold',

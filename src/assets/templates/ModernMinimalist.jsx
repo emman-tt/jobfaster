@@ -23,6 +23,16 @@ const ModernMinimalist = ({ data }) => {
       }}
       className={`${fontFamily}`}
     >
+      {data?.pageNumber > 1 && (
+        <div style={{ marginBottom: '12px' }}>
+          <div style={{ borderTop: '1px solid #999', marginBottom: '6px' }} />
+          <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '10pt', color: '#666' }}>
+            <span style={{ fontWeight: 'bold' }}>{data?.name}</span>
+            <span>Page {data?.pageNumber} of {data?.totalPages}</span>
+          </div>
+          <div style={{ borderTop: '1px solid #999', marginTop: '6px' }} />
+        </div>
+      )}
       <div style={{ marginBottom: '32px' }}>
         <h1
           style={{
@@ -108,7 +118,7 @@ const ModernMinimalist = ({ data }) => {
             Experience
           </h2>
           {data.experience.map(exp => (
-            <div key={exp.id} style={{ marginBottom: '20px' }}>
+            <div key={exp.id} data-section="experience" style={{ marginBottom: '20px' }}>
               <div
                 style={{
                   display: 'flex',
@@ -179,7 +189,7 @@ const ModernMinimalist = ({ data }) => {
             Projects
           </h2>
           {data.projects.map(proj => (
-            <div key={proj.id} style={{ marginBottom: '16px' }}>
+            <div key={proj.id} data-section="projects" style={{ marginBottom: '16px' }}>
               <h3
                 style={{
                   fontSize: `${companyStyles.size || 13}pt`,
@@ -237,7 +247,7 @@ const ModernMinimalist = ({ data }) => {
                   Education
                 </h2>
                 {data.education.map(edu => (
-                  <div key={edu.id} style={{ marginBottom: '12px' }}>
+                  <div key={edu.id} data-section="education" style={{ marginBottom: '12px' }}>
                     <h3
                       style={{
                         fontSize: `${companyStyles.size || 12}pt`,

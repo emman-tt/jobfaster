@@ -22,6 +22,16 @@ const AcademicStyle = ({ data }) => {
       }}
       className={`${fontFamily}`}
     >
+      {data?.pageNumber > 1 && (
+        <div style={{ marginBottom: '12px' }}>
+          <div style={{ borderTop: '1px solid #999', marginBottom: '6px' }} />
+          <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '10pt', color: '#666' }}>
+            <span style={{ fontWeight: 'bold' }}>{data?.name}</span>
+            <span>Page {data?.pageNumber} of {data?.totalPages}</span>
+          </div>
+          <div style={{ borderTop: '1px solid #999', marginTop: '6px' }} />
+        </div>
+      )}
       <div
         style={{
           textAlign: 'center',
@@ -99,6 +109,7 @@ const AcademicStyle = ({ data }) => {
           {data.experience.map((exp, idx) => (
             <div
               key={exp.id}
+              data-section="experience"
               style={{
                 marginBottom: idx !== data.experience.length - 1 ? '12px' : '0'
               }}
@@ -153,7 +164,7 @@ const AcademicStyle = ({ data }) => {
             PROJECTS
           </h2>
           {data.projects.map(proj => (
-            <div key={proj.id} style={{ marginBottom: '8px' }}>
+            <div key={proj.id} data-section="projects" style={{ marginBottom: '8px' }}>
               <p style={{ margin: '0' }}>
                 <strong>{proj.name}</strong>
               </p>
@@ -216,6 +227,7 @@ const AcademicStyle = ({ data }) => {
           {data.education.map((edu, idx) => (
             <div
               key={edu.id}
+              data-section="education"
               style={{
                 marginBottom: idx !== data.education.length - 1 ? '8px' : '0',
                 fontSize: `${bodyStyles.size || 11}pt`

@@ -3,36 +3,48 @@ import { useSelector } from 'react-redux'
 import { Github, Linkedin, Mail, Upload, Trash2 } from 'lucide-react'
 import SettingRow from './components/SettingRow'
 
-export default function Profile({ profile, setProfile, handleUpdate }) {
+export default function Profile ({ profile, onUpdateProfile, onPhotoUpload, onRemovePhoto }) {
   const { appearance } = useSelector(state => state.preferences)
   const fileInputRef = useRef(null)
-  const [photo, setPhoto] = useState(() => localStorage.getItem('settings-profile-photo') || null)
+  const [userName, setUserName] = useState(profile.userName || '')
+  const [email, setEmail] = useState(profile.email || '')
+  const [photo, setPhoto] = useState(
+    () => localStorage.getItem('settings-profile-photo') || null
+  )
 
-  function handlePhotoUpload(e) {
+  function handlePhotoUpload (e) {
     const file = e.target.files[0]
     if (!file) return
     const reader = new FileReader()
-    reader.onload = (ev) => {
+    reader.onload = ev => {
       const dataUrl = ev.target.result
       setPhoto(dataUrl)
       localStorage.setItem('settings-profile-photo', dataUrl)
+      onPhotoUpload(dataUrl)
     }
     reader.readAsDataURL(file)
   }
 
-  function handleRemovePhoto() {
+  function handleRemovePhoto () {
     setPhoto(null)
     localStorage.removeItem('settings-profile-photo')
     if (fileInputRef.current) fileInputRef.current.value = ''
+    onRemovePhoto()
   }
 
-  function onFieldChange(field, value) {
-    const updated = { ...profile, [field]: value }
-    setProfile(updated)
-    handleUpdate(updated)
+  function handleUserNameChange (e) {
+    const val = e.target.value
+    setUserName(val)
+    onUpdateProfile(val, email)
   }
 
-  const initials = (profile.userName?.[0] || 'U').toUpperCase()
+  function handleEmailChange (e) {
+    const val = e.target.value
+    setEmail(val)
+    onUpdateProfile(userName, val)
+  }
+
+  const initials = (userName?.[0] || 'U').toUpperCase()
 
   return (
     <div className='animate-in fade-in slide-in-from-bottom-4 duration-300'>
@@ -52,9 +64,15 @@ export default function Profile({ profile, setProfile, handleUpdate }) {
         <div className='flex items-center gap-6'>
           <div className='w-20 h-20 bg-[#fff7ed] rounded-2xl flex items-center justify-center border-2 border-dashed border-[#f17e27]/30 overflow-hidden'>
             {photo ? (
-              <img src={photo} alt='Profile' className='w-full h-full object-cover' />
+              <img
+                src={photo}
+                alt='Profile'
+                className='w-full h-full object-cover'
+              />
             ) : (
-              <span className='text-2xl font-bold text-[#f17e27]'>{initials}</span>
+              <span className='text-2xl font-bold text-[#f17e27]'>
+                {initials}
+              </span>
             )}
           </div>
           <div className='space-y-3'>
@@ -104,15 +122,17 @@ export default function Profile({ profile, setProfile, handleUpdate }) {
           <div className='space-y-1.5'>
             <label
               className={`text-sm font-medium ${
-                appearance.theme === 'dark' ? 'text-slate-300' : 'text-slate-700'
+                appearance.theme === 'dark'
+                  ? 'text-slate-300'
+                  : 'text-slate-700'
               }`}
             >
               Username
             </label>
             <input
               type='text'
-              value={profile.userName}
-              onChange={e => onFieldChange('userName', e.target.value)}
+              value={userName}
+              onChange={handleUserNameChange}
               placeholder='emmanuel_acquah'
               className={`w-full px-4 py-2.5 rounded-lg border outline-none transition-all text-sm ${
                 appearance.theme === 'dark'
@@ -125,7 +145,9 @@ export default function Profile({ profile, setProfile, handleUpdate }) {
           <div className='space-y-1.5'>
             <label
               className={`text-sm font-medium ${
-                appearance.theme === 'dark' ? 'text-slate-300' : 'text-slate-700'
+                appearance.theme === 'dark'
+                  ? 'text-slate-300'
+                  : 'text-slate-700'
               }`}
             >
               Email Address
@@ -133,14 +155,16 @@ export default function Profile({ profile, setProfile, handleUpdate }) {
             <div className='relative'>
               <Mail
                 className={`absolute left-3 top-1/2 -translate-y-1/2 ${
-                  appearance.theme === 'dark' ? 'text-slate-500' : 'text-slate-400'
+                  appearance.theme === 'dark'
+                    ? 'text-slate-500'
+                    : 'text-slate-400'
                 }`}
                 size={16}
               />
               <input
                 type='email'
-                value={profile.email}
-                onChange={e => onFieldChange('email', e.target.value)}
+                value={email}
+                onChange={handleEmailChange}
                 placeholder='emmanuelacquah.dev@gmail.com'
                 className={`w-full pl-10 pr-4 py-2.5 rounded-lg border outline-none transition-all text-sm ${
                   appearance.theme === 'dark'
@@ -187,18 +211,34 @@ export default function Profile({ profile, setProfile, handleUpdate }) {
             <div
               key={account.id}
               className={`flex items-center justify-between p-4 rounded-xl border ${
-                appearance.theme === 'dark' ? 'bg-[#2A2A2A] border-0' : 'bg-white border-slate-100 shadow-sm'
+                appearance.theme === 'dark'
+                  ? 'bg-[#2A2A2A] border-0'
+                  : 'bg-white border-slate-100 shadow-sm'
               }`}
             >
               <div className='flex items-center gap-4'>
-                <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${account.bgColor}`}>
+                <div
+                  className={`w-10 h-10 rounded-lg flex items-center justify-center ${account.bgColor}`}
+                >
                   {account.icon}
                 </div>
                 <div>
-                  <p className={`text-sm font-medium ${appearance.theme === 'dark' ? 'text-white' : 'text-slate-800'}`}>
+                  <p
+                    className={`text-sm font-medium ${
+                      appearance.theme === 'dark'
+                        ? 'text-white'
+                        : 'text-slate-800'
+                    }`}
+                  >
                     {account.name}
                   </p>
-                  <p className={`text-xs ${appearance.theme === 'dark' ? 'text-slate-400' : 'text-slate-500'}`}>
+                  <p
+                    className={`text-xs ${
+                      appearance.theme === 'dark'
+                        ? 'text-slate-400'
+                        : 'text-slate-500'
+                    }`}
+                  >
                     {account.email}
                   </p>
                 </div>

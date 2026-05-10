@@ -356,7 +356,6 @@ export default function Main () {
           {!isLoading &&
             !id &&
             programs?.length > 0 &&
-
             programs?.slice(0, showHeader ? 10 : programs.length).map(item =>
               item?.type === 'FOLDER' ? (
                 <Droppable

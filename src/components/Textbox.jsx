@@ -6,6 +6,8 @@ export default function TextBox ({
   height = 'h-64',
   placeholder = 'Begin detailing your professional philosophy and key career achievements...',
   value = '',
+  className,
+  
   onChange = () => {}
 }) {
   const editorRef = useRef(null)
@@ -22,14 +24,14 @@ export default function TextBox ({
 
   return (
     <div
-      className={`${width} ${height} flex flex-col bg-gray-50 rounded-xl border border-gray-200 shadow-sm overflow-hidden`}
+      className={`${width} ${height} flex flex-col  rounded-xl border  shadow-sm overflow-hidden ${className}`}
     >
       {/* Toolbar */}
-      <div className='bg-white border-b border-gray-200 p-3 flex flex-wrap gap-2 items-center justify-end'>
+      <div className='bg-inherit border-b  p-3 flex flex-wrap gap-2 items-center justify-end'>
    
         <button
           onClick={() => applyFormatting('bold')}
-          className='p-2 rounded-lg hover:bg-gray-100 transition-colors text-gray-700 hover:text-gray-900 flex items-center justify-center'
+          className='p-2 rounded-lg hover:bg-gray-100 transition-colors  hover:text-gray-900 flex items-center justify-center'
           title='Bold (Ctrl+B)'
         >
           <Bold size={18} />
@@ -38,7 +40,7 @@ export default function TextBox ({
      
         <button
           onClick={() => applyFormatting('italic')}
-          className='p-2 rounded-lg hover:bg-gray-100 transition-colors text-gray-700 hover:text-gray-900 flex items-center justify-center'
+          className='p-2 rounded-lg hover:bg-gray-100 transition-colors  hover:text-gray-900 flex items-center justify-center'
           title='Italic (Ctrl+I)'
         >
           <Italic size={18} />
@@ -47,7 +49,7 @@ export default function TextBox ({
     
         <button
           onClick={() => applyFormatting('underline')}
-          className='p-2 rounded-lg hover:bg-gray-100 transition-colors text-gray-700 hover:text-gray-900 flex items-center justify-center'
+          className='p-2 rounded-lg hover:bg-gray-100 transition-colors  hover:text-gray-900 flex items-center justify-center'
           title='Underline (Ctrl+U)'
         >
           <Underline size={18} />
@@ -77,7 +79,7 @@ export default function TextBox ({
           onInput={handleInput}
           contentEditable
           suppressContentEditableWarning
-          className='absolute top-0 left-0 right-0 bottom-0 p-4 overflow-auto text-sm text-gray-900 bg-white focus:outline-none'
+          className='absolute top-0 left-0 right-0 bottom-0 p-4 overflow-auto text-sm   bg-inherit focus:outline-none'
           style={{
             wordWrap: 'break-word'
           }}

@@ -11,8 +11,9 @@ import {
 } from 'lucide-react'
 import { toggleModals } from '../../store/modalSlice'
 import { useDispatch, useSelector } from 'react-redux'
+import useClickOutside from '../../hooks/useClick'
 import Menubar from './Menubar'
-import ThemeSelector from './ThemeSelector'
+import ThemeSelector, { THEME_COLORS } from './ThemeSelector'
 import ExportMenu from './ExportMenu'
 import { renderResumeToHTML } from '../../utils/renderResume'
 import { saveResumeFromHTML } from '../../services/Program'
@@ -25,6 +26,8 @@ export function Topbar () {
   const [menuBar, showMenuBar] = useState(false)
   const [showSaveModal, setShowSaveModal] = useState(false)
   const [resumeName, setResumeName] = useState('')
+  const exportMenuRef = useClickOutside(() => setShowExportMenu(false))
+  const menuBarRef = useClickOutside(() => showMenuBar(false))
   const dispatch = useDispatch()
   const { appearance } = useSelector(state => state.preferences)
 
@@ -37,7 +40,9 @@ export function Topbar () {
     navigate('/dashboard')
   }
 
-  const [savedResumeName, setSavedResumeName] = useState(() => localStorage.getItem('editor-resume-name') || '')
+  const [savedResumeName, setSavedResumeName] = useState(
+    () => localStorage.getItem('editor-resume-name') || ''
+  )
 
   function handleSave () {
     setResumeName(savedResumeName || personal.contactDetails.fullName || '')
@@ -76,7 +81,8 @@ export function Topbar () {
     }
   }
 
-  const templateId = useSelector(state => state.editor.templateId || 'classic')
+  const { font, size, weight, height, theme, contrast, templateId } =
+    useSelector(state => state.editor)
 
   async function handleExport (format) {
     if (format !== 'pdf') {
@@ -87,6 +93,103 @@ export function Topbar () {
 
     setShowExportMenu(false)
 
+    const getTypeScale = base => ({
+      name: base * 2.4,
+      sectionHead: base * 1.3,
+      jobTitle: base * 1.1,
+      body: base * 1.0,
+      subtle: base * 0.9
+    })
+    const typeScale = getTypeScale(size || 14)
+    const weightMap = {
+      400: 'font-normal',
+      500: 'font-medium',
+      600: 'font-semibold',
+      700: 'font-bold'
+    }
+    const themeColors =
+      THEME_COLORS[theme || 'monochrome'] || THEME_COLORS.monochrome
+
+    const applyContrast = hex => {
+      if (!hex) return hex
+      const factor = Number(contrast) || 1
+      const num = parseInt(hex.replace('#', ''), 16)
+      const r = Math.min(
+        255,
+        Math.max(0, Math.floor(((num >> 16) & 0xff) / factor))
+      )
+      const g = Math.min(
+        255,
+        Math.max(0, Math.floor(((num >> 8) & 0xff) / factor))
+      )
+      const b = Math.min(
+        255,
+        Math.max(0, Math.floor((num & 0xff) / factor))
+      )
+      return `#${((r << 16) | (g << 8) | b).toString(16).padStart(6, '0')}`
+    }
+
+    const styles = {
+      fontFamily: font,
+      name: {
+        size: typeScale.name,
+        weight: weightMap[weight] || 'font-bold',
+        style: 'normal',
+        case: 'none',
+        spacing: 2,
+        color: applyContrast(themeColors.name)
+      },
+      sectionHeader: {
+        size: typeScale.sectionHead,
+        weight: weightMap[weight] || 'font-bold',
+        style: 'normal',
+        case: 'uppercase',
+        spacing: 1,
+        color: applyContrast(themeColors.sectionHeader)
+      },
+      company: {
+        size: typeScale.body,
+        weight: weightMap[weight] || 'font-medium',
+        style: 'normal',
+        case: 'none',
+        spacing: 0,
+        color: applyContrast(themeColors.company)
+      },
+      jobTitle: {
+        size: typeScale.jobTitle,
+        weight: weightMap[weight] || 'font-medium',
+        style: 'italic',
+        case: 'none',
+        spacing: 0,
+        color: applyContrast(themeColors.jobTitle)
+      },
+      bodyText: {
+        size: typeScale.body,
+        weight: 'font-normal',
+        style: 'normal',
+        case: 'none',
+        spacing: 0,
+        leading: height,
+        color: applyContrast(themeColors.bodyText)
+      },
+      date: {
+        size: typeScale.subtle,
+        weight: 'font-normal',
+        style: 'italic',
+        case: 'none',
+        spacing: 0,
+        color: applyContrast(themeColors.date)
+      },
+      contact: {
+        size: typeScale.subtle,
+        weight: 'font-normal',
+        style: 'normal',
+        case: 'none',
+        spacing: 0,
+        color: applyContrast(themeColors.contact)
+      }
+    }
+
     const rawData = {
       personal,
       work,
@@ -95,7 +198,9 @@ export function Topbar () {
     }
 
     try {
-      const resumeHTML = await renderResumeToHTML(rawData, templateId)
+      const resumeHTML = await renderResumeToHTML(rawData, templateId, {
+        styles
+      })
       const fullHTML = `<!DOCTYPE html><html><head><meta charset="utf-8"><title>${
         personal.contactDetails.fullName || 'Resume'
       }</title><style>body{margin:0;padding:0;display:flex;justify-content:center;background:#f5f5f5;}@media print{body{background:white;padding:0;}}</style></head><body>${resumeHTML}<script>setTimeout(()=>{window.print()},200)</script></body></html>`
@@ -131,7 +236,7 @@ export function Topbar () {
       <header
         className={`px-4 py-2 ${
           appearance.theme == 'dark'
-            ? 'bg-[#2a2a2a]'
+            ? 'bg-[#2a2a2a] border-b border-white/30'
             : 'bg-white border-b border-gray-200'
         }`}
       >
@@ -166,7 +271,7 @@ export function Topbar () {
               </span>
             </button>
             {menuBar && (
-              <div className='absolute top-full left-0 right-0 mt-5 w-120 z-100'>
+              <div ref={menuBarRef} className='absolute top-full left-0 right-0 mt-5 w-120 z-100'>
                 <Menubar />
               </div>
             )}
@@ -202,7 +307,7 @@ export function Topbar () {
               <span>Templates</span>
             </button>
 
-            <div className='relative'>
+            <div ref={exportMenuRef} className='relative'>
               <button
                 onClick={() => setShowExportMenu(!showExportMenu)}
                 className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full font-medium text-sm transition-colors font-satoshi ${

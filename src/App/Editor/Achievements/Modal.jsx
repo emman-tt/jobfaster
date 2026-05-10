@@ -62,7 +62,7 @@ export function Modal ({ editingId }) {
       }`}>
         <div className={`flex items-center justify-between px-8 py-6 border-b ${
           appearance.theme == 'dark'
-            ? 'border-0'
+            ? 'border-white/30'
             : 'border-gray-200'
         }`}>
           <h3 className={`text-2xl font-bold ${
@@ -88,7 +88,7 @@ export function Modal ({ editingId }) {
           <div>
             <label className={`text-[10px] font-bold uppercase tracking-widest block mb-2 ${
               appearance.theme == 'dark'
-                ? 'text-slate-400'
+                ? 'text-white'
                 : 'text-black'
             }`}>
               ACHIEVEMENT <span className='text-red-500'>*</span>
@@ -101,7 +101,7 @@ export function Modal ({ editingId }) {
               placeholder='Led team of 5 engineers to deliver project 2 weeks ahead of schedule, saving $50K in costs'
               className={`w-full border rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-1 focus:ring-[#ec5b13] transition-all resize-none h-24 ${
                 appearance.theme == 'dark'
-                  ? 'border-slate-700 bg-[#2a2a2a] text-white placeholder:text-slate-500'
+                  ? 'border-0 bg-[#2a2a2a] text-white placeholder:text-slate-500'
                   : 'border-gray-100 bg-white text-gray-700 placeholder:text-gray-300'
               }`}
             />
@@ -110,11 +110,11 @@ export function Modal ({ editingId }) {
           <div>
             <label className={`text-[10px] font-bold uppercase tracking-widest block mb-2 ${
               appearance.theme == 'dark'
-                ? 'text-slate-400'
+                ? 'text-white'
                 : 'text-black'
             }`}>
               COMPANY / ROLE{' '}
-              <span className={appearance.theme == 'dark' ? 'text-slate-500' : 'text-gray-400'} font-normal>
+              <span className={appearance.theme == 'dark' ? 'text-slate-400' : 'text-gray-400'} font-normal>
                 (optional)
               </span>
             </label>
@@ -127,7 +127,7 @@ export function Modal ({ editingId }) {
               placeholder='At TechCorp, as Senior Developer'
               className={`w-full border rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-1 focus:ring-[#ec5b13] transition-all ${
                 appearance.theme == 'dark'
-                  ? 'border-slate-700 bg-[#2a2a2a] text-white placeholder:text-slate-500'
+                  ? 'border-0 bg-[#2a2a2a] text-white placeholder:text-slate-500'
                   : 'border-gray-100 bg-white text-gray-700 placeholder:text-gray-300'
               }`}
             />
@@ -136,10 +136,10 @@ export function Modal ({ editingId }) {
           <div>
             <label className={`text-[10px] font-bold uppercase tracking-widest block mb-2 ${
               appearance.theme == 'dark'
-                ? 'text-slate-400'
+                ? 'text-white'
                 : 'text-black'
             }`}>
-              YEAR <span className={appearance.theme == 'dark' ? 'text-slate-500' : 'text-gray-400'} font-normal>
+              YEAR <span className={appearance.theme == 'dark' ? 'text-slate-400' : 'text-gray-400'} font-normal>
                 (optional)
               </span>
             </label>
@@ -152,7 +152,7 @@ export function Modal ({ editingId }) {
                 placeholder='Select Year'
                 className={`w-full border rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-1 focus:ring-[#ec5b13] transition-all cursor-pointer ${
                   appearance.theme == 'dark'
-                    ? 'border-slate-700 bg-[#2a2a2a] text-white placeholder:text-slate-500'
+                    ? 'border-0 bg-[#2a2a2a] text-white placeholder:text-slate-500'
                     : 'border-gray-100 bg-white text-gray-700 placeholder:text-gray-300'
                 }`}
               />

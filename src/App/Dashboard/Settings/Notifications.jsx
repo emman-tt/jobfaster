@@ -1,23 +1,22 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
-import { Mail, Smartphone } from 'lucide-react'
+import { Mail } from 'lucide-react'
 import SettingRow from './components/SettingRow'
 import Toggle from './components/Toggle'
-
-export default function Notifications({ notifications, toggleNotification }) {
+export default function Notifications({ data: notifications, toggleNotification }) {
   const { appearance } = useSelector(state => state.preferences)
+
   return (
     <div className='animate-in fade-in slide-in-from-bottom-4 duration-300'>
       <SettingRow
         label='Notifications'
-        description='Manage your email and push notification preferences.'
+        description='Manage your email notification preferences.'
         border={false}
       >
         <div className='space-y-3 max-w-xl'>
           {[
             { key: 'aiOptimizationComplete', title: 'AI Optimization Complete', desc: 'When resume tailoring finishes' },
             { key: 'emailSentFailed', title: 'Email Sent / Failed', desc: 'Application email status' },
-            { key: 'appStatus', title: 'Application Status', desc: 'When recruiter replies (interview, offer, rejection)' },
             { key: 'newJobs', title: 'Job Matches', desc: 'New jobs matching your profile' }
           ].map(item => (
             <div
@@ -34,21 +33,12 @@ export default function Notifications({ notifications, toggleNotification }) {
                   {item.desc}
                 </p>
               </div>
-              <div className='flex items-center gap-4 flex-shrink-0'>
+              <div className='flex items-center shrink-0'>
                 <label className='flex items-center gap-2 cursor-pointer'>
                   <Mail size={14} className={appearance.theme === 'dark' ? 'text-slate-400' : 'text-slate-500'} />
-                  <span className={`text-xs font-medium ${appearance.theme === 'dark' ? 'text-slate-300' : 'text-slate-600'}`}>Email</span>
                   <Toggle
-                    active={notifications[item.key].email}
-                    onChange={() => toggleNotification(item.key, 'email')}
-                  />
-                </label>
-                <label className='flex items-center gap-2 cursor-pointer'>
-                  <Smartphone size={14} className={appearance.theme === 'dark' ? 'text-slate-400' : 'text-slate-500'} />
-                  <span className={`text-xs font-medium ${appearance.theme === 'dark' ? 'text-slate-300' : 'text-slate-600'}`}>Push</span>
-                  <Toggle
-                    active={notifications[item.key].push}
-                    onChange={() => toggleNotification(item.key, 'push')}
+                    active={notifications[item.key]}
+                    onChange={() => toggleNotification(item.key)}
                   />
                 </label>
               </div>
