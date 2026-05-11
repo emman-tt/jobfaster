@@ -6,8 +6,11 @@ import { Preview } from './Preview'
 
 export default function Canvas () {
   const { appearance } = useSelector(state => state.preferences)
-  const [scale, setScale] = useState(50)
-  const [position, setPosition] = useState({ x: 50, y: 0 })
+  const isMobile = window.innerWidth < 500
+
+  const [scale, setScale] = useState(isMobile ? 30 : 50)
+
+  const [position, setPosition] = useState({ x: isMobile ? 20 : 50, y: 0 })
   const isDragging = useRef(false)
   const dragStart = useRef({ x: 0, y: 0 })
   const elementRef = useRef(null)
@@ -35,8 +38,8 @@ export default function Canvas () {
   const zoomIn = () => setScale(s => Math.min(s + 10, 200))
   const zoomOut = () => setScale(s => Math.max(s - 10, 30))
   const resetView = () => {
-    setScale(50)
-    setPosition({ x: 50, y: 0 })
+    setScale(isMobile ? 30 : 50)
+    setPosition({ x: isMobile ? 20 : 50, y: 0 })
   }
 
   return (

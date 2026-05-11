@@ -20,11 +20,13 @@ const sections = [
 export function Sidebar ({ activeSection, onSectionChange }) {
   const { appearance } = useSelector(state => state.preferences)
   return (
-    <aside className={`w-16 h-full flex flex-col items-center py-4 gap-2 pt-20 ${
-      appearance.theme == 'dark'
-        ? 'bg-[#2a2a2a] border-white/30 border-r'
-        : 'bg-white border-r border-gray-200'
-    }`}>
+    <aside
+      className={`w-16 h-full hidden sm:flex flex-col items-center py-4 gap-2 pt-20 ${
+        appearance.theme == 'dark'
+          ? 'bg-[#2a2a2a] border-white/30 border-r'
+          : 'bg-white border-r border-gray-200'
+      }`}
+    >
       {sections.map(section => {
         const Icon = section.icon
         const isActive = activeSection === section.id
@@ -37,8 +39,8 @@ export function Sidebar ({ activeSection, onSectionChange }) {
               isActive
                 ? 'text-[#fd9155] font-bold'
                 : appearance.theme == 'dark'
-                  ? 'text-slate-400 hover:text-white'
-                  : 'text-gray-500 hover:text-gray-700'
+                ? 'text-slate-400 hover:text-white'
+                : 'text-gray-500 hover:text-gray-700'
             }`}
           >
             <Icon size={20} />

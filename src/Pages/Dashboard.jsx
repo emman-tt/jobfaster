@@ -132,7 +132,7 @@ export default function Dashboard () {
         {/* Mobile hamburger */}
         <button
           onClick={() => setShowMobileSidebar(true)}
-          className={`md:hidden absolute bottom-10 right-5  p-4    rounded-full shadow-sm  z-20 cursor-pointer ${
+          className={`md:hidden absolute bottom-10 right-5  p-4  border-black/30 border  rounded-full shadow-md  z-20 cursor-pointer ${
             appearance.theme == 'dark'
               ? 'text-white  bg-black'
               : 'text-black bg-white'

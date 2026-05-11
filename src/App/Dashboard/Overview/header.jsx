@@ -164,6 +164,7 @@ export const Header = () => {
         </section>
 
         <section
+          onClick={() => navigate('/dashboard/board')}
           className={`sm:w-full min-w-70  sm:min-w-0  relative cursor-pointer overflow-hidden rounded-xl flex h-full p-2 ${
             appearance.theme == 'dark'
               ? 'bg-[#090711]'

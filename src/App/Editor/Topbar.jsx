@@ -13,7 +13,7 @@ import { toggleModals } from '../../store/modalSlice'
 import { useDispatch, useSelector } from 'react-redux'
 import useClickOutside from '../../hooks/useClick'
 import Menubar from './Menubar'
-import ThemeSelector, { THEME_COLORS } from './ThemeSelector'
+import { THEME_COLORS } from './ThemeSelector'
 import ExportMenu from './ExportMenu'
 import { renderResumeToHTML } from '../../utils/renderResume'
 import { saveResumeFromHTML } from '../../services/Program'
@@ -122,10 +122,7 @@ export function Topbar () {
         255,
         Math.max(0, Math.floor(((num >> 8) & 0xff) / factor))
       )
-      const b = Math.min(
-        255,
-        Math.max(0, Math.floor((num & 0xff) / factor))
-      )
+      const b = Math.min(255, Math.max(0, Math.floor((num & 0xff) / factor)))
       return `#${((r << 16) | (g << 8) | b).toString(16).padStart(6, '0')}`
     }
 
@@ -234,130 +231,133 @@ export function Topbar () {
   return (
     <>
       <header
-        className={`px-4 py-2 ${
+        className={`px-2 sm:px-4 py-2 ${
           appearance.theme == 'dark'
             ? 'bg-[#2a2a2a] border-b border-white/30'
             : 'bg-white border-b border-gray-200'
         }`}
       >
-        <div className='flex items-center relative justify-between'>
-          <div className='flex items-center gap-2'>
-            <button
-              onClick={handleBack}
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full font-medium text-sm transition-colors font-satoshi ${
-                appearance.theme == 'dark'
-                  ? 'text-slate-300 hover:bg-slate-700'
-                  : 'text-gray-700 hover:bg-gray-100'
-              }`}
-            >
-              <ArrowLeft size={16} />
-              <span>Back</span>
-            </button>
-            <button
-              onClick={() => showMenuBar(e => !e)}
-              className={`flex cursor-pointer items-center gap-1.5 px-5 py-1.5 rounded-full font-medium transition-all active:scale-95 disabled:opacity-50 font-IBM ${
-                appearance.theme == 'dark'
-                  ? 'bg-[#202020] hover:bg-[#f17e27] text-white'
-                  : 'bg-gray-100 hover:bg-[#fd9155]'
-              }`}
-            >
-              <CircleArrowDown size={15} />
-              <span
-                className={`text-sm ${
-                  appearance.theme == 'dark' ? 'text-white' : 'text-black'
-                }`}
-              >
-                Typography
-              </span>
-            </button>
-            {menuBar && (
-              <div ref={menuBarRef} className='absolute top-full left-0 right-0 mt-5 w-120 z-100'>
-                <Menubar />
-              </div>
-            )}
-
-            <div className='ml-2'>
-              <ThemeSelector />
-            </div>
-          </div>
-
-          <div className='flex items-center gap-1.5'>
-            <button
-              onClick={handleSave}
-              disabled={isSaving}
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full cursor-pointer font-medium text-sm transition-all active:scale-95 disabled:opacity-50 font-satoshi ${
-                appearance.theme == 'dark'
-                  ? 'text-slate-300 hover:bg-slate-700'
-                  : 'text-black hover:bg-gray-100'
-              }`}
-            >
-              <Save size={15} />
-              <span>{isSaving ? 'Saving...' : 'Save'}</span>
-            </button>
-
-            <button
-              onClick={() => showTemplates()}
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full font-medium text-sm transition-all font-satoshi ${
-                appearance.theme == 'dark'
-                  ? 'text-slate-300 hover:bg-slate-700'
-                  : 'text-gray-700 hover:bg-gray-200'
-              }`}
-            >
-              <LayoutTemplate size={15} />
-              <span>Templates</span>
-            </button>
-
-            <div ref={exportMenuRef} className='relative'>
+        <div className='relative  '>
+          <div className='flex items-center justify-between overflow-x-auto [scrollbar-width:none] gap-3'>
+            <div className='flex items-center gap-2 shrink-0'>
               <button
-                onClick={() => setShowExportMenu(!showExportMenu)}
+                onClick={handleBack}
                 className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full font-medium text-sm transition-colors font-satoshi ${
                   appearance.theme == 'dark'
                     ? 'text-slate-300 hover:bg-slate-700'
                     : 'text-gray-700 hover:bg-gray-100'
                 }`}
               >
-                <FileDown size={15} />
-                <span>Export</span>
+                <ArrowLeft size={16} />
+                <span>Back</span>
               </button>
-              {showExportMenu && (
-                <div
-                  className={`absolute top-full right-0 mt-2 w-80 rounded-2xl shadow-lg py-2 z-50 ${
-                    appearance.theme == 'dark'
-                      ? 'bg-[#2a2a2a]'
-                      : 'bg-white border border-gray-200'
+              <button
+                onClick={() => showMenuBar(e => !e)}
+                className={`flex cursor-pointer items-center gap-1.5 px-5 py-1.5 rounded-full font-medium transition-all active:scale-95 disabled:opacity-50 font-IBM ${
+                  appearance.theme == 'dark'
+                    ? 'bg-[#202020] hover:bg-[#f17e27] text-white'
+                    : 'bg-gray-100 hover:bg-[#fd9155]'
+                }`}
+              >
+                <CircleArrowDown size={15} />
+                <span
+                  className={`text-sm ${
+                    appearance.theme == 'dark' ? 'text-white' : 'text-black'
                   }`}
                 >
-                  <ExportMenu onExport={handleExport} />
-                </div>
-              )}
+                  Typography
+                </span>
+              </button>
             </div>
 
-            <div
-              className={`w-px h-8 mx-1 ${
-                appearance.theme == 'dark' ? 'bg-slate-700' : 'bg-gray-200'
-              }`}
-            />
+            <div className='flex items-center gap-1.5 shrink-0'>
+              <button
+                onClick={handleSave}
+                disabled={isSaving}
+                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full cursor-pointer font-medium text-sm transition-all active:scale-95 disabled:opacity-50 font-satoshi ${
+                  appearance.theme == 'dark'
+                    ? 'text-slate-300 hover:bg-slate-700'
+                    : 'text-black hover:bg-gray-100'
+                }`}
+              >
+                <Save size={15} />
+                <span>{isSaving ? 'Saving...' : 'Save'}</span>
+              </button>
 
-            <button
-              onClick={handleShare}
-              className={`p-1.5 rounded-full transition-colors ${
-                appearance.theme == 'dark'
-                  ? 'text-slate-300 hover:bg-slate-700'
-                  : 'text-gray-700 hover:bg-gray-100'
-              }`}
-              title='Share'
-            >
-              <Link2 size={15} />
-            </button>
+              <button
+                onClick={() => showTemplates()}
+                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full font-medium text-sm transition-all font-satoshi ${
+                  appearance.theme == 'dark'
+                    ? 'text-slate-300 hover:bg-slate-700'
+                    : 'text-gray-700 hover:bg-gray-200'
+                }`}
+              >
+                <LayoutTemplate size={15} />
+                <span>Templates</span>
+              </button>
 
-            <button
-              onClick={handleDelete}
-              className='p-1.5 rounded-full text-red-500 hover:bg-red-50 transition-colors'
-              title='Delete'
-            >
-              <Trash2 size={15} />
-            </button>
+              <div className='relative shrink-0'>
+                <button
+                  onClick={() => setShowExportMenu(!showExportMenu)}
+                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full font-medium text-sm transition-colors font-satoshi ${
+                    appearance.theme == 'dark'
+                      ? 'text-slate-300 hover:bg-slate-700'
+                      : 'text-gray-700 hover:bg-gray-100'
+                  }`}
+                >
+                  <FileDown size={15} />
+                  <span>Export</span>
+                </button>
+              </div>
+
+              <div
+                className={`w-px h-8 mx-1 ${
+                  appearance.theme == 'dark' ? 'bg-slate-700' : 'bg-gray-200'
+                }`}
+              />
+
+              <button
+                onClick={handleShare}
+                className={`p-1.5 rounded-full transition-colors ${
+                  appearance.theme == 'dark'
+                    ? 'text-slate-300 hover:bg-slate-700'
+                    : 'text-gray-700 hover:bg-gray-100'
+                }`}
+                title='Share'
+              >
+                <Link2 size={15} />
+              </button>
+
+              <button
+                onClick={handleDelete}
+                className='p-1.5 rounded-full text-red-500 hover:bg-red-50 transition-colors'
+                title='Delete'
+              >
+                <Trash2 size={15} />
+              </button>
+            </div>
           </div>
+
+          {menuBar && (
+            <div ref={menuBarRef} className='absolute top-full left-0 right-0 mt-5 w-120 z-100'>
+              <Menubar />
+            </div>
+          )}
+
+          {showExportMenu && (
+            <div ref={exportMenuRef} className='absolute top-full right-0 mt-2 w-80 rounded-2xl shadow-lg py-2 z-50'>
+              <ExportMenu onExport={handleExport} />
+            </div>
+          )}
+
+          {showExportMenu && (
+            <div
+              ref={exportMenuRef}
+              className='absolute top-full right-0 mt-2 w-80 rounded-2xl shadow-lg py-2 z-50'
+            >
+              <ExportMenu onExport={handleExport} />
+            </div>
+          )}
         </div>
       </header>
 

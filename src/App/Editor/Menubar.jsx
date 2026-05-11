@@ -17,6 +17,7 @@ import {
   setWeight,
   setContrast
 } from '../../store/editorSlice'
+import ThemeSelector from './ThemeSelector'
 
 const fontList = [
   { id: 1, name: 'inter', value: 'font-inter' },
@@ -278,6 +279,7 @@ export default function Menubar () {
       </div>
       <Alignment align={align} onSelect={val => dispatch(setAlign(val))} />
       <TextContrast contrast={contrast} onSelect={val => dispatch(setContrast(val))} />
+      <ThemeSelector />
     </section>
   )
 }

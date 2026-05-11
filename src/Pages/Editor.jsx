@@ -3,12 +3,11 @@ import { Sidebar } from '../App/Editor/Sidebar'
 import { Topbar } from '../App/Editor/Topbar'
 import { Main } from '../App/Editor/Main'
 
-
 export default function Editor () {
   const [activeSection, setActiveSection] = useState('identity')
 
   return (
-    <section className='dotted-pattern w-full h-full absolute flex '>
+    <section className='dotted-pattern overflow-x-clip w-full h-full absolute flex '>
       <Sidebar
         activeSection={activeSection}
         onSectionChange={setActiveSection}
