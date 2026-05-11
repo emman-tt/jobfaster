@@ -246,7 +246,7 @@ export default function JobBoard () {
         <div className='fixed inset-0 z-40'>
           <div className='absolute inset-0 bg-black/20' onClick={closeDetail} />
           <div
-            className={`absolute inset-x-0 sm:inset-x-2 rounded-t-2xl sm:rounded-2xl top-[30%] sm:top-2 bottom-0 sm:bottom-2 sm:h-[97%] w-full max-w-xl scrollbar-none shadow-2xl overflow-y-auto ${
+            className={`absolute inset-x-0 sm:inset-x-2 rounded-t-2xl sm:rounded-2xl top-[30%] sm:top-2 bottom-0 sm:bottom-2 sm:h-[97%] w-full max-w-xl scrollbar-none shadow-2xl ${
               appearance.theme == 'dark' ? 'bg-[#2a2a2a]' : 'bg-white'
             }`}
           >

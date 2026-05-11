@@ -12,14 +12,14 @@ export default function Examples () {
 
   return (
     <section
-      className={`w-full h-full pt-16 px-12 overflow-auto ${
+      className={`w-full h-full pt-8 max-sm:pb-10 sm:pt-16 px-4 sm:px-12 overflow-auto ${
         appearance.theme == 'dark' ? 'bg-[#202020]' : 'bg-white'
       }`}
     >
-      <div className='flex items-center justify-between mb-6'>
+      <div className='flex flex-col sm:flex-row items-start sm:items-center justify-between mb-6 gap-3'>
         <div>
           <h2
-            className={`text-2xl font-semibold font-satoshi ${
+            className={`text-xl sm:text-2xl font-semibold font-satoshi ${
               appearance.theme == 'dark' ? 'text-white' : 'text-slate-900'
             }`}
           >
@@ -35,12 +35,12 @@ export default function Examples () {
         </div>
         <button
           onClick={() => navigate('/editor')}
-          className='bg-orange-500 text-white cursor-pointer rounded-xl px-6 py-3 flex items-center gap-2 hover:bg-orange-600 transition-colors font-satoshi font-medium'
+          className='bg-orange-500 text-white cursor-pointer rounded-xl px-6 py-3 flex items-center gap-2 hover:bg-orange-600 transition-colors font-satoshi font-medium w-full sm:w-auto justify-center'
         >
           Next <ArrowRight className='w-4 h-4' />
         </button>
       </div>
-      <section className='grid grid-cols-6 gap-4'>
+      <section className='grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3 sm:gap-4'>
         {templates.map(item => {
           return (
             <div

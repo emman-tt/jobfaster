@@ -61,8 +61,8 @@ export default function Profile ({ profile, onUpdateProfile, onPhotoUpload, onRe
         description='This image will be displayed on your public profile and resumes.'
         border={false}
       >
-        <div className='flex items-center gap-6'>
-          <div className='w-20 h-20 bg-[#fff7ed] rounded-2xl flex items-center justify-center border-2 border-dashed border-[#f17e27]/30 overflow-hidden'>
+        <div className='flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-6'>
+          <div className='w-20 h-20 bg-[#fff7ed] rounded-2xl flex items-center justify-center border-2 border-dashed border-[#f17e27]/30 overflow-hidden shrink-0'>
             {photo ? (
               <img
                 src={photo}
@@ -210,13 +210,13 @@ export default function Profile ({ profile, onUpdateProfile, onPhotoUpload, onRe
           ].map(account => (
             <div
               key={account.id}
-              className={`flex items-center justify-between p-4 rounded-xl border ${
+              className={`flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 p-4 rounded-xl border ${
                 appearance.theme === 'dark'
                   ? 'bg-[#2A2A2A] border-0'
                   : 'bg-white border-slate-100 shadow-sm'
               }`}
             >
-              <div className='flex items-center gap-4'>
+              <div className='flex items-center gap-3 sm:gap-4'>
                 <div
                   className={`w-10 h-10 rounded-lg flex items-center justify-center ${account.bgColor}`}
                 >

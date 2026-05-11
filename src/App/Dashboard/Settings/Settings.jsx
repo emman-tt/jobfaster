@@ -15,10 +15,10 @@ import { toast } from 'sonner'
 const SectionHeader = ({ title, description, children }) => {
   const { appearance } = useSelector(state => state.preferences)
   return (
-    <div className='flex items-center justify-between py-6'>
+    <div className='flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 py-4 sm:py-6'>
       <div className='space-y-1'>
         <h1
-          className={`text-2xl font-bold font-satoshi ${
+          className={`text-xl sm:text-2xl font-bold font-satoshi ${
             appearance.theme === 'dark' ? 'text-white' : 'text-slate-900'
           }`}
         >
@@ -42,7 +42,7 @@ const TabButton = ({ id, activeTab, setActiveTab, label, icon: Icon }) => {
   return (
     <button
       onClick={() => setActiveTab(id)}
-      className={`flex items-center gap-2 px-5 py-2.5 rounded-lg text-sm font-medium transition-all ${
+      className={`flex items-center justify-center gap-2 px-3 sm:px-5 py-2.5 rounded-lg text-sm font-medium transition-all flex-1 sm:flex-none ${
         activeTab === id
           ? 'bg-[#f17e27] text-white shadow-sm'
           : appearance.theme === 'dark'
@@ -145,7 +145,7 @@ export default function Settings () {
 
   return (
     <section
-      className={`w-full h-screen overflow-y-auto [scrollbar-width:none] p-6 lg:p-12 ${
+      className={`w-full h-screen overflow-y-auto [scrollbar-width:none] p-4 sm:p-6 lg:p-12 ${
         appearance.theme === 'dark' ? 'bg-[#151515]' : 'bg-white'
       }`}
     >
@@ -154,10 +154,10 @@ export default function Settings () {
           title='Settings'
           description='Manage your account and preferences.'
         >
-          <div className='flex items-center gap-2'>
+          <div className='flex items-center gap-2 w-full sm:w-auto'>
             <button
               onClick={handleSaveChanges}
-              className={`px-4 py-2 text-sm font-medium rounded-lg transition-colors bg-[#f17e27] text-white shadow-sm ${
+              className={`flex-1 sm:flex-none px-4 py-2 text-sm font-medium rounded-lg transition-colors bg-[#f17e27] text-white shadow-sm ${
                 appearance.theme === 'dark'
                   ? 'text-slate-300 '
                   : 'text-slate-600 '
@@ -167,7 +167,7 @@ export default function Settings () {
             </button>
             <button
               onClick={handleCancel}
-              className={`px-4 py-2 text-sm font-medium rounded-lg transition-colors ${
+              className={`flex-1 sm:flex-none px-4 py-2 text-sm font-medium rounded-lg transition-colors ${
                 appearance.theme === 'dark'
                   ? 'text-slate-300 hover:bg-slate-800'
                   : 'text-slate-600 hover:bg-slate-100'
@@ -179,7 +179,7 @@ export default function Settings () {
         </SectionHeader>
 
         <div
-          className={`flex gap-1 p-1 rounded-xl w-fit mb-8 ${
+          className={`flex gap-1 p-1 rounded-xl w-full sm:w-fit mb-8 ${
             appearance.theme === 'dark'
               ? 'bg-[#202020]'
               : 'bg-slate-100/80 border border-slate-200'

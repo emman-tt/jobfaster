@@ -23,10 +23,10 @@ import darkThemeImg from '../../assets/img/darkMode.png'
 const SectionHeader = ({ title, description }) => {
   const { appearance } = useSelector(state => state.preferences)
   return (
-    <div className='flex items-center justify-between py-6'>
+    <div className='flex items-center justify-between py-4 sm:py-6'>
       <div className='space-y-1'>
         <h1
-          className={`text-2xl font-bold font-satoshi ${
+          className={`text-xl sm:text-2xl font-bold font-satoshi ${
             appearance.theme === 'dark' ? 'text-white' : 'text-slate-900'
           }`}
         >
@@ -48,7 +48,7 @@ const SettingRow = ({ label, description, children, border = true }) => {
   const { appearance } = useSelector(state => state.preferences)
   return (
     <div
-      className={`grid grid-cols-1 md:grid-cols-12 gap-6 py-8 ${
+      className={`grid grid-cols-1 md:grid-cols-12 gap-4 sm:gap-6 py-6 sm:py-8 ${
         border
           ? `border-t ${
               appearance.theme === 'dark'
@@ -177,7 +177,7 @@ export default function Prefrences () {
 
   return (
     <section
-      className={`w-full h-screen overflow-y-auto [scrollbar-width:none] p-6 lg:p-12 ${
+      className={`w-full h-screen overflow-y-auto [scrollbar-width:none] p-4 sm:p-6 lg:p-12 ${
         appearance.theme === 'dark' ? 'bg-[#151515]' : 'bg-white'
       }`}
     >
@@ -193,7 +193,7 @@ export default function Prefrences () {
           label='Interface theme'
           description='Select or customize your UI theme.'
         >
-          <div className='grid grid-cols-1 sm:grid-cols-3 gap-4 max-w-2xl'>
+          <div className='grid grid-cols-2 sm:grid-cols-3 gap-4 max-w-2xl'>
             <ThemeCard
               type='light'
               label='Light'
@@ -217,9 +217,9 @@ export default function Prefrences () {
           description='Reduce spacing to show more content at once. Ideal for smaller screens.'
         >
           <div
-            className={`flex items-center justify-between p-4 rounded-xl  border ${
+            className={`flex items-center justify-between p-3 sm:p-4 rounded-xl border ${
               appearance.theme == 'dark' ? 'bg-[#2A2A2A] border-0' : 'bg-white'
-            } border-slate-100 `}
+            } border-slate-100`}
           >
             <div className='flex items-center gap-3'>
               <div
@@ -249,9 +249,9 @@ export default function Prefrences () {
         </SettingRow>
 
         {/* Region & Language Section Placeholder */}
-        <div className='mt-12 mb-6'>
+        <div className='mt-8 sm:mt-12 mb-4 sm:mb-6'>
           <h2
-            className={`text-lg font-bold font-satoshi ${
+            className={`text-base sm:text-lg font-bold font-satoshi ${
               appearance.theme === 'dark' ? 'text-white' : 'text-slate-900'
             }`}
           >

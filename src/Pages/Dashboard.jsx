@@ -132,11 +132,13 @@ export default function Dashboard () {
         {/* Mobile hamburger */}
         <button
           onClick={() => setShowMobileSidebar(true)}
-          className={`md:hidden  left-3 p-4  rounded-full  top-2 z-20 cursor-pointer ${
-            appearance.theme == 'dark' ? 'text-white' : 'text-black'
+          className={`md:hidden absolute bottom-10 right-5  p-4    rounded-full shadow-sm  z-20 cursor-pointer ${
+            appearance.theme == 'dark'
+              ? 'text-white  bg-black'
+              : 'text-black bg-white'
           }`}
         >
-          <Menu className='sm:w-6 sm:h-6 w-8 h-8' />
+          <Menu className={`sm:w-6 sm:h-6 w-8 h-8`} />
         </button>
 
         {(actualPath == 'resumes' || actualPath == 'overview') && (
@@ -144,14 +146,14 @@ export default function Dashboard () {
             onClick={() => {
               showRightbar ? closeRightbar() : openRightbar()
             }}
-            className={`absolute right-3 max-sm:p-4  max-sm:rounded-full  md:right-0 top-4 z-20 cursor-pointer ${
+            className={`absolute right-3 max-sm:p-0  max-sm:rounded-full  md:right-10 top-5 z-20 cursor-pointer ${
               appearance.theme == 'dark' ? 'text-white' : 'text-black'
             }`}
           >
             {showRightbar ? (
               <PanelLeftOpenIcon className='sm:w-6 sm:h-6' />
             ) : (
-              <PanelRightOpenIcon className='sm:w-6 sm:h-6  w-8 h-8' />
+              <PanelRightOpenIcon className='sm:w-6 sm:h-6  w-7 h-7' />
             )}
           </button>
         )}
@@ -170,16 +172,6 @@ export default function Dashboard () {
               appearance.theme == 'dark' ? 'bg-[#2a2a2a]' : 'bg-[#f8f8f8]'
             }`}
           >
-            <div className='flex justify-end mb-4'>
-              <button
-                onClick={() => setShowMobileSidebar(false)}
-                className={`cursor-pointer ${
-                  appearance.theme == 'dark' ? 'text-white' : 'text-black'
-                }`}
-              >
-                <X className='w-5 h-5' />
-              </button>
-            </div>
             <Sidebar className='' />
           </aside>
         </div>

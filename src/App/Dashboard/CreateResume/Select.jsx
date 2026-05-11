@@ -12,45 +12,41 @@ export default function Select () {
     navigate('/dashboard/create/resume/examples')
   }
   return (
-    <section className='  flex w-full h-full px-10 justify-center items-center gap-10 flex-col'>
-      <h2 className=' font-semibold text-3xl font-IBM'>
+    <section className='flex w-full h-full px-4 sm:px-10 justify-center items-center gap-6 sm:gap-10 flex-col'>
+      <h2 className='font-semibold text-2xl sm:text-3xl font-IBM text-center'>
         Choose your type of Resume
       </h2>
 
-      <section className=' flex gap-20 px-10'>
+      <section className='flex flex-col sm:flex-row gap-6 sm:gap-20 px-0 sm:px-10 w-full sm:w-auto max-w-4xl'>
         <div
           onClick={() => {
             setSelect('classic')
           }}
-          className=' cursor-pointer flex flex-col items-center gap-5'
+          className='cursor-pointer flex flex-col items-center gap-5 flex-1'
         >
           <div
-            className={`h-90 ${
+            className={`h-60 sm:h-90 w-full sm:w-80 ${
               select == 'classic' && 'border border-orange-400'
-            } w-80 bg-gray-50 rounded-xl`}
+            } bg-gray-50 rounded-xl`}
           >
             <img
               src={cv1}
-              className=' h-full w-full object-fill rounded-[inherit]'
+              className='h-full w-full object-fill rounded-[inherit]'
               alt='cv'
             />
           </div>
-          <div className=' flex gap-5 items-center'>
-            <p className=' '>Classic Resume </p>
+          <div className='flex gap-5 items-center'>
+            <p>Classic Resume</p>
             {select == 'classic' && (
-              <p
-                className={
-                  'rounded-3xl flex gap-3 items-center text-white p-2  bg-green-700 text-xs'
-                }
-              >
+              <p className='rounded-3xl flex gap-3 items-center text-white p-2 bg-green-700 text-xs'>
                 selected
-                <CheckCircle className=' w-3 h-3' />
+                <CheckCircle className='w-3 h-3' />
               </p>
             )}
           </div>
-          <p className=' font-satoshi text-sm'>
-            This is the traditional type of resume , the colour is monochrome
-            (mostly black) , the design is verly less or non actually, there's
+          <p className='font-satoshi text-sm text-center'>
+            This is the traditional type of resume, the colour is monochrome
+            (mostly black), the design is very less or non actually, there's
             less need for pictures.
           </p>
         </div>
@@ -58,34 +54,30 @@ export default function Select () {
           onClick={() => {
             setSelect('creative')
           }}
-          className=' cursor-pointer flex flex-col items-center gap-5'
+          className='cursor-pointer flex flex-col items-center gap-5 flex-1'
         >
           <div
-            className={`h-90 ${
+            className={`h-60 sm:h-90 w-full sm:w-80 ${
               select == 'creative' && 'border border-orange-400'
-            } w-80 bg-gray-50 rounded-xl`}
+            } bg-gray-50 rounded-xl`}
           >
             <img
               src={cv}
-              className=' h-full w-full object-cover rounded-[inherit]'
+              className='h-full w-full object-cover rounded-[inherit]'
               alt='cv'
             />
           </div>
-          <div className=' flex gap-5 items-center'>
-            <p className=' '>Creative Resume </p>
+          <div className='flex gap-5 items-center'>
+            <p>Creative Resume</p>
             {select == 'creative' && (
-              <p
-                className={
-                  ' rounded-3xl flex gap-3 items-center text-white p-2  bg-green-700 text-xs'
-                }
-              >
+              <p className='rounded-3xl flex gap-3 items-center text-white p-2 bg-green-700 text-xs'>
                 selected
-                <CheckCircle className=' w-3 h-3' />
+                <CheckCircle className='w-3 h-3' />
               </p>
             )}
           </div>
-          <p className=' font-satoshi text-sm'>
-            This type of resume incorperates multiple colours , the design is
+          <p className='font-satoshi text-sm text-center'>
+            This type of resume incorporates multiple colours, the design is
             very important and needed, Pictures can be added based on the user
           </p>
         </div>

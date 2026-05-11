@@ -17,7 +17,7 @@ export default function Overview () {
       <Main />
       <NavLink
         to={'/dashboard/resumes'}
-        className=' flex justify-center hover:text-orange-400 mt-10 underline text-xs font-satoshi'
+        className=' flex sm:hidden  justify-center hover:text-orange-400 mt-10 underline text-xs font-satoshi'
       >
         View all resumes
       </NavLink>

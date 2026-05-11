@@ -40,9 +40,11 @@ export default function JobDetailView ({ job }) {
 
   return (
     <div className='p-4 sm:p-6 relative pb-20'>
+      {/* Grip bar for mobile */}
       <div className='h-6 left-0 right-0 bg-inherit sticky top-0 w-full sm:hidden z-10 flex items-center justify-center'>
         <div className='w-8 h-1 rounded-full bg-slate-300' />
       </div>
+  
       <div className='space-y-6 pt-2 sm:pt-15'>
         <div>
           <h2

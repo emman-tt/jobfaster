@@ -181,9 +181,9 @@ export default function Main () {
 
   return (
     <DragDropProvider onDragEnd={handleDragEnd}>
-      <section className='flex flex-col pl-4 sm:pl-5 gap-0 pt-0'>
+      <section className='flex flex-col sm:pl-5 gap-0 pt-0'>
         <div className='pr-4 sm:px-5'>
-          <div className='w-full flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 sm:gap-0'>
+          <div className='w-full pl-5 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 sm:gap-0'>
             <h2
               className={`text-2xl font-IBM shrink-0 ${
                 appearance.theme == 'dark' ? 'text-white' : 'text-black'
@@ -244,7 +244,7 @@ export default function Main () {
           </div>
 
           <div
-            className={`flex gap-3 sm:gap-5 mt-5 items-center pl-2 sm:pl-5 text-xs font-semibold font-satoshi flex-wrap ${
+            className={`flex gap-3 sm:gap-5 mt-5 pl-10 items-center sm:pl-5 text-xs font-semibold font-satoshi flex-wrap ${
               appearance.theme == 'dark' ? 'text-slate-400' : 'text-black'
             }`}
           >
@@ -282,10 +282,10 @@ export default function Main () {
         </div>
 
         <section
-          className={`grid gap-3  pl-0 sm:gap-4 transform-gpu transition-all duration-150 ease-in-out mt-0 pt-5 px-4 sm:px-3 sm:pl-5 sm:pr-10 justify-items-center
+          className={`grid gap-3 sm:gap-4 transform-gpu transition-all duration-150 ease-in-out  mt-0 pt-5 sm:px-3 sm:pl-5 sm:pr-10 justify-items-center max-sm:items-center max-sm:justify-items-center max-sm:align-bottom
             grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 ${
               showRightbar ? 'xl:grid-cols-6' : 'xl:grid-cols-8'
-            } pb-0 mb-0 gap-y-10 sm:gap-y-8 w-full`}
+            } pb-0 mb-0 gap-y-6 sm:gap-y-8 w-full`}
         >
           {/* specific files in an opened folder  */}
           {
@@ -305,7 +305,7 @@ export default function Main () {
                     onDoubleClick={() => {
                       openFile(null, item.id)
                     }}
-                    className={`pl-2 gap-2 h-26 w-full max-w-35 shrink-0 flex flex-col items-start ${
+                    className={`pl-2 gap-2 h-30 sm:h-26 w-full max-w-full sm:max-w-35 shrink-0 flex flex-col items-start ${
                       movingFiles.includes(item.id) ? 'opacity-50' : ''
                     }`}
                   >
@@ -368,7 +368,7 @@ export default function Main () {
                   <div
                     onDoubleClick={() => openFolder(item)}
                     onClick={e => handleClick(e, item.folder.id, 'folder')}
-                    className='w-full max-w-28 shrink-0 cursor-pointer'
+                    className='w-full  max-w-35 sm:max-w-28 shrink-0 cursor-pointer'
                   >
                     <Folder files={item?.folder.files} />
                     <div
@@ -396,7 +396,7 @@ export default function Main () {
                       onDoubleClick={() => {
                         openFile(null, item.file.id)
                       }}
-                      className={`cursor-pointer pl-2 gap-2 h-26 w-full max-w-32 shrink-0 flex flex-col items-start`}
+                      className={`cursor-pointer pl-2 gap-2 h-35 sm:h-26 w-full max-w-40 sm:max-w-32 shrink-0 flex flex-col items-start`}
                     >
                       <div className='bg-[#c4c7cc15] shadow-sm rounded-xl w-full h-full flex'>
                         <div className='mt-5'>
@@ -420,7 +420,7 @@ export default function Main () {
                         <MiniIframe src={item.file.metaData.content} />
                       </div>
                       <div
-                        className={`flex w-full mt-1 pl-2 items-center text-[10px] justify-center font-semibold gap-1 ${
+                        className={`flex w-full sm:mt-1 pl-2 items-center text-[10px] justify-center font-semibold gap-1 ${
                           appearance.theme == 'dark'
                             ? 'text-white'
                             : 'text-gray-700'

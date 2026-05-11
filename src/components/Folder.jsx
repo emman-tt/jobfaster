@@ -4,13 +4,11 @@ export default function Folder ({ files }) {
   const { appearance } = useSelector(state => state.preferences)
   return (
     <section className='w-full  flex justify-center items-center'>
-      <div className='relative flex flex-col'>
+      <div className='relative flex flex-col w-full'>
         <svg
-          width='89'
-          height='20'
           viewBox='0 -5 90 20'
           fill='none'
-          className=''
+          className='w-full aspect-9/2'
           xmlns='http://www.w3.org/2000/svg'
         >
           <path
@@ -22,7 +20,7 @@ export default function Folder ({ files }) {
         <div
           className={` ${
             appearance.theme == 'dark' ? 'bg-[#ff8c00b3]' : 'bg-[#feb053]'
-          }   group  cursor-pointer  relative rounded-tl-none rounded-xl h-22 w-28`}
+          }   group  cursor-pointer  relative rounded-tl-none rounded-xl h-22 w-full`}
         >
           {files?.map((item, i) => (
             <Paper
