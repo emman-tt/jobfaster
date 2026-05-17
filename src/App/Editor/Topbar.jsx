@@ -339,7 +339,7 @@ export function Topbar () {
           </div>
 
           {menuBar && (
-            <div ref={menuBarRef} className='absolute top-full left-0 right-0 mt-5 w-120 z-100'>
+            <div ref={menuBarRef} className='absolute top-full left-0 right-0 mt-5 w-120 max-sm:w-[calc(100vw-2rem)] max-sm:left-2 z-100'>
               <Menubar />
             </div>
           )}

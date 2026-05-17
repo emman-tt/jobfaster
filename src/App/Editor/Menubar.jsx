@@ -228,7 +228,7 @@ export default function Menubar () {
     return fontList.find(e => e.name == item).value
   }
   return (
-    <section className='w-full bg-white h-full rounded-2xl shadow-lg p-5 space-y-4'>
+    <section className='w-full bg-white h-full rounded-2xl shadow-lg p-4 sm:p-5 space-y-3 sm:space-y-4'>
       <h3 className='text-lg font-bold text-gray-900'>Typography</h3>
       <p className='text-xs text-gray-500'>
         Job titles, company names, bullet points, and descriptions will inherit
@@ -236,7 +236,7 @@ export default function Menubar () {
       </p>
       <div>
         <label className='text-sm text-gray-600'>Font</label>
-        <div className='flex w-full flex-wrap gap-5'>
+        <div className='flex w-full flex-wrap gap-3 sm:gap-5'>
           {fontList.map(item => (
             <div
               key={item.id}
@@ -254,7 +254,7 @@ export default function Menubar () {
         </div>
       </div>
 
-      <div className='flex gap-3'>
+      <div className='flex gap-2 sm:gap-3'>
         <FontWeight
           weight={weight}
           onSelect={val => dispatch(setWeight(val))}

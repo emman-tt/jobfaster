@@ -7,237 +7,237 @@ import {
   Pencil,
   Search,
   Trash2,
-  Upload
-} from 'lucide-react'
-import Folder from '../../../components/Folder'
-import { useDispatch, useSelector } from 'react-redux'
-import { useLocation, useNavigate, useParams } from 'react-router-dom'
-import { toggleModals, openFileDetails } from '../../../store/modalSlice'
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+  Upload,
+} from "lucide-react";
+import Folder from "../../../components/Folder";
+import { useDispatch, useSelector } from "react-redux";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { toggleModals, openFileDetails } from "../../../store/modalSlice";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   deleteProgram,
   FetchPrograms,
-  MoveFile
-} from '../../../services/Program'
-import { useState, useEffect } from 'react'
-import { toast } from 'sonner'
-import { toastPresets } from '../../../components/toasters'
-import { DragDropProvider } from '@dnd-kit/react'
-import { Draggable, Droppable } from '../../../components/dragger'
+  MoveFile,
+} from "../../../services/Program";
+import { useState, useEffect } from "react";
+import { toast } from "sonner";
+import { toastPresets } from "../../../components/toasters";
+import { DragDropProvider } from "@dnd-kit/react";
+import { Draggable, Droppable } from "../../../components/dragger";
 
-function formatBytes (bytes) {
-  if (!bytes || bytes === 0) return '0 B'
-  const k = 1024
-  const sizes = ['B', 'KB', 'MB', 'GB']
-  const i = Math.floor(Math.log(bytes) / Math.log(k))
-  return parseFloat((bytes / Math.pow(k, i)).toFixed(1)) + ' ' + sizes[i]
+function formatBytes(bytes) {
+  if (!bytes || bytes === 0) return "0 B";
+  const k = 1024;
+  const sizes = ["B", "KB", "MB", "GB"];
+  const i = Math.floor(Math.log(bytes) / Math.log(k));
+  return parseFloat((bytes / Math.pow(k, i)).toFixed(1)) + " " + sizes[i];
 }
 
-export default function Main () {
-  const { showRightbar } = useSelector(state => state.dashboard)
-  const { showHeader } = useSelector(state => state.dashboard)
-  const { appearance } = useSelector(state => state.preferences)
-  const { id } = useParams()
-  const dispatch = useDispatch()
-  const queryClient = useQueryClient()
-  const navigate = useNavigate()
-  const location = useLocation()
-  const actualPath = location.pathname.split('/').at(-1)
-  const [movingFiles] = useState([])
+export default function Main() {
+  const { showRightbar } = useSelector((state) => state.dashboard);
+  const { showHeader } = useSelector((state) => state.dashboard);
+  const { appearance } = useSelector((state) => state.preferences);
+  const { id } = useParams();
+  const dispatch = useDispatch();
+  const queryClient = useQueryClient();
+  const navigate = useNavigate();
+  const location = useLocation();
+  const actualPath = location.pathname.split("/").at(-1);
+  const [movingFiles] = useState([]);
   const [menuConfig, setMenuConfig] = useState({
     visible: false,
     x: 0,
     y: 0,
     id: null,
-    type: ''
-  })
+    type: "",
+  });
 
   useEffect(() => {
     const handleClickOutside = () =>
-      setMenuConfig(prev => ({ ...prev, visible: false }))
+      setMenuConfig((prev) => ({ ...prev, visible: false }));
     if (menuConfig.visible) {
-      window.addEventListener('click', handleClickOutside)
+      window.addEventListener("click", handleClickOutside);
     }
-    return () => window.removeEventListener('click', handleClickOutside)
-  }, [menuConfig.visible])
+    return () => window.removeEventListener("click", handleClickOutside);
+  }, [menuConfig.visible]);
 
-  function handleClick (e, itemId, type) {
-    e.preventDefault()
-    e.stopPropagation()
+  function handleClick(e, itemId, type) {
+    e.preventDefault();
+    e.stopPropagation();
     setMenuConfig({
       visible: true,
       x: e.clientX,
       y: e.clientY,
       id: itemId,
-      type: type
-    })
+      type: type,
+    });
   }
 
   const { data, isLoading, isFetching } = useQuery({
-    queryKey: ['program'],
+    queryKey: ["program"],
     queryFn: () => FetchPrograms(),
     staleTime: 10 * 60 * 1000,
     gcTime: 15 * 60 * 1000,
     refetchOnWindowFocus: false,
-    refetchOnReconnect: false
-  })
+    refetchOnReconnect: false,
+  });
   const programs = data?.sort(
-    (a, b) => new Date(b.updatedAt) - new Date(a.updatedAt)
-  )
+    (a, b) => new Date(b.updatedAt) - new Date(a.updatedAt),
+  );
 
-  const openedFolder = programs?.find(item => item?.folder?.id == id)?.folder
+  const openedFolder = programs?.find((item) => item?.folder?.id == id)?.folder;
 
   const headerText =
-    actualPath !== 'overview' ? 'Saved Resumes' : 'Recently Opened'
+    actualPath !== "overview" ? "Saved Resumes" : "Recently Opened";
 
-  function openFile (folderid, resumeid) {
+  function openFile(folderid, resumeid) {
     if (folderid == 0 || !folderid) {
-      return navigate(`/dashboard/file/?resumeID=${resumeid}`)
+      return navigate(`/dashboard/file/?resumeID=${resumeid}`);
     }
-    navigate(`/dashboard/file/?folderID=${folderid}&resumeID=${resumeid}`)
+    navigate(`/dashboard/file/?folderID=${folderid}&resumeID=${resumeid}`);
   }
 
-  function openFolder (item) {
-    queryClient.invalidateQueries({ queryKey: ['program'] })
-    navigate(`/dashboard/folder/${item.folder.id}`)
+  function openFolder(item) {
+    queryClient.invalidateQueries({ queryKey: ["program"] });
+    navigate(`/dashboard/folder/${item.folder.id}`);
   }
 
-  function openFileModal () {
-    dispatch(toggleModals('uploadFile'))
+  function openFileModal() {
+    dispatch(toggleModals("uploadFile"));
   }
-  function openFolderModal () {
-    dispatch(toggleModals('folder'))
+  function openFolderModal() {
+    dispatch(toggleModals("folder"));
   }
 
   const moveFileMutation = useMutation({
     mutationFn: MoveFile,
-    onMutate: async variables => {
-      const { fileId, folderId } = variables
-      await queryClient.cancelQueries({ queryKey: ['program'] })
-      const cachedProgram = queryClient.getQueryData(['program'])
+    onMutate: async (variables) => {
+      const { fileId, folderId } = variables;
+      await queryClient.cancelQueries({ queryKey: ["program"] });
+      const cachedProgram = queryClient.getQueryData(["program"]);
 
-      queryClient.setQueryData(['program'], old => {
-        if (!old) return old
+      queryClient.setQueryData(["program"], (old) => {
+        if (!old) return old;
 
-        return old.map(item => {
+        return old.map((item) => {
           if (item.file?.id === fileId) {
             return {
               ...item,
               file: {
                 ...item.file,
-                folderId: folderId
-              }
-            }
+                folderId: folderId,
+              },
+            };
           }
-          return item
-        })
-      })
+          return item;
+        });
+      });
 
-      return { cachedProgram }
+      return { cachedProgram };
     },
 
     onError: (err, variables, context) => {
-      queryClient.setQueryData(['program'], context.cachedProgram)
-      toast.error('Move failed')
+      queryClient.setQueryData(["program"], context.cachedProgram);
+      toast.error("Move failed");
     },
 
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['program'] })
-    }
-  })
+      queryClient.invalidateQueries({ queryKey: ["program"] });
+    },
+  });
 
-  function handleDragEnd (event, cancelled) {
+  function handleDragEnd(event, cancelled) {
     if (cancelled) {
-      return
+      return;
     }
-    const { source, target } = event.operation
+    const { source, target } = event.operation;
 
     if (!target.id) {
-      return
+      return;
     }
     // const sourceFile = source?.data
     // const targetFolder = target?.data
-    moveFileMutation.mutate({ fileId: source.id, folderId: target.id })
+    moveFileMutation.mutate({ fileId: source.id, folderId: target.id });
   }
 
   const deleteMutation = useMutation({
     mutationFn: deleteProgram,
     onSuccess: () => {
       // const program = data.data
-      queryClient.invalidateQueries({ queryKey: ['program'] })
-      queryClient.invalidateQueries({ queryKey: ['activity'] })
+      queryClient.invalidateQueries({ queryKey: ["program"] });
+      queryClient.invalidateQueries({ queryKey: ["activity"] });
       toast.success(`Program deleted  succesfully`, {
         ...toastPresets.aiSuccess(),
-        position: 'top-center'
-      })
+        position: "top-center",
+      });
     },
     onError: () => {
-      toast.error('Failed to delete program', {
-        ...toastPresets.generalError('Please try again'),
-        position: 'top-center'
-      })
-    }
-  })
+      toast.error("Failed to delete program", {
+        ...toastPresets.generalError("Please try again"),
+        position: "top-center",
+      });
+    },
+  });
 
   return (
     <DragDropProvider onDragEnd={handleDragEnd}>
-      <section className='flex flex-col sm:pl-5 gap-0 pt-0'>
-        <div className='pr-4 sm:px-5'>
-          <div className='w-full pl-5 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 sm:gap-0'>
+      <section className="flex flex-col sm:pl-5 gap-0 pt-0">
+        <div className="pr-4 sm:px-5">
+          <div className="w-full pl-5 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 sm:gap-0">
             <h2
               className={`text-2xl font-IBM shrink-0 ${
-                appearance.theme == 'dark' ? 'text-white' : 'text-black'
+                appearance.theme == "dark" ? "text-white" : "text-black"
               }`}
             >
               {headerText}
             </h2>
 
-            <div className='flex flex-row w-full sm:w-auto items-center gap-3 sm:gap-5'>
-              <div className='flex gap-3 shrink-0'>
+            <div className="flex flex-row w-full sm:w-auto items-center gap-3 sm:gap-5">
+              <div className="flex gap-3 shrink-0">
                 {!openedFolder && (
                   <button
                     onClick={() => {
-                      openFolderModal()
+                      openFolderModal();
                     }}
-                    className='text-xs font-satoshi flex gap-2 shadow-sm shadow-black/40 bg-orange-300 hover:bg-amber-500 px-5 sm:px-4 cursor-pointer py-3 text-white items-center justify-center h-full rounded-xl'
+                    className="text-xs font-satoshi flex gap-2 shadow-sm shadow-black/40 bg-orange-300 hover:bg-amber-500 px-5 sm:px-4 cursor-pointer py-3 text-white items-center justify-center h-full rounded-xl"
                   >
-                    <FolderCodeIcon className='w-4 h-4 sm:w-5 sm:h-5' />
-                    <span className='hidden sm:inline'>New Folder</span>
+                    <FolderCodeIcon className="w-4 h-4 sm:w-5 sm:h-5" />
+                    <span className="hidden sm:inline">New Folder</span>
                   </button>
                 )}
 
                 <button
                   onClick={() => {
-                    openFileModal()
+                    openFileModal();
                   }}
-                  className='text-xs font-satoshi flex gap-2 shadow-sm shadow-black/40 bg-orange-300 hover:bg-amber-500 px-5 sm:px-4 cursor-pointer py-3 text-white items-center justify-center h-full rounded-xl'
+                  className="text-xs font-satoshi flex gap-2 shadow-sm shadow-black/40 bg-orange-300 hover:bg-amber-500 px-5 sm:px-4 cursor-pointer py-3 text-white items-center justify-center h-full rounded-xl"
                 >
-                  <FilePlusCornerIcon className='w-4 h-4 sm:w-5 sm:h-5' />
-                  <span className='hidden sm:inline'>Add File</span>
+                  <FilePlusCornerIcon className="w-4 h-4 sm:w-5 sm:h-5" />
+                  <span className="hidden sm:inline">Add File</span>
                 </button>
               </div>
               <div
                 className={`flex-1 min-w-0 sm:w-70 sm:flex-none sm:p-3 py-2.5 rounded-xl items-center gap-3 sm:gap-5 border flex ${
-                  appearance.theme == 'dark'
-                    ? 'bg-[#2a2a2a] border-slate-700'
-                    : 'border-slate-200 bg-white'
+                  appearance.theme == "dark"
+                    ? "bg-[#2a2a2a] border-slate-700"
+                    : "border-slate-200 bg-white"
                 }`}
               >
                 <Search
                   className={`w-5 h-5 shrink-0 ml-5 ${
-                    appearance.theme == 'dark' ? 'text-white' : 'text-black'
+                    appearance.theme == "dark" ? "text-white" : "text-black"
                   }`}
                 />
                 <input
-                  type='text'
-                  placeholder='Search by Folder or File name'
+                  type="text"
+                  placeholder="Search by Folder or File name"
                   className={`w-full  text-xs font-satoshi h-full outline-0 ${
-                    appearance.theme == 'dark'
-                      ? 'bg-transparent text-white placeholder:text-slate-400'
-                      : 'text-black'
+                    appearance.theme == "dark"
+                      ? "bg-transparent text-white placeholder:text-slate-400"
+                      : "text-black"
                   }`}
-                  name=''
-                  id=''
+                  name=""
+                  id=""
                 />
               </div>
             </div>
@@ -245,19 +245,19 @@ export default function Main () {
 
           <div
             className={`flex gap-3 sm:gap-5 mt-5 pl-10 items-center sm:pl-5 text-xs font-semibold font-satoshi flex-wrap ${
-              appearance.theme == 'dark' ? 'text-slate-400' : 'text-black'
+              appearance.theme == "dark" ? "text-slate-400" : "text-black"
             }`}
           >
             <p
               onClick={() => {
-                if (id) navigate(-1)
+                if (id) navigate(-1);
               }}
               className={`cursor-pointer border-white hover:border-black border-b ${
                 id
-                  ? 'text-slate-400'
-                  : appearance.theme == 'dark'
-                  ? 'text-white'
-                  : 'text-black'
+                  ? "text-slate-400"
+                  : appearance.theme == "dark"
+                    ? "text-white"
+                    : "text-black"
               }`}
             >
               Home
@@ -266,12 +266,12 @@ export default function Main () {
               <>
                 <ChevronRight
                   className={`w-4 h-4 ${
-                    appearance.theme == 'dark' ? 'text-white' : 'text-black'
+                    appearance.theme == "dark" ? "text-white" : "text-black"
                   }`}
                 />
                 <p
                   className={`capitalize ${
-                    appearance.theme == 'dark' ? 'text-white' : 'text-black'
+                    appearance.theme == "dark" ? "text-white" : "text-black"
                   }`}
                 >
                   {openedFolder?.metaData?.name}
@@ -282,16 +282,18 @@ export default function Main () {
         </div>
 
         <section
-          className={`grid gap-3 sm:gap-4 transform-gpu transition-all duration-150 ease-in-out  mt-0 pt-5 sm:px-3 sm:pl-5 sm:pr-10 justify-items-center max-sm:items-center max-sm:justify-items-center max-sm:align-bottom
+          className={`grid gap-3 sm:gap-4 2xl:gap-6 transform-gpu transition-all duration-150 ease-in-out  mt-0 pt-5 sm:px-3 sm:pl-5 sm:pr-10 2xl:px-8 justify-items-center max-sm:items-center max-sm:justify-items-center max-sm:align-bottom
             grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 ${
-              showRightbar ? 'xl:grid-cols-6' : 'xl:grid-cols-8'
-            } pb-0 mb-0 gap-y-6 sm:gap-y-8 w-full`}
+              showRightbar
+                ? "xl:grid-cols-6 2xl:grid-cols-8"
+                : "xl:grid-cols-8 2xl:grid-cols-10"
+            } pb-0 mb-0 gap-y-6 sm:gap-y-8 2xl:gap-y-10 w-full`}
         >
           {/* specific files in an opened folder  */}
           {
             openedFolder &&
               id &&
-              openedFolder?.files?.map(item => (
+              openedFolder?.files?.map((item) => (
                 <Draggable
                   data={item}
                   key={item.id}
@@ -299,31 +301,31 @@ export default function Main () {
                   disabled={movingFiles.includes(item.id)}
                 >
                   <section
-                    onClick={e => {
-                      handleClick(e, item.id, 'file')
+                    onClick={(e) => {
+                      handleClick(e, item.id, "file");
                     }}
                     onDoubleClick={() => {
-                      openFile(null, item.id)
+                      openFile(null, item.id);
                     }}
-                    className={`pl-2 gap-2 h-30 sm:h-26 w-full max-w-full sm:max-w-35 shrink-0 flex flex-col items-start ${
-                      movingFiles.includes(item.id) ? 'opacity-50' : ''
+                    className={`pl-2 gap-2 h-30 sm:h-26 2xl:h-28 w-full max-w-full sm:max-w-35 2xl:max-w-32 shrink-0 flex flex-col items-start ${
+                      movingFiles.includes(item.id) ? "opacity-50" : ""
                     }`}
                   >
-                    <div className='bg-[#c4c7cc15] shadow-sm  rounded-xl w-full h-full flex'>
-                      <div className=' mt-5'>
-                        {item.metaData.extension == 'pdf' ? (
+                    <div className="bg-[#c4c7cc15] shadow-sm  rounded-xl w-full h-full flex">
+                      <div className=" mt-5">
+                        {item.metaData.extension == "pdf" ? (
                           <img
-                            width='23'
-                            height='23'
-                            src='https://img.icons8.com/color/48/pdf-2--v1.png'
-                            alt='pdf-2--v1'
+                            width="23"
+                            height="23"
+                            src="https://img.icons8.com/color/48/pdf-2--v1.png"
+                            alt="pdf-2--v1"
                           />
                         ) : (
                           <img
-                            width='23'
-                            height='23'
-                            src='https://img.icons8.com/color/48/microsoft-word-2019--v2.png'
-                            alt='microsoft-word-2019--v2'
+                            width="23"
+                            height="23"
+                            src="https://img.icons8.com/color/48/microsoft-word-2019--v2.png"
+                            alt="microsoft-word-2019--v2"
                           />
                         )}
                       </div>
@@ -332,13 +334,13 @@ export default function Main () {
                     </div>
                     <div
                       className={`flex w-[90%] mt-1 pl-2 items-center text-[10px] justify-center font-semibold gap-1 ${
-                        appearance.theme == 'dark'
-                          ? 'text-white'
-                          : 'text-gray-700'
+                        appearance.theme == "dark"
+                          ? "text-white"
+                          : "text-gray-700"
                       }`}
                     >
-                      <p className='truncate'>{item.metaData.name}.pdf</p>
-                      <p className='whitespace-nowrap'>
+                      <p className="truncate">{item.metaData.name}.pdf</p>
+                      <p className="whitespace-nowrap">
                         {formatBytes(item.metaData.size)}
                       </p>
                     </div>
@@ -348,7 +350,7 @@ export default function Main () {
             //} </section>
           }
           {isFetching && (
-            <div className='custom-loader absolute bottom-0 top-0 left-0 right-0 w-full '></div>
+            <div className="custom-loader absolute bottom-0 top-0 left-0 right-0 w-full "></div>
           )}
 
           {/* All folders and files in overview and resumes */}
@@ -358,8 +360,8 @@ export default function Main () {
           {!isLoading &&
             !id &&
             programs?.length > 0 &&
-            programs?.slice(0, showHeader ? 10 : programs.length).map(item =>
-              item?.type === 'FOLDER' ? (
+            programs?.slice(0, showHeader ? 10 : programs.length).map((item) =>
+              item?.type === "FOLDER" ? (
                 <Droppable
                   data={item.folder}
                   id={item.folder.id}
@@ -367,18 +369,18 @@ export default function Main () {
                 >
                   <div
                     onDoubleClick={() => openFolder(item)}
-                    onClick={e => handleClick(e, item.folder.id, 'folder')}
-                    className='w-full  max-w-35 sm:max-w-28 shrink-0 cursor-pointer'
+                    onClick={(e) => handleClick(e, item.folder.id, "folder")}
+                    className="w-full max-w-35 sm:max-w-28 2xl:max-w-36 shrink-0 cursor-pointer"
                   >
                     <Folder files={item?.folder.files} />
                     <div
                       className={`flex w-full text-xs mt-2 items-center text-[10px] justify-center font-semibold gap-1 ${
-                        appearance.theme == 'dark'
-                          ? 'text-white'
-                          : 'text-gray-700'
+                        appearance.theme == "dark"
+                          ? "text-white"
+                          : "text-gray-700"
                       }`}
                     >
-                      <p className='truncate'>{item.folder.metaData.name}</p>
+                      <p className="truncate">{item.folder.metaData.name}</p>
                       <p>{formatBytes(item.folder.metaData.size)}</p>
                     </div>
                   </div>
@@ -392,27 +394,27 @@ export default function Main () {
                     disabled={movingFiles.includes(item.id)}
                   >
                     <section
-                      onClick={e => handleClick(e, item.file.id, 'file')}
+                      onClick={(e) => handleClick(e, item.file.id, "file")}
                       onDoubleClick={() => {
-                        openFile(null, item.file.id)
+                        openFile(null, item.file.id);
                       }}
-                      className={`cursor-pointer pl-2 gap-2 h-35 sm:h-26 w-full max-w-40 sm:max-w-32 shrink-0 flex flex-col items-start`}
+                      className={`cursor-pointer pl-2 gap-2 h-35 sm:h-26 2xl:h-28 w-full max-w-40 sm:max-w-32 2xl:max-w-32 shrink-0 flex flex-col items-start`}
                     >
-                      <div className='bg-[#c4c7cc15] shadow-sm rounded-xl w-full h-full flex'>
-                        <div className='mt-5'>
-                          {item.file.metaData.extension == 'pdf' ? (
+                      <div className="bg-[#c4c7cc15] shadow-sm rounded-xl w-full h-full flex">
+                        <div className="mt-5">
+                          {item.file.metaData.extension == "pdf" ? (
                             <img
-                              width='23'
-                              height='23'
-                              src='https://img.icons8.com/color/48/pdf-2--v1.png'
-                              alt='pdf'
+                              width="23"
+                              height="23"
+                              src="https://img.icons8.com/color/48/pdf-2--v1.png"
+                              alt="pdf"
                             />
                           ) : (
                             <img
-                              width='23'
-                              height='23'
-                              src='https://img.icons8.com/color/48/microsoft-word-2019--v2.png'
-                              alt='word'
+                              width="23"
+                              height="23"
+                              src="https://img.icons8.com/color/48/microsoft-word-2019--v2.png"
+                              alt="word"
                             />
                           )}
                         </div>
@@ -421,22 +423,22 @@ export default function Main () {
                       </div>
                       <div
                         className={`flex w-full sm:mt-1 pl-2 items-center text-[10px] justify-center font-semibold gap-1 ${
-                          appearance.theme == 'dark'
-                            ? 'text-white'
-                            : 'text-gray-700'
+                          appearance.theme == "dark"
+                            ? "text-white"
+                            : "text-gray-700"
                         }`}
                       >
-                        <p className='truncate'>
+                        <p className="truncate">
                           {item.file.metaData.name}.pdf
                         </p>
-                        <p className='whitespace-nowrap'>
+                        <p className="whitespace-nowrap">
                           {formatBytes(item.file.metaData.size)}
                         </p>
                       </div>
                     </section>
                   </Draggable>
                 )
-              )
+              ),
             )}
         </section>
         {menuConfig.visible && (
@@ -444,64 +446,66 @@ export default function Main () {
             mutation={deleteMutation}
             menuConfig={menuConfig}
             programs={programs}
-            onClose={() => setMenuConfig(prev => ({ ...prev, visible: false }))}
+            onClose={() =>
+              setMenuConfig((prev) => ({ ...prev, visible: false }))
+            }
           />
         )}
       </section>
     </DragDropProvider>
-  )
+  );
 }
 
-function ContextMenu ({ onClose, menuConfig, mutation, programs }) {
-  const item = menuConfig?.type
-  const dispatch = useDispatch()
-  const navigate = useNavigate()
+function ContextMenu({ onClose, menuConfig, mutation, programs }) {
+  const item = menuConfig?.type;
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
-  function handleDownload () {
-    if (item !== 'file') return onClose()
+  function handleDownload() {
+    if (item !== "file") return onClose();
 
     const findFile = () => {
       for (const prog of programs || []) {
-        if (prog?.type === 'FOLDER' && prog.folder?.files) {
-          const found = prog.folder.files.find(f => f.id === menuConfig.id)
-          if (found) return found
+        if (prog?.type === "FOLDER" && prog.folder?.files) {
+          const found = prog.folder.files.find((f) => f.id === menuConfig.id);
+          if (found) return found;
         }
-        if (prog?.file?.id === menuConfig.id) return prog.file
+        if (prog?.file?.id === menuConfig.id) return prog.file;
       }
-      return null
-    }
+      return null;
+    };
 
-    const file = findFile()
+    const file = findFile();
     if (!file?.metaData?.content) {
-      return onClose()
+      return onClose();
     }
 
-    const link = document.createElement('a')
-    link.href = file.metaData.content
-    link.download = `${file.metaData.name}.pdf`
-    link.target = '_blank'
-    document.body.appendChild(link)
-    link.click()
-    document.body.removeChild(link)
-    onClose()
+    const link = document.createElement("a");
+    link.href = file.metaData.content;
+    link.download = `${file.metaData.name}.pdf`;
+    link.target = "_blank";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    onClose();
   }
 
   return (
     <div
-      className='fixed z-50 bg-white shadow-xl border border-slate-100/50 rounded-2xl py-1.5 w-25 p-0 flex flex-col font-satoshi'
+      className="fixed z-50 bg-white shadow-xl border border-slate-100/50 rounded-2xl py-1.5 w-25 p-0 flex flex-col font-satoshi"
       style={{
         top: menuConfig.y,
         left: menuConfig.x,
-        transform: 'translate(10px, 10px)'
+        transform: "translate(10px, 10px)",
       }}
-      onClick={e => e.stopPropagation()}
+      onClick={(e) => e.stopPropagation()}
     >
       <button
         onClick={() => {
-          dispatch(openFileDetails(item))
-          onClose()
+          dispatch(openFileDetails(item));
+          onClose();
         }}
-        className='flex items-center rounded-[inherit] gap-2 px-4 py-2 hover:bg-slate-50 text-slate-700 text-[10px] font-semibold transition-all cursor-pointer'
+        className="flex items-center rounded-[inherit] gap-2 px-4 py-2 hover:bg-slate-50 text-slate-700 text-[10px] font-semibold transition-all cursor-pointer"
       >
         <Pencil size={11} strokeWidth={2.5} />
         <span>Edit </span>
@@ -509,14 +513,14 @@ function ContextMenu ({ onClose, menuConfig, mutation, programs }) {
 
       <button
         onClick={() => {
-          if (item == 'file') {
-            navigate(`/dashboard/file/?resumeID=${menuConfig.id}`)
+          if (item == "file") {
+            navigate(`/dashboard/file/?resumeID=${menuConfig.id}`);
           } else {
-            navigate(`/dashboard/folder/${menuConfig.id}`)
+            navigate(`/dashboard/folder/${menuConfig.id}`);
           }
-          onClose()
+          onClose();
         }}
-        className='flex items-center rounded-[inherit] gap-2 px-4 py-2 hover:bg-slate-50 text-slate-700 text-[10px] font-semibold transition-all cursor-pointer'
+        className="flex items-center rounded-[inherit] gap-2 px-4 py-2 hover:bg-slate-50 text-slate-700 text-[10px] font-semibold transition-all cursor-pointer"
       >
         <FolderOpen size={11} strokeWidth={2.5} />
         <span>Open</span>
@@ -524,69 +528,69 @@ function ContextMenu ({ onClose, menuConfig, mutation, programs }) {
 
       <button
         onClick={handleDownload}
-        className='flex items-center gap-2 px-4 py-2 hover:bg-slate-50 text-slate-700 text-[10px] font-semibold transition-all cursor-pointer'
+        className="flex items-center gap-2 px-4 py-2 hover:bg-slate-50 text-slate-700 text-[10px] font-semibold transition-all cursor-pointer"
       >
-        <Download className='shrink-0' size={11} strokeWidth={2.5} />
+        <Download className="shrink-0" size={11} strokeWidth={2.5} />
         <span>Download</span>
       </button>
 
-      <div className='h-px bg-slate-100 my-1 mx-3' />
+      <div className="h-px bg-slate-100 my-1 mx-3" />
 
       <button
         onClick={() => {
-          mutation.mutate(menuConfig.id)
-          onClose()
+          mutation.mutate(menuConfig.id);
+          onClose();
         }}
-        className='flex items-center gap-2 px-4 py-2 hover:bg-rose-50 text-rose-500 text-[10px] font-semibold transition-all cursor-pointer'
+        className="flex items-center gap-2 px-4 py-2 hover:bg-rose-50 text-rose-500 text-[10px] font-semibold transition-all cursor-pointer"
       >
         <Trash2 size={11} strokeWidth={2.5} />
         <span>Delete</span>
       </button>
     </div>
-  )
+  );
 }
 
-function MiniIframe ({ src }) {
+function MiniIframe({ src }) {
   const thumbnailUrl = src.replace(
-    '/upload/',
-    '/upload/w_300,h_400,pg_1,f_jpg/'
-  )
+    "/upload/",
+    "/upload/w_300,h_400,pg_1,f_jpg/",
+  );
   return (
-    <section className='bg-[#c4c7cc15] shadow-sm rounded-xl w-full h-full overflow-hidden'>
-      <img src={thumbnailUrl} alt='' className=' h-full w-full object-cover' />
+    <section className="bg-[#c4c7cc15] shadow-sm rounded-xl w-full h-full overflow-hidden">
+      <img src={thumbnailUrl} alt="" className=" h-full w-full object-cover" />
     </section>
-  )
+  );
 }
 
-function EmptyState () {
-  const { appearance } = useSelector(state => state.preferences)
+function EmptyState() {
+  const { appearance } = useSelector((state) => state.preferences);
   return (
-    <div className='col-span-full flex flex-col items-center justify-center h-75 gap-4'>
+    <div className="col-span-full flex flex-col items-center justify-center h-75 gap-4">
       <div
         className={`w-10 h-10 rounded-full flex items-center justify-center ${
-          appearance.theme == 'dark' ? 'bg-[#2a2a2a]' : 'bg-orange-50'
+          appearance.theme == "dark" ? "bg-[#2a2a2a]" : "bg-orange-50"
         }`}
       >
         <FolderCodeIcon
           className={`w-6 h-6 ${
-            appearance.theme == 'dark' ? 'text-white' : 'text-orange-300'
+            appearance.theme == "dark" ? "text-white" : "text-orange-300"
           }`}
         />
       </div>
       <p
         className={`text-lg font-satoshi font-semibold ${
-          appearance.theme == 'dark' ? 'text-white' : 'text-slate-800'
+          appearance.theme == "dark" ? "text-white" : "text-slate-800"
         }`}
       >
         No files yet
       </p>
       <p
         className={`text-sm font-satoshi text-center max-w-60 ${
-          appearance.theme == 'dark' ? 'text-slate-400' : 'text-slate-500'
+          appearance.theme == "dark" ? "text-slate-400" : "text-slate-500"
         }`}
       >
         Upload your first resume to get started.
       </p>
     </div>
-  )
+  );
 }
