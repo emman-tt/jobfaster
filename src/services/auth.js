@@ -22,6 +22,24 @@ export async function register (name, password, email) {
   }
 }
 
+export async function forgotPassword (email) {
+  try {
+    const res = await api.post('/auth/forgot-password', { email })
+    return res.data
+  } catch (error) {
+    const data = error.response?.data
+    return {
+      status: 'failed',
+      message: data?.message || 'SOMETHING_WRONG'
+    }
+  }
+}
+
+export async function resetPassword (token, password) {
+  const res = await api.post('/auth/reset-password', { token, password })
+  return res.data
+}
+
 export async function login (password, email) {
   const controller = new AbortController()
 

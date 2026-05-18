@@ -146,8 +146,8 @@ export default function Main() {
     },
   });
 
-  function handleDragEnd(event, cancelled) {
-    if (cancelled) {
+  function handleDragEnd(event) {
+    if (event.canceled) {
       return;
     }
     const { source, target } = event.operation;

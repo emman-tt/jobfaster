@@ -17,6 +17,8 @@ import { Toaster } from 'sonner'
 import Job from './App/Dashboard/Job/Job'
 import Finalize from './App/Dashboard/Job/Finalize'
 import Auth from './Pages/Auth'
+
+import ResetPassword from './Pages/ResetPassword'
 import Additional from './App/Onboarding/Additional-step3/Additional'
 import { AuthProvider } from './context/auth'
 import Editor from './Pages/Editor'
@@ -63,6 +65,8 @@ function App () {
           <Route path='/correction' element={<Correction />} />
           <Route path='/quick/actions' element={<QuickAction />} />
           <Route path='/auth' element={<Auth />} />
+
+          <Route path='/reset-password' element={<ResetPassword />} />
 
           <Route path='/editor' element={<Editor />}></Route>
 

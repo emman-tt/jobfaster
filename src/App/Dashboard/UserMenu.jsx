@@ -1,12 +1,14 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { ArrowUpDown, User2, Settings, Zap, LogOut } from "lucide-react";
 import useClickOutside from "../../hooks/useClick";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../context/auth";
 
 export default function UserMenu({ data, appearance }) {
   const [isOpen, setIsOpen] = useState(false);
   const menuRef = useClickOutside(() => setIsOpen(false));
   const navigate = useNavigate();
+  const { logout } = useAuth();
 
   return (
     <div ref={menuRef} className="relative w-full">
@@ -49,6 +51,7 @@ export default function UserMenu({ data, appearance }) {
           <button
             onClick={() => {
               setIsOpen(false);
+              logout();
             }}
             className="flex items-center gap-3 p-2 rounded-xl hover:bg-gray-100 transition-colors text-black text-sm font-medium w-full text-left justify-between"
           >

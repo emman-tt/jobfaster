@@ -152,7 +152,7 @@ export default function Finalize() {
         );
 
         if (result?.data?.url) {
-          queryClient.invalidateQueries(["program"]);
+          queryClient.invalidateQueries({ queryKey: ["program"] });
           setPdfUrl(result.data.url);
         }
       } catch (error) {

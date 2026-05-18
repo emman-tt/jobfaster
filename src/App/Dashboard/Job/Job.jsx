@@ -131,7 +131,7 @@ export default function Job() {
                 id="description"
                 name="description"
                 required
-                rows={6}
+                rows={14}
                 value={job.description}
                 onChange={handleChange}
                 placeholder="Paste the full job description "

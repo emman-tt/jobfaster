@@ -1,4 +1,4 @@
-import { Outlet, useLocation, useNavigate } from 'react-router-dom'
+import { Outlet, useLocation, useNavigate, Link } from 'react-router-dom'
 import Sidebar from '../App/Dashboard/Sidebar'
 import { useSelector } from 'react-redux'
 import Overlay from '../components/Overlay'
@@ -26,11 +26,13 @@ export default function Dashboard () {
   const { modals } = useSelector(state => state.modal)
   const { showRightbar } = useSelector(state => state.dashboard)
   const { appearance } = useSelector(state => state.preferences)
+  const { tailoredResume } = useSelector(state => state.ai)
   const location = useLocation()
   const actualPath = location.pathname.split('/').at(-1)
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const [showMobileSidebar, setShowMobileSidebar] = useState(false)
+  const [pendingApplication, setPendingApplication] = useState(!!tailoredResume)
 
   function openRightbar () {
     dispatch(toggleRightbar(true))
@@ -56,6 +58,7 @@ export default function Dashboard () {
         console.log('resume', content)
         dispatch(dumpEmailDetails(response.email))
         dispatch(saveTailoredResume(response))
+        setPendingApplication(true)
         console.log('email', response.email)
         navigate('finalize')
         return
@@ -77,6 +80,7 @@ export default function Dashboard () {
         }
 
         if (status == 'success') {
+          setPendingApplication(false)
           toast.dismiss('job-mail')
           navigate('/dashboard/board')
           toast.success('Email sent!', {
@@ -156,6 +160,28 @@ export default function Dashboard () {
               <PanelRightOpenIcon className='sm:w-6 sm:h-6  w-7 h-7' />
             )}
           </button>
+        )}
+        {pendingApplication && actualPath !== 'finalize' && (
+          <div className={`flex items-center justify-between px-4 sm:px-6 py-3 ${appearance.theme == 'dark' ? 'bg-orange-600/20 text-orange-300' : 'bg-orange-50 text-orange-700'} border-b ${appearance.theme == 'dark' ? 'border-orange-700/30' : 'border-orange-200'}`}>
+            <p className="text-sm font-semibold flex items-center gap-2">
+              <span className="w-2 h-2 rounded-full bg-orange-500 animate-pulse" />
+              You have an application to complete
+            </p>
+            <div className="flex items-center gap-3">
+              <Link
+                to="finalize"
+                className="text-xs font-bold px-3 py-1.5 rounded-lg bg-orange-500 text-white hover:bg-orange-600 transition-colors"
+              >
+                Complete Now
+              </Link>
+              <button
+                onClick={() => setPendingApplication(false)}
+                className={`p-1 rounded-full transition-colors ${appearance.theme == 'dark' ? 'hover:bg-orange-700/30' : 'hover:bg-orange-100'}`}
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+          </div>
         )}
         <Outlet />
       </section>
