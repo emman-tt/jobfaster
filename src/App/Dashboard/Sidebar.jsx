@@ -3,6 +3,7 @@ import {
   BadgePlus,
   Blocks,
   CircleEllipsis,
+  CreditCard,
   IceCream2Icon,
   Layers,
   Mail,
@@ -204,6 +205,12 @@ const tools = [
   },
   {
     id: 9,
+    name: 'Billings',
+    icon: <CreditCard className='w-4 h-4' />,
+    href: 'billings'
+  },
+  {
+    id: 10,
     name: 'FAQ',
     icon: <CircleEllipsis className='w-4 h-4' />,
     href: 'faq'
