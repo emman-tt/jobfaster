@@ -52,7 +52,7 @@ const SettingRow = ({ label, description, children, border = true }) => {
         border
           ? `border-t ${
               appearance.theme === 'dark'
-                ? 'border-slate-800'
+                ? 'border-zinc-800'
                 : 'border-slate-100'
             }`
           : ''
@@ -86,10 +86,10 @@ const ThemeCard = ({ type, label, active, onClick, image }) => {
       <div
         className={`relative aspect-4/3 rounded-xl border-2 transition-all overflow-hidden ${
           active
-            ? 'border-[#f17e27] ring-2 ring-[#f17e27]/10'
+            ? 'border-[#f17e27]'
             : appearance.theme === 'dark'
-            ? 'border-slate-800 bg-slate-900 hover:border-slate-700'
-            : 'border-slate-200 bg-slate-50 hover:border-slate-300'
+            ? 'border-zinc-800 bg-zinc-900 hover:border-zinc-700'
+            : 'border-zinc-200 bg-zinc-50 hover:border-zinc-300'
         }`}
       >
         <img src={image} alt={label} className='w-full h-full object-cover' />
@@ -120,7 +120,7 @@ const Toggle = ({ active, onChange }) => (
     className={`w-11 h-6 rounded-full transition-all
         
          relative ${
-           active ? 'bg-[#f17e27]' : 'bg-slate-200 dark:bg-slate-800'
+           active ? 'bg-[#f17e27]' : 'bg-slate-200 dark:bg-zinc-800'
          }`}
   >
     <div
@@ -140,7 +140,7 @@ const RadioOption = ({ label, checked, onChange }) => {
           checked
             ? 'border-[#f17e27]'
             : appearance.theme === 'dark'
-            ? 'border-slate-700'
+            ? 'border-zinc-700'
             : 'border-slate-300'
         }`}
       >
@@ -300,7 +300,7 @@ export default function Prefrences () {
                   exportPref.format === format.toLowerCase()
                     ? 'border-[#f17e27] bg-[#f17e27] text-white shadow-none shadow-[#f17e27]/20'
                     : appearance.theme === 'dark'
-                    ? ' border-0  bg-[#2A2A2A] text-slate-400 hover:border-slate-700'
+                    ? ' border-0  bg-[#2A2A2A] text-zinc-400 hover:border-zinc-700'
                     : 'border-slate-200 bg-white text-slate-600 hover:bg-slate-50'
                 }`}
               >

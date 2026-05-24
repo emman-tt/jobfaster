@@ -216,7 +216,9 @@ export default function JobBoard() {
 
   if (isLoading) {
     return (
-      <div className="flex flex-col h-full w-full bg-white overflow-hidden">
+      <div className={`flex flex-col h-full w-full overflow-hidden transition-all duration-200 ${
+        appearance.theme === "dark" ? "bg-[#202020]" : "bg-white"
+      }`}>
         <Header />
         <div className="flex items-center justify-center flex-1">
           <div className="animate-spin w-8 h-8 border-2 border-[#f17e27] border-t-transparent rounded-full" />
@@ -226,15 +228,16 @@ export default function JobBoard() {
   }
 
   return (
-    <div className="flex flex-col h-full w-full bg-white overflow-hidden relative">
+    <div className={`flex flex-col h-full w-full overflow-hidden relative transition-all duration-200 ${
+      appearance.theme === "dark" ? "bg-[#202020]" : "bg-white"
+    }`}>
       <Header isFetching={isFetching} />
-      <div className=" w-screen pr-10 sm:pr-100 h-full  overflow-x-auto p-5 2xl:p-8 scrollbar-thin ">
+      <div className=" w-screen pr-10 sm:pr-100 h-full overflow-x-auto p-5 2xl:p-8 scrollbar-thin ">
         <DragDropProvider onDragEnd={handleDragEnd}>
           <div className="flex gap-4 2xl:gap-6 min-w-max h-full items-start">
             {kanban.map((column) => (
-              <Droppable className={"h-full"} id={column.id}>
+              <Droppable className={"h-full"} id={column.id} key={column.id}>
                 <BoardColumn
-                  key={column.id}
                   column={column}
                   onCardClick={(card) => setSelectedJob(mapCardToJob(card))}
                 />
@@ -246,10 +249,10 @@ export default function JobBoard() {
 
       {selectedJob && (
         <div className="fixed inset-0 z-40">
-          <div className="absolute inset-0 bg-black/20" onClick={closeDetail} />
+          <div className="absolute inset-0 bg-black/40 backdrop-blur-xs" onClick={closeDetail} />
           <div
-            className={`absolute inset-x-0 sm:inset-x-2 rounded-t-2xl sm:rounded-2xl top-[30%] sm:top-2 bottom-0 sm:bottom-2 sm:h-[97%] w-full max-w-xl scrollbar-none shadow-2xl ${
-              appearance.theme == "dark" ? "bg-[#2a2a2a]" : "bg-white"
+            className={`absolute inset-y-0 sm:inset-y-2 rounded-t-2xl sm:rounded-2xl right-0 top-[30%] sm:top-2 bottom-0 sm:bottom-2 sm:h-[97%] w-full max-w-xl scrollbar-none shadow-2xl transition-all border ${
+              appearance.theme == "dark" ? "bg-[#2a2a2a] border-zinc-800" : "bg-white border-slate-100"
             }`}
           >
             <button
@@ -282,37 +285,51 @@ export default function JobBoard() {
 
 function BoardColumn({ column, onCardClick }) {
   const Icon = IconMap[column.icon] || Bookmark;
+  const { appearance } = useSelector((state) => state.preferences);
 
   return (
-    <div className="w-70 2xl:w-80 bg-gray-100 rounded-xl  p-2 flex flex-col h-full">
+    <div className={`w-70 2xl:w-80 rounded-xl p-2 flex flex-col h-full border transition-all ${
+      appearance.theme === "dark"
+        ? "bg-[#1e1e1e] border-zinc-800/80"
+        : "bg-gray-100 border-transparent"
+    }`}>
       {/* Column Header */}
       <div className="flex items-center justify-between mb-4 px-1">
         <div className="flex items-center gap-2">
-          <div className="text-gray-500 bg-transparent">
+          <div className={`${appearance.theme === 'dark' ? 'text-zinc-400' : 'text-gray-500'} bg-transparent`}>
             <Icon className="w-4 h-4" strokeWidth={2.5} />
           </div>
-          <h2 className="font-bold text-gray-700 text-[13px]">
+          <h2 className={`font-bold text-[13px] ${
+            appearance.theme === 'dark' ? 'text-zinc-300' : 'text-gray-700'
+          }`}>
             {column.title}
           </h2>
-          <span className="text-gray-400 font-medium text-[13px] ml-0.5">
+          <span className={`font-medium text-[13px] ml-0.5 ${
+            appearance.theme === 'dark' ? 'text-zinc-500' : 'text-gray-400'
+          }`}>
             {column.count}
           </span>
         </div>
         <div className="flex items-center gap-2">
-          <button className="text-gray-300 hover:text-gray-500">
+          <button className={`hover:text-gray-500 transition-colors ${
+            appearance.theme === 'dark' ? 'text-zinc-600 hover:text-zinc-400' : 'text-gray-300'
+          }`}>
             <MoreHorizontal className="w-3.5 h-3.5" />
           </button>
-          <button className="text-gray-300 hover:text-gray-500">
+          <button className={`hover:text-gray-500 transition-colors ${
+            appearance.theme === 'dark' ? 'text-zinc-600 hover:text-zinc-400' : 'text-gray-300'
+          }`}>
             <Plus className="w-3.5 h-3.5" />
           </button>
         </div>
       </div>
 
       {/* Cards Container */}
-
-      <div className="flex flex-col gap-3 scrollbar-none  overflow-y-auto  scrollbar-thin scrollbar-thumb-gray-200">
+      <div className="flex flex-col gap-3 scrollbar-none overflow-y-auto scrollbar-thin">
         {column.cards.length === 0 && (
-          <div className="text-center py-8 text-gray-300 text-xs font-medium">
+          <div className={`text-center py-8 text-xs font-medium ${
+            appearance.theme === "dark" ? "text-zinc-600" : "text-gray-300"
+          }`}>
             No jobs
           </div>
         )}
@@ -331,16 +348,26 @@ function BoardColumn({ column, onCardClick }) {
 }
 
 function JobCard({ card, onClick }) {
+  const { appearance } = useSelector((state) => state.preferences);
+
   return (
     <div
       onClick={onClick}
-      className="bg-white p-1.5 px-3 h-30 2xl:h-36 rounded-xl shadow-sm border border-gray-200/50 group relative hover:border-gray-300 transition-all cursor-pointer"
+      className={`p-1.5 px-3 h-30 2xl:h-36 rounded-xl shadow-sm border group relative transition-all cursor-pointer ${
+        appearance.theme === 'dark'
+          ? 'bg-[#2a2a2a] border-zinc-850 hover:border-zinc-700 text-white'
+          : 'bg-white border-gray-200/50 hover:border-gray-300 text-slate-900'
+      }`}
     >
-      <button className="absolute top-3 right-3 text-gray-300 hover:text-gray-500 opacity-0 group-hover:opacity-100 transition-opacity">
+      <button className={`absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity ${
+        appearance.theme === 'dark' ? 'text-zinc-500 hover:text-zinc-300' : 'text-gray-300 hover:text-gray-500'
+      }`}>
         <MoreHorizontal className="w-3.5 h-3.5" />
       </button>
       <div className="flex gap-3 items-center">
-        <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center overflow-hidden shrink-0 border border-gray-100 shadow-sm">
+        <div className={`w-10 h-10 rounded-full flex items-center justify-center overflow-hidden shrink-0 border shadow-sm ${
+          appearance.theme === 'dark' ? 'bg-[#202020] border-zinc-800' : 'bg-white border-gray-100'
+        }`}>
           {card.logo ? (
             <img
               src={card.logo}
@@ -354,30 +381,39 @@ function JobCard({ card, onClick }) {
           )}
         </div>
         <h3
-          className="font-semibold text-gray-800 text-[13px]  pr-3 
-        leading-none "
+          className={`font-semibold text-[13px] pr-3 leading-none truncate ${
+            appearance.theme === 'dark' ? 'text-zinc-100' : 'text-gray-800'
+          }`}
         >
           {card.title}
         </h3>
       </div>
       <div className="flex-1 min-w-0">
-        <div className="flex items-center gap-2 mt-0.5">
-          <span className="text-[12px] text-gray-400 ">{card.company}</span>
+        <div className="flex items-center gap-2 mt-1">
+          <span className={`text-[12px] truncate ${
+            appearance.theme === 'dark' ? 'text-zinc-400' : 'text-gray-400'
+          }`}>{card.company}</span>
 
           {card?.salary && (
-            <span className=" w-full font-light text-xs font-satoshi text-gray-400  ">
+            <span className={`w-full font-light text-xs font-satoshi truncate ${
+              appearance.theme === 'dark' ? 'text-zinc-400' : 'text-gray-400'
+            }`}>
               {card?.salary}
             </span>
           )}
         </div>
 
-        <p className="text-[11px] text-gray-400 line-clamp-1 mb-1 font-medium">
+        <p className={`text-[11px] line-clamp-1 mb-1 font-medium mt-0.5 ${
+          appearance.theme === 'dark' ? 'text-zinc-500' : 'text-gray-400'
+        }`}>
           {card.description}
         </p>
       </div>
 
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-1.5 text-gray-400">
+      <div className="flex items-center justify-between mt-0.5">
+        <div className={`flex items-center gap-1.5 ${
+          appearance.theme === 'dark' ? 'text-zinc-400' : 'text-gray-400'
+        }`}>
           {card.time ? (
             <>
               <Clock className="w-3.5 h-3.5" />
@@ -387,7 +423,9 @@ function JobCard({ card, onClick }) {
             <span className="text-[11px] font-semibold">{card.date}</span>
           )}
         </div>
-        <span className="text-[12px] text-gray-400  ">{card.location}</span>
+        <span className={`text-[12px] ${
+          appearance.theme === 'dark' ? 'text-zinc-400' : 'text-gray-400'
+        }`}>{card.location}</span>
       </div>
     </div>
   );

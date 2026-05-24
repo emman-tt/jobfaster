@@ -10,7 +10,7 @@ export default function Toggle({ active, onChange }) {
         active
           ? 'bg-[#f17e27]'
           : appearance.theme === 'dark'
-            ? 'bg-slate-700'
+            ? 'bg-zinc-700'
             : 'bg-slate-200'
       }`}
     >

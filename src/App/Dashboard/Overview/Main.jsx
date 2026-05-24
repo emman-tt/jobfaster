@@ -199,7 +199,7 @@ export default function Main() {
                     onClick={() => {
                       openFolderModal();
                     }}
-                    className="text-xs font-satoshi flex gap-2 shadow-sm shadow-black/40 bg-orange-300 hover:bg-amber-500 px-5 sm:px-4 cursor-pointer py-3 text-white items-center justify-center h-full rounded-xl"
+                    className="text-xs font-satoshi flex gap-2 shadow-sm shadow-black/40 bg-orange-500 hover:bg-orange-600 dark:bg-orange-600 dark:hover:bg-orange-500 px-5 sm:px-4 cursor-pointer py-3 text-white items-center justify-center h-full rounded-xl transition-all"
                   >
                     <FolderCodeIcon className="w-4 h-4 sm:w-5 sm:h-5" />
                     <span className="hidden sm:inline">New Folder</span>
@@ -210,7 +210,7 @@ export default function Main() {
                   onClick={() => {
                     openFileModal();
                   }}
-                  className="text-xs font-satoshi flex gap-2 shadow-sm shadow-black/40 bg-orange-300 hover:bg-amber-500 px-5 sm:px-4 cursor-pointer py-3 text-white items-center justify-center h-full rounded-xl"
+                  className="text-xs font-satoshi flex gap-2 shadow-sm shadow-black/40 bg-orange-500 hover:bg-orange-600 dark:bg-orange-600 dark:hover:bg-orange-500 px-5 sm:px-4 cursor-pointer py-3 text-white items-center justify-center h-full rounded-xl transition-all"
                 >
                   <FilePlusCornerIcon className="w-4 h-4 sm:w-5 sm:h-5" />
                   <span className="hidden sm:inline">Add File</span>

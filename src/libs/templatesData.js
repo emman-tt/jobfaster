@@ -5,6 +5,13 @@ import ExecutiveSummary from '../assets/templates/ExecutiveSummary'
 import ModernMinimalist from '../assets/templates/ModernMinimalist'
 import TechnicalFocused from '../assets/templates/TechnicalFocused'
 
+import CreativePortfolio from '../assets/templates/CreativePortfolio'
+import CompactEfficient from '../assets/templates/CompactEfficient'
+import StartupFounder from '../assets/templates/StartupFounder'
+import CorporateTraditional from '../assets/templates/CorporateTraditional'
+import FreelanceProject from '../assets/templates/FreelanceProject'
+import ElegantMinimal from '../assets/templates/ElegantMinimal'
+
 import ClassicImage from '../assets/templates/images/Professional.png'
 import ModernImage from '../assets/templates/images/ModernMinimalist.png'
 import ExecutiveImage from '../assets/templates/images/Executive.png'
@@ -90,6 +97,84 @@ export const AcademicStyleMeta = {
   ]
 }
 
+const CreativePortfolioMeta = {
+  name: 'Creative Portfolio',
+  description:
+    'A visually engaging resume with gold decorative accents and artistic layout. Perfect for designers, artists, and creative professionals.',
+  features: [
+    'Gold decorative header and accents',
+    'Centered elegant name presentation',
+    'Italicized profile section',
+    'Ample whitespace for artistic feel',
+    'Two-column sidebar for skills and education'
+  ]
+}
+
+const CompactEfficientMeta = {
+  name: 'Compact & Efficient',
+  description:
+    'An efficient one-page optimized design with tight spacing and compact layout. Ideal for early-career professionals and concise applications.',
+  features: [
+    'Dense efficient layout for one-page resumes',
+    'Right-aligned dates for clean scanning',
+    'Vertical sidebar for quick reference',
+    'Compact paragraph spacing',
+    'Perfect for 1-2 year experience'
+  ]
+}
+
+const StartupFounderMeta = {
+  name: 'Startup & Founder',
+  description:
+    'An entrepreneur-focused format with metrics, traction, and business storytelling. Designed for founders, startup employees, and venture capital applications.',
+  features: [
+    'Traction/metrics section for business results',
+    'Founder-focused narrative structure',
+    'Revenue, users, and growth indicators',
+    'Startup-friendly language and tone',
+    'Ample space for key achievements'
+  ]
+}
+
+const CorporateTraditionalMeta = {
+  name: 'Corporate Traditional',
+  description:
+    'A formal business-oriented resume with subtle gray accents and classic corporate hierarchy. Perfect for Fortune 500, banking, consulting, and legal.',
+  features: [
+    'Deep blue-gray for section titles',
+    'Medium gray for company names and dates',
+    'Clear corporate hierarchy',
+    'Conservative serif typography (Georgia)',
+    'Ideal for formal business applications'
+  ]
+}
+
+const FreelanceProjectMeta = {
+  name: 'Freelance & Project-based',
+  description:
+    'A client-focused design with prominent projects, skills, and rate indicators. Built for freelancers, contractors, consultants, and gig economy professionals.',
+  features: [
+    'Projects displayed above experience',
+    'Dots-bullet project accomplishments',
+    'Client-facing language and presentation',
+    'Rate and availability section',
+    'Services and skills upfront'
+  ]
+}
+
+const ElegantMinimalMeta = {
+  name: 'Elegant & Refined',
+  description:
+    'A sophisticated minimal resume with serif typography, decorative lines, and refined spacing. For luxury industries, fashion, publishing, and high-end professional services.',
+  features: [
+    'Centered name with generous letter spacing',
+    'Fine lines and decorative borders',
+    'Italicized profile and company names',
+    'Elegant serif typography (Georgia)',
+    'Perfect for luxury and creative premium'
+  ]
+}
+
 export const templates = [
   {
     id: 'classic',
@@ -138,5 +223,53 @@ export const templates = [
     features: ATSOptimizedMeta.features,
     component: ATSOptimized,
     thumbnail: ATSImage
+  },
+  {
+    id: 'creative',
+    name: CreativePortfolioMeta.name,
+    description: CreativePortfolioMeta.description,
+    features: CreativePortfolioMeta.features,
+    component: CreativePortfolio,
+    thumbnail: ModernImage
+  },
+  {
+    id: 'compact',
+    name: CompactEfficientMeta.name,
+    description: CompactEfficientMeta.description,
+    features: CompactEfficientMeta.features,
+    component: CompactEfficient,
+    thumbnail: ATSImage
+  },
+  {
+    id: 'startup',
+    name: StartupFounderMeta.name,
+    description: StartupFounderMeta.description,
+    features: StartupFounderMeta.features,
+    component: StartupFounder,
+    thumbnail: ExecutiveImage
+  },
+  {
+    id: 'corporate',
+    name: CorporateTraditionalMeta.name,
+    description: CorporateTraditionalMeta.description,
+    features: CorporateTraditionalMeta.features,
+    component: CorporateTraditional,
+    thumbnail: ClassicImage
+  },
+  {
+    id: 'freelance',
+    name: FreelanceProjectMeta.name,
+    description: FreelanceProjectMeta.description,
+    features: FreelanceProjectMeta.features,
+    component: FreelanceProject,
+    thumbnail: TechnicalImage
+  },
+  {
+    id: 'elegant',
+    name: ElegantMinimalMeta.name,
+    description: ElegantMinimalMeta.description,
+    features: ElegantMinimalMeta.features,
+    component: ElegantMinimal,
+    thumbnail: AcademicImage
   }
 ]

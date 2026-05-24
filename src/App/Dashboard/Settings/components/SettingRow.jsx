@@ -9,7 +9,7 @@ export default function SettingRow({ label, description, children, border = true
         border
           ? `border-t ${
               appearance.theme === 'dark'
-                ? 'border-slate-800'
+                ? 'border-zinc-800'
                 : 'border-slate-100'
             }`
           : ''

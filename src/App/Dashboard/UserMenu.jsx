@@ -39,6 +39,7 @@ export default function UserMenu({ data, appearance }) {
           <button
             onClick={() => {
               setIsOpen(false);
+              navigate('billings')
             }}
             className="flex items-center gap-3 p-2 rounded-xl hover:bg-gray-100 transition-colors text-black text-sm font-medium w-full text-left"
           >
@@ -66,10 +67,10 @@ export default function UserMenu({ data, appearance }) {
 
       <div
         onClick={() => setIsOpen(!isOpen)}
-        className={`w-full flex gap-3 px-2 rounded-xl py-3 items-center cursor-pointer transition-colors ${
+        className={`w-full flex gap-3 px-2 rounded-xl py-3 items-center cursor-pointer transition-all border ${
           appearance.theme == "dark"
-            ? "bg-[#2a2a2a] hover:bg-[#333]"
-            : "bg-[#e8e7ea] hover:bg-[#dcdce0]"
+            ? "bg-[#1e1e1e] hover:bg-[#282828] border-zinc-800"
+            : "bg-[#e8e7ea] hover:bg-[#dcdce0] border-transparent"
         }`}
       >
         <div

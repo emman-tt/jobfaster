@@ -80,11 +80,11 @@ export const Header = () => {
         {getGreeting()}, {user?.name || 'there'}
       </h2>
       <p
-        className={`font-semibold mt-1 text-xs font-satoshi ${
-          appearance.theme == 'dark' ? 'text-slate-400' : 'text-black/20'
+        className={`font-medium mt-1 text-xs font-satoshi ${
+          appearance.theme == 'dark' ? 'text-zinc-500' : 'text-black/40'
         }`}
       >
-        A new day, a new opportunity! Lets create something new
+        A new day, a new opportunity! Let's create something new
       </p>
 
       <nav
@@ -94,10 +94,10 @@ export const Header = () => {
       >
         <section
           onClick={() => navigate('/dashboard/templates')}
-          className={`sm:w-full min-w-70   cursor-pointer ${
+          className={`sm:w-full min-w-70 border cursor-pointer transition-all duration-200 ${
             appearance.theme == 'dark'
-              ? 'bg-[#090711]'
-              : 'bg-[#f8f8f8] hover:bg-gray-100'
+              ? 'bg-[#1e1e1e] hover:bg-[#252525] border-zinc-800/60'
+              : 'bg-[#f8f8f8] hover:bg-gray-100 border-transparent'
           } overflow-hidden rounded-xl flex h-full p-2`}
         >
           <div
@@ -128,10 +128,10 @@ export const Header = () => {
           </div>
         </section>
         <section
-          className={`sm:w-full min-w-70  sm:min-w-0  cursor-pointer overflow-hidden rounded-xl flex h-full p-2 ${
+          className={`sm:w-full min-w-70 sm:min-w-0 border cursor-pointer transition-all duration-200 overflow-hidden rounded-xl flex h-full p-2 ${
             appearance.theme == 'dark'
-              ? 'bg-[#090711]'
-              : 'bg-[#f8f8f8] hover:bg-gray-100'
+              ? 'bg-[#1e1e1e] hover:bg-[#252525] border-zinc-800/60'
+              : 'bg-[#f8f8f8] hover:bg-gray-100 border-transparent'
           }`}
         >
           <div
@@ -165,10 +165,10 @@ export const Header = () => {
 
         <section
           onClick={() => navigate('/dashboard/board')}
-          className={`sm:w-full min-w-70  sm:min-w-0  relative cursor-pointer overflow-hidden rounded-xl flex h-full p-2 ${
+          className={`sm:w-full min-w-70 sm:min-w-0 border relative cursor-pointer transition-all duration-200 overflow-hidden rounded-xl flex h-full p-2 ${
             appearance.theme == 'dark'
-              ? 'bg-[#090711]'
-              : 'bg-[#f8f8f8] hover:bg-gray-100'
+              ? 'bg-[#1e1e1e] hover:bg-[#252525] border-zinc-800/60'
+              : 'bg-[#f8f8f8] hover:bg-gray-100 border-transparent'
           }`}
         >
           <div
