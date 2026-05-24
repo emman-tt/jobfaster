@@ -65,7 +65,7 @@ const CompactLayout = ({ data }) => {
             color: contactStyles.color || '#666',
           }}
         >
-          {[data?.phone && <span>{data.phone}</span>}
+          {data?.phone && <span>{data.phone}</span>}
           {data?.phone && data?.email && <span> | </span>}
           {data?.email && <span>{data.email}</span>}
           {data?.email && data?.location && <span> | </span>}

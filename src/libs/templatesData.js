@@ -6,11 +6,20 @@ import ModernMinimalist from '../assets/templates/ModernMinimalist'
 import TechnicalFocused from '../assets/templates/TechnicalFocused'
 
 import CreativePortfolio from '../assets/templates/CreativePortfolio'
-import CompactEfficient from '../assets/templates/CompactEfficient'
-import StartupFounder from '../assets/templates/StartupFounder'
-import CorporateTraditional from '../assets/templates/CorporateTraditional'
-import FreelanceProject from '../assets/templates/FreelanceProject'
+import CompactLayout from '../assets/templates/CompactLayout'
+import StartupBold from '../assets/templates/StartupBold'
+import CorporateStandard from '../assets/templates/CorporateStandard'
+import FreelancePortfolio from '../assets/templates/FreelancePortfolio'
 import ElegantMinimal from '../assets/templates/ElegantMinimal'
+
+import MilitaryTransition from '../assets/templates/MilitaryTransition'
+import SalesMarketing from '../assets/templates/SalesMarketing'
+import HealthcareProfessional from '../assets/templates/HealthcareProfessional'
+import DesignPortfolio from '../assets/templates/DesignPortfolio'
+import GraduateEntryLevel from '../assets/templates/GraduateEntryLevel'
+import InternationalCV from '../assets/templates/InternationalCV'
+import BoldStatement from '../assets/templates/BoldStatement'
+import SidebarTwoColumn from '../assets/templates/SidebarTwoColumn'
 
 import ClassicImage from '../assets/templates/images/Professional.png'
 import ModernImage from '../assets/templates/images/ModernMinimalist.png'
@@ -110,7 +119,7 @@ const CreativePortfolioMeta = {
   ]
 }
 
-const CompactEfficientMeta = {
+const CompactLayoutMeta = {
   name: 'Compact & Efficient',
   description:
     'An efficient one-page optimized design with tight spacing and compact layout. Ideal for early-career professionals and concise applications.',
@@ -123,7 +132,7 @@ const CompactEfficientMeta = {
   ]
 }
 
-const StartupFounderMeta = {
+const StartupBoldMeta = {
   name: 'Startup & Founder',
   description:
     'An entrepreneur-focused format with metrics, traction, and business storytelling. Designed for founders, startup employees, and venture capital applications.',
@@ -136,23 +145,23 @@ const StartupFounderMeta = {
   ]
 }
 
-const CorporateTraditionalMeta = {
+const CorporateStandardMeta = {
   name: 'Corporate Traditional',
   description:
-    'A formal business-oriented resume with subtle gray accents and classic corporate hierarchy. Perfect for Fortune 500, banking, consulting, and legal.',
+    'A formal business-oriented resume with subtle blue accents and classic corporate hierarchy. Perfect for Fortune 500, banking, consulting, and legal.',
   features: [
-    'Deep blue-gray for section titles',
-    'Medium gray for company names and dates',
+    'Deep blue for section titles',
+    'Medium blue for company names and links',
     'Clear corporate hierarchy',
     'Conservative serif typography (Georgia)',
     'Ideal for formal business applications'
   ]
 }
 
-const FreelanceProjectMeta = {
+const FreelancePortfolioMeta = {
   name: 'Freelance & Project-based',
   description:
-    'A client-focused design with prominent projects, skills, and rate indicators. Built for freelancers, contractors, consultants, and gig economy professionals.',
+    'A client-focused design with prominent projects, skills, and availability indicators. Built for freelancers, contractors, consultants, and gig economy professionals.',
   features: [
     'Projects displayed above experience',
     'Dots-bullet project accomplishments',
@@ -172,6 +181,110 @@ const ElegantMinimalMeta = {
     'Italicized profile and company names',
     'Elegant serif typography (Georgia)',
     'Perfect for luxury and creative premium'
+  ]
+}
+
+const MilitaryTransitionMeta = {
+  name: 'Military & Veteran',
+  description:
+    'A structured, achievement-focused resume designed for military personnel transitioning to civilian careers. Emphasizes leadership, discipline, and quantifiable accomplishments.',
+  features: [
+    'Bold structured layout with navy/red accents',
+    'Key achievements prominently featured',
+    'Military-to-civilian language translation ready',
+    'Certifications and training highlighted',
+    'Leadership-focused section organization'
+  ]
+}
+
+const SalesMarketingMeta = {
+  name: 'Sales & Marketing',
+  description:
+    'A results-oriented resume with metrics emphasis, perfect for sales professionals, marketers, and business development roles. Highlights revenue, growth, and campaign success.',
+  features: [
+    'Green/emerald accent for growth symbolism',
+    'Results-driven with metrics focus',
+    'Campaigns and projects prominently featured',
+    'Professional yet energetic tone',
+    'Perfect for showcasing quotas and KPIs'
+  ]
+}
+
+const HealthcareProfessionalMeta = {
+  name: 'Healthcare & Medical',
+  description:
+    'A clean, professional resume designed for doctors, nurses, pharmacists, and healthcare administrators. Emphasizes licenses, certifications, and clinical experience.',
+  features: [
+    'Teal/medical blue professional accents',
+    'Licenses and certifications prioritized',
+    'Clinical experience structured for clarity',
+    'Patient-focused and results-driven',
+    'Perfect for medical and healthcare roles'
+  ]
+}
+
+const DesignPortfolioMeta = {
+  name: 'Design Portfolio',
+  description:
+    'A visual-focused resume for UI/UX designers, graphic designers, and creative professionals. Features bold typography, color accents, and project showcase layout.',
+  features: [
+    'Pink/rose accent for creative energy',
+    'Portfolio projects in grid layout',
+    'Dark theme with bold typography',
+    'Design tools and skills highlighted',
+    'Perfect for creative and design roles'
+  ]
+}
+
+const GraduateEntryLevelMeta = {
+  name: 'Graduate & Entry-level',
+  description:
+    'An education-first resume designed for recent graduates, students, and entry-level professionals. Prioritizes education, projects, and internships over work experience.',
+  features: [
+    'Orange/energetic accent for ambition',
+    'Education section prioritized',
+    'Academic projects prominently featured',
+    'Internships and part-time experience',
+    'Skills and certifications highlighted'
+  ]
+}
+
+const InternationalCVMeta = {
+  name: 'International CV',
+  description:
+    'A European-style CV format with sidebar layout, photo placeholder, and detailed chronological presentation. Ideal for international applications and global companies.',
+  features: [
+    'Left sidebar with contact info and skills',
+    'Photo placeholder for visual presence',
+    'Teal/global professional accents',
+    'Chronological experience focus',
+    'Perfect for international job applications'
+  ]
+}
+
+const BoldStatementMeta = {
+  name: 'Bold Statement',
+  description:
+    'An eye-catching, high-impact resume designed for creative industries where standing out matters. Features dark themes, bold typography, and numbered sections.',
+  features: [
+    'Red/black bold contrasting colors',
+    'Numbered sections for visual hierarchy',
+    'Dark theme with accent highlights',
+    'High-energy, attention-grabbing layout',
+    'Perfect for creative and standout applications'
+  ]
+}
+
+const SidebarTwoColumnMeta = {
+  name: 'Sidebar Two-column',
+  description:
+    'A classic two-column layout with permanent sidebar for contact information, skills, and education. Clean, professional, and easy to scan.',
+  features: [
+    'Permanent left sidebar navigation',
+    'Blue/light blue professional palette',
+    'Contact info always visible',
+    'Skills and education in sidebar',
+    'Classic, proven resume structure'
   ]
 }
 
@@ -234,34 +347,34 @@ export const templates = [
   },
   {
     id: 'compact',
-    name: CompactEfficientMeta.name,
-    description: CompactEfficientMeta.description,
-    features: CompactEfficientMeta.features,
-    component: CompactEfficient,
+    name: CompactLayoutMeta.name,
+    description: CompactLayoutMeta.description,
+    features: CompactLayoutMeta.features,
+    component: CompactLayout,
     thumbnail: ATSImage
   },
   {
     id: 'startup',
-    name: StartupFounderMeta.name,
-    description: StartupFounderMeta.description,
-    features: StartupFounderMeta.features,
-    component: StartupFounder,
+    name: StartupBoldMeta.name,
+    description: StartupBoldMeta.description,
+    features: StartupBoldMeta.features,
+    component: StartupBold,
     thumbnail: ExecutiveImage
   },
   {
     id: 'corporate',
-    name: CorporateTraditionalMeta.name,
-    description: CorporateTraditionalMeta.description,
-    features: CorporateTraditionalMeta.features,
-    component: CorporateTraditional,
+    name: CorporateStandardMeta.name,
+    description: CorporateStandardMeta.description,
+    features: CorporateStandardMeta.features,
+    component: CorporateStandard,
     thumbnail: ClassicImage
   },
   {
     id: 'freelance',
-    name: FreelanceProjectMeta.name,
-    description: FreelanceProjectMeta.description,
-    features: FreelanceProjectMeta.features,
-    component: FreelanceProject,
+    name: FreelancePortfolioMeta.name,
+    description: FreelancePortfolioMeta.description,
+    features: FreelancePortfolioMeta.features,
+    component: FreelancePortfolio,
     thumbnail: TechnicalImage
   },
   {
@@ -271,5 +384,69 @@ export const templates = [
     features: ElegantMinimalMeta.features,
     component: ElegantMinimal,
     thumbnail: AcademicImage
+  },
+  {
+    id: 'military',
+    name: MilitaryTransitionMeta.name,
+    description: MilitaryTransitionMeta.description,
+    features: MilitaryTransitionMeta.features,
+    component: MilitaryTransition,
+    thumbnail: ExecutiveImage
+  },
+  {
+    id: 'sales',
+    name: SalesMarketingMeta.name,
+    description: SalesMarketingMeta.description,
+    features: SalesMarketingMeta.features,
+    component: SalesMarketing,
+    thumbnail: ModernImage
+  },
+  {
+    id: 'healthcare',
+    name: HealthcareProfessionalMeta.name,
+    description: HealthcareProfessionalMeta.description,
+    features: HealthcareProfessionalMeta.features,
+    component: HealthcareProfessional,
+    thumbnail: AcademicImage
+  },
+  {
+    id: 'design',
+    name: DesignPortfolioMeta.name,
+    description: DesignPortfolioMeta.description,
+    features: DesignPortfolioMeta.features,
+    component: DesignPortfolio,
+    thumbnail: ModernImage
+  },
+  {
+    id: 'graduate',
+    name: GraduateEntryLevelMeta.name,
+    description: GraduateEntryLevelMeta.description,
+    features: GraduateEntryLevelMeta.features,
+    component: GraduateEntryLevel,
+    thumbnail: ATSImage
+  },
+  {
+    id: 'international',
+    name: InternationalCVMeta.name,
+    description: InternationalCVMeta.description,
+    features: InternationalCVMeta.features,
+    component: InternationalCV,
+    thumbnail: ClassicImage
+  },
+  {
+    id: 'bold',
+    name: BoldStatementMeta.name,
+    description: BoldStatementMeta.description,
+    features: BoldStatementMeta.features,
+    component: BoldStatement,
+    thumbnail: ModernImage
+  },
+  {
+    id: 'sidebar',
+    name: SidebarTwoColumnMeta.name,
+    description: SidebarTwoColumnMeta.description,
+    features: SidebarTwoColumnMeta.features,
+    component: SidebarTwoColumn,
+    thumbnail: ClassicImage
   }
 ]

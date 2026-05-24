@@ -355,7 +355,7 @@ function JobCard({ card, onClick }) {
       onClick={onClick}
       className={`p-1.5 px-3 h-30 2xl:h-36 rounded-xl shadow-sm border group relative transition-all cursor-pointer ${
         appearance.theme === 'dark'
-          ? 'bg-[#2a2a2a] border-zinc-850 hover:border-zinc-700 text-white'
+          ? 'bg-[#2a2a2a] border-0 hover:border-zinc-700 text-white'
           : 'bg-white border-gray-200/50 hover:border-gray-300 text-slate-900'
       }`}
     >

@@ -49,7 +49,7 @@ export default function Sidebar({ className }) {
         >
           <div className="flex items-center gap-2">
              <JobFasterLogo variant={appearance?.theme === "dark" ? "dark" : "light"} size={40} />
-             <p className=" text-lg font-semibold font-IBM">Jobfaster</p>
+             <p className={`text-lg ${appearance.theme == 'dark' ? 'text-white' : 'text-black'} font-semibold font-IBM`}>Jobfaster</p>
           </div>
         </section>
 
