@@ -160,7 +160,7 @@ const StartupBold = ({ data }) => {
                 fontSize: '10pt',
               }}
             >
-              💼
+              
             </div>
             <h2
               style={{
@@ -266,7 +266,7 @@ const StartupBold = ({ data }) => {
                 fontSize: '10pt',
               }}
             >
-              🚀
+              
             </div>
             <h2
               style={{
@@ -359,7 +359,7 @@ const StartupBold = ({ data }) => {
                       fontSize: '10pt',
                     }}
                   >
-                    🎓
+                    
                   </div>
                   <h2
                     style={{
@@ -407,7 +407,7 @@ const StartupBold = ({ data }) => {
                       fontSize: '10pt',
                     }}
                   >
-                    ⚡
+                    
                   </div>
                   <h2
                     style={{
@@ -460,7 +460,7 @@ const StartupBold = ({ data }) => {
                       fontSize: '10pt',
                     }}
                   >
-                    🏆
+                    
                   </div>
                   <h2
                     style={{
@@ -506,7 +506,7 @@ const StartupBold = ({ data }) => {
                     fontSize: '10pt',
                   }}
                 >
-                  🌍
+                    
                 </div>
                 <h2
                   style={{
@@ -545,7 +545,7 @@ const StartupBold = ({ data }) => {
                     fontSize: '10pt',
                   }}
                 >
-                  🌟
+                    
                 </div>
                 <h2
                   style={{

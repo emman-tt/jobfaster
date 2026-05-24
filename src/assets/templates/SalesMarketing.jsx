@@ -160,7 +160,7 @@ const SalesMarketing = ({ data }) => {
                 fontSize: '12pt',
               }}
             >
-              📈
+              
             </span>
             Revenue & Growth Experience
           </h2>
@@ -266,12 +266,11 @@ const SalesMarketing = ({ data }) => {
                 marginRight: '10px',
                 fontSize: '12pt',
               }}
-            >
-              🏆
-            </span>
-            Key Campaigns & Projects
-          </h2>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
+                >
+                  </span>
+                Key Campaigns & Projects
+              </h2>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
             {data.projects.map(proj => (
               <div
                 key={proj.id}
@@ -431,7 +430,7 @@ const SalesMarketing = ({ data }) => {
                     color: '#065F46',
                   }}
                 >
-                  <span style={{ fontWeight: 700 }}>🏆</span> {ach}
+                  <span style={{ fontWeight: 700 }}></span> {ach}
                 </div>
               ))}
             </div>

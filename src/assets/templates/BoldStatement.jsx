@@ -590,7 +590,7 @@ const BoldStatement = ({ data }) => {
                       marginLeft: '44px',
                     }}
                   >
-                    🏆 {ach}
+                    {ach}
                   </div>
                 ))}
               </div>

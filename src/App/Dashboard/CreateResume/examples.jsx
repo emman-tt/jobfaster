@@ -12,7 +12,7 @@ export default function Examples() {
 
   return (
     <section
-      className={`w-full h-full pt-8 max-sm:pb-10 sm:pt-16 px-4 sm:px-12 xl:px-16 2xl:px-24 overflow-auto ${
+      className={`w-full h-full pt-8 pb-14 max-sm:pb-10 sm:pt-16 px-4 sm:px-12 xl:px-16 2xl:px-24 overflow-auto ${
         appearance.theme == "dark" ? "bg-[#202020]" : "bg-white"
       }`}
     >
@@ -40,7 +40,9 @@ export default function Examples() {
           Next <ArrowRight className="w-4 h-4" />
         </button>
       </div>
-      <section className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-5 gap-3 sm:gap-4 xl:gap-6 2xl:gap-8">
+      <section className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 
+      lg:grid-cols-5 xl:grid-cols-5 gap-3 sm:gap-4 
+      xl:gap-6 2xl:gap-8">
         {templates.map((item) => {
           return (
             <div
@@ -59,7 +61,7 @@ export default function Examples() {
                     : "bg-white border-slate-200"
                 } ${item.id == templateId ? "shadow-lg" : "shadow-sm"} border`}
               >
-                <div className="h-50 xl:h-56  2xl:h-64 p-1">
+                <div className="h-64 xl:h-56  2xl:h-74 p-1">
                   <img
                     src={item.thumbnail}
                     alt=""

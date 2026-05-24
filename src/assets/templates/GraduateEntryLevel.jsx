@@ -73,11 +73,11 @@ const GraduateEntryLevel = ({ data }) => {
               color: mediumGray,
             }}
           >
-            {data?.phone && <span>📞 {data.phone}</span>}
-            {data?.email && <span>✉️ {data.email}</span>}
-            {data?.location && <span>📍 {data.location}</span>}
+            {data?.phone && <span>{data.phone}</span>}
+            {data?.email && <span>{data.email}</span>}
+            {data?.location && <span>{data.location}</span>}
             {links?.map((item, index) => (
-              <span key={item.name} style={{ color: primaryOrange, fontWeight: 500 }}>🔗 {item.link}</span>
+              <span key={item.name} style={{ color: primaryOrange, fontWeight: 500 }}>{item.link}</span>
             ))}
           </div>
         </div>
@@ -127,23 +127,11 @@ const GraduateEntryLevel = ({ data }) => {
               textTransform: 'uppercase',
               letterSpacing: '1px',
               margin: '0 0 12px 0',
-              color: darkGray,
-              display: 'flex',
-              alignItems: 'center',
+              color: primaryOrange,
+              paddingBottom: '6px',
+              borderBottom: `2px solid ${primaryOrange}`,
             }}
           >
-            <span
-              style={{
-                background: primaryOrange,
-                color: '#fff',
-                padding: '4px 12px',
-                borderRadius: '4px',
-                marginRight: '10px',
-                fontSize: '10pt',
-              }}
-            >
-              🎓
-            </span>
             Education
           </h2>
           {data.education.map(edu => (
@@ -224,23 +212,11 @@ const GraduateEntryLevel = ({ data }) => {
               textTransform: 'uppercase',
               letterSpacing: '1px',
               margin: '0 0 12px 0',
-              color: darkGray,
-              display: 'flex',
-              alignItems: 'center',
+              color: primaryOrange,
+              paddingBottom: '6px',
+              borderBottom: `2px solid ${primaryOrange}`,
             }}
           >
-            <span
-              style={{
-                background: primaryOrange,
-                color: '#fff',
-                padding: '4px 12px',
-                borderRadius: '4px',
-                marginRight: '10px',
-                fontSize: '10pt',
-              }}
-            >
-              🚀
-            </span>
             Academic & Personal Projects
           </h2>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
@@ -309,23 +285,11 @@ const GraduateEntryLevel = ({ data }) => {
               textTransform: 'uppercase',
               letterSpacing: '1px',
               margin: '0 0 12px 0',
-              color: darkGray,
-              display: 'flex',
-              alignItems: 'center',
+              color: primaryOrange,
+              paddingBottom: '6px',
+              borderBottom: `2px solid ${primaryOrange}`,
             }}
           >
-            <span
-              style={{
-                background: primaryOrange,
-                color: '#fff',
-                padding: '4px 12px',
-                borderRadius: '4px',
-                marginRight: '10px',
-                fontSize: '10pt',
-              }}
-            >
-              💼
-            </span>
             Experience & Internships
           </h2>
           {data.experience.map(exp => (
@@ -390,7 +354,7 @@ const GraduateEntryLevel = ({ data }) => {
                     color: '#4B5563',
                   }}
                 >
-                  <span style={{ color: primaryOrange, fontWeight: 'bold' }}>▸</span> {acc}
+                  <span style={{ color: primaryOrange, fontWeight: 'bold' }}>•</span> {acc}
                 </div>
               ))}
             </div>
@@ -409,10 +373,12 @@ const GraduateEntryLevel = ({ data }) => {
                   textTransform: 'uppercase',
                   letterSpacing: '1px',
                   margin: '0 0 10px 0',
-                  color: darkGray,
+                  color: primaryOrange,
+                  paddingBottom: '4px',
+                  borderBottom: `2px solid ${primaryOrange}`,
                 }}
               >
-                <span style={{ color: primaryOrange }}>•</span> Technical & Soft Skills
+                Technical & Soft Skills
               </h2>
               <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
                 {data.skills.map((skill, i) => (
@@ -445,10 +411,12 @@ const GraduateEntryLevel = ({ data }) => {
                   textTransform: 'uppercase',
                   letterSpacing: '1px',
                   margin: '0 0 8px 0',
-                  color: darkGray,
+                  color: primaryOrange,
+                  paddingBottom: '4px',
+                  borderBottom: `2px solid ${primaryOrange}`,
                 }}
               >
-                <span style={{ color: primaryOrange }}>•</span> Certifications
+                Certifications
               </h2>
               {data.certificates.map((cert, i) => (
                 <div
@@ -458,7 +426,7 @@ const GraduateEntryLevel = ({ data }) => {
                     marginBottom: '4px',
                   }}
                 >
-                  <span style={{ color: primaryOrange, fontWeight: 'bold' }}>✓</span> {cert.name}
+                  <span style={{ color: primaryOrange, fontWeight: 'bold' }}>•</span> {cert.name}
                 </div>
               ))}
             </div>
@@ -473,10 +441,12 @@ const GraduateEntryLevel = ({ data }) => {
                   textTransform: 'uppercase',
                   letterSpacing: '1px',
                   margin: '0 0 8px 0',
-                  color: darkGray,
+                  color: primaryOrange,
+                  paddingBottom: '4px',
+                  borderBottom: `2px solid ${primaryOrange}`,
                 }}
               >
-                <span style={{ color: primaryOrange }}>•</span> Languages
+                Languages
               </h2>
               <div style={{ fontSize: `${bodyStyles.size || 9.5}pt` }}>
                 {data.languages.map((lang, i) => (
@@ -499,10 +469,12 @@ const GraduateEntryLevel = ({ data }) => {
                   textTransform: 'uppercase',
                   letterSpacing: '1px',
                   margin: '0 0 8px 0',
-                  color: darkGray,
+                  color: primaryOrange,
+                  paddingBottom: '4px',
+                  borderBottom: `2px solid ${primaryOrange}`,
                 }}
               >
-                <span style={{ color: primaryOrange }}>•</span> Achievements
+                Achievements
               </h2>
               {data.achievements.map((ach, i) => (
                 <div
@@ -512,7 +484,7 @@ const GraduateEntryLevel = ({ data }) => {
                     marginBottom: '3px',
                   }}
                 >
-                  🏆 {ach}
+                  <span style={{ color: primaryOrange, fontWeight: 'bold' }}>•</span> {ach}
                 </div>
               ))}
             </div>

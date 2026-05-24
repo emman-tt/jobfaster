@@ -73,11 +73,11 @@ const MilitaryTransition = ({ data }) => {
             color: contactStyles.color || '#4B5563',
           }}
         >
-          {data?.phone && <span>📞 {data.phone}</span>}
-          {data?.email && <span>✉️ {data.email}</span>}
-          {data?.location && <span>📍 {data.location}</span>}
+          {data?.phone && <span>{data.phone}</span>}
+          {data?.email && <span>{data.email}</span>}
+          {data?.location && <span>{data.location}</span>}
           {links?.map((item, index) => (
-            <span key={item.name}>🔗 {item.link}</span>
+            <span key={item.name}>{item.link}</span>
           ))}
         </div>
       </div>

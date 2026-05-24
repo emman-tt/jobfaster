@@ -27,6 +27,14 @@ import ExecutiveImage from '../assets/templates/images/Executive.png'
 import ATSImage from '../assets/templates/images/ATSOptimized.png'
 import AcademicImage from '../assets/templates/images/Academic.png'
 import TechnicalImage from '../assets/templates/images/Technical.png'
+import CompactEfficientImage from '../assets/templates/images/CompactEfficient.png'
+import ElegantMinimalImage from '../assets/templates/images/Elegant&Refined.png'
+
+import FreelancePortfolioImage from '../assets/templates/images/Freelance&Project.png'
+import MilitaryTransitionImage from '../assets/templates/images/MilitaryVeteran.png'
+import SalesMarketingImage from '../assets/templates/images/Sales&Marketing.png'
+import HealthcareProfessionalImage from '../assets/templates/images/Healthcare&Medical.png'
+import DesignPortfolioImage from '../assets/templates/images/DesignPortfolio.png'
 
 const ClassicProfessionalMeta = {
   name: 'Classic Professional',
@@ -343,7 +351,7 @@ export const templates = [
     description: CreativePortfolioMeta.description,
     features: CreativePortfolioMeta.features,
     component: CreativePortfolio,
-    thumbnail: ModernImage
+    thumbnail: DesignPortfolioImage
   },
   {
     id: 'compact',
@@ -351,7 +359,7 @@ export const templates = [
     description: CompactLayoutMeta.description,
     features: CompactLayoutMeta.features,
     component: CompactLayout,
-    thumbnail: ATSImage
+    thumbnail: CompactEfficientImage
   },
   {
     id: 'startup',
@@ -359,7 +367,7 @@ export const templates = [
     description: StartupBoldMeta.description,
     features: StartupBoldMeta.features,
     component: StartupBold,
-    thumbnail: ExecutiveImage
+    thumbnail: CompactEfficientImage
   },
   {
     id: 'corporate',
@@ -367,7 +375,7 @@ export const templates = [
     description: CorporateStandardMeta.description,
     features: CorporateStandardMeta.features,
     component: CorporateStandard,
-    thumbnail: ClassicImage
+    thumbnail: CompactEfficientImage
   },
   {
     id: 'freelance',
@@ -375,7 +383,7 @@ export const templates = [
     description: FreelancePortfolioMeta.description,
     features: FreelancePortfolioMeta.features,
     component: FreelancePortfolio,
-    thumbnail: TechnicalImage
+    thumbnail: FreelancePortfolioImage
   },
   {
     id: 'elegant',
@@ -383,7 +391,7 @@ export const templates = [
     description: ElegantMinimalMeta.description,
     features: ElegantMinimalMeta.features,
     component: ElegantMinimal,
-    thumbnail: AcademicImage
+    thumbnail: ElegantMinimalImage
   },
   {
     id: 'military',
@@ -391,7 +399,7 @@ export const templates = [
     description: MilitaryTransitionMeta.description,
     features: MilitaryTransitionMeta.features,
     component: MilitaryTransition,
-    thumbnail: ExecutiveImage
+    thumbnail: MilitaryTransitionImage
   },
   {
     id: 'sales',
@@ -399,7 +407,7 @@ export const templates = [
     description: SalesMarketingMeta.description,
     features: SalesMarketingMeta.features,
     component: SalesMarketing,
-    thumbnail: ModernImage
+    thumbnail: SalesMarketingImage
   },
   {
     id: 'healthcare',
@@ -407,7 +415,7 @@ export const templates = [
     description: HealthcareProfessionalMeta.description,
     features: HealthcareProfessionalMeta.features,
     component: HealthcareProfessional,
-    thumbnail: AcademicImage
+    thumbnail: HealthcareProfessionalImage
   },
   {
     id: 'design',
@@ -415,7 +423,7 @@ export const templates = [
     description: DesignPortfolioMeta.description,
     features: DesignPortfolioMeta.features,
     component: DesignPortfolio,
-    thumbnail: ModernImage
+    thumbnail: DesignPortfolioImage
   },
   {
     id: 'graduate',
@@ -423,7 +431,7 @@ export const templates = [
     description: GraduateEntryLevelMeta.description,
     features: GraduateEntryLevelMeta.features,
     component: GraduateEntryLevel,
-    thumbnail: ATSImage
+    thumbnail: DesignPortfolioImage
   },
   {
     id: 'international',
@@ -431,7 +439,7 @@ export const templates = [
     description: InternationalCVMeta.description,
     features: InternationalCVMeta.features,
     component: InternationalCV,
-    thumbnail: ClassicImage
+    thumbnail: DesignPortfolioImage
   },
   {
     id: 'bold',
@@ -439,7 +447,7 @@ export const templates = [
     description: BoldStatementMeta.description,
     features: BoldStatementMeta.features,
     component: BoldStatement,
-    thumbnail: ModernImage
+    thumbnail: DesignPortfolioImage
   },
   {
     id: 'sidebar',
@@ -447,6 +455,6 @@ export const templates = [
     description: SidebarTwoColumnMeta.description,
     features: SidebarTwoColumnMeta.features,
     component: SidebarTwoColumn,
-    thumbnail: ClassicImage
+    thumbnail: DesignPortfolioImage
   }
 ]

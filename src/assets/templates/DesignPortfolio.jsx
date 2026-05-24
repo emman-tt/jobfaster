@@ -96,7 +96,7 @@ const DesignPortfolio = ({ data }) => {
               fontSize: '28pt',
             }}
           >
-            🎨
+            
           </div>
         </div>
         <div
@@ -556,7 +556,7 @@ const DesignPortfolio = ({ data }) => {
               </h2>
               {data.achievements.map((ach, i) => (
                 <div key={i} style={{ fontSize: `${bodyStyles.size || 9.5}pt`, marginBottom: '4px' }}>
-                  🏆 {ach}
+                  {ach}
                 </div>
               ))}
             </div>

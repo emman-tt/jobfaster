@@ -31,6 +31,7 @@ const InternationalCV = ({ data }) => {
           flexShrink: 0,
           background: `linear-gradient(180deg, ${primaryTeal} 0%, #0F766E 100%)`,
           padding: '24px 20px',
+          
           color: '#ffffff',
         }}
       >
@@ -48,7 +49,7 @@ const InternationalCV = ({ data }) => {
             border: '3px solid rgba(255,255,255,0.3)',
           }}
         >
-          👤
+            
         </div>
 
         <div style={{ textAlign: 'center', marginBottom: '24px' }}>
@@ -98,17 +99,17 @@ const InternationalCV = ({ data }) => {
           <div style={{ fontSize: `${contactStyles.size || 8.5}pt`, lineHeight: 1.8 }}>
             {data?.phone && (
               <div style={{ marginBottom: '4px' }}>
-                <span style={{ color: lightTeal }}>📞</span> {data.phone}
+                {data.phone}
               </div>
             )}
             {data?.email && (
               <div style={{ marginBottom: '4px' }}>
-                <span style={{ color: lightTeal }}>✉️</span> {data.email}
+                {data.email}
               </div>
             )}
             {data?.location && (
               <div style={{ marginBottom: '4px' }}>
-                <span style={{ color: lightTeal }}>📍</span> {data.location}
+                {data.location}
               </div>
             )}
           </div>
@@ -116,7 +117,7 @@ const InternationalCV = ({ data }) => {
             <div style={{ marginTop: '8px' }}>
               {links.map((item, index) => (
                 <div key={item.name} style={{ marginBottom: '3px', fontSize: `${contactStyles.size || 8.5}pt` }}>
-                  <span style={{ color: lightTeal }}>🔗</span> {item.link}
+                  {item.link}
                 </div>
               ))}
             </div>
@@ -502,7 +503,7 @@ const InternationalCV = ({ data }) => {
                       marginBottom: '3px',
                     }}
                   >
-                    🏆 {ach}
+                    {ach}
                   </div>
                 ))}
               </div>

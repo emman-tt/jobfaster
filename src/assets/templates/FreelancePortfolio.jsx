@@ -421,7 +421,7 @@ const FreelancePortfolio = ({ data }) => {
               </h2>
               {data.achievements.map((ach, i) => (
                 <div key={i} style={{ fontSize: `${bodyStyles.size || 9.5}pt`, marginBottom: '3px' }}>
-                  🏆 {ach}
+                  {ach}
                 </div>
               ))}
             </div>

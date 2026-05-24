@@ -53,7 +53,7 @@ const HealthcareProfessional = ({ data }) => {
               flexShrink: 0,
             }}
           >
-            👨‍⚕️
+            
           </div>
           <div style={{ flex: 1 }}>
             <h1
@@ -89,11 +89,11 @@ const HealthcareProfessional = ({ data }) => {
             color: lightBlue,
           }}
         >
-          {data?.phone && <span>📞 {data.phone}</span>}
-          {data?.email && <span>✉️ {data.email}</span>}
-          {data?.location && <span>📍 {data.location}</span>}
+          {data?.phone && <span>{data.phone}</span>}
+          {data?.email && <span>{data.email}</span>}
+          {data?.location && <span>{data.location}</span>}
           {links?.map((item, index) => (
-            <span key={item.name} style={{ color: '#ffffff', fontWeight: 500 }}>🔗 {item.link}</span>
+            <span key={item.name} style={{ color: '#ffffff', fontWeight: 500 }}>{item.link}</span>
           ))}
         </div>
       </div>
@@ -347,7 +347,7 @@ const HealthcareProfessional = ({ data }) => {
                     borderLeft: `3px solid ${primaryBlue}`,
                   }}
                 >
-                  <span style={{ fontWeight: 600 }}>🏅</span> {ach}
+                  <span style={{ fontWeight: 600 }}></span> {ach}
                 </div>
               ))}
             </div>

@@ -458,7 +458,7 @@ const SidebarTwoColumn = ({ data }) => {
                     borderRadius: '4px',
                   }}
                 >
-                  <span style={{ color: primaryBlue, fontWeight: 'bold' }}>🏆</span> {ach}
+                  <span style={{ color: primaryBlue, fontWeight: 'bold' }}></span> {ach}
                 </div>
               ))}
             </div>

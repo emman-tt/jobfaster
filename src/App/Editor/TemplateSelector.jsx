@@ -32,7 +32,7 @@ export default function TemplateSelector({
         </div>
 
         <div className="p-6 overflow-y-auto max-h-[calc(90vh-80px)]">
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 sm:gap-4">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3 sm:gap-4">
             {templates.map((template) => (
               <div
                 key={template.id}
@@ -47,7 +47,7 @@ export default function TemplateSelector({
                 }`}
               >
                 <div className="relative rounded-lg overflow-hidden border border-slate-200 shadow-sm">
-                  <div className="h-50 sm:h-56 p-1">
+                  <div className="h-60 sm:h-74 p-1">
                     <img
                       src={template.thumbnail}
                       alt={template.name}
