@@ -19,6 +19,7 @@ const CompactLayout = ({ data }) => {
         maxWidth: '850px',
         fontSize: `${bodyStyles.size || 9}pt`,
         lineHeight: bodyLeading,
+        padding: '48px'
       }}
     >
       {data?.pageNumber > 1 && (

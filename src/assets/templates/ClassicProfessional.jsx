@@ -18,7 +18,8 @@ const ClassicProfessional = ({ data }) => {
       style={{
         lineHeight: bodyLeading,
         color: bodyStyles.color || '#333',
-        maxWidth: '850px'
+        maxWidth: '850px',
+        padding: '48px'
       }}
       className={`${fontFamily}`}
     >

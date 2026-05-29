@@ -49,7 +49,7 @@ export default function UploadFile () {
     const fileItem = incoming[0]
     setLoading(true)
     if (!fileItem) {
-      return console.log('the file doesnt exist')
+      return
     }
 
     const fileobj = {

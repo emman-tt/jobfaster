@@ -14,25 +14,21 @@ const pendingPromises = {}
 
 export function connector () {
   if (ws && ws.readyState === WebSocket.OPEN) {
-    console.log('Already connected')
     return
   }
 
   if (ws && ws.readyState === WebSocket.CONNECTING) {
-    console.log('Already connecting...')
     return
   }
 
   if (ws && ws.readyState === WebSocket.CLOSED) {
-    console.log('Connection was closed, reconnecting...')
     ws = null
   }
 
-  console.log('Creating new connection...')
-  ws = new WebSocket(`ws://localhost:5000?accessToken=${getToken()}`)
+  const wsUrl = import.meta.env.VITE_WS_URL || 'ws://localhost:5000'
+  ws = new WebSocket(`${wsUrl}?accessToken=${getToken()}`)
 
   ws.onopen = () => {
-    console.log('Connected')
     isConnecting = true
   }
 
@@ -64,7 +60,6 @@ export function connector () {
   }
 
   ws.onclose = () => {
-    console.log('Disconnected')
     ws = null
     Object.keys(pendingPromises).forEach(key => {
       pendingPromises[key]({ status: 'failed', error: 'Connection closed' })
@@ -75,7 +70,6 @@ export function connector () {
 
 export function sendMessage (type, data) {
   if (ws && ws.readyState === WebSocket.CLOSED) {
-    console.log('reconnecting')
   }
 
   if (!ws || ws.readyState !== WebSocket.OPEN) {

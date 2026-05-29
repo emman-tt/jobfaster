@@ -11,7 +11,7 @@ import { setToken } from "../libs/token";
 import { api } from "../libs/axios";
 
 const authClient = createAuthClient({
-  baseURL: "http://localhost:3000",
+  baseURL: import.meta.env.VITE_API_URL || "http://localhost:3000",
   cookiePrefix: "jobber",
 });
 

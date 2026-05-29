@@ -215,12 +215,10 @@ export function Topbar () {
   }
 
   function handleShare () {
-    console.log('Share clicked')
   }
 
   function handleDelete () {
     if (window.confirm('Are you sure you want to delete this resume?')) {
-      console.log('Delete confirmed')
     }
   }
 

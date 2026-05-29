@@ -18,7 +18,8 @@ const AcademicStyle = ({ data }) => {
         color: bodyStyles.color || '#1a1a1a',
         maxWidth: '900px',
         lineHeight: bodyLeading,
-        fontSize: `${bodyStyles.size || 12}pt`
+        fontSize: `${bodyStyles.size || 12}pt`,
+        padding: '48px'
       }}
       className={`${fontFamily}`}
     >

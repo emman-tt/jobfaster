@@ -2,7 +2,7 @@ import ReactDOMServer from 'react-dom/server'
 import { templates } from '../libs/templatesData'
 
 const A4_WRAPPER = `
-<div style="width: 210mm; min-height: 297mm; padding: 10mm; box-sizing: border-box; background: white;">
+<div style="width: 210mm; min-height: 297mm; padding: 0; box-sizing: border-box; background: white;">
 {{content}}
 </div>
 `

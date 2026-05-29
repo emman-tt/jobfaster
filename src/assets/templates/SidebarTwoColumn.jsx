@@ -31,7 +31,7 @@ const SidebarTwoColumn = ({ data }) => {
           width: '200px',
           flexShrink: 0,
           background: lightBlue,
-          padding: '28px 20px',
+           padding: '28px 20px 28px 10px',
         }}
       >
         <div style={{ textAlign: 'center', marginBottom: '24px' }}>

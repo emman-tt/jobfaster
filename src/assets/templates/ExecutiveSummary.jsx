@@ -21,7 +21,8 @@ const ExecutiveSummary = ({ data }) => {
       style={{
 
         color: bodyStyles.color || '#1a1a1a',
-        maxWidth: '850px'
+        maxWidth: '850px',
+        padding: '48px'
       }}
       className={`${fontFamily}`}
 

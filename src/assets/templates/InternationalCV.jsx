@@ -1,66 +1,70 @@
-import React from 'react'
+import React from "react";
 
 const InternationalCV = ({ data }) => {
-  const styles = data?.styles || {}
-  const nameStyles = styles.name || {}
-  const sectionStyles = styles.sectionHeader || {}
-  const companyStyles = styles.company || {}
-  const bodyStyles = styles.bodyText || {}
-  const dateStyles = styles.date || {}
-  const contactStyles = styles.contact || {}
-  const links = data?.onlineLinks
+  const styles = data?.styles || {};
+  const nameStyles = styles.name || {};
+  const sectionStyles = styles.sectionHeader || {};
+  const companyStyles = styles.company || {};
+  const bodyStyles = styles.bodyText || {};
+  const dateStyles = styles.date || {};
+  const contactStyles = styles.contact || {};
+  const links = data?.onlineLinks;
 
-  const bodyLeading = bodyStyles.leading ? Number(bodyStyles.leading) : 1.5
-  const primaryTeal = '#0D9488'
-  const lightTeal = '#CCFBF1'
-  const darkGray = '#1E293B'
-  const mediumGray = '#64748B'
+  const bodyLeading = bodyStyles.leading ? Number(bodyStyles.leading) : 1.5;
+  const primaryTeal = "#0D9488";
+  const lightTeal = "#CCFBF1";
+  const darkGray = "#1E293B";
+  const mediumGray = "#64748B";
 
   return (
     <div
       style={{
         color: bodyStyles.color || darkGray,
-        maxWidth: '850px',
-        display: 'flex',
-        gap: '0',
+        maxWidth: "1000px",
+        width: "full",
+        height: "full",
+        display: "flex",
+        gap: "0",
       }}
     >
       <div
         style={{
-          width: '180px',
-          flexShrink: 0,
+          width: "200px",
+          marginLeft: 0,
+          height: "screen",
           background: `linear-gradient(180deg, ${primaryTeal} 0%, #0F766E 100%)`,
-          padding: '24px 20px',
-          
-          color: '#ffffff',
+          color: "#ffffff",
+          padding: "28px 16px 28px 10px",
         }}
       >
         <div
           style={{
-            width: '120px',
-            height: '120px',
-            borderRadius: '50%',
+            width: "120px",
+            height: "120px",
+            borderRadius: "50%",
             background: lightTeal,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            fontSize: '40pt',
-            margin: '0 auto 16px auto',
-            border: '3px solid rgba(255,255,255,0.3)',
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            fontSize: "40pt",
+            margin: "0 auto 16px auto",
+            border: "3px solid rgba(255,255,255,0.3)",
           }}
         >
-            
+          {data?.name?.charAt(0)}
         </div>
 
-        <div style={{ textAlign: 'center', marginBottom: '24px' }}>
+        <div
+          style={{ textAlign: "center", marginBottom: "100px", height: "full" }}
+        >
           <h1
             style={{
               fontSize: `${nameStyles.size || 14}pt`,
               fontWeight: 700,
-              margin: '0 0 4px 0',
+              margin: "0 0 4px 0",
               letterSpacing: nameStyles.spacing || 0,
-              color: '#ffffff',
-              textTransform: 'uppercase',
+              color: "#ffffff",
+              textTransform: "uppercase",
             }}
           >
             {data?.name}
@@ -68,7 +72,7 @@ const InternationalCV = ({ data }) => {
           <p
             style={{
               fontSize: `${companyStyles.size || 9.5}pt`,
-              margin: '0',
+              margin: "0",
               color: lightTeal,
               fontWeight: 400,
             }}
@@ -79,44 +83,49 @@ const InternationalCV = ({ data }) => {
 
         <div
           style={{
-            borderTop: '1px solid rgba(255,255,255,0.2)',
-            paddingTop: '16px',
-            marginBottom: '20px',
+            borderTop: "1px solid rgba(255,255,255,0.2)",
+            paddingTop: "16px",
+            marginBottom: "20px",
           }}
         >
           <h2
             style={{
               fontSize: `${sectionStyles.size || 9}pt`,
               fontWeight: 700,
-              textTransform: 'uppercase',
-              letterSpacing: '1.5px',
-              margin: '0 0 10px 0',
+              textTransform: "uppercase",
+              letterSpacing: "1.5px",
+              margin: "0 0 10px 0",
               color: lightTeal,
             }}
           >
             Contact
           </h2>
-          <div style={{ fontSize: `${contactStyles.size || 8.5}pt`, lineHeight: 1.8 }}>
+          <div
+            style={{
+              fontSize: `${contactStyles.size || 8.5}pt`,
+              lineHeight: 1.8,
+            }}
+          >
             {data?.phone && (
-              <div style={{ marginBottom: '4px' }}>
-                {data.phone}
-              </div>
+              <div style={{ marginBottom: "4px" }}>{data.phone}</div>
             )}
             {data?.email && (
-              <div style={{ marginBottom: '4px' }}>
-                {data.email}
-              </div>
+              <div style={{ marginBottom: "4px" }}>{data.email}</div>
             )}
             {data?.location && (
-              <div style={{ marginBottom: '4px' }}>
-                {data.location}
-              </div>
+              <div style={{ marginBottom: "4px" }}>{data.location}</div>
             )}
           </div>
           {links?.length > 0 && (
-            <div style={{ marginTop: '8px' }}>
+            <div style={{ marginTop: "8px" }}>
               {links.map((item, index) => (
-                <div key={item.name} style={{ marginBottom: '3px', fontSize: `${contactStyles.size || 8.5}pt` }}>
+                <div
+                  key={item.name}
+                  style={{
+                    marginBottom: "3px",
+                    fontSize: `${contactStyles.size || 8.5}pt`,
+                  }}
+                >
                   {item.link}
                 </div>
               ))}
@@ -127,26 +136,31 @@ const InternationalCV = ({ data }) => {
         {data?.skills?.length > 0 && (
           <div
             style={{
-              borderTop: '1px solid rgba(255,255,255,0.2)',
-              paddingTop: '16px',
-              marginBottom: '20px',
+              borderTop: "1px solid rgba(255,255,255,0.2)",
+              paddingTop: "16px",
+              marginBottom: "20px",
             }}
           >
             <h2
               style={{
                 fontSize: `${sectionStyles.size || 9}pt`,
                 fontWeight: 700,
-                textTransform: 'uppercase',
-                letterSpacing: '1.5px',
-                margin: '0 0 10px 0',
+                textTransform: "uppercase",
+                letterSpacing: "1.5px",
+                margin: "0 0 10px 0",
                 color: lightTeal,
               }}
             >
               Skills
             </h2>
-            <div style={{ fontSize: `${bodyStyles.size || 8.5}pt`, lineHeight: 1.7 }}>
+            <div
+              style={{
+                fontSize: `${bodyStyles.size || 8.5}pt`,
+                lineHeight: 1.7,
+              }}
+            >
               {data.skills.map((skill, i) => (
-                <div key={i} style={{ marginBottom: '2px' }}>
+                <div key={i} style={{ marginBottom: "2px" }}>
                   • {skill}
                 </div>
               ))}
@@ -157,28 +171,35 @@ const InternationalCV = ({ data }) => {
         {data?.languages?.length > 0 && (
           <div
             style={{
-              borderTop: '1px solid rgba(255,255,255,0.2)',
-              paddingTop: '16px',
-              marginBottom: '20px',
+              borderTop: "1px solid rgba(255,255,255,0.2)",
+              paddingTop: "16px",
+              marginBottom: "20px",
             }}
           >
             <h2
               style={{
                 fontSize: `${sectionStyles.size || 9}pt`,
                 fontWeight: 700,
-                textTransform: 'uppercase',
-                letterSpacing: '1.5px',
-                margin: '0 0 10px 0',
+                textTransform: "uppercase",
+                letterSpacing: "1.5px",
+                margin: "0 0 10px 0",
                 color: lightTeal,
               }}
             >
               Languages
             </h2>
-            <div style={{ fontSize: `${bodyStyles.size || 8.5}pt`, lineHeight: 1.7 }}>
+            <div
+              style={{
+                fontSize: `${bodyStyles.size || 8.5}pt`,
+                lineHeight: 1.7,
+              }}
+            >
               {data.languages.map((lang, i) => (
-                <div key={i} style={{ marginBottom: '2px' }}>
+                <div key={i} style={{ marginBottom: "2px" }}>
                   <span style={{ fontWeight: 600 }}>{lang.name}</span>
-                  <span style={{ color: lightTeal, marginLeft: '6px' }}>— {lang.proficiency}</span>
+                  <span style={{ color: lightTeal, marginLeft: "6px" }}>
+                    — {lang.proficiency}
+                  </span>
                 </div>
               ))}
             </div>
@@ -188,25 +209,30 @@ const InternationalCV = ({ data }) => {
         {data?.certificates?.length > 0 && (
           <div
             style={{
-              borderTop: '1px solid rgba(255,255,255,0.2)',
-              paddingTop: '16px',
+              borderTop: "1px solid rgba(255,255,255,0.2)",
+              paddingTop: "16px",
             }}
           >
             <h2
               style={{
                 fontSize: `${sectionStyles.size || 9}pt`,
                 fontWeight: 700,
-                textTransform: 'uppercase',
-                letterSpacing: '1.5px',
-                margin: '0 0 10px 0',
+                textTransform: "uppercase",
+                letterSpacing: "1.5px",
+                margin: "0 0 10px 0",
                 color: lightTeal,
               }}
             >
               Certs
             </h2>
-            <div style={{ fontSize: `${bodyStyles.size || 8.5}pt`, lineHeight: 1.6 }}>
+            <div
+              style={{
+                fontSize: `${bodyStyles.size || 8.5}pt`,
+                lineHeight: 1.6,
+              }}
+            >
               {data.certificates.map((cert, i) => (
-                <div key={i} style={{ marginBottom: '3px' }}>
+                <div key={i} style={{ marginBottom: "3px" }}>
                   ✓ {cert.name}
                 </div>
               ))}
@@ -215,27 +241,44 @@ const InternationalCV = ({ data }) => {
         )}
       </div>
 
-      <div style={{ flex: 1, padding: '28px 32px' }}>
+      <div style={{ flex: 1, padding: "28px 32px" }}>
         {data?.pageNumber > 1 && (
-          <div style={{ marginBottom: '16px', paddingBottom: '8px', borderBottom: `2px solid ${primaryTeal}` }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '10pt', color: mediumGray }}>
-              <span style={{ fontWeight: 'bold', color: primaryTeal }}>{data?.name}</span>
-              <span>Page {data?.pageNumber} of {data?.totalPages}</span>
+          <div
+            style={{
+              marginBottom: "16px",
+              paddingBottom: "8px",
+              borderBottom: `2px solid ${primaryTeal}`,
+            }}
+          >
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                fontSize: "10pt",
+                color: mediumGray,
+              }}
+            >
+              <span style={{ fontWeight: "bold", color: primaryTeal }}>
+                {data?.name}
+              </span>
+              <span>
+                Page {data?.pageNumber} of {data?.totalPages}
+              </span>
             </div>
           </div>
         )}
 
         {data?.summary && data.summary.length > 0 && (
-          <div style={{ marginBottom: '28px' }}>
+          <div style={{ marginBottom: "28px" }}>
             <h2
               style={{
                 fontSize: `${sectionStyles.size || 11}pt`,
                 fontWeight: 700,
-                textTransform: 'uppercase',
-                letterSpacing: '2px',
-                margin: '0 0 10px 0',
+                textTransform: "uppercase",
+                letterSpacing: "2px",
+                margin: "0 0 10px 0",
                 color: primaryTeal,
-                paddingBottom: '6px',
+                paddingBottom: "6px",
                 borderBottom: `2px solid ${primaryTeal}`,
               }}
             >
@@ -244,9 +287,9 @@ const InternationalCV = ({ data }) => {
             <p
               style={{
                 fontSize: `${bodyStyles.size || 10}pt`,
-                margin: '0',
+                margin: "0",
                 lineHeight: bodyLeading,
-                textAlign: 'justify',
+                textAlign: "justify",
                 color: darkGray,
               }}
             >
@@ -256,16 +299,16 @@ const InternationalCV = ({ data }) => {
         )}
 
         {data?.experience?.length > 0 && (
-          <div style={{ marginBottom: '28px' }}>
+          <div style={{ marginBottom: "28px" }}>
             <h2
               style={{
                 fontSize: `${sectionStyles.size || 11}pt`,
                 fontWeight: 700,
-                textTransform: 'uppercase',
-                letterSpacing: '2px',
-                margin: '0 0 14px 0',
+                textTransform: "uppercase",
+                letterSpacing: "2px",
+                margin: "0 0 14px 0",
                 color: primaryTeal,
-                paddingBottom: '6px',
+                paddingBottom: "6px",
                 borderBottom: `2px solid ${primaryTeal}`,
               }}
             >
@@ -276,16 +319,16 @@ const InternationalCV = ({ data }) => {
                 key={exp.id}
                 data-section="experience"
                 style={{
-                  marginBottom: '20px',
-                  paddingLeft: '0',
+                  marginBottom: "20px",
+                  paddingLeft: "0",
                 }}
               >
                 <div
                   style={{
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                    alignItems: 'flex-start',
-                    marginBottom: '6px',
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "flex-start",
+                    marginBottom: "6px",
                   }}
                 >
                   <div>
@@ -293,7 +336,7 @@ const InternationalCV = ({ data }) => {
                       style={{
                         fontSize: `${companyStyles.size || 11.5}pt`,
                         fontWeight: 700,
-                        margin: '0',
+                        margin: "0",
                         color: darkGray,
                       }}
                     >
@@ -302,12 +345,13 @@ const InternationalCV = ({ data }) => {
                     <p
                       style={{
                         fontSize: `${bodyStyles.size || 10}pt`,
-                        margin: '2px 0 0 0',
+                        margin: "2px 0 0 0",
                         color: primaryTeal,
                         fontWeight: 600,
                       }}
                     >
-                      {exp.company}{exp.location && ` • ${exp.location}`}
+                      {exp.company}
+                      {exp.location && ` • ${exp.location}`}
                     </p>
                   </div>
                   <span
@@ -316,10 +360,10 @@ const InternationalCV = ({ data }) => {
                       color: mediumGray,
                       fontWeight: 600,
                       background: lightTeal,
-                      padding: '4px 12px',
-                      borderRadius: '4px',
+                      padding: "4px 12px",
+                      borderRadius: "4px",
                       flexShrink: 0,
-                      marginLeft: '12px',
+                      marginLeft: "12px",
                     }}
                   >
                     {exp.startYear} — {exp.endYear}
@@ -330,13 +374,16 @@ const InternationalCV = ({ data }) => {
                     key={i}
                     style={{
                       fontSize: `${bodyStyles.size || 9.5}pt`,
-                      marginBottom: '3px',
-                      marginLeft: '14px',
+                      marginBottom: "3px",
+                      marginLeft: "14px",
                       lineHeight: bodyLeading,
-                      color: '#475569',
+                      color: "#475569",
                     }}
                   >
-                    <span style={{ color: primaryTeal, fontWeight: 'bold' }}>•</span> {acc}
+                    <span style={{ color: primaryTeal, fontWeight: "bold" }}>
+                      •
+                    </span>{" "}
+                    {acc}
                   </div>
                 ))}
               </div>
@@ -345,34 +392,34 @@ const InternationalCV = ({ data }) => {
         )}
 
         {data?.projects?.length > 0 && (
-          <div style={{ marginBottom: '28px' }}>
+          <div style={{ marginBottom: "28px" }}>
             <h2
               style={{
                 fontSize: `${sectionStyles.size || 11}pt`,
                 fontWeight: 700,
-                textTransform: 'uppercase',
-                letterSpacing: '2px',
-                margin: '0 0 12px 0',
+                textTransform: "uppercase",
+                letterSpacing: "2px",
+                margin: "0 0 12px 0",
                 color: primaryTeal,
-                paddingBottom: '6px',
+                paddingBottom: "6px",
                 borderBottom: `2px solid ${primaryTeal}`,
               }}
             >
               Key Projects
             </h2>
-            {data.projects.map(proj => (
+            {data.projects.map((proj) => (
               <div
                 key={proj.id}
                 data-section="projects"
                 style={{
-                  marginBottom: '14px',
+                  marginBottom: "14px",
                 }}
               >
                 <h3
                   style={{
                     fontSize: `${companyStyles.size || 10.5}pt`,
                     fontWeight: 700,
-                    margin: '0 0 4px 0',
+                    margin: "0 0 4px 0",
                     color: darkGray,
                   }}
                 >
@@ -381,9 +428,9 @@ const InternationalCV = ({ data }) => {
                 <p
                   style={{
                     fontSize: `${bodyStyles.size || 9.5}pt`,
-                    margin: '0 0 4px 0',
+                    margin: "0 0 4px 0",
                     lineHeight: bodyLeading,
-                    color: '#475569',
+                    color: "#475569",
                   }}
                 >
                   {proj.description}
@@ -392,12 +439,12 @@ const InternationalCV = ({ data }) => {
                   <p
                     style={{
                       fontSize: `${dateStyles.size || 8.5}pt`,
-                      margin: '0',
+                      margin: "0",
                       color: primaryTeal,
                       fontWeight: 500,
                     }}
                   >
-                    Technologies: {proj.techStack.join(', ')}
+                    Technologies: {proj.techStack.join(", ")}
                   </p>
                 )}
               </div>
@@ -411,30 +458,30 @@ const InternationalCV = ({ data }) => {
               style={{
                 fontSize: `${sectionStyles.size || 11}pt`,
                 fontWeight: 700,
-                textTransform: 'uppercase',
-                letterSpacing: '2px',
-                margin: '0 0 12px 0',
+                textTransform: "uppercase",
+                letterSpacing: "2px",
+                margin: "0 0 12px 0",
                 color: primaryTeal,
-                paddingBottom: '6px',
+                paddingBottom: "6px",
                 borderBottom: `2px solid ${primaryTeal}`,
               }}
             >
               Education
             </h2>
-            {data.education.map(edu => (
+            {data.education.map((edu) => (
               <div
                 key={edu.id}
                 data-section="education"
                 style={{
-                  marginBottom: '16px',
+                  marginBottom: "16px",
                 }}
               >
                 <div
                   style={{
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                    alignItems: 'baseline',
-                    marginBottom: '2px',
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "baseline",
+                    marginBottom: "2px",
                   }}
                 >
                   <div>
@@ -442,7 +489,7 @@ const InternationalCV = ({ data }) => {
                       style={{
                         fontSize: `${companyStyles.size || 11}pt`,
                         fontWeight: 700,
-                        margin: '0',
+                        margin: "0",
                         color: darkGray,
                       }}
                     >
@@ -451,7 +498,7 @@ const InternationalCV = ({ data }) => {
                     <p
                       style={{
                         fontSize: `${bodyStyles.size || 9.5}pt`,
-                        margin: '2px 0 0 0',
+                        margin: "2px 0 0 0",
                         color: primaryTeal,
                         fontWeight: 600,
                       }}
@@ -465,31 +512,38 @@ const InternationalCV = ({ data }) => {
                       color: mediumGray,
                       fontWeight: 600,
                       flexShrink: 0,
-                      marginLeft: '12px',
+                      marginLeft: "12px",
                     }}
                   >
                     {edu.startYear} — {edu.endYear}
                   </span>
                 </div>
                 {edu.highlights?.length > 0 && (
-                  <div style={{ fontSize: `${bodyStyles.size || 9}pt`, color: '#475569', marginTop: '4px', marginLeft: '14px' }}>
-                    {edu.highlights.join(' • ')}
+                  <div
+                    style={{
+                      fontSize: `${bodyStyles.size || 9}pt`,
+                      color: "#475569",
+                      marginTop: "4px",
+                      marginLeft: "14px",
+                    }}
+                  >
+                    {edu.highlights.join(" • ")}
                   </div>
                 )}
               </div>
             ))}
 
             {data?.achievements?.length > 0 && (
-              <div style={{ marginTop: '24px' }}>
+              <div style={{ marginTop: "24px" }}>
                 <h2
                   style={{
                     fontSize: `${sectionStyles.size || 10.5}pt`,
                     fontWeight: 700,
-                    textTransform: 'uppercase',
-                    letterSpacing: '2px',
-                    margin: '0 0 10px 0',
+                    textTransform: "uppercase",
+                    letterSpacing: "2px",
+                    margin: "0 0 10px 0",
                     color: primaryTeal,
-                    paddingBottom: '6px',
+                    paddingBottom: "6px",
                     borderBottom: `2px solid ${primaryTeal}`,
                   }}
                 >
@@ -500,7 +554,7 @@ const InternationalCV = ({ data }) => {
                     key={i}
                     style={{
                       fontSize: `${bodyStyles.size || 9.5}pt`,
-                      marginBottom: '3px',
+                      marginBottom: "3px",
                     }}
                   >
                     {ach}
@@ -512,7 +566,7 @@ const InternationalCV = ({ data }) => {
         )}
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default InternationalCV
+export default InternationalCV;

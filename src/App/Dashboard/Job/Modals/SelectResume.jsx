@@ -42,7 +42,7 @@ export default function SelectResume () {
   const programs = data
   function navigateNext () {
     if (!selected) {
-      return console.log('nothing selected')
+      return
     }
 
     const preparedData = {

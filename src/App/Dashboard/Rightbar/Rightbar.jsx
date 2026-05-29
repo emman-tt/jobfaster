@@ -2,7 +2,7 @@ import Activity from './Activity'
 import Records from './Records'
 import { useSelector } from 'react-redux'
 
-export default function Rightbar ({ className, data }) {
+export default function Rightbar ({ className, data, total, hasMore, onLoadMore }) {
   const { appearance } = useSelector(state => state.preferences)
   return (
     <section
@@ -11,7 +11,7 @@ export default function Rightbar ({ className, data }) {
       } ${className}`}
     >
       <Records percentage={50} />
-      <Activity data={data} />
+      <Activity data={data} total={total} hasMore={hasMore} onLoadMore={onLoadMore} />
     </section>
   )
 }

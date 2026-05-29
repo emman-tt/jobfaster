@@ -21,6 +21,7 @@ const ElegantMinimal = ({ data }) => {
         color: bodyStyles.color || primaryGray,
         maxWidth: '850px',
         fontFamily: "'Georgia', 'Times New Roman', serif",
+        padding: '48px'
       }}
     >
       {data?.pageNumber > 1 && (

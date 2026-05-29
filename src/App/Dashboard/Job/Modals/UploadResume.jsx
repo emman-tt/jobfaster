@@ -36,7 +36,7 @@ export default function UploadResume ({ onFileSelect, file, setFile }) {
   function addfile (incoming) {
     const fileItem = incoming[0]
     if (!fileItem) {
-      return console.log('the file doesnt exist')
+      return
     }
 
     const fileobj = {

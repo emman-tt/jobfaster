@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useQuery } from "@tanstack/react-query";
 import {
   Search,
@@ -13,6 +13,7 @@ import {
   List,
   ArrowRight,
   X,
+  Loader,
 } from "lucide-react";
 import { getJobs } from "../../../services/jobs";
 import { useSelector } from "react-redux";
@@ -20,11 +21,39 @@ import JobDetailView from "./Detail";
 
 export function JobListing() {
   const [selectedJob, setSelectedJob] = useState(null);
+  const [allJobs, setAllJobs] = useState([]);
+  const [jobPage, setJobPage] = useState(1);
+  const [jobMeta, setJobMeta] = useState({ total: 0, hasMore: false });
+  const [loadingMore, setLoadingMore] = useState(false);
   const { appearance } = useSelector((state) => state.preferences);
-  const { data: jobs = [], isLoading } = useQuery({
-    queryKey: ["jobs"],
-    queryFn: getJobs,
+
+  const { data, isFetched } = useQuery({
+    queryKey: ["jobs", 1],
+    queryFn: () => getJobs(1, 12),
   });
+
+  useEffect(() => {
+    if (isFetched && data) {
+      setAllJobs(data.data || []);
+      setJobMeta({ total: data.total, hasMore: data.hasMore });
+      setJobPage(1);
+    }
+  }, [isFetched, data]);
+
+  const loadMoreJobs = useCallback(async () => {
+    setLoadingMore(true);
+    try {
+      const nextPage = jobPage + 1;
+      const res = await getJobs(nextPage, 12);
+      setAllJobs(prev => [...prev, ...(res.data || [])]);
+      setJobMeta({ total: res.total, hasMore: res.hasMore });
+      setJobPage(nextPage);
+    } finally {
+      setLoadingMore(false);
+    }
+  }, [jobPage]);
+
+  const jobs = allJobs;
 
   const prepareJob = (job) => ({
     id: job.id,
@@ -97,7 +126,7 @@ export function JobListing() {
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                {isLoading ? (
+                {!isFetched ? (
                   <div className="col-span-full flex items-center justify-center py-20">
                     <div className="animate-spin w-8 h-8 border-2 border-[#f17e27] border-t-transparent rounded-full" />
                   </div>
@@ -112,9 +141,6 @@ export function JobListing() {
                     >
                       No jobs found
                     </p>
-                    <button className="px-4 py-2 bg-[#f17e27] text-white rounded-lg text-sm font-semibold">
-                      Fetch Jobs
-                    </button>
                   </div>
                 ) : (
                   jobs.map((job) => {
@@ -208,6 +234,25 @@ export function JobListing() {
                   })
                 )}
               </div>
+
+              {jobMeta.hasMore && jobs.length > 0 && (
+                <div className="flex justify-center pt-4">
+                  <button
+                    onClick={loadMoreJobs}
+                    disabled={loadingMore}
+                    className="px-6 py-2.5 bg-[#f17e27] hover:bg-[#e16d16] disabled:opacity-50 text-white text-sm font-bold rounded-full transition-all flex items-center gap-2"
+                  >
+                    {loadingMore ? (
+                      <>
+                        <Loader className="w-4 h-4 animate-spin" />
+                        Loading...
+                      </>
+                    ) : (
+                      `Load more (${jobMeta.total - jobs.length} remaining)`
+                    )}
+                  </button>
+                </div>
+              )}
             </section>
           </div>
         </div>

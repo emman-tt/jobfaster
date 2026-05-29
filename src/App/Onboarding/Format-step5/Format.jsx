@@ -3,7 +3,6 @@ import { BackNext } from '../../../components/BackNext'
 export default function Format () {
   function navigateNext () {
     try {
-      console.log('next')
     } catch (err) {
       console.error('Validation failed to execute:', err)
     }

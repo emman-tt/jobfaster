@@ -22,7 +22,8 @@ const ATSOptimized = ({ data }) => {
         color: bodyStyles.color || '#000',
         maxWidth: '900px',
         fontSize: `${bodyStyles.size || 11}pt`,
-        lineHeight: bodyLeading
+        lineHeight: bodyLeading,
+        padding: '48px'
       }}
       className={`${fontFamily}`}
 

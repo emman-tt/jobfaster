@@ -1,7 +1,7 @@
 import { api } from '../libs/axios'
 
-export async function getJobs () {
-  const res = await api.get('/job')
+export async function getJobs (page = 1, limit = 12) {
+  const res = await api.get(`/job?page=${page}&limit=${limit}`)
   return res.data.data
 }
 

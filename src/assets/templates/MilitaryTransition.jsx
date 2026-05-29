@@ -20,6 +20,7 @@ const MilitaryTransition = ({ data }) => {
       style={{
         color: bodyStyles.color || '#1F2937',
         maxWidth: '850px',
+        padding: '48px'
       }}
     >
       {data?.pageNumber > 1 && (

@@ -16,7 +16,6 @@ export async function register (name, password, email) {
     const response = await res.data
     return response
   } catch (error) {
-    console.log(error)
     const errorStatus = error?.response?.status
     return errorStatus
   }

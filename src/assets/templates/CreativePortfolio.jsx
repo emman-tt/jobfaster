@@ -38,7 +38,7 @@ const CreativePortfolio = ({ data }) => {
           width: '220px',
           backgroundColor: sidebarBg,
           color: '#fff',
-          padding: '24px 16px',
+           padding: '24px 16px 24px 10px',
           flexShrink: 0,
         }}
       >

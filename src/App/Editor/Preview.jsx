@@ -17,7 +17,7 @@ function getMeasurer () {
   if (!measurer) {
     const div = document.createElement('div')
     div.style.cssText =
-      'position:fixed;left:-9999px;top:0;width:210mm;padding:48px;box-sizing:border-box;background:white;z-index:-1;'
+      'position:fixed;left:-9999px;top:0;width:210mm;padding:0;box-sizing:border-box;background:white;z-index:-1;'
     document.body.appendChild(div)
     measurer = { div, root: createRoot(div) }
   }
@@ -47,7 +47,20 @@ function buildPageData (rawData, items, includeHeader) {
   )
 
   return {
-    personal: includeHeader ? rawData.personal : {},
+    personal: {
+      ...rawData.personal,
+      contactDetails: includeHeader
+        ? rawData.personal.contactDetails
+        : {
+            fullName: rawData.personal?.contactDetails?.fullName,
+            email: '',
+            phone: '',
+            location: '',
+            jobTitle: ''
+          },
+      onlineLinks: includeHeader ? rawData.personal.onlineLinks : [],
+      summary: includeHeader ? rawData.personal.summary : ''
+    },
     work: {
       ...rawData.work,
       experiences: (rawData.work?.experiences || []).filter((_, i) =>
@@ -63,7 +76,7 @@ function buildPageData (rawData, items, includeHeader) {
         eduIndices.has(i)
       )
     },
-    credentials: includeHeader ? rawData.credentials : {}
+    credentials: rawData.credentials
   }
 }
 
@@ -285,7 +298,7 @@ export function Preview () {
           return (
             <section
               key={pageNumber}
-              className='bg-white rounded-xl w-[210mm] h-[297mm] shadow-2xl p-12 overflow-hidden'
+              className='bg-white rounded-xl w-[210mm] h-[297mm] shadow-2xl p-0 overflow-hidden'
             >
               <SelectedTemplate data={transformed} />
             </section>
@@ -299,7 +312,7 @@ export function Preview () {
     <section
       id='resume-preview'
       ref={previewRef}
-      className='bg-white rounded-xl w-[210mm] h-[297mm] shadow-2xl p-12 overflow-hidden'
+      className='bg-white rounded-xl w-[210mm] h-[297mm] shadow-2xl p-0 overflow-hidden'
     >
       <SelectedTemplate data={userData} />
     </section>

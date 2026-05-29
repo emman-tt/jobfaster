@@ -216,7 +216,6 @@ export default function FileDetails () {
         </button>
         <button
           onClick={() => {
-            console.log('Saving description:', description)
             closeModal()
           }}
           className='flex-1 sm:flex-none cursor-pointer bg-[#f17e27] text-white flex justify-center items-center font-semibold text-sm font-satoshi p-3 rounded-xl hover:bg-[#e06d1a]'

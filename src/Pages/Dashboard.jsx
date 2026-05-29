@@ -9,7 +9,7 @@ import Folder from '../App/Dashboard/Overview/Modals/Folder'
 import Rightbar from '../App/Dashboard/Rightbar/Rightbar'
 import { Menu, X, PanelLeftOpenIcon, PanelRightOpenIcon } from 'lucide-react'
 import { useDispatch } from 'react-redux'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef, useCallback } from 'react'
 import SelectResume from '../App/Dashboard/Job/Modals/SelectResume'
 import { onJobApply, onSendJobMail } from '../services/useSocket'
 
@@ -18,6 +18,7 @@ import { saveTailoredResume } from '../store/aiSlice'
 import { toast } from 'sonner'
 import { toastPresets } from '../components/toasters'
 import FileDetails from '../App/Dashboard/Overview/Modals/FileDetails'
+import ErrorBoundary from '../components/ErrorBoundary'
 
 import { useQuery } from '@tanstack/react-query'
 import { getActivity } from '../services/activity'
@@ -55,16 +56,14 @@ export default function Dashboard () {
           position: 'top-right'
         })
         const content = response.resume
-        console.log('resume', content)
         dispatch(dumpEmailDetails(response.email))
         dispatch(saveTailoredResume(response))
         setPendingApplication(true)
-        console.log('email', response.email)
         navigate('finalize')
         return
       } else {
         toastPresets.aiError()
-        console.log(' Status false or not true')
+
       }
     })
   }, [dispatch, navigate])
@@ -74,9 +73,8 @@ export default function Dashboard () {
       if (data) {
         const status = data?.status
 
-        console.log('status in dashboard', status)
         if (!status) {
-          return console.log('still loading')
+          return
         }
 
         if (status == 'success') {
@@ -108,18 +106,43 @@ export default function Dashboard () {
     })
   }, [navigate])
 
-  const { data } = useQuery({
-    queryKey: ['activity'],
-    queryFn: () => getActivity(),
+  const [activityPage, setActivityPage] = useState(1)
+  const [allActivities, setAllActivities] = useState([])
+  const [activityMeta, setActivityMeta] = useState({ total: 0, hasMore: false })
+
+  const { data, isFetched } = useQuery({
+    queryKey: ['activity', 1],
+    queryFn: () => getActivity(1, 20),
     staleTime: 3 * 60 * 1000,
     refetchOnWindowFocus: false,
     refetchOnReconnect: false,
     refetchOnMount: false
   })
 
-  const activities = data?.data
+  useEffect(() => {
+    if (isFetched && data?.data) {
+      const pageData = data.data
+      setAllActivities(pageData.data || [])
+      setActivityMeta({ total: pageData.total, hasMore: pageData.hasMore })
+      setActivityPage(1)
+    }
+  }, [isFetched, data])
+
+  const loadMoreActivity = useCallback(async () => {
+    const nextPage = activityPage + 1
+    const res = await getActivity(nextPage, 20)
+    const pageData = res.data
+    setAllActivities(prev => [...prev, ...(pageData.data || [])])
+    setActivityMeta({ total: pageData.total, hasMore: pageData.hasMore })
+    setActivityPage(nextPage)
+  }, [activityPage])
+
+  const activityItems = allActivities
+  const activityTotal = activityMeta.total
+  const hasMoreActivity = activityMeta.hasMore
 
   return (
+    <ErrorBoundary>
     <section
       className={`flex relative ${
         appearance.theme == 'dark' ? 'bg-[#202020]' : 'bg-white'
@@ -214,13 +237,22 @@ export default function Dashboard () {
               }`}
               onClick={e => e.stopPropagation()}
             >
-              <Rightbar data={activities} className='' />
+              <Rightbar
+                data={activityItems}
+                total={activityTotal}
+                hasMore={hasMoreActivity}
+                onLoadMore={loadMoreActivity}
+                className=''
+              />
             </aside>
           </div>
           {/* Desktop inline */}
           <div className='hidden md:block'>
             <Rightbar
-              data={activities}
+              data={activityItems}
+              total={activityTotal}
+              hasMore={hasMoreActivity}
+              onLoadMore={loadMoreActivity}
               className='w-80 transition-all duration-200 transform-gpu ease-linear rounded-xl shadow-[#23232389] shadow-sm'
             />
           </div>
@@ -278,5 +310,6 @@ export default function Dashboard () {
         </>
       )}
     </section>
+    </ErrorBoundary>
   )
 }

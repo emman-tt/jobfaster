@@ -13,7 +13,10 @@ export default function UserMenu({ data, appearance }) {
   return (
     <div ref={menuRef} className="relative w-full">
       {isOpen && (
-        <div className="absolute bottom-full left-0 mb-2 w-full bg-white border border-gray-200 rounded-2xl shadow-lg p-2 z-50 flex flex-col gap-1">
+        <div className="absolute bottom-full 
+        left-0 mb-2 w-full bg-white border
+         border-gray-200 rounded-2xl
+          shadow-lg p-2 z-50 flex flex-col gap-1">
           <button
             onClick={() => {
               setIsOpen(false);
@@ -39,9 +42,12 @@ export default function UserMenu({ data, appearance }) {
           <button
             onClick={() => {
               setIsOpen(false);
-              navigate('billings')
+              navigate("billings");
             }}
-            className="flex items-center gap-3 p-2 rounded-xl hover:bg-gray-100 transition-colors text-black text-sm font-medium w-full text-left"
+            className="flex items-center gap-3 p-2 
+            rounded-xl hover:bg-gray-100 
+            transition-colors text-black 
+            text-sm font-medium w-full text-left"
           >
             <Zap className="w-4 h-4" />
             <span>Billing and Payment</span>

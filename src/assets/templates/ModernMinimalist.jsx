@@ -1,7 +1,6 @@
 import React from 'react'
 
 const ModernMinimalist = ({ data }) => {
-  console.log(data)
   const styles = data?.styles || {}
   const fontFamily = styles.fontFamily || 'Arial, sans-serif'
   const nameStyles = styles.name || {}
@@ -19,7 +18,8 @@ const ModernMinimalist = ({ data }) => {
     <div
       style={{
         color: bodyStyles.color || '#2c3e50',
-        maxWidth: '850px'
+        maxWidth: '850px',
+        padding: '48px'
       }}
       className={`${fontFamily}`}
     >

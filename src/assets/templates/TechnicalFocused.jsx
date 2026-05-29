@@ -21,7 +21,8 @@ const TechnicalFocused = ({ data }) => {
       style={{
         color: bodyStyles.color || '#333',
         maxWidth: '850px',
-        fontSize: `${bodyStyles.size || 13}pt`
+        fontSize: `${bodyStyles.size || 13}pt`,
+        padding: '48px'
       }}
       className={`${fontFamily}`}
     >
