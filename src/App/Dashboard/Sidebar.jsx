@@ -21,6 +21,7 @@ import { useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useQuery } from "@tanstack/react-query";
 import { getUser } from "../../services/user";
+import { getSubscription } from "../../services/subscription";
 import UserMenu from "./UserMenu";
 import JobFasterLogo from "../../assets/branding";
 
@@ -39,6 +40,12 @@ export default function Sidebar({ className }) {
     gcTime: 10 * 60 * 1000,
     refetchOnWindowFocus: false,
     refetchOnReconnect: false,
+  });
+
+  const { data: subscription } = useQuery({
+    queryKey: ["subscription"],
+    queryFn: getSubscription,
+    staleTime: 30 * 1000,
   });
 
   return (
@@ -159,7 +166,7 @@ export default function Sidebar({ className }) {
             );
           })}
         </div>
-        <UserMenu data={data} appearance={appearance} />
+        <UserMenu data={data} subscription={subscription} appearance={appearance} />
       </div>
     </section>
   );

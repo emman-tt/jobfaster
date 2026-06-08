@@ -4,11 +4,19 @@ import useClickOutside from "../../hooks/useClick";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/auth";
 
-export default function UserMenu({ data, appearance }) {
+export default function UserMenu({ data, subscription, appearance }) {
   const [isOpen, setIsOpen] = useState(false);
   const menuRef = useClickOutside(() => setIsOpen(false));
   const navigate = useNavigate();
   const { logout } = useAuth();
+
+  const plan = subscription?.Plan;
+  const planName = plan?.displayName || "Free";
+  const trialEndsAt = subscription?.trialEndsAt ? new Date(subscription.trialEndsAt) : null;
+  const isOnTrial = trialEndsAt && trialEndsAt > new Date();
+  const trialDaysRemaining = isOnTrial
+    ? Math.ceil((trialEndsAt.getTime() - Date.now()) / (1000 * 60 * 60 * 24))
+    : 0;
 
   return (
     <div ref={menuRef} className="relative w-full">
@@ -107,6 +115,28 @@ export default function UserMenu({ data, appearance }) {
         >
           <p className="font-satoshi font-semibold">{data?.name || "User"}</p>
           <p className="truncate">{data?.email || "user@example.com"}</p>
+          <div className="flex items-center gap-1.5 mt-0.5">
+            <span
+              className={`inline-block px-1.5 py-0.5 rounded text-[10px] font-medium ${
+                appearance.theme === "dark"
+                  ? "bg-orange-500/20 text-orange-300"
+                  : "bg-orange-100 text-orange-700"
+              }`}
+            >
+              {planName}
+            </span>
+            {isOnTrial && trialDaysRemaining <= 7 && (
+              <span
+                className={`inline-block px-1.5 py-0.5 rounded text-[10px] font-medium ${
+                  appearance.theme === "dark"
+                    ? "bg-red-500/20 text-red-300"
+                    : "bg-red-100 text-red-600"
+                }`}
+              >
+                {trialDaysRemaining}d left
+              </span>
+            )}
+          </div>
         </div>
         <div className="w-[20%] flex justify-end pr-1">
           <ArrowUpDown

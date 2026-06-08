@@ -1,23 +1,51 @@
-import React, { useState } from "react";
+import React from "react";
 import { useSelector } from "react-redux";
 import { useQuery, useMutation } from "@tanstack/react-query";
-import { CreditCard, Check, Loader2 } from "lucide-react";
+import { CreditCard, Check, Loader2, Clock, ArrowUpRight } from "lucide-react";
 import { getPlans } from "../../../services/plans";
+import { getSubscription } from "../../../services/subscription";
+import { getTransactions } from "../../../services/transactions";
 import { createCheckout } from "../../../services/payment";
 import { toast } from "sonner";
 
+function formatPrice(price) {
+  return price.toFixed(2);
+}
+
 const features = [
-  { label: "Resume uploads", key: "maxResumeUploads", suffix: "", type: "count" },
+  {
+    label: "Resume uploads",
+    key: "maxResumeUploads",
+    suffix: "",
+    type: "count",
+  },
   {
     label: "Applications per month",
     key: "maxApplicationsPerMonth",
     suffix: "",
     type: "count",
   },
-  { label: "Activity history", key: "maxActivityDays", suffix: " days", type: "count" },
+  {
+    label: "Activity history",
+    key: "maxActivityDays",
+    suffix: " days",
+    type: "count",
+  },
   { label: "Storage", key: "maxStorageMb", suffix: " MB", type: "count" },
-  { label: "Job image uploads", key: "allowJobImageUploads", type: "boolean", yesText: "Yes", noText: "Text only" },
-  { label: "Export formats", key: "allowAdvancedExports", type: "boolean", yesText: "PDF + more", noText: "PDF only" },
+  {
+    label: "Job image uploads",
+    key: "allowJobImageUploads",
+    type: "boolean",
+    yesText: "Yes",
+    noText: "Text only",
+  },
+  {
+    label: "Export formats",
+    key: "allowAdvancedExports",
+    type: "boolean",
+    yesText: "PDF + more",
+    noText: "PDF only",
+  },
 ];
 
 const planUIConfig = {
@@ -37,14 +65,35 @@ const planUIConfig = {
 
 export default function Billings() {
   const { appearance } = useSelector((state) => state.preferences);
-  const [isYearly, setIsYearly] = useState(false);
-  const currentPlanVariantId = "free";
 
-  const { data: plans, isLoading } = useQuery({
+  const { data: plans, isLoading: plansLoading } = useQuery({
     queryKey: ["plans"],
     queryFn: getPlans,
     staleTime: 5 * 60 * 1000,
   });
+
+  const { data: subscription, isLoading: subLoading } = useQuery({
+    queryKey: ["subscription"],
+    queryFn: getSubscription,
+    staleTime: 30 * 1000,
+  });
+
+  const { data: transactions = [] } = useQuery({
+    queryKey: ["transactions"],
+    queryFn: getTransactions,
+    staleTime: 30 * 1000,
+  });
+
+  const plan = subscription?.Plan;
+  const currentPlanVariantId = plan?.variantId || "free";
+
+  const trialEndsAt = subscription?.trialEndsAt
+    ? new Date(subscription.trialEndsAt)
+    : null;
+  const isOnTrial = trialEndsAt && trialEndsAt > new Date();
+  const trialDaysRemaining = isOnTrial
+    ? Math.ceil((trialEndsAt.getTime() - Date.now()) / (1000 * 60 * 60 * 24))
+    : 0;
 
   const mutation = useMutation({
     mutationFn: (variantKey) => createCheckout(variantKey),
@@ -65,10 +114,6 @@ export default function Billings() {
     return String(value);
   }
 
-  function getPrice(plan) {
-    return isYearly ? plan.priceYearly : plan.priceMonthly;
-  }
-
   function getPlanUI(variantId) {
     return (
       planUIConfig[variantId] || {
@@ -82,6 +127,8 @@ export default function Billings() {
     if (plan.variantId === "free") return;
     mutation.mutate(plan.variantId);
   }
+
+  const isLoading = plansLoading || subLoading;
 
   if (isLoading) {
     return (
@@ -115,7 +162,9 @@ export default function Billings() {
             </h1>
             <p
               className={`text-sm ${
-                appearance.theme === "dark" ? "text-slate-400" : "text-slate-500"
+                appearance.theme === "dark"
+                  ? "text-slate-400"
+                  : "text-slate-500"
               }`}
             >
               Manage your subscription and choose the plan that works best for
@@ -151,113 +200,80 @@ export default function Billings() {
                 <div>
                   <h3
                     className={`text-sm font-semibold ${
-                      appearance.theme === "dark" ? "text-white" : "text-slate-700"
+                      appearance.theme === "dark"
+                        ? "text-white"
+                        : "text-slate-700"
                     }`}
                   >
                     Current Plan
                   </h3>
                   <p
                     className={`text-xs ${
-                      appearance.theme === "dark" ? "text-slate-400" : "text-slate-500"
+                      appearance.theme === "dark"
+                        ? "text-slate-400"
+                        : "text-slate-500"
                     }`}
                   >
                     You are currently on the{" "}
                     <span className="font-medium text-[#f17e27]">
-                      Free plan
+                      {plan?.displayName || "Free plan"}
                     </span>
                   </p>
                 </div>
               </div>
-              <button
-                className={`px-4 py-2 text-xs font-medium rounded-lg transition-colors ${
+            </div>
+            {isOnTrial && (
+              <div
+                className={`mt-4 flex items-center gap-2 p-3 rounded-lg text-xs ${
                   appearance.theme === "dark"
-                    ? "bg-slate-800 text-slate-300 hover:bg-slate-700"
-                    : "bg-slate-100 text-slate-600 hover:bg-slate-200"
+                    ? "bg-orange-500/10 text-orange-300"
+                    : "bg-orange-50 text-orange-700"
                 }`}
               >
-                Manage Subscription
-              </button>
-            </div>
-          </div>
-
-          <div className="flex items-center justify-center mb-6 sm:mb-8">
-            <div
-              className={`flex items-center gap-3 p-1 rounded-xl ${
-                appearance.theme === "dark"
-                  ? "bg-[#202020]"
-                  : "bg-slate-100/80 border border-slate-200"
-              }`}
-            >
-              <button
-                onClick={() => setIsYearly(false)}
-                className={`px-3 sm:px-5 py-2 text-xs sm:text-sm font-medium rounded-lg transition-all ${
-                  !isYearly
-                    ? "bg-[#f17e27] text-white shadow-sm"
-                    : appearance.theme === "dark"
-                      ? "text-slate-400 hover:text-white"
-                      : "text-slate-500 hover:text-slate-700 hover:bg-slate-50"
-                }`}
-              >
-                Monthly
-              </button>
-              <button
-                onClick={() => setIsYearly(true)}
-                className={`px-3 sm:px-5 py-2 text-xs sm:text-sm font-medium rounded-lg transition-all ${
-                  isYearly
-                    ? "bg-[#f17e27] text-white shadow-sm"
-                    : appearance.theme === "dark"
-                      ? "text-slate-400 hover:text-white"
-                      : "text-slate-500 hover:text-slate-700 hover:bg-slate-50"
-                }`}
-              >
-                Yearly
-                <span
-                  className={`ml-1.5 text-xs px-1.5 py-0.5 rounded ${
-                    isYearly
-                      ? "bg-white/20"
-                      : appearance.theme === "dark"
-                        ? "bg-slate-800 text-green-400"
-                        : "bg-green-100 text-green-700"
-                  }`}
-                >
-                  Save 20%
+                <Clock size={14} />
+                <span>
+                  Trial ends in{" "}
+                  <strong>
+                    {trialDaysRemaining} day
+                    {trialDaysRemaining !== 1 ? "s" : ""}
+                  </strong>
+                  {trialDaysRemaining <= 3 && (
+                    <span className="ml-1 font-semibold">
+                      — upgrade to keep your plan features
+                    </span>
+                  )}
                 </span>
-              </button>
-            </div>
+              </div>
+            )}
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6">
             {sortedPlans.map((plan) => {
               const ui = getPlanUI(plan.variantId);
-              const price = getPrice(plan);
+              const price = plan.priceMonthly;
               const isCurrentPlan = currentPlanVariantId === plan.variantId;
               const isFree = plan.variantId === "free";
-              const isLoadingThis = mutation.isPending && mutation.variables === plan.variantId;
+              const isLoadingThis =
+                mutation.isPending && mutation.variables === plan.variantId;
 
               return (
                 <div
                   key={plan.id}
-                  className={`relative rounded-xl border p-4 sm:p-6 ${
+                  className={`relative rounded-xl border p-4 sm:p-6 transition-all ${
                     appearance.theme === "dark"
                       ? "bg-[#202020] border-0"
                       : "bg-white border-slate-200"
-                  } ${ui.featured ? (appearance.theme === "dark" ? "border-orange-500/30" : "border-[#f17e27]") : ""}`}
+                  } ${isCurrentPlan ? "ring-2 ring-[#f17e27]" : ""} ${ui.featured ? (appearance.theme === "dark" ? "border-orange-500/30" : "border-[#f17e27]") : ""}`}
                 >
-                  {ui.featured && (
-                    <div className="absolute -top-2.5 left-1/2 -translate-x-1/2">
-                      <span className="bg-[#f17e27] text-white text-xs font-medium px-2.5 py-0.5 rounded-full">
-                        Most Popular
-                      </span>
-                    </div>
-                  )}
+                  
 
                   {isCurrentPlan && (
                     <div className="absolute top-3 right-3">
                       <span
                         className={`text-xs font-medium px-2 py-0.5 rounded-full ${
                           appearance.theme === "dark"
-                            ? "bg-green-500/20 text-green-400"
-                            : "bg-green-100 text-green-700"
+                            ? "bg-orange-500/20 text-orange-400"
+                            : "bg-orange-100 text-orange-700"
                         }`}
                       >
                         Current
@@ -269,14 +285,18 @@ export default function Billings() {
                     <div className="mb-3">
                       <h3
                         className={`text-sm font-semibold ${
-                          appearance.theme === "dark" ? "text-white" : "text-slate-700"
+                          appearance.theme === "dark"
+                            ? "text-white"
+                            : "text-slate-700"
                         }`}
                       >
                         {plan.displayName}
                       </h3>
                       <p
                         className={`text-xs ${
-                          appearance.theme === "dark" ? "text-slate-500" : "text-slate-400"
+                          appearance.theme === "dark"
+                            ? "text-slate-500"
+                            : "text-slate-400"
                         }`}
                       >
                         {ui.description}
@@ -287,7 +307,9 @@ export default function Billings() {
                       {price === 0 ? (
                         <span
                           className={`text-2xl sm:text-3xl font-bold ${
-                            appearance.theme === "dark" ? "text-white" : "text-slate-900"
+                            appearance.theme === "dark"
+                              ? "text-white"
+                              : "text-slate-900"
                           }`}
                         >
                           Free
@@ -296,24 +318,30 @@ export default function Billings() {
                         <>
                           <span
                             className={`text-sm ${
-                              appearance.theme === "dark" ? "text-slate-400" : "text-slate-500"
+                              appearance.theme === "dark"
+                                ? "text-slate-400"
+                                : "text-slate-500"
                             }`}
                           >
                             $
                           </span>
                           <span
                             className={`text-2xl sm:text-3xl font-bold ${
-                              appearance.theme === "dark" ? "text-white" : "text-slate-900"
+                              appearance.theme === "dark"
+                                ? "text-white"
+                                : "text-slate-900"
                             }`}
                           >
                             {price}
                           </span>
                           <span
                             className={`text-xs ${
-                              appearance.theme === "dark" ? "text-slate-400" : "text-slate-500"
+                              appearance.theme === "dark"
+                                ? "text-slate-400"
+                                : "text-slate-500"
                             }`}
                           >
-                            /{isYearly ? "year" : "month"}
+                            /month
                           </span>
                         </>
                       )}
@@ -350,7 +378,8 @@ export default function Billings() {
                                 : "text-slate-600"
                             }`}
                           >
-                            {feature.label}: <span className="font-medium">{displayValue}</span>
+                            {feature.label}:{" "}
+                            <span className="font-medium">{displayValue}</span>
                           </span>
                         </div>
                       );
@@ -359,16 +388,11 @@ export default function Billings() {
 
                   <button
                     onClick={() => handleUpgrade(plan)}
-                    disabled={isFree || isCurrentPlan || isLoadingThis}
+                    disabled={isCurrentPlan || isLoadingThis}
                     className={`w-full py-2 rounded-lg text-xs font-medium transition-all flex items-center justify-center gap-2 ${
                       isCurrentPlan
-                        ? appearance.theme === "dark"
-                          ? "bg-slate-800 text-slate-500 cursor-not-allowed"
-                          : "bg-slate-100 text-slate-400 cursor-not-allowed"
-                        : isFree
-                          ? appearance.theme === "dark"
-                            ? "bg-slate-800 text-slate-400 cursor-not-allowed"
-                            : "bg-slate-100 text-slate-400 cursor-not-allowed"
+                        ? "bg-[#f17e27] text-white shadow-sm cursor-default"
+                        
                           : ui.featured
                             ? "bg-[#f17e27] text-white hover:bg-[#e16d16] shadow-sm"
                             : appearance.theme === "dark"
@@ -376,14 +400,16 @@ export default function Billings() {
                               : "bg-slate-900 text-white hover:bg-slate-800"
                     }`}
                   >
-                    {isLoadingThis && <Loader2 size={14} className="animate-spin" />}
+                    {isLoadingThis && (
+                      <Loader2 size={14} className="animate-spin" />
+                    )}
                     {isCurrentPlan
                       ? "Current Plan"
-                      : isFree
-                        ? "Your Current Plan"
-                        : isLoadingThis
-                          ? "Redirecting..."
-                          : "Upgrade"}
+                      : isLoadingThis
+                        ? "Redirecting..."
+                        : isFree
+                          ? "Downgrade to free"
+                          : "Select plan"}
                   </button>
                 </div>
               );
@@ -404,19 +430,74 @@ export default function Billings() {
             >
               Payment History
             </h3>
-            <div
-              className={`text-center py-6 ${
-                appearance.theme === "dark"
-                  ? "text-slate-500"
-                  : "text-slate-400"
-              }`}
-            >
-              <CreditCard size={32} className="mx-auto mb-2 opacity-50" />
-              <p className="text-xs">No payment history yet</p>
-              <p className="text-xs mt-1 opacity-75">
-                Upgrade to a paid plan to see your transactions here
-              </p>
-            </div>
+            {transactions.length === 0 ? (
+              <div
+                className={`text-center py-6 ${
+                  appearance.theme === "dark"
+                    ? "text-slate-500"
+                    : "text-slate-400"
+                }`}
+              >
+                <CreditCard size={32} className="mx-auto mb-2 opacity-50" />
+                <p className="text-xs">No payment history yet</p>
+                <p className="text-xs mt-1 opacity-75">
+                  Upgrade to a paid plan to see your transactions here
+                </p>
+              </div>
+            ) : (
+              <div className="space-y-2">
+                {transactions.map((txn) => (
+                  <div
+                    key={txn.id}
+                    className={`flex items-center justify-between p-3 rounded-lg text-xs ${
+                      appearance.theme === "dark"
+                        ? "bg-[#2A2A2A]"
+                        : "bg-slate-50"
+                    }`}
+                  >
+                    <div className="flex items-center gap-3">
+                      <ArrowUpRight size={14} className="text-green-500" />
+                      <div>
+                        <p
+                          className={`font-medium ${
+                            appearance.theme === "dark"
+                              ? "text-white"
+                              : "text-slate-700"
+                          }`}
+                        >
+                          {(txn.amount / 100).toFixed(2)}
+                        </p>
+                        <p
+                          className={
+                            appearance.theme === "dark"
+                              ? "text-slate-500"
+                              : "text-slate-400"
+                          }
+                        >
+                          {txn.description || txn.status}
+                        </p>
+                      </div>
+                    </div>
+                    <span
+                      className={`${
+                        appearance.theme === "dark"
+                          ? "text-slate-500"
+                          : "text-slate-400"
+                      }`}
+                    >
+                      {new Date(txn.paidAt || txn.createdAt).toLocaleDateString(
+                        "en-US",
+                        {
+                          month: "short",
+                          day: "numeric",
+                          year: "numeric",
+                        },
+                      )}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
         </div>
       </div>

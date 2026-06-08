@@ -1,8 +1,9 @@
-import { api } from '../libs/axios'
+import { api } from "../libs/axios";
 
 export async function createCheckout(variantKey) {
-  const res = await api.post('/payment/checkout', {
+  const res = await api.post("/payment/checkout", {
     variantKey,
-  })
-  return res.data.data
+  });
+  return res.data.data;
 }
+
