@@ -15,7 +15,7 @@ import useClickOutside from '../../hooks/useClick'
 import Menubar from './Menubar'
 import { THEME_COLORS } from './ThemeSelector'
 import ExportMenu from './ExportMenu'
-import { renderResumeToHTML } from '../../utils/renderResume'
+import { generatePaginatedResumeHTML } from '../../utils/renderResume'
 import { saveResumeFromHTML } from '../../services/Program'
 import { toast } from 'sonner'
 
@@ -60,12 +60,9 @@ export function Topbar () {
     localStorage.setItem('editor-resume-name', resumeName.trim())
 
     try {
-      const previewElement = document.getElementById('resume-preview')
-      if (!previewElement) {
-        throw new Error('Preview element not found')
-      }
-
-      const html = previewElement.outerHTML
+      const styles = buildExportStyles()
+      const rawData = { personal, work, education, credentials }
+      const html = await generatePaginatedResumeHTML(rawData, templateId, { styles })
       const result = await saveResumeFromHTML(html, resumeName.trim())
 
       if (result.status === 'success') {
@@ -84,15 +81,7 @@ export function Topbar () {
   const { font, size, weight, height, theme, contrast, templateId } =
     useSelector(state => state.editor)
 
-  async function handleExport (format) {
-    if (format !== 'pdf') {
-      toast.error('DOCX export coming soon')
-      setShowExportMenu(false)
-      return
-    }
-
-    setShowExportMenu(false)
-
+  function buildExportStyles () {
     const getTypeScale = base => ({
       name: base * 2.4,
       sectionHead: base * 1.3,
@@ -126,7 +115,7 @@ export function Topbar () {
       return `#${((r << 16) | (g << 8) | b).toString(16).padStart(6, '0')}`
     }
 
-    const styles = {
+    return {
       fontFamily: font,
       name: {
         size: typeScale.name,
@@ -186,21 +175,25 @@ export function Topbar () {
         color: applyContrast(themeColors.contact)
       }
     }
+  }
 
-    const rawData = {
-      personal,
-      work,
-      education,
-      credentials
+  async function handleExport (format) {
+    if (format !== 'pdf') {
+      toast.error('DOCX export coming soon')
+      setShowExportMenu(false)
+      return
     }
 
+    setShowExportMenu(false)
+
+    const styles = buildExportStyles()
+    const rawData = { personal, work, education, credentials }
+
     try {
-      const resumeHTML = await renderResumeToHTML(rawData, templateId, {
-        styles
-      })
+      const resumeHTML = await generatePaginatedResumeHTML(rawData, templateId, { styles })
       const fullHTML = `<!DOCTYPE html><html><head><meta charset="utf-8"><title>${
         personal.contactDetails.fullName || 'Resume'
-      }</title><style>body{margin:0;padding:0;display:flex;justify-content:center;background:#f5f5f5;}@media print{body{background:white;padding:0;}}</style></head><body>${resumeHTML}<script>setTimeout(()=>{window.print()},200)</script></body></html>`
+      }</title><style>@page{size:A4;margin:0;}body{margin:0;padding:0;display:flex;flex-direction:column;align-items:center;background:#f5f5f5;}@media print{body{background:white;padding:0;}}</style></head><body>${resumeHTML}<script>setTimeout(()=>{window.print()},200)</script></body></html>`
       const printWindow = window.open('', '_blank')
       if (!printWindow) {
         toast.error('Please allow popups to export your resume')

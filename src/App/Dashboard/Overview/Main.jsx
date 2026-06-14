@@ -163,7 +163,6 @@ export default function Main() {
   const deleteMutation = useMutation({
     mutationFn: deleteProgram,
     onSuccess: () => {
-      // const program = data.data
       queryClient.invalidateQueries({ queryKey: ["program"] });
       queryClient.invalidateQueries({ queryKey: ["activity"] });
       toast.success(`Program deleted  succesfully`, {
