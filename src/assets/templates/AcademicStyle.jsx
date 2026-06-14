@@ -7,9 +7,11 @@ const AcademicStyle = ({ data }) => {
   const sectionStyles = styles.sectionHeader || {}
   const bodyStyles = styles.bodyText || {}
   const dateStyles = styles.date || {}
-  const contactStyles = styles.contact || {}
+  const contactStyles = styles?.contact || {}
   const links = data?.onlineLinks
+const companyStyles = styles.company || {}
 
+  
   const bodyLeading = bodyStyles.leading ? Number(bodyStyles.leading) : 1.5
 
   return (
