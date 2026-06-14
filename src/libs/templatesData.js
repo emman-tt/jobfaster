@@ -7,8 +7,8 @@ import TechnicalFocused from '../assets/templates/TechnicalFocused'
 
 import CreativePortfolio from '../assets/templates/CreativePortfolio'
 import CompactLayout from '../assets/templates/CompactLayout'
-import StartupBold from '../assets/templates/StartupBold'
-import CorporateStandard from '../assets/templates/CorporateStandard'
+import StartupBold from '../assets/templates/StartupFounder'
+import CorporateStandard from '../assets/templates/CorporateTraditional'
 import FreelancePortfolio from '../assets/templates/FreelancePortfolio'
 import ElegantMinimal from '../assets/templates/ElegantMinimal'
 
