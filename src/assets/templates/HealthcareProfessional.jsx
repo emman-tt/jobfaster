@@ -18,6 +18,7 @@ const HealthcareProfessional = ({ data }) => {
 
   return (
     <div
+    className='p-5'
       style={{
         color: bodyStyles.color || professionalGray,
         maxWidth: '850px',

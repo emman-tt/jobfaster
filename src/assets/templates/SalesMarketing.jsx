@@ -16,7 +16,7 @@ const SalesMarketing = ({ data }) => {
   const darkGray = '#111827'
 
   return (
-    <div
+    <div className='p-5'
       style={{
         color: bodyStyles.color || darkGray,
         maxWidth: '850px',

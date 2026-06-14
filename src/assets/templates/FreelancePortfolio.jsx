@@ -16,6 +16,7 @@ const FreelancePortfolio = ({ data }) => {
 
   return (
     <div
+    className='p-8'
       style={{
         color: bodyStyles.color || '#1F2937',
         maxWidth: '850px',

@@ -29,7 +29,7 @@ const InternationalCV = ({ data }) => {
     >
       <div
         style={{
-          width: "200px",
+          width: "280px",
           marginLeft: 0,
           height: "screen",
           background: `linear-gradient(180deg, ${primaryTeal} 0%, #0F766E 100%)`,
@@ -110,7 +110,7 @@ const InternationalCV = ({ data }) => {
               <div style={{ marginBottom: "4px" }}>{data.phone}</div>
             )}
             {data?.email && (
-              <div style={{ marginBottom: "4px" }}>{data.email}</div>
+              <div style={{ marginBottom: "4px" , wordBreak:'break-word'}}>{data.email}</div>
             )}
             {data?.location && (
               <div style={{ marginBottom: "4px" }}>{data.location}</div>
