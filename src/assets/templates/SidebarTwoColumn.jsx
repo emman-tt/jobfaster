@@ -153,6 +153,47 @@ const SidebarTwoColumn = ({ data }) => {
           )}
         </div>
 
+        {data?.education?.length > 0 && (
+          <div
+            style={{
+              borderTop: `2px solid ${primaryBlue}`,
+              paddingTop: "16px",
+              marginBottom: "20px",
+            }}
+          >
+            <h2
+              style={{
+                fontSize: `${sectionStyles.size || 9}pt`,
+                fontWeight: 700,
+                textTransform: "uppercase",
+                letterSpacing: "1.5px",
+                margin: "0 0 10px 0",
+                color: primaryBlue,
+              }}
+            >
+              Education
+            </h2>
+            {data.education.map((edu) => (
+              <div
+                key={edu.id}
+                style={{ marginBottom: "12px", fontSize: "8.5pt" }}
+              >
+                <div style={{ fontWeight: 700, marginBottom: "2px" }}>
+                  {edu.degree}
+                </div>
+                {edu.field && (
+                  <div style={{ marginBottom: "2px", color: primaryBlue }}>
+                    {edu.field}
+                  </div>
+                )}
+                <div style={{ marginBottom: "1px" }}>{edu.school}</div>
+                <div style={{ color: mediumGray }}>
+                  {edu.startYear} — {edu.endYear}
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
         {data?.skills?.length > 0 && (
           <div
             style={{
@@ -286,46 +327,6 @@ const SidebarTwoColumn = ({ data }) => {
           </div>
         )}
 
-        {data?.education?.length > 0 && (
-          <div
-            style={{
-              borderTop: `2px solid ${primaryBlue}`,
-              paddingTop: "16px",
-            }}
-          >
-            <h2
-              style={{
-                fontSize: `${sectionStyles.size || 9}pt`,
-                fontWeight: 700,
-                textTransform: "uppercase",
-                letterSpacing: "1.5px",
-                margin: "0 0 10px 0",
-                color: primaryBlue,
-              }}
-            >
-              Education
-            </h2>
-            {data.education.map((edu) => (
-              <div
-                key={edu.id}
-                style={{ marginBottom: "12px", fontSize: "8.5pt" }}
-              >
-                <div style={{ fontWeight: 700, marginBottom: "2px" }}>
-                  {edu.degree}
-                </div>
-                {edu.field && (
-                  <div style={{ marginBottom: "2px", color: primaryBlue }}>
-                    {edu.field}
-                  </div>
-                )}
-                <div style={{ marginBottom: "1px" }}>{edu.school}</div>
-                <div style={{ color: mediumGray }}>
-                  {edu.startYear} — {edu.endYear}
-                </div>
-              </div>
-            ))}
-          </div>
-        )}
       </div>
 
       <div style={{ flex: 1, padding: "28px 28px" }}>

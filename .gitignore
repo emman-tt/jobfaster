@@ -24,3 +24,4 @@ dist-ssr
 *.sw?
 AGENTS.md
 REVIEW.md
+docs/pagination-deep-dive.md
