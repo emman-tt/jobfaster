@@ -444,7 +444,7 @@ const InternationalCV = ({ data }) => {
                       fontWeight: 500,
                     }}
                   >
-                    Technologies: {proj.techStack.join(", ")}
+                    Technologies: {proj.techStack.map(t => t.name).join(", ")}
                   </p>
                 )}
               </div>

@@ -173,7 +173,7 @@ const CompactLayout = ({ data }) => {
                   </div>
                   {proj.techStack?.length > 0 && (
                     <div style={{ fontSize: `${dateStyles.size || 8}pt`, color: '#777' }}>
-                      {proj.techStack.join(', ')}
+                      {proj.techStack.map(t => t.name).join(', ')}
                     </div>
                   )}
                 </div>

@@ -214,7 +214,7 @@ const ModernMinimalist = ({ data }) => {
                   color: dateStyles.color || '#999'
                 }}
               >
-                Tech: {proj.techStack?.join(' • ')}
+                Tech: {proj.techStack?.map(t => t.name).join(' • ')}
               </p>
             </div>
           ))}

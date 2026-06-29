@@ -309,7 +309,7 @@ const GraduateEntryLevel = ({ data }) => {
                           border: `1px solid ${primaryOrange}`,
                         }}
                       >
-                        {tech}
+                        {tech.name}
                       </span>
                     ))}
                   </div>

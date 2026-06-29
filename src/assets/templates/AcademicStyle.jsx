@@ -186,7 +186,7 @@ const companyStyles = styles.company || {}
                   color: dateStyles.color || '#666'
                 }}
               >
-                Tech Stack: {proj.techStack?.join(', ')}
+                Tech Stack: {proj.techStack?.map(t => t.name).join(', ')}
               </p>
               {proj.link && (
                 <p

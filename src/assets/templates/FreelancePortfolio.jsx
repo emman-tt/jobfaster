@@ -269,7 +269,7 @@ const FreelancePortfolio = ({ data }) => {
                           color: "#6B7280",
                         }}
                       >
-                        {tech}
+                        {tech.name}
                       </span>
                     ))}
                   </div>

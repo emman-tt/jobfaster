@@ -206,7 +206,7 @@ const ATSOptimized = ({ data }) => {
                   color: dateStyles.color || '#333'
                 }}
               >
-                Technologies: {proj.techStack?.join(', ')}
+                Technologies: {proj.techStack?.map(t => t.name).join(', ')}
               </div>
             </div>
           ))}

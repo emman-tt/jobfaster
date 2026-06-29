@@ -247,7 +247,7 @@ const ElegantMinimal = ({ data }) => {
                     fontStyle: 'italic',
                   }}
                 >
-                  {proj.techStack.join(', ')}
+                  {proj.techStack.map(t => t.name).join(', ')}
                 </p>
               )}
             </div>

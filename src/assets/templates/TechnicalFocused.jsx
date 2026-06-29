@@ -240,7 +240,7 @@ const TechnicalFocused = ({ data }) => {
                   color: dateStyles.color || '#555'
                 }}
               >
-                Tech Stack: {proj.techStack?.join(' • ')}
+                Tech Stack: {proj.techStack?.map(t => t.name).join(' • ')}
               </div>
               {proj.link && (
                 <div

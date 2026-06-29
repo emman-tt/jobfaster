@@ -379,7 +379,7 @@ const BoldStatement = ({ data }) => {
                             fontWeight: 700,
                           }}
                         >
-                          {tech}
+                          {tech.name}
                         </span>
                       ))}
                     </div>

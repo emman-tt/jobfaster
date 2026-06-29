@@ -236,7 +236,7 @@ const DesignPortfolio = ({ data }) => {
                           fontWeight: 600,
                         }}
                       >
-                        {tech}
+                        {tech.name}
                       </span>
                     ))}
                   </div>

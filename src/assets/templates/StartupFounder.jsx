@@ -357,7 +357,7 @@ const StartupBold = ({ data }) => {
                           fontWeight: 500,
                         }}
                       >
-                        {tech}
+                        {tech.name}
                       </span>
                     ))}
                   </div>

@@ -285,7 +285,7 @@ const CorporateStandard = ({ data }) => {
                   <span style={{ fontWeight: 600, fontStyle: "normal" }}>
                     Technologies:
                   </span>{" "}
-                  {proj.techStack.join(", ")}
+                  {proj.techStack.map(t => t.name).join(", ")}
                 </p>
               )}
             </div>

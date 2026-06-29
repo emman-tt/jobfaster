@@ -245,7 +245,7 @@ const ClassicProfessional = ({ data }) => {
                   color: dateStyles.color || "#666",
                 }}
               >
-                Tech: {proj.techStack?.join(", ")}
+                Tech: {proj.techStack?.map(t => t.name).join(", ")}
               </p>
             </div>
           ))}

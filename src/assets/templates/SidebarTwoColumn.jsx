@@ -538,7 +538,7 @@ const SidebarTwoColumn = ({ data }) => {
                     }}
                   >
                     <span style={{ fontWeight: 600 }}>Technologies:</span>{" "}
-                    {proj.techStack.join(", ")}
+                    {proj.techStack.map(t => t.name).join(", ")}
                   </p>
                 )}
               </div>

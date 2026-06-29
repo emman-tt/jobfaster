@@ -379,7 +379,7 @@ const CreativePortfolio = ({ data }) => {
                       color: "#888",
                     }}
                   >
-                    Tech: {proj.techStack.join(", ")}
+                    Tech: {proj.techStack.map(t => t.name).join(", ")}
                   </p>
                 )}
               </div>
