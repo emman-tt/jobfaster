@@ -168,8 +168,8 @@ export function transformResumeData (rawData, options = {}) {
         startYear: exp.startYear,
         endYear: exp.endYear,
         accomplishments: exp.accomplishments
-          .filter(acc => acc.text)
-          .map(acc => acc.text)
+          .filter(acc => acc)
+          .map(acc => acc)
       })),
     education: education.educations
       .filter(edu => edu.school || edu.degree)
@@ -182,7 +182,7 @@ export function transformResumeData (rawData, options = {}) {
         endYear: edu.endYear,
         highlights: edu.highlights.filter(h => h.text).map(h => h.text)
       })),
-    skills: credentials.skills.flatMap(skill => skill.list || []),
+    skills: credentials.skills.flatMap(skill => skill || []),
     languages: education.languages
       .filter(lang => lang.language)
       .map(lang => ({
@@ -195,7 +195,7 @@ export function transformResumeData (rawData, options = {}) {
         id: proj.id,
         name: proj.name,
         description: proj.description,
-        techStack: proj.techStack.filter(t => t.name).map(t => t.name),
+        techStack: proj.techStack.filter(t => t).map(t => t),
         link: proj.link,
         github: proj.github
       })),

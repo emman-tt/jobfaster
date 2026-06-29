@@ -27,4 +27,5 @@ export const store = configureStore({
     editor: editorSlice.reducer,
     preferences: preferencesSlice.reducer
   }
+
 })

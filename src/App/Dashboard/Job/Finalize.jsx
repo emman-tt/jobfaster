@@ -8,7 +8,6 @@ import {
   Eye,
   FileText,
   RotateCcw,
-  MoreVertical,
   Loader2,
 } from "lucide-react";
 import { useSelector, useDispatch } from "react-redux";
@@ -26,7 +25,6 @@ import { toastPresets } from "../../../components/toasters";
 import { sendMessage } from "../../../services/useSocket";
 import { connector } from "../../../services/useSocket";
 import { useNavigate } from "react-router-dom";
-import useClickOutside from "../../../hooks/useClick";
 function GetFileIcon() {
   return (
     <svg
@@ -46,54 +44,61 @@ function GetFileIcon() {
   );
 }
 
-function AttachedFiles({ file, selectedFile, onSelectFile, isGenerating, onEdit, onPreview }) {
+function AttachedFiles({
+  file,
+  selectedFile,
+  onSelectFile,
+  isGenerating,
+  onEdit,
+  onPreview,
+}) {
   const { appearance } = useSelector((state) => state.preferences);
-  const [openMenuId, setOpenMenuId] = useState(null);
-  const menuRef = useClickOutside(() => setOpenMenuId(null));
 
   if (!file) {
     return (
-      <div className="space-y-2 mt-4">
-        <h4 className={`text-xs font-bold uppercase tracking-wider ${appearance.theme == "dark" ? "text-white/60" : "text-slate-500"}`}>
+      <div className="space-y-2 mt-4 pointer-events-auto">
+        <h4
+          className={`text-xs font-bold uppercase tracking-wider ${appearance.theme == "dark" ? "text-white/60" : "text-slate-500"}`}
+        >
           Attached Files
         </h4>
-        <p className={`text-xs ${appearance.theme == "dark" ? "text-white/40" : "text-gray-400"}`}>
+        <p
+          className={`text-xs ${appearance.theme == "dark" ? "text-white/40" : "text-gray-400"}`}
+        >
           {isGenerating ? "Generating Resume..." : "No files attached"}
         </p>
       </div>
     );
   }
 
+  const btnBase = `p-2 rounded-lg transition-colors ${
+    appearance.theme == "dark"
+      ? "hover:bg-[#252525] text-white/60 hover:text-white"
+      : "hover:bg-gray-100 text-gray-400 hover:text-slate-700"
+  }`;
+
   return (
-    <div className="space-y-2 mt-4">
-      <h4 className={`text-xs font-bold uppercase tracking-wider ${appearance.theme == "dark" ? "text-white/60" : "text-slate-500"}`}>
+    <div className="space-y-2 mt-4 pointer-events-auto">
+      <h4
+        className={`text-xs font-bold uppercase tracking-wider ${appearance.theme == "dark" ? "text-white/60" : "text-slate-500"}`}
+      >
         {isGenerating ? "Generating Resume..." : "Attached Files"}
       </h4>
       <div className="space-y-1">
         <div
-          onClick={() => {
-            console.log('clicked')
-            onSelectFile(file);
-            setOpenMenuId(openMenuId === file.id ? null : file.id);
-          }}
-          className={`flex items-center  justify-between p-3 rounded-xl cursor-pointer transition-all 
+          onClick={() => onSelectFile(file)}
+          className={`flex items-center justify-between p-3 rounded-xl cursor-pointer transition-all 
             ${
-            file.id == selectedFile?.id
-              ? "bg-orange-500"
-              : appearance.theme == "dark"
+              appearance.theme == "dark"
                 ? "bg-[#202020] hover:bg-[#252525]"
                 : "bg-gray-50 hover:bg-gray-100"
-          }
+            }
           `}
         >
           <div className="flex items-center gap-3">
             <div
               className={`w-8 h-8 rounded-lg flex items-center justify-center ${
-                file.id == selectedFile?.id
-                  ? "bg-white/20"
-                  : appearance.theme == "dark"
-                    ? "bg-[#2a2a2a]"
-                    : "bg-gray-200"
+                appearance.theme == "dark" ? "bg-[#2a2a2a]" : "bg-gray-200"
               }`}
             >
               <GetFileIcon />
@@ -101,55 +106,23 @@ function AttachedFiles({ file, selectedFile, onSelectFile, isGenerating, onEdit,
             <div>
               <h3
                 className={`text-sm font-medium truncate max-w-40 ${
-                  file.id == selectedFile?.id
-                    ? "text-white"
-                    : appearance.theme == "dark"
-                      ? "text-white"
-                      : "text-slate-900"
+                  appearance.theme == "dark" ? "text-white" : "text-slate-900"
                 }`}
               >
                 {file.metaData?.name}
               </h3>
             </div>
           </div>
-          <div className="relative">
-            {openMenuId === file.id && (
-              <div
-                ref={menuRef}
-                className={`absolute right-0 top-full mt-1 w-36 rounded-xl shadow-lg overflow-hidden z-50 ${
-                  appearance.theme == "dark" ? "bg-[#1a1a1a]" : "bg-white border border-gray-200"
-                }`}
-              >
-                <button
-                  onMouseDown={(e) => e.stopPropagation()}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setOpenMenuId(null);
-                    onEdit?.(file);
-                  }}
-                  className={`w-full px-4 py-2.5 text-sm font-medium text-left flex items-center gap-2 transition-colors ${
-                    appearance.theme == "dark" ? "text-white hover:bg-[#252525]" : "text-slate-700 hover:bg-gray-50"
-                  }`}
-                >
-                  <Edit3 className="w-3.5 h-3.5" />
-                  Edit
-                </button>
-                <button
-                  onMouseDown={(e) => e.stopPropagation()}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setOpenMenuId(null);
-                    onPreview?.(file);
-                  }}
-                  className={`w-full px-4 py-2.5 text-sm font-medium text-left flex items-center gap-2 transition-colors ${
-                    appearance.theme == "dark" ? "text-white hover:bg-[#252525]" : "text-slate-700 hover:bg-gray-50"
-                  }`}
-                >
-                  <Eye className="w-3.5 h-3.5" />
-                  Preview
-                </button>
-              </div>
-            )}
+          <div className="flex items-center gap-1">
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                onEdit?.(file);
+              }}
+              className={btnBase}
+            >
+              <Edit3 className="w-4 h-4" />
+            </button>
           </div>
         </div>
       </div>

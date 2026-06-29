@@ -8,10 +8,10 @@ export default function Editor () {
 
   return (
     <section className='dotted-pattern overflow-x-clip w-full h-full absolute flex '>
-      <Sidebar
+      {/* <Sidebar
         activeSection={activeSection}
         onSectionChange={setActiveSection}
-      />
+      /> */}
       <section className=' w-full flex flex-col'>
         <Topbar />
         <Main activeSection={activeSection} />

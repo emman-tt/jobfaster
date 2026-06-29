@@ -78,8 +78,7 @@ export const credentialsSlice = createSlice({
     addSkill: (state, action) => {
       const newSkill = {
         id: Date.now(),
-        category: '',
-        list: []
+        name: ''
       }
       state.skills.push(newSkill)
     },
