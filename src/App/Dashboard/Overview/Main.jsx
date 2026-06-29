@@ -24,7 +24,10 @@ import { toast } from "sonner";
 import { toastPresets } from "../../../components/toasters";
 import { DragDropProvider } from "@dnd-kit/react";
 import { Draggable, Droppable } from "../../../components/dragger";
-
+import { loadResumeData as loadPersonal } from "../../../store/personalSlice";
+import { loadResumeData as loadWork } from "../../../store/workSlice";
+import { loadResumeData as loadEducation } from "../../../store/educationSlice";
+import { loadResumeData as loadCredentials } from "../../../store/credentialsSlice";
 function formatBytes(bytes) {
   if (!bytes || bytes === 0) return "0 B";
   const k = 1024;
@@ -465,6 +468,8 @@ export default function Main() {
 }
 
 function ContextMenu({ onClose, menuConfig, mutation, programs }) {
+
+  console.log(programs)
   const item = menuConfig?.type;
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -510,8 +515,13 @@ function ContextMenu({ onClose, menuConfig, mutation, programs }) {
     >
       <button
         onClick={() => {
-          dispatch(openFileDetails(item));
-          onClose();
+          const resume = tailoredResume?.resume;
+          if (!resume) return;
+          dispatch(loadPersonal(resume.personal));
+          dispatch(loadWork(resume.work));
+          dispatch(loadEducation(resume.education));
+          dispatch(loadCredentials(resume.credentials));
+          navigate("/editor");
         }}
         className="flex items-center rounded-[inherit] gap-2 px-4 py-2 hover:bg-slate-50 text-slate-700 text-[10px] font-semibold transition-all cursor-pointer"
       >

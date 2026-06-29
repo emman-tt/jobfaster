@@ -252,124 +252,124 @@ const ClassicProfessional = ({ data }) => {
         </div>
       )}
 
-      <div style={{ display: "flex", gap: "24px" }}>
-        <div style={{ flex: 1, marginBottom: "20px" }}>
-          {data?.education?.length > 0 && (
-            <>
-              <h2
-                style={{
-                  fontSize: `${sectionStyles.size || 14}pt`,
-                  fontWeight: "bold",
-                  textTransform: "uppercase",
-                  borderBottom: "1px solid #999",
-                  paddingBottom: "6px",
-                  marginBottom: "8px",
-                  letterSpacing: sectionStyles.spacing || 0,
-                  color: sectionStyles.color || "#333",
-                }}
-              >
-                Education
-              </h2>
-              {data.education.map((edu) => (
-                <div
-                  key={edu.id}
-                  data-section="education"
-                  style={{ marginBottom: "10px" }}
-                >
-                  <h3
-                    style={{
-                      fontSize: `${companyStyles.size || 12}pt`,
-                      fontWeight:
-                        companyStyles.weight === "font-medium" ? 500 : "bold",
-                      margin: "0",
-                    }}
-                  >
-                    {edu.degree} {edu.field && `in ${edu.field}`}
-                  </h3>
-                  <p
-                    style={{
-                      fontSize: `${bodyStyles.size || 11}pt`,
-                      margin: "2px 0 0 0",
-                      color: bodyStyles.color || "#666",
-                    }}
-                  >
-                    {[edu.school, `${edu.startYear} - ${edu.endYear}`]
-                      .filter(Boolean)
-                      .join(" • ")}
-                  </p>
-                  {edu.highlights?.length > 0 && (
-                    <p
-                      style={{
-                        fontSize: `${dateStyles.size || 10}pt`,
-                        margin: "2px 0 0 0",
-                        color: dateStyles.color || "#666",
-                      }}
-                    >
-                      {edu.highlights.join(" | ")}
-                    </p>
-                  )}
-                </div>
-              ))}
-            </>
-          )}
-          {data?.languages?.length > 0 && (
-            <div style={{ marginTop: data.education.length > 0 ? "16px" : 0 }}>
+      {data?.education?.length > 0 && (
+        <div style={{ marginBottom: "20px" }}>
+          <h2
+            style={{
+              fontSize: `${sectionStyles.size || 14}pt`,
+              fontWeight: "bold",
+              textTransform: "uppercase",
+              borderBottom: "1px solid #999",
+              paddingBottom: "6px",
+              marginBottom: "8px",
+              letterSpacing: sectionStyles.spacing || 0,
+              color: sectionStyles.color || "#333",
+            }}
+          >
+            Education
+          </h2>
+          {data.education.map((edu) => (
+            <div
+              key={edu.id}
+              data-section="education"
+              style={{ marginBottom: "10px" }}
+            >
               <h3
                 style={{
                   fontSize: `${companyStyles.size || 12}pt`,
-                  fontWeight: "bold",
-                  margin: "0 0 4px 0",
-                  color: companyStyles.color || "#333",
+                  fontWeight:
+                    companyStyles.weight === "font-medium" ? 500 : "bold",
+                  margin: "0",
                 }}
               >
-                Languages
+                {edu.degree} {edu.field && `in ${edu.field}`}
               </h3>
               <p
                 style={{
                   fontSize: `${bodyStyles.size || 11}pt`,
-                  margin: "0",
+                  margin: "2px 0 0 0",
                   color: bodyStyles.color || "#666",
                 }}
               >
-                {data.languages
-                  .map((lang) => `${lang.name} (${lang.proficiency})`)
-                  .join(", ")}
+                {[edu.school, `${edu.startYear} - ${edu.endYear}`]
+                  .filter(Boolean)
+                  .join(" • ")}
               </p>
+              {edu.highlights?.length > 0 && (
+                <p
+                  style={{
+                    fontSize: `${dateStyles.size || 10}pt`,
+                    margin: "2px 0 0 0",
+                    color: dateStyles.color || "#666",
+                  }}
+                >
+                  {edu.highlights.join(" | ")}
+                </p>
+              )}
             </div>
-          )}
+          ))}
         </div>
-        <div style={{ flex: 1, marginBottom: "20px" }}>
-          {data?.skills?.length > 0 && (
-            <>
-              <h2
-                style={{
-                  fontSize: `${sectionStyles.size || 14}pt`,
-                  fontWeight: "bold",
-                  textTransform: "uppercase",
-                  borderBottom: "1px solid #999",
-                  paddingBottom: "6px",
-                  marginBottom: "8px",
-                  letterSpacing: sectionStyles.spacing || 0,
-                  color: sectionStyles.color || "#333",
-                }}
-              >
-                Skills
-              </h2>
-              <div
-                style={{
-                  fontSize: `${bodyStyles.size || 11}pt`,
-                  margin: "0",
-                  lineHeight: bodyLeading,
-                }}
-              >
-                {data?.skills?.map((skil) => (
-                  <div>{skil.name}</div>
-                ))}
-              </div>
-            </>
-          )}
+      )}
+
+      {data?.languages?.length > 0 && (
+        <div style={{ marginBottom: "20px" }}>
+          <h2
+            style={{
+              fontSize: `${sectionStyles.size || 14}pt`,
+              fontWeight: "bold",
+              textTransform: "uppercase",
+              borderBottom: "1px solid #999",
+              paddingBottom: "6px",
+              marginBottom: "8px",
+              letterSpacing: sectionStyles.spacing || 0,
+              color: sectionStyles.color || "#333",
+            }}
+          >
+            Languages
+          </h2>
+          <p
+            style={{
+              fontSize: `${bodyStyles.size || 11}pt`,
+              margin: "0",
+              color: bodyStyles.color || "#666",
+            }}
+          >
+            {data.languages
+              .map((lang) => `${lang.name} (${lang.proficiency})`)
+              .join(", ")}
+          </p>
         </div>
-      </div>
+      )}
+
+      {data?.skills?.length > 0 && (
+        <div style={{ marginBottom: "20px" }}>
+          <h2
+            style={{
+              fontSize: `${sectionStyles.size || 14}pt`,
+              fontWeight: "bold",
+              textTransform: "uppercase",
+              borderBottom: "1px solid #999",
+              paddingBottom: "6px",
+              marginBottom: "8px",
+              letterSpacing: sectionStyles.spacing || 0,
+              color: sectionStyles.color || "#333",
+            }}
+          >
+            Skills
+          </h2>
+          <div
+            style={{
+              fontSize: `${bodyStyles.size || 11}pt`,
+              margin: "0",
+              lineHeight: bodyLeading,
+            }}
+          >
+            {data?.skills?.map((skil) => (
+              <div>{skil.name}</div>
+            ))}
+          </div>
+        </div>
+      )}
 
       {data?.certificates?.length > 0 && (
         <div style={{ marginBottom: "20px" }}>

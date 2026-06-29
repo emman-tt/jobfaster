@@ -159,22 +159,26 @@ export default function Dashboard() {
       >
         {/* Desktop sidebar */}
         <Sidebar
-          className={`hidden md:flex w-70 ${
+          className={`hidden xl:flex w-70 ${
             appearance.theme == "dark" ? "bg-[#2a2a2a]" : "bg-[#f8f8f8]"
           } p-5`}
         />
 
-        <section className="  w-full  relative     sm:h-full sm:border-0 max-sm:border-b max-sm:py-4 border-white min-w-0">
+        <section
+          className="  w-full  relative     
+        sm:h-full sm:border-0 max-sm:border-b max-sm:py-4 border-white min-w-0"
+        >
           {/* Mobile hamburger */}
           <button
             onClick={() => setShowMobileSidebar(true)}
-            className={`md:hidden absolute bottom-10 right-5  p-4  border-black/30 border  rounded-full shadow-md  z-20 cursor-pointer ${
-              appearance.theme == "dark"
-                ? "text-white  bg-black"
-                : "text-black bg-white"
-            }`}
+            className={`xl:hidden absolute bottom-10 
+              right-5 md:right-10 md:bottom-30 md:p-6 p-4  border-black/30 border  rounded-full shadow-md  z-20 cursor-pointer ${
+                appearance.theme == "dark"
+                  ? "text-white  bg-black"
+                  : "text-black bg-white"
+              }`}
           >
-            <Menu className={`sm:w-6 sm:h-6 w-8 h-8`} />
+            <Menu className={`sm:w-6 sm:h-6 md:h-10 md:w-10 w-8 h-8`} />
           </button>
 
           {actualPath == "overview" && (
@@ -222,7 +226,7 @@ export default function Dashboard() {
 
         {/* Mobile sidebar overlay */}
         {showMobileSidebar && (
-          <div className="fixed inset-0 z-50 md:hidden">
+          <div className="fixed inset-0 z-50 xl:hidden">
             <div
               className="absolute inset-0 bg-black/50"
               onClick={() => setShowMobileSidebar(false)}
@@ -241,13 +245,10 @@ export default function Dashboard() {
           (actualPath == "resumes" || actualPath == "overview") && (
             <>
               {/* Mobile overlay */}
-              <div
-                className="fixed inset-0 z-50 md:hidden"
-                onClick={closeRightbar}
-              >
+              <div className="fixed inset-0 z-50 " onClick={closeRightbar}>
                 <div className="absolute inset-0 bg-black/50" />
                 <aside
-                  className={`absolute right-0 top-0 bottom-0 w-80 transition-all duration-200 rounded-xl shadow-[#23232389] shadow-sm ${
+                  className={`absolute right-0 top-0 bottom-0 w-80 md:w-100 h-screen xl:w-120 transition-all duration-200 rounded-xl shadow-[#23232389] shadow-sm ${
                     appearance.theme == "dark" ? "bg-[#2a2a2a]" : "bg-white"
                   }`}
                   onClick={(e) => e.stopPropagation()}
@@ -257,19 +258,9 @@ export default function Dashboard() {
                     total={activityTotal}
                     hasMore={hasMoreActivity}
                     onLoadMore={loadMoreActivity}
-                    className=""
+                    className="h-full pb-50"
                   />
                 </aside>
-              </div>
-              {/* Desktop inline */}
-              <div className="hidden md:block">
-                <Rightbar
-                  data={activityItems}
-                  total={activityTotal}
-                  hasMore={hasMoreActivity}
-                  onLoadMore={loadMoreActivity}
-                  className="w-80 transition-all duration-200 transform-gpu ease-linear rounded-xl shadow-[#23232389] shadow-sm"
-                />
               </div>
             </>
           )}

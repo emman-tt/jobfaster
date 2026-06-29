@@ -196,12 +196,6 @@ const tools = [
     icon: <Settings className="w-4 h-4" />,
     href: "settings",
   },
-  // {
-  //   id: 9,
-  //   name: 'Billings',
-  //   icon: <CreditCard className='w-4 h-4' />,
-  //   href: 'billings'
-  // },
   {
     id: 10,
     name: "FAQ",

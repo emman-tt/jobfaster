@@ -1,49 +1,64 @@
-import ReactDOMServer from 'react-dom/server'
-import { createRoot } from 'react-dom/client'
-import { flushSync } from 'react-dom'
-import { templates } from '../libs/templatesData'
+import ReactDOMServer from "react-dom/server";
+import { createRoot } from "react-dom/client";
+import { flushSync } from "react-dom";
+import { templates } from "../libs/templatesData";
 
-function wrapPage (content) {
-  return `<div style="width:210mm;min-height:297mm;padding:0;box-sizing:border-box;background:white;">${content}</div>`
+function wrapPage(content) {
+  return `<div style="width:210mm;min-height:297mm;padding:0;box-sizing:border-box;background:white;">${content}</div>`;
 }
 
-const PAGE_HEIGHT_PX = 297 * 3.7795
-const MINI_HEADER_PX = 40
+const PAGE_HEIGHT_PX = 297 * 3.7795;
+const MINI_HEADER_PX = 40;
 
-let measurer = null
+let measurer = null;
 
-function getMeasurer () {
+function getMeasurer() {
   if (!measurer) {
-    const div = document.createElement('div')
+    const div = document.createElement("div");
     div.style.cssText =
-      'position:fixed;left:-9999px;top:0;width:210mm;padding:0;box-sizing:border-box;background:white;z-index:-1;'
-    document.body.appendChild(div)
-    measurer = { div, root: createRoot(div) }
+      "position:fixed;left:-9999px;top:0;width:210mm;padding:0;box-sizing:border-box;background:white;z-index:-1;";
+    document.body.appendChild(div);
+    measurer = { div, root: createRoot(div) };
   }
-  return measurer
+  return measurer;
 }
 
-function getItemList (rawData) {
-  const exps = rawData.work?.experiences || []
-  const projs = rawData.work?.projects || []
-  const edus = rawData.education?.educations || []
+function getItemList(rawData) {
+  const exps = rawData.work?.experiences || [];
+  const projs = rawData.work?.projects || [];
+  const edus = rawData.education?.educations || [];
+  const skills = rawData.credentials?.skills || [];
+  const certs = rawData.credentials?.certifications || [];
+  const achievements = rawData.credentials?.achievements || [];
   return [
-    ...exps.map((_, i) => ({ section: 'experience', index: i })),
-    ...projs.map((_, i) => ({ section: 'projects', index: i })),
-    ...edus.map((_, i) => ({ section: 'education', index: i }))
-  ]
+    ...exps.map((_, i) => ({ section: "experience", index: i })),
+    ...projs.map((_, i) => ({ section: "projects", index: i })),
+    ...edus.map((_, i) => ({ section: "education", index: i })),
+    ...skills.map((_, i) => ({ section: "skills", index: i })),
+    ...certs.map((_, i) => ({ section: "certificates", index: i })),
+    ...achievements.map((_, i) => ({ section: "achievements", index: i })),
+  ];
 }
 
-function buildPageData (rawData, items, includeHeader) {
+function buildPageData(rawData, items, includeHeader) {
   const expIndices = new Set(
-    items.filter(i => i.section === 'experience').map(i => i.index)
-  )
+    items.filter((i) => i.section === "experience").map((i) => i.index),
+  );
   const projIndices = new Set(
-    items.filter(i => i.section === 'projects').map(i => i.index)
-  )
+    items.filter((i) => i.section === "projects").map((i) => i.index),
+  );
   const eduIndices = new Set(
-    items.filter(i => i.section === 'education').map(i => i.index)
-  )
+    items.filter((i) => i.section === "education").map((i) => i.index),
+  );
+  const skillIndices = new Set(
+    items.filter((i) => i.section === "skills").map((i) => i.index),
+  );
+  const certIndices = new Set(
+    items.filter((i) => i.section === "certificates").map((i) => i.index),
+  );
+  const achIndices = new Set(
+    items.filter((i) => i.section === "achievements").map((i) => i.index),
+  );
 
   return {
     personal: {
@@ -52,103 +67,107 @@ function buildPageData (rawData, items, includeHeader) {
         ? rawData.personal.contactDetails
         : {
             fullName: rawData.personal?.contactDetails?.fullName,
-            email: '',
-            phone: '',
-            location: '',
-            jobTitle: ''
+            email: "",
+            phone: "",
+            location: "",
+            jobTitle: "",
           },
       onlineLinks: includeHeader ? rawData.personal.onlineLinks : [],
-      summary: includeHeader ? rawData.personal.summary : ''
+      summary: includeHeader ? rawData.personal.summary : "",
     },
     work: {
       ...rawData.work,
       experiences: (rawData.work?.experiences || []).filter((_, i) =>
-        expIndices.has(i)
+        expIndices.has(i),
       ),
       projects: (rawData.work?.projects || []).filter((_, i) =>
-        projIndices.has(i)
-      )
+        projIndices.has(i),
+      ),
     },
     education: {
       ...rawData.education,
       educations: (rawData.education?.educations || []).filter((_, i) =>
-        eduIndices.has(i)
+        eduIndices.has(i),
       ),
-      languages: includeHeader ? (rawData.education?.languages || []) : []
+      languages: includeHeader ? rawData.education?.languages || [] : [],
     },
-    credentials: includeHeader
-      ? rawData.credentials
-      : {
-          skills: [],
-          certifications: [],
-          achievements: []
-        }
-  }
+    credentials: {
+      skills: (rawData.credentials?.skills || []).filter((_, i) =>
+        skillIndices.has(i),
+      ),
+      certifications: (rawData.credentials?.certifications || []).filter(
+        (_, i) => certIndices.has(i),
+      ),
+      achievements: (rawData.credentials?.achievements || []).filter((_, i) =>
+        achIndices.has(i),
+      ),
+    },
+  };
 }
 
-export function greedyPaginate (rawData, Template, styles) {
-  const { div, root } = getMeasurer()
-  const items = getItemList(rawData)
+export function greedyPaginate(rawData, Template, styles) {
+  const { div, root } = getMeasurer();
+  const items = getItemList(rawData);
 
-  if (items.length === 0) return [{ data: rawData, pageNumber: 1 }]
+  if (items.length === 0) return [{ data: rawData, pageNumber: 1 }];
 
-  const pages = []
-  let cursor = 0
+  const pages = [];
+  let cursor = 0;
 
   while (cursor < items.length) {
-    const pageNum = pages.length + 1
-    const isFirst = pageNum === 1
-    const availHeight = PAGE_HEIGHT_PX - (isFirst ? 0 : MINI_HEADER_PX)
+    const pageNum = pages.length + 1;
+    const isFirst = pageNum === 1;
+    const availHeight = PAGE_HEIGHT_PX - (isFirst ? 0 : MINI_HEADER_PX);
 
-    let lo = cursor
-    let hi = items.length
+    let lo = cursor;
+    let hi = items.length;
 
     while (lo < hi) {
-      const mid = Math.ceil((lo + hi) / 2)
-      const pageRaw = buildPageData(rawData, items.slice(cursor, mid), isFirst)
-      const pageTransformed = transformResumeData(pageRaw, { styles })
-      pageTransformed.pageNumber = pageNum
-      pageTransformed.totalPages = 0
+      const mid = Math.ceil((lo + hi) / 2);
+      const pageRaw = buildPageData(rawData, items.slice(cursor, mid), isFirst);
+      const pageTransformed = transformResumeData(pageRaw, { styles });
+      pageTransformed.pageNumber = pageNum;
+      pageTransformed.totalPages = 0;
 
       flushSync(() => {
-        root.render(<Template data={pageTransformed} />)
-      })
+        root.render(<Template data={pageTransformed} />);
+      });
 
       if (div.scrollHeight <= availHeight) {
-        lo = mid
+        lo = mid;
       } else {
-        hi = mid - 1
+        hi = mid - 1;
       }
     }
 
-    const taken = items.slice(cursor, lo)
+    const taken = items.slice(cursor, lo);
     if (taken.length === 0) {
-      taken.push(items[cursor])
-      cursor++
+      taken.push(items[cursor]);
+      cursor++;
     } else {
-      cursor = lo
+      cursor = lo;
     }
 
     pages.push({
       data: buildPageData(rawData, taken, isFirst),
-      pageNumber: pageNum
-    })
+      pageNumber: pageNum,
+    });
   }
 
   flushSync(() => {
-    root.render(<></>)
-  })
+    root.render(<></>);
+  });
 
-  const totalPages = pages.length
-  return pages.map(p => ({ ...p, totalPages }))
+  const totalPages = pages.length;
+  return pages.map((p) => ({ ...p, totalPages }));
 }
 
-export function transformResumeData (rawData, options = {}) {
+export function transformResumeData(rawData, options = {}) {
   if (!rawData?.personal) {
-    return {}
+    return {};
   }
 
-  const { personal, work, education, credentials } = rawData
+  const { personal, work, education, credentials } = rawData;
 
   const transformed = {
     name: personal.contactDetails.fullName,
@@ -159,8 +178,8 @@ export function transformResumeData (rawData, options = {}) {
     onlineLinks: personal.onlineLinks || [],
     summary: personal.summary,
     experience: work.experiences
-      .filter(exp => exp.company || exp.position)
-      .map(exp => ({
+      .filter((exp) => exp.company || exp.position)
+      .map((exp) => ({
         id: exp.id,
         company: exp.company,
         position: exp.position,
@@ -168,115 +187,121 @@ export function transformResumeData (rawData, options = {}) {
         startYear: exp.startYear,
         endYear: exp.endYear,
         accomplishments: exp.accomplishments
-          .filter(acc => acc)
-          .map(acc => acc)
+          .filter((acc) => acc)
+          .map((acc) => acc),
       })),
     education: education.educations
-      .filter(edu => edu.school || edu.degree)
-      .map(edu => ({
+      .filter((edu) => edu.school || edu.degree)
+      .map((edu) => ({
         id: edu.id,
         school: edu.school,
         degree: edu.degree,
         field: edu.field,
         startYear: edu.startYear,
         endYear: edu.endYear,
-        highlights: edu.highlights.filter(h => h.text).map(h => h.text)
+        highlights: edu.highlights.filter((h) => h.text).map((h) => h.text),
       })),
-    skills: credentials.skills.flatMap(skill => skill || []),
+    skills: credentials.skills.flatMap((skill) => skill || []),
     languages: education.languages
-      .filter(lang => lang.language)
-      .map(lang => ({
+      .filter((lang) => lang.language)
+      .map((lang) => ({
         name: lang.language,
-        proficiency: lang.proficiency
+        proficiency: lang.proficiency,
       })),
     projects: work.projects
-      .filter(proj => proj.name || proj.description)
-      .map(proj => ({
+      .filter((proj) => proj.name || proj.description)
+      .map((proj) => ({
         id: proj.id,
         name: proj.name,
         description: proj.description,
-        techStack: proj.techStack.filter(t => t).map(t => t),
+        techStack: proj.techStack.filter((t) => t).map((t) => t),
         link: proj.link,
-        github: proj.github
+        github: proj.github,
       })),
     certificates: credentials.certifications
       ? credentials.certifications
-          .filter(cert => cert.name)
-          .map(cert => ({
+          .filter((cert) => cert.name)
+          .map((cert) => ({
             name: cert.name,
             issuer: cert.organization,
-            year: cert.year
+            year: cert.year,
           }))
       : [],
     achievements: credentials.achievements
       ? credentials.achievements
-          .filter(ach => ach.achievement)
-          .map(ach => ach.achievement)
-      : []
-  }
+          .filter((ach) => ach.achievement)
+          .map((ach) => ach.achievement)
+      : [],
+  };
 
-  return { ...transformed, styles: options.styles }
+  return { ...transformed, styles: options.styles };
 }
 
-export async function renderResumeToHTML (
+export async function renderResumeToHTML(
   resumeData,
   templateName,
-  options = {}
+  options = {},
 ) {
-  const template = templates.find(t => t.id === templateName)
+  const template = templates.find((t) => t.id === templateName);
 
   if (!template) {
-    throw new Error(`Template not found for: ${templateName}`)
+    throw new Error(`Template not found for: ${templateName}`);
   }
 
-  const transformedData = transformResumeData(resumeData, options)
+  const transformedData = transformResumeData(resumeData, options);
 
   const content = ReactDOMServer.renderToStaticMarkup(
-    <template.component data={transformedData} />
-  )
+    <template.component data={transformedData} />,
+  );
 
-  return wrapPage(content)
+  return wrapPage(content);
 }
 
-export async function generatePaginatedResumeHTML (
+export async function generatePaginatedResumeHTML(
   resumeData,
   templateName,
-  options = {}
+  options = {},
 ) {
-  const template = templates.find(t => t.id === templateName)
+  const template = templates.find((t) => t.id === templateName);
 
   if (!template) {
-    throw new Error(`Template not found for: ${templateName}`)
+    throw new Error(`Template not found for: ${templateName}`);
   }
 
-  const pages = greedyPaginate(resumeData, template.component, options.styles)
+  const pages = greedyPaginate(resumeData, template.component, options.styles);
 
-  const pageHtmls = pages.map(({ data: pageData, pageNumber, totalPages }, i) => {
-    const transformed = transformResumeData(pageData, options)
-    transformed.pageNumber = pageNumber
-    transformed.totalPages = totalPages
+  const pageHtmls = pages.map(
+    ({ data: pageData, pageNumber, totalPages }, i) => {
+      const transformed = transformResumeData(pageData, options);
+      transformed.pageNumber = pageNumber;
+      transformed.totalPages = totalPages;
 
-    const content = ReactDOMServer.renderToStaticMarkup(
-      <template.component data={transformed} />
-    )
+      const content = ReactDOMServer.renderToStaticMarkup(
+        <template.component data={transformed} />,
+      );
 
-    return wrapPage(content)
-  })
+      return wrapPage(content);
+    },
+  );
 
-  return pageHtmls.join('')
+  return pageHtmls.join("");
 }
 
-export async function generateTailoredResumePDF (
+export async function generateTailoredResumePDF(
   resumeData,
   templateName,
   fileName,
-  options = {}
+  options = {},
 ) {
-  const { saveResumeFromHTML } = await import('../services/Program')
+  const { saveResumeFromHTML } = await import("../services/Program");
 
-  const html = await generatePaginatedResumeHTML(resumeData, templateName, options)
+  const html = await generatePaginatedResumeHTML(
+    resumeData,
+    templateName,
+    options,
+  );
 
-  const result = await saveResumeFromHTML(html, fileName)
+  const result = await saveResumeFromHTML(html, fileName);
 
-  return result
+  return result;
 }

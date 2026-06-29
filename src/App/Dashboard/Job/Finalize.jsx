@@ -44,13 +44,7 @@ function GetFileIcon() {
   );
 }
 
-function AttachedFiles({
-  file,
-
-  onSelectFile,
-  isGenerating,
-  onEdit,
-}) {
+function AttachedFiles({ file, onSelectFile, isGenerating, onEdit }) {
   const { appearance } = useSelector((state) => state.preferences);
 
   if (!file) {
