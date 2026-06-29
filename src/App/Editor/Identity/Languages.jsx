@@ -3,6 +3,7 @@ import { ChevronDown, Trash2, Plus } from 'lucide-react'
 import useClickOutside from '../../../hooks/useClick'
 import { useDispatch } from 'react-redux'
 import { saveLanguages } from '../../../store/formatSlice'
+import { setUnsavedChanges } from '../../../store/editorSlice'
 
 const availableLanguages = [
   { id: 1, name: 'English', selected: false },
@@ -62,6 +63,7 @@ export default function Languages () {
         }
       ]
     })
+    dispatch(setUnsavedChanges(true))
   }
 
   function removeLanguage (id) {
@@ -69,6 +71,7 @@ export default function Languages () {
       prev.map(item => (item.id === id ? { ...item, selected: false } : item))
     )
     setSavedLanguages(prev => prev.filter(item => item.id !== id))
+    dispatch(setUnsavedChanges(true))
   }
 
   function updateProficiency (index, proficiency) {
@@ -77,6 +80,7 @@ export default function Languages () {
       updated[index].proficiency = proficiency
       return updated
     })
+    dispatch(setUnsavedChanges(true))
   }
 
   useEffect(() => {

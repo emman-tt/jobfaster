@@ -4,7 +4,7 @@ import {
   addAchievement,
   updateAchievement
 } from '../../../store/credentialsSlice'
-import { setModal } from '../../../store/editorSlice'
+import { setModal, setUnsavedChanges } from '../../../store/editorSlice'
 import { X, ChevronDown } from 'lucide-react'
 
 const years = [
@@ -45,6 +45,7 @@ export function Modal ({ editingId }) {
       } else {
         dispatch(addAchievement(formData))
       }
+      dispatch(setUnsavedChanges(true))
       closeModal()
     }
   }

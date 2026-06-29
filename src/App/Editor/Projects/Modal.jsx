@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { updateProject } from '../../../store/workSlice'
-import { setModal } from '../../../store/editorSlice'
+import { setModal, setUnsavedChanges } from '../../../store/editorSlice'
 import { X, Plus } from 'lucide-react'
 
 export function Modal ({ editingId }) {
@@ -26,6 +26,7 @@ export function Modal ({ editingId }) {
         techStack: [...prev.techStack, { id: Date.now(), name: techInput }]
       }))
       setTechInput('')
+      dispatch(setUnsavedChanges(true))
     }
   }
 
@@ -34,6 +35,7 @@ export function Modal ({ editingId }) {
       ...prev,
       techStack: prev.techStack.filter(tech => tech.id !== id)
     }))
+    dispatch(setUnsavedChanges(true))
   }
 
   const handleSaveProject = () => {
@@ -44,6 +46,7 @@ export function Modal ({ editingId }) {
         const ramdom = crypto.randomUUID().split('-')[0]
         dispatch(updateProject({ id: ramdom, data: formData }))
       }
+      dispatch(setUnsavedChanges(true))
       closeModal()
     }
   }

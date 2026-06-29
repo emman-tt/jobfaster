@@ -5,7 +5,7 @@ import {
   removeAchievement,
   reArrange
 } from '../../../store/credentialsSlice'
-import { setModal } from '../../../store/editorSlice'
+import { setModal, setUnsavedChanges } from '../../../store/editorSlice'
 import { DragDropProvider } from '@dnd-kit/react'
 import { Sortable } from '../../../components/dragger'
 import { Modal } from './Modal'
@@ -23,6 +23,7 @@ export default function Achievements ({ setEditingId }) {
 
   const handleDeleteAchievement = id => {
     dispatch(removeAchievement(id))
+    dispatch(setUnsavedChanges(true))
   }
 
   const displayAchievement = ach => {
@@ -44,6 +45,7 @@ export default function Achievements ({ setEditingId }) {
       const [removed] = newItems.splice(initialIndex, 1)
       newItems.splice(index, 0, removed)
       dispatch(reArrange({ category: 'achievements', value: newItems }))
+      dispatch(setUnsavedChanges(true))
     }
   }
 

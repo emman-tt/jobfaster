@@ -11,7 +11,8 @@ const initialState = {
   templateId: 'classic',
   isPreview: false,
   modal: null,
-  editingId: null
+  editingId: null,
+  hasUnsavedChanges: false
 }
 
 export const editorSlice = createSlice({
@@ -47,6 +48,9 @@ export const editorSlice = createSlice({
     },
     setContrast: (state, action) => {
       state.contrast = action.payload
+    },
+    setUnsavedChanges: (state, action) => {
+      state.hasUnsavedChanges = action.payload
     }
   }
 })
@@ -61,5 +65,6 @@ export const {
   togglePreview,
   setModal,
   setTheme,
-  setContrast
+  setContrast,
+  setUnsavedChanges
 } = editorSlice.actions

@@ -4,6 +4,7 @@ import { ChevronDown, Trash, Trash2 } from 'lucide-react'
 import useClickOutside from '../../../hooks/useClick'
 import { useDispatch, useSelector } from 'react-redux'
 import { saveOnlineLinks } from '../../../store/personalSlice'
+import { setUnsavedChanges } from '../../../store/editorSlice'
 
 export default function OnlineLinks () {
   const [links, setLinks] = useState(onlineProfiles)
@@ -40,6 +41,7 @@ export default function OnlineLinks () {
         }
       ]
     })
+    dispatch(setUnsavedChanges(true))
   }
 
   function handleChange (e, name) {
@@ -49,6 +51,7 @@ export default function OnlineLinks () {
         item.name === name ? { ...item, link: value } : item
       )
     })
+    dispatch(setUnsavedChanges(true))
   }
 
   function removeLink (id) {
@@ -56,6 +59,7 @@ export default function OnlineLinks () {
       prev.map(item => (item.id === id ? { ...item, selected: false } : item))
     )
     setSavedLinks(prev => prev.filter(item => item.id !== id))
+    dispatch(setUnsavedChanges(true))
   }
 
   useEffect(() => {

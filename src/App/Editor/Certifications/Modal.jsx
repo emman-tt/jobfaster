@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { updateCertification } from '../../../store/credentialsSlice'
-import { setModal } from '../../../store/editorSlice'
+import { setModal, setUnsavedChanges } from '../../../store/editorSlice'
 import { X, ChevronDown } from 'lucide-react'
 
 const years = ['2024', '2023', '2022', '2021', '2020', '2019', '2018', '2017', '2016', '2015', '2014', '2013', '2012', '2011', '2010']
@@ -30,6 +30,7 @@ export function Modal ({ editingId }) {
         const ramdom = crypto.randomUUID().split('-')[0]
         dispatch(updateCertification({ id: ramdom, data: formData }))
       }
+      dispatch(setUnsavedChanges(true))
       closeModal()
     }
   }

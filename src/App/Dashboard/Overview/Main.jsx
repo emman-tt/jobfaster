@@ -468,25 +468,23 @@ export default function Main() {
 }
 
 function ContextMenu({ onClose, menuConfig, mutation, programs }) {
-
-  console.log(programs)
   const item = menuConfig?.type;
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  const findFile = () => {
+    for (const prog of programs || []) {
+      if (prog?.type === "FOLDER" && prog.folder?.files) {
+        const found = prog.folder.files.find((f) => f.id === menuConfig.id);
+        if (found) return found;
+      }
+      if (prog?.file?.id === menuConfig.id) return prog.file;
+    }
+    return null;
+  };
+
   function handleDownload() {
     if (item !== "file") return onClose();
-
-    const findFile = () => {
-      for (const prog of programs || []) {
-        if (prog?.type === "FOLDER" && prog.folder?.files) {
-          const found = prog.folder.files.find((f) => f.id === menuConfig.id);
-          if (found) return found;
-        }
-        if (prog?.file?.id === menuConfig.id) return prog.file;
-      }
-      return null;
-    };
 
     const file = findFile();
     if (!file?.metaData?.content) {
@@ -503,6 +501,18 @@ function ContextMenu({ onClose, menuConfig, mutation, programs }) {
     onClose();
   }
 
+  console.log(findFile());
+  function handleEdit() {
+    const file = findFile();
+    const resume = file.parsedContent;
+    if (!resume) return;
+    dispatch(loadPersonal(resume.personal));
+    dispatch(loadWork(resume.work));
+    dispatch(loadEducation(resume.education));
+    dispatch(loadCredentials(resume.credentials));
+    navigate("/editor");
+  }
+
   return (
     <div
       className="fixed z-50 bg-white shadow-xl border border-slate-100/50 rounded-2xl py-1.5 w-25 p-0 flex flex-col font-satoshi"
@@ -515,13 +525,7 @@ function ContextMenu({ onClose, menuConfig, mutation, programs }) {
     >
       <button
         onClick={() => {
-          const resume = tailoredResume?.resume;
-          if (!resume) return;
-          dispatch(loadPersonal(resume.personal));
-          dispatch(loadWork(resume.work));
-          dispatch(loadEducation(resume.education));
-          dispatch(loadCredentials(resume.credentials));
-          navigate("/editor");
+          handleEdit();
         }}
         className="flex items-center rounded-[inherit] gap-2 px-4 py-2 hover:bg-slate-50 text-slate-700 text-[10px] font-semibold transition-all cursor-pointer"
       >

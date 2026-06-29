@@ -7,6 +7,7 @@ import {
   updateSkill,
   reArrange,
 } from "../../../store/credentialsSlice";
+import { setUnsavedChanges } from "../../../store/editorSlice";
 import { DragDropProvider } from "@dnd-kit/react";
 import { Sortable } from "../../../components/dragger";
 
@@ -18,14 +19,17 @@ export default function Skills() {
 
   const handleDeleteSkill = (id) => {
     dispatch(removeSkill(id));
+    dispatch(setUnsavedChanges(true));
   };
 
   const handleAddField = () => {
     dispatch(addSkill());
+    dispatch(setUnsavedChanges(true));
   };
 
   const handleNameChange = (id, value) => {
     dispatch(updateSkill({ id, data: { name: value } }));
+    dispatch(setUnsavedChanges(true));
   };
 
   const handleDragEnd = (event) => {
@@ -36,6 +40,7 @@ export default function Skills() {
       const [removed] = newItems.splice(initialIndex, 1);
       newItems.splice(index, 0, removed);
       dispatch(reArrange({ category: "skills", value: newItems }));
+      dispatch(setUnsavedChanges(true));
     }
   };
 

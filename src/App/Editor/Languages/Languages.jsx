@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { ChevronDown, Plus, Trash2 } from 'lucide-react'
 import { useDispatch, useSelector } from 'react-redux'
 import { addLanguage, removeLanguage, updateLanguageProficiency } from '../../../store/educationSlice'
+import { setUnsavedChanges } from '../../../store/editorSlice'
 
 const proficiencyLevels = ['Native', 'Fluent', 'Professional', 'Conversational', 'Basic']
 
@@ -15,10 +16,12 @@ export default function Languages () {
 
   const handleAddLanguage = () => {
     dispatch(addLanguage())
+    dispatch(setUnsavedChanges(true))
   }
 
   const handleDeleteLanguage = id => {
     dispatch(removeLanguage(id))
+    dispatch(setUnsavedChanges(true))
   }
 
   const handleLanguageChange = (id, value) => {
@@ -46,6 +49,7 @@ export default function Languages () {
     const lang = languages.find(l => l.id === id)
     if (lang) {
       dispatch(updateLanguageProficiency({ id, language: editingLanguageValue, proficiency: lang.proficiency }))
+      dispatch(setUnsavedChanges(true))
     }
     finishEditing()
   }
@@ -62,6 +66,7 @@ export default function Languages () {
     const lang = languages.find(l => l.id === id)
     if (lang) {
       dispatch(updateLanguageProficiency({ id, language: lang.language, proficiency }))
+      dispatch(setUnsavedChanges(true))
     }
   }
 

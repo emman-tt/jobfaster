@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { ChevronDown, Plus, GripVertical, Trash2, Edit2 } from 'lucide-react'
 import { useDispatch, useSelector } from 'react-redux'
 import { removeProject, reArrange } from '../../../store/workSlice'
-import { setModal } from '../../../store/editorSlice'
+import { setModal, setUnsavedChanges } from '../../../store/editorSlice'
 import { DragDropProvider } from '@dnd-kit/react'
 import { Sortable } from '../../../components/dragger'
 
@@ -19,6 +19,7 @@ export default function Projects ({ setEditingId }) {
 
   const handleDeleteProject = id => {
     dispatch(removeProject(id))
+    dispatch(setUnsavedChanges(true))
   }
 
   const handleDragEnd = event => {
@@ -29,6 +30,7 @@ export default function Projects ({ setEditingId }) {
       const [removed] = newItems.splice(initialIndex, 1)
       newItems.splice(index, 0, removed)
       dispatch(reArrange({ category: 'projects', value: newItems }))
+      dispatch(setUnsavedChanges(true))
     }
   }
 

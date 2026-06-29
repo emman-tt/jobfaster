@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { updateExperience } from '../../../store/workSlice'
-import { setModal } from '../../../store/editorSlice'
+import { setModal, setUnsavedChanges } from '../../../store/editorSlice'
 import { ChevronDown, Plus, X } from 'lucide-react'
 import { useSelector } from 'react-redux'
 export function Modal ({ editingId }) {
@@ -32,6 +32,7 @@ export function Modal ({ editingId }) {
       }))
       setAccomplishmentInput('')
       setIsAddingBullet(false)
+      dispatch(setUnsavedChanges(true))
     }
   }
 
@@ -43,6 +44,7 @@ export function Modal ({ editingId }) {
         const ramdom = crypto.randomUUID().split('-')[0]
         dispatch(updateExperience({ id: ramdom, data: formData }))
       }
+      dispatch(setUnsavedChanges(true))
       closeModal()
     }
   }
@@ -59,6 +61,7 @@ export function Modal ({ editingId }) {
       ...prev,
       accomplishments: prev.accomplishments.filter(acc => acc.id !== id)
     }))
+    dispatch(setUnsavedChanges(true))
   }
 
   return (

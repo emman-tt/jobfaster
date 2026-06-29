@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { saveContactDetails } from '../../../store/personalSlice'
 import { useDispatch, useSelector } from 'react-redux'
+import { setUnsavedChanges } from '../../../store/editorSlice'
 import OnlineLinks from './OnlineLinks'
 import Summary from './Summary'
 import { Info, ChevronDown } from 'lucide-react'
@@ -19,6 +20,7 @@ export default function Identity () {
         value: value
       })
     )
+    dispatch(setUnsavedChanges(true))
   }
 
   return (

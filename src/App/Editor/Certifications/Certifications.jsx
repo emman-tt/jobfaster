@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { ChevronDown, Plus, Trash2, Edit2, GripVertical } from 'lucide-react'
 import { useDispatch, useSelector } from 'react-redux'
 import { removeCertification, reArrange } from '../../../store/credentialsSlice'
-import { setModal } from '../../../store/editorSlice'
+import { setModal, setUnsavedChanges } from '../../../store/editorSlice'
 import { DragDropProvider } from '@dnd-kit/react'
 import { Sortable } from '../../../components/dragger'
 import { Modal } from './Modal'
@@ -20,6 +20,7 @@ export default function Certifications ({ setEditingId }) {
 
   const handleDeleteCertification = id => {
     dispatch(removeCertification(id))
+    dispatch(setUnsavedChanges(true))
   }
 
   const handleDragEnd = event => {
@@ -30,6 +31,7 @@ export default function Certifications ({ setEditingId }) {
       const [removed] = newItems.splice(initialIndex, 1)
       newItems.splice(index, 0, removed)
       dispatch(reArrange({ category: 'certifications', value: newItems }))
+      dispatch(setUnsavedChanges(true))
     }
   }
 

@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { ChevronDown, Plus, GripVertical, Trash2, X, Edit2 } from 'lucide-react'
 import { useDispatch, useSelector } from 'react-redux'
 import { removeExperience, reArrange } from '../../../store/workSlice'
-import { setModal } from '../../../store/editorSlice'
+import { setModal, setUnsavedChanges } from '../../../store/editorSlice'
 import { DragDropProvider } from '@dnd-kit/react'
 import { Draggable, Droppable, Sortable } from '../../../components/dragger'
 import { Modal } from './Modal'
@@ -19,6 +19,7 @@ export default function Experience ({ setEditingId }) {
 
   const handleDeleteExperience = id => {
     dispatch(removeExperience(id))
+    dispatch(setUnsavedChanges(true))
   }
 
   const handleDragEnd = event => {
@@ -29,6 +30,7 @@ export default function Experience ({ setEditingId }) {
       const [removed] = newItems.splice(initialIndex, 1)
       newItems.splice(index, 0, removed)
       dispatch(reArrange({ category: 'experience', value: newItems }))
+      dispatch(setUnsavedChanges(true))
     }
   }
 

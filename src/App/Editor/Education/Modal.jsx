@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { updateEducation } from '../../../store/educationSlice'
-import { setModal } from '../../../store/editorSlice'
+import { setModal, setUnsavedChanges } from '../../../store/editorSlice'
 import { X, Plus, ChevronDown } from 'lucide-react'
 
 export function Modal ({ editingId }) {
@@ -30,6 +30,7 @@ export function Modal ({ editingId }) {
         ]
       }))
       setHighlightInput('')
+      dispatch(setUnsavedChanges(true))
     }
   }
 
@@ -41,6 +42,7 @@ export function Modal ({ editingId }) {
         const ramdom = crypto.randomUUID().split('-')[0]
         dispatch(updateEducation({ id: ramdom, data: formData }))
       }
+      dispatch(setUnsavedChanges(true))
       closeModal()
     }
   }
@@ -55,6 +57,7 @@ export function Modal ({ editingId }) {
       ...prev,
       highlights: prev.highlights.filter(highlight => highlight.id !== id)
     }))
+    dispatch(setUnsavedChanges(true))
   }
 
   return (
