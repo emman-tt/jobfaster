@@ -16,6 +16,7 @@ import { DragDropProvider } from "@dnd-kit/react";
 import { Draggable, Droppable } from "../../../components/dragger";
 import { useSelector } from "react-redux";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useLocation } from "react-router-dom";
 import {
   getJobTracks,
   updateJobTrack,
@@ -23,6 +24,7 @@ import {
 } from "../../../services/jobs";
 import JobBoardDetail from "./JobBoardDetail";
 import { toast } from "sonner";
+import { toastPresets } from "../../../components/toasters";
 
 const IconMap = {
   Bookmark: Bookmark,
@@ -57,6 +59,22 @@ const columnConfig = [
 export default function JobBoard() {
   const [selectedJob, setSelectedJob] = useState(null);
   const { appearance } = useSelector((state) => state.preferences);
+  const location = useLocation();
+  const [showEmailSent, setShowEmailSent] = useState(!!location.state?.emailSent);
+
+  useEffect(() => {
+    if (location.state?.emailSent) {
+      setShowEmailSent(true);
+      window.history.replaceState({}, document.title);
+    }
+  }, [location.state]);
+
+  useEffect(() => {
+    if (showEmailSent) {
+      const timer = setTimeout(() => setShowEmailSent(false), 5000);
+      return () => clearTimeout(timer);
+    }
+  }, [showEmailSent]);
 
   const { data, isLoading, isFetching } = useQuery({
     queryKey: ["jobTracks"],
@@ -110,7 +128,9 @@ export default function JobBoard() {
     onSettled: () => {
       queryClient.invalidateQueries({ queryKey: ["jobTracks"] });
       setSelectedJob(null);
-      toast.success("Job deleted");
+      toast.success("Job deleted", {
+        ...toastPresets.generalSuccess("Job has been removed from your board"),
+      });
     },
   });
 
@@ -232,6 +252,22 @@ export default function JobBoard() {
       appearance.theme === "dark" ? "bg-[#202020]" : "bg-white"
     }`}>
       <Header isFetching={isFetching} />
+      {showEmailSent && (
+        <div
+          className={`flex items-center justify-between px-4 sm:px-6 py-3 ${appearance.theme == "dark" ? "bg-green-600/20 text-green-300" : "bg-green-50 text-green-700"} border-b ${appearance.theme == "dark" ? "border-green-700/30" : "border-green-200"}`}
+        >
+          <p className="text-sm font-semibold flex items-center gap-2">
+            <CheckCircle2 className="w-4 h-4" />
+            Email sent successfully to the hiring address
+          </p>
+          <button
+            onClick={() => setShowEmailSent(false)}
+            className={`p-1 rounded-full transition-colors ${appearance.theme == "dark" ? "hover:bg-green-700/30" : "hover:bg-green-100"}`}
+          >
+            <X className="w-4 h-4" />
+          </button>
+        </div>
+      )}
       <div className=" w-screen pr-10 sm:pr-100 h-full overflow-x-auto p-5 2xl:p-8 scrollbar-thin ">
         <DragDropProvider onDragEnd={handleDragEnd}>
           <div className="flex gap-4 2xl:gap-6 min-w-max h-full items-start">

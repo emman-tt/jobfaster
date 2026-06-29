@@ -12,6 +12,7 @@ import { useSelector } from "react-redux";
 import { useMutation } from "@tanstack/react-query";
 import { saveJobTrack } from "../../../services/jobs";
 import { toast } from "sonner";
+import { toastPresets } from "../../../components/toasters";
 import ApplyDialog from "./ApplyDialog";
 
 export default function JobDetailView({ job }) {
@@ -21,11 +22,15 @@ export default function JobDetailView({ job }) {
   const saveMutation = useMutation({
     mutationFn: (job) => saveJobTrack(job),
     onSuccess: () => {
-      toast.success("Job saved to your tracked jobs");
+      toast.success("Job saved", {
+        ...toastPresets.generalSuccess("Job saved to your tracked jobs"),
+      });
     },
     onError: (error) => {
       console.error("Failed to save job:", error);
-      toast.error("Failed to save job, please try again");
+      toast.error("Failed to save job", {
+        ...toastPresets.generalError("Failed to save job, please try again"),
+      });
     },
   });
 

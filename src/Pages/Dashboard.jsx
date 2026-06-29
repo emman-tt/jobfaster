@@ -48,6 +48,18 @@ export default function Dashboard() {
       toast.dismiss("ai-processing");
       const status = data?.status;
       const response = data?.response;
+      const message = data?.message;
+
+      if (message == "APPLICATION_LIMIT_EXCEEDED") {
+        toast.error("Weekly Application Limit Reached", {
+          id: "ai-limit",
+          ...toastPresets.generalError(
+            "You've hit your weekly job application limit. Upgrade to increase your limit.",
+          ),
+        });
+        return;
+      }
+
       if (status == "success") {
         toast.success("Ready!", {
           ...toastPresets.aiSuccess(
@@ -56,15 +68,14 @@ export default function Dashboard() {
           id: "ai-success",
           position: "top-right",
         });
-        // const content = response.resume;
         dispatch(dumpEmailDetails(response.email));
         dispatch(saveTailoredResume(response));
         setPendingApplication(true);
         navigate("finalize");
         return;
-      } else {
-        toastPresets.aiError();
       }
+
+      toastPresets.aiError();
     });
   }, [dispatch, navigate]);
 
@@ -77,17 +88,12 @@ export default function Dashboard() {
           return;
         }
 
+        console.log(data, status);
+
         if (status == "success") {
           setPendingApplication(false);
           toast.dismiss("job-mail");
-          navigate("/dashboard/board");
-          toast.success("Email sent!", {
-            ...toastPresets.generalSuccess(
-              "Email processed and sent successfully to the hiring address",
-            ),
-            id: "job-mail",
-            position: "top-right",
-          });
+          navigate("/dashboard/board", { state: { emailSent: true } });
           return;
         }
 
@@ -95,7 +101,7 @@ export default function Dashboard() {
           toast.dismiss("job-mail");
           toast.error("Unable to send mail!", {
             ...toastPresets.generalError(
-              "Resume processed successfully! Redirecting you to your tailored resume...",
+              "Failed to process and send email. Please try again.",
             ),
             id: "job-mail",
             position: "top-right",
@@ -171,7 +177,7 @@ export default function Dashboard() {
             <Menu className={`sm:w-6 sm:h-6 w-8 h-8`} />
           </button>
 
-          {(actualPath == "overview") && (
+          {actualPath == "overview" && (
             <button
               onClick={() => {
                 showRightbar ? closeRightbar() : openRightbar();

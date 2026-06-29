@@ -190,11 +190,15 @@ export default function Finalize() {
 
   const validateForm = () => {
     if (!formData.userEmail.trim()) {
-      toast.error("Please provide your email address");
+      toast.error("Email required", {
+        ...toastPresets.generalError("Please provide your email address"),
+      });
       return false;
     }
     if (!formData.userName.trim()) {
-      toast.error("Please provide your display name");
+      toast.error("Name required", {
+        ...toastPresets.generalError("Please provide your display name"),
+      });
       return false;
     }
     return true;

@@ -11,6 +11,7 @@ import {
 } from "../../../services/settings";
 import { fetchSettingsData } from "../../../services/user";
 import { toast } from "sonner";
+import { toastPresets } from "../../../components/toasters";
 
 const SectionHeader = ({ title, description, children }) => {
   const { appearance } = useSelector((state) => state.preferences);
@@ -136,10 +137,14 @@ export default function Settings() {
       }
 
       queryClient.invalidateQueries({ queryKey: ["settings"] });
-      toast.success("Settings saved successfully");
+      toast.success("Settings saved", {
+        ...toastPresets.generalSuccess("Your preferences have been updated"),
+      });
     } catch (err) {
       console.error("Failed to save settings:", err);
-      toast.error("Failed to save settings");
+      toast.error("Failed to save settings", {
+        ...toastPresets.generalError("Could not save your preferences"),
+      });
     }
   }
 

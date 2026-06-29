@@ -40,7 +40,7 @@ export default function Folder () {
   function navigateNext () {
     if (!folderName.length) {
       return toast.error('Error saving folder', {
-        ...toastPresets.generalSuccess('Please provide a folder name'),
+        ...toastPresets.generalError('Please provide a folder name'),
         position: 'top-center'
       })
     }

@@ -119,8 +119,8 @@ export default function Sidebar({ className }) {
               className={`flex gap-3 rounded-xl p-2 items-center transition-all ${
                 item.id === isActive
                   ? appearance.theme == "dark"
-                    ? "border-l-[3px] border-orange-500 pl-1.5 font-medium text-orange-400 bg-white/5"
-                    : "border-l-[3px] border-orange-500 pl-1.5 font-medium text-orange-600 bg-black/5"
+                    ? "border-l-[3px] border-orange-500 pl-1.5 font-medium  bg-white/5"
+                    : "border-l-[3px] border-orange-500 pl-1.5 font-medium  bg-black/5"
                   : appearance.theme == "dark"
                     ? "text-white hover:bg-white/5"
                     : "text-black hover:bg-black/5"
@@ -166,7 +166,11 @@ export default function Sidebar({ className }) {
             );
           })}
         </div>
-        <UserMenu data={data} subscription={subscription} appearance={appearance} />
+        <UserMenu
+          data={data}
+          subscription={subscription}
+          appearance={appearance}
+        />
       </div>
     </section>
   );

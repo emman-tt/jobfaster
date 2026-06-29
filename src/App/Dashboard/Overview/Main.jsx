@@ -138,7 +138,9 @@ export default function Main() {
 
     onError: (err, variables, context) => {
       queryClient.setQueryData(["program"], context.cachedProgram);
-      toast.error("Move failed");
+      toast.error("Move failed", {
+        ...toastPresets.generalError("Could not move file. Please try again."),
+      });
     },
 
     onSuccess: () => {

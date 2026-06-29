@@ -15,6 +15,7 @@ import { getSubscription } from "../../../services/subscription";
 import { getTransactions } from "../../../services/transactions";
 import { createCheckout } from "../../../services/payment";
 import { toast } from "sonner";
+import { toastPresets } from "../../../components/toasters";
 
 function formatPrice(price) {
   return price.toFixed(2);
@@ -114,7 +115,9 @@ export default function Billings() {
     },
     onError: (error) => {
       console.error("Checkout error:", error);
-      toast.error("Failed to create checkout. Please try again.");
+      toast.error("Checkout failed", {
+        ...toastPresets.generalError("Failed to create checkout. Please try again."),
+      });
     },
   });
 

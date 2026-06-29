@@ -39,6 +39,7 @@ api.interceptors.response.use(undefined, async (error) => {
   if (error?.response?.status == 401 && !error.config._retry) {
     if (error.config._isRefresh) {
       window.location.href = "/auth";
+      console.log('unauthorized block reached')
       return Promise.reject(error);
     }
 
@@ -83,6 +84,9 @@ api.interceptors.response.use(undefined, async (error) => {
           position: "top-center",
         });
       }
+
+ console.log('unauthorized block reached')
+      
       throw err;
     } finally {
       isRefreshing = false;

@@ -18,6 +18,7 @@ import ExportMenu from './ExportMenu'
 import { generatePaginatedResumeHTML } from '../../utils/renderResume'
 import { saveResumeFromHTML } from '../../services/Program'
 import { toast } from 'sonner'
+import { toastPresets } from '../../components/toasters'
 
 export function Topbar () {
   const navigate = useNavigate()
@@ -66,13 +67,19 @@ export function Topbar () {
       const result = await saveResumeFromHTML(html, resumeName.trim())
 
       if (result.status === 'success') {
-        toast.success('Resume saved successfully')
+        toast.success('Resume saved successfully', {
+          ...toastPresets.generalSuccess('Your resume has been saved'),
+        })
       } else {
-        toast.error(result.message || 'Failed to save resume')
+        toast.error('Failed to save resume', {
+          ...toastPresets.generalError(result.message || 'Failed to save resume'),
+        })
       }
     } catch (error) {
       console.error('Save resume error:', error)
-      toast.error('Failed to save resume')
+      toast.error('Failed to save resume', {
+        ...toastPresets.generalError('An error occurred while saving'),
+      })
     } finally {
       setIsSaving(false)
     }
@@ -179,7 +186,9 @@ export function Topbar () {
 
   async function handleExport (format) {
     if (format !== 'pdf') {
-      toast.error('DOCX export coming soon')
+      toast.error('DOCX export coming soon', {
+        ...toastPresets.generalError('DOCX export is not available yet'),
+      })
       setShowExportMenu(false)
       return
     }
@@ -196,14 +205,18 @@ export function Topbar () {
       }</title><style>@page{size:A4;margin:0;}body{margin:0;padding:0;display:flex;flex-direction:column;align-items:center;background:#f5f5f5;}@media print{body{background:white;padding:0;}}</style></head><body>${resumeHTML}<script>setTimeout(()=>{window.print()},200)</script></body></html>`
       const printWindow = window.open('', '_blank')
       if (!printWindow) {
-        toast.error('Please allow popups to export your resume')
+        toast.error('Popup blocked', {
+          ...toastPresets.generalError('Please allow popups to export your resume'),
+        })
         return
       }
       printWindow.document.write(fullHTML)
       printWindow.document.close()
     } catch (error) {
       console.error('Export error:', error)
-      toast.error('Failed to export resume')
+      toast.error('Failed to export resume', {
+        ...toastPresets.generalError('An error occurred while exporting'),
+      })
     }
   }
 

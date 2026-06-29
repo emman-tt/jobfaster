@@ -1,6 +1,7 @@
 import { X, Mail, Edit2, Copy } from 'lucide-react'
 import { useSelector } from 'react-redux'
 import { toast } from 'sonner'
+import { toastPresets } from '../../../../components/toasters'
 
 export default function SendMethodModal ({
   isOpen,
@@ -22,7 +23,9 @@ export default function SendMethodModal ({
     }\n\n${emailDetails?.signOff || 'Best regards,'}`
     const text = `Subject: ${subject}\n\n${body}`
     navigator.clipboard.writeText(text)
-    toast.success('Copied to clipboard! Paste in your email client.')
+    toast.success('Copied to clipboard', {
+      ...toastPresets.generalSuccess('Paste in your email client'),
+    })
   }
 
   return (
