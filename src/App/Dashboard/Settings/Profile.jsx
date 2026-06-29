@@ -141,38 +141,7 @@ export default function Profile({
             />
           </div>
 
-          <div className="space-y-1.5">
-            <label
-              className={`text-sm font-medium ${
-                appearance.theme === "dark"
-                  ? "text-slate-300"
-                  : "text-slate-700"
-              }`}
-            >
-              Email Address
-            </label>
-            <div className="relative">
-              <Mail
-                className={`absolute left-3 top-1/2 -translate-y-1/2 ${
-                  appearance.theme === "dark"
-                    ? "text-slate-500"
-                    : "text-slate-400"
-                }`}
-                size={16}
-              />
-              <input
-                type="email"
-                value={email}
-                onChange={handleEmailChange}
-                placeholder="emmanuelacquah.dev@gmail.com"
-                className={`w-full pl-10 pr-4 py-2.5 rounded-lg border outline-none transition-all text-sm ${
-                  appearance.theme === "dark"
-                    ? "bg-[#2A2A2A] border-0 text-white placeholder:text-slate-500"
-                    : "bg-white border-slate-200 text-slate-900"
-                }`}
-              />
-            </div>
-          </div>
+   
         </div>
       </SettingRow>
 

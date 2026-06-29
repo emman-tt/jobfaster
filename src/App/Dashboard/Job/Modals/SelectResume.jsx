@@ -101,7 +101,7 @@ export default function SelectResume () {
     <div
       className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 sm:w-full flex w-[95%]  justify-between flex-col  max-w-lg rounded-3xl shadow-2xl overflow-hidden font-satoshi min-h-135 h-135 z-50 ${
         appearance.theme == 'dark'
-          ? 'bg-[#2a2a2a] border border-slate-700'
+          ? 'bg-[#2a2a2a]  '
           : 'bg-white border border-gray-100'
       }`}
     >
@@ -163,19 +163,7 @@ export default function SelectResume () {
               All
             </button>
           </div>
-          <button
-            className={`p-2 border rounded-full transition-colors ${
-              appearance.theme == 'dark'
-                ? 'border-slate-700 hover:bg-slate-700'
-                : 'border-gray-200 hover:bg-gray-50'
-            }`}
-          >
-            <SlidersHorizontal
-              className={`w-5 h-5 ${
-                appearance.theme == 'dark' ? 'text-slate-400' : 'text-gray-600'
-              }`}
-            />
-          </button>
+      
         </div>
 
         {/* Search Bar */}
@@ -193,7 +181,7 @@ export default function SelectResume () {
               onChange={e => setSearchQuery(e.target.value)}
               className={`w-full pl-11 pr-4 py-3 border rounded-2xl outline-none transition-all text-sm font-medium ${
                 appearance.theme == 'dark'
-                  ? 'bg-[#202020] border-slate-700 text-white placeholder:text-slate-500'
+                  ? 'bg-[#202020] border-none text-white placeholder:text-slate-500'
                   : 'bg-gray-50 border-transparent focus:border-orange-400 focus:bg-white'
               }`}
             />
@@ -215,7 +203,7 @@ export default function SelectResume () {
       </div>
       {/* Footer */}
       <div
-        className={`p-6 py-4  border-t flex justify-between items-center ${
+        className={`p-6 py-4  border-t-0 flex justify-between items-center ${
           appearance.theme == 'dark'
             ? 'border-slate-700 bg-[#202020]'
             : 'border-gray-100 bg-gray-50/50'
@@ -233,7 +221,8 @@ export default function SelectResume () {
         </button>
         <button
           onClick={navigateNext}
-          className='px-8 py-2.5 bg-[#f17e27] hover:bg-[#e16d16] text-white text-sm font-bold rounded-2xl shadow-lg shadow-orange-200 transition-all flex items-center gap-2 group transform active:scale-95'
+          className={`px-8 py-2.5 bg-[#f17e27] hover:bg-[#e16d16] text-white text-sm font-bold rounded-2xl 
+            ${appearance.theme == "dark" ? 'shadow-none' : 'shadow-lg'}  shadow-orange-200 transition-all flex items-center gap-2 group transform active:scale-95`}
         >
           Continue
           <ChevronRight className='w-4 h-4 group-hover:translate-x-0.5 transition-transform' />
@@ -310,32 +299,14 @@ function Files ({ data, setSelected, selected }) {
                     resume.id == selected?.id
                       ? 'bg-white/20 text-white'
                       : appearance.theme == 'dark'
-                      ? 'bg-[#202020] text-slate-300 border border-slate-700'
+                      ? 'bg-[#202020] text-slate-300 border border-none'
                       : ' text-gray-600 bg-white'
                   }`}
                 >
                   {resume.metaData.size}mb
                 </div>
               )}
-              <button
-                className={`p-1 rounded-lg transition-colors ${
-                  resume.id == selected?.id
-                    ? 'hover:bg-white/20'
-                    : appearance.theme == 'dark'
-                    ? 'hover:bg-slate-700'
-                    : 'hover:bg-gray-200'
-                }`}
-              >
-                <MoreVertical
-                  className={`w-4 h-4 ${
-                    resume.id == selected?.id
-                      ? 'text-white'
-                      : appearance.theme == 'dark'
-                      ? 'text-slate-400'
-                      : 'text-gray-400'
-                  }`}
-                />
-              </button>
+            
             </div>
           </div>
         ))

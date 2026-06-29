@@ -85,8 +85,8 @@ export default function Sidebar({ className }) {
               className={`flex gap-3 rounded-xl p-2 items-center transition-all ${
                 item.id === isActive
                   ? appearance.theme == "dark"
-                    ? "border-l-[3px] border-orange-500 pl-1.5 font-medium text-white bg-white/5"
-                    : "border-l-[3px] border-orange-500 pl-1.5 font-medium  bg-black/5"
+                    ? " border-orange-500 pl-1.5 font-medium text-white bg-white/5"
+                    : " border-orange-500 pl-1.5 font-medium  bg-black/5"
                   : appearance.theme == "dark"
                     ? "text-white hover:bg-white/5"
                     : "text-black hover:bg-black/5"
@@ -119,53 +119,21 @@ export default function Sidebar({ className }) {
               className={`flex gap-3 rounded-xl p-2 items-center transition-all ${
                 item.id === isActive
                   ? appearance.theme == "dark"
-                    ? "border-l-[3px] border-orange-500 pl-1.5 font-medium  bg-white/5"
-                    : "border-l-[3px] border-orange-500 pl-1.5 font-medium  bg-black/5"
+                    ? " text-white border-orange-500 pl-1.5 font-medium  bg-white/5"
+                    : " border-orange-500 pl-1.5 font-medium  bg-black/5"
                   : appearance.theme == "dark"
                     ? "text-white hover:bg-white/5"
                     : "text-black hover:bg-black/5"
               }`}
             >
               <span>{item.icon}</span>
-              <p className="text-sm font-IBM text-[12px]">{item.name}</p>
+              <p className="text-sm font-IBM text-[12px]">{item.name} </p>
             </NavLink>
           ))}
         </section>
       </div>
 
       <div className="flex flex-col gap-4">
-        <div className="px-2  flex flex-col gap-3">
-          {bottom.map((item) => {
-            const isBottomActive = item.href && pathname.includes(item.href);
-            return (
-              <NavLink
-                to={item.href || "#"}
-                key={item.id}
-                style={{
-                  backgroundColor: isBottomActive
-                    ? appearance.theme == "dark"
-                      ? "rgba(255, 255, 255, 0.08)"
-                      : "#e6e8ec"
-                    : appearance.theme == "dark"
-                      ? "transparent"
-                      : "inherit",
-                }}
-                className={`flex gap-3 rounded-xl p-2 items-center transition-all ${
-                  isBottomActive
-                    ? appearance.theme == "dark"
-                      ? "border-l-[3px] border-orange-500 pl-1.5 font-medium text-orange-400 bg-white/5"
-                      : "border-l-[3px] border-orange-500 pl-1.5 font-medium text-orange-600 bg-black/5"
-                    : appearance.theme == "dark"
-                      ? "text-white hover:bg-white/5"
-                      : "text-black hover:bg-black/5"
-                }`}
-              >
-                <span>{item.icon}</span>
-                <p className="text-sm font-IBM text-[12px]">{item.name}</p>
-              </NavLink>
-            );
-          })}
-        </div>
         <UserMenu
           data={data}
           subscription={subscription}
@@ -241,5 +209,3 @@ const tools = [
     href: "faq",
   },
 ];
-
-const bottom = [];

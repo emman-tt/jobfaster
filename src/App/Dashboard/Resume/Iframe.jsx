@@ -11,6 +11,7 @@ export default function Iframe({ resume }) {
   const [numPages, setNumPages] = useState(null);
   const navigate = useNavigate();
   const pdfUrl = resume?.content;
+  const { appearance } = useSelector((state) => state.preferences);
 
   function onDocumentLoadSuccess({ numPages }) {
     setNumPages(numPages);
@@ -22,7 +23,9 @@ export default function Iframe({ resume }) {
 
   return (
     <section className="w-full h-screen relative ">
-      <section className=" absolute top-[10%] z-10 font-IBM text-sm flex gap-4 flex-col left-10">
+      <section
+        className={` ${appearance.theme == "dark" ? "text-white" : "text-black"} absolute top-[10%] z-10 font-IBM text-sm flex gap-4 flex-col left-10`}
+      >
         <div
           onClick={() => {
             navigate(-1);
@@ -39,7 +42,9 @@ export default function Iframe({ resume }) {
       </section>
       <section className="w-full flex justify-center overflow-y-auto pb-30 h-screen my-10 mb-50 p-8 ">
         <div className="flex flex-col w-[70%] h-max  gap-5 items-center origin-top">
-          <div className="font-satoshi">
+          <div
+            className={`font-satoshi ${appearance.theme == "dark" ? "text-white" : "text-black"}`}
+          >
             {resume.name}
             <span className="text-sm"></span>
           </div>

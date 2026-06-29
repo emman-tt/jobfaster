@@ -28,6 +28,12 @@ export const personalSlice = createSlice({
     },
     saveErrors: (state, action) => {
       state.errors = action.payload
+    },
+    loadResumeData: (state, action) => {
+      const { contactDetails, onlineLinks, summary } = action.payload
+      if (contactDetails) state.contactDetails = contactDetails
+      if (onlineLinks) state.onlineLinks = onlineLinks
+      if (summary !== undefined) state.summary = summary
     }
   }
 })
@@ -35,7 +41,7 @@ export const personalSlice = createSlice({
 export const {
   saveContactDetails,
   saveOnlineLinks,
-
   saveSummary,
-  saveErrors
+  saveErrors,
+  loadResumeData
 } = personalSlice.actions

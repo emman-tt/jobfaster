@@ -95,6 +95,12 @@ export const credentialsSlice = createSlice({
       } else if (category === 'achievements') {
         state.achievements = value
       }
+    },
+    loadResumeData: (state, action) => {
+      const { skills, certifications, achievements } = action.payload
+      if (skills) state.skills = skills
+      if (certifications) state.certifications = certifications
+      if (achievements) state.achievements = achievements
     }
   }
 })
@@ -109,5 +115,6 @@ export const {
   updateSkill,
   addSkill,
   removeSkill,
-  reArrange
+  reArrange,
+  loadResumeData
 } = credentialsSlice.actions

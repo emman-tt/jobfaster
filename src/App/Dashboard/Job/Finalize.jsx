@@ -13,7 +13,11 @@ import {
 } from "lucide-react";
 import { useSelector, useDispatch } from "react-redux";
 import { saveEmailDetails } from "../../../store/emailSlice";
-import { saveJobDetails } from "../../../store/aiSlice";
+import { saveJobDetails, savePdfUrl } from "../../../store/aiSlice";
+import { loadResumeData as loadPersonal } from "../../../store/personalSlice";
+import { loadResumeData as loadWork } from "../../../store/workSlice";
+import { loadResumeData as loadEducation } from "../../../store/educationSlice";
+import { loadResumeData as loadCredentials } from "../../../store/credentialsSlice";
 import { generateTailoredResumePDF } from "../../../utils/renderResume";
 import { toast } from "sonner";
 import SendMethodModal from "./Modals/SendMethod";
@@ -22,6 +26,7 @@ import { toastPresets } from "../../../components/toasters";
 import { sendMessage } from "../../../services/useSocket";
 import { connector } from "../../../services/useSocket";
 import { useNavigate } from "react-router-dom";
+import useClickOutside from "../../../hooks/useClick";
 function GetFileIcon() {
   return (
     <svg
@@ -41,78 +46,112 @@ function GetFileIcon() {
   );
 }
 
-function AttachedFiles({ files, selectedFile, onSelectFile, isGenerating }) {
+function AttachedFiles({ file, selectedFile, onSelectFile, isGenerating, onEdit, onPreview }) {
   const { appearance } = useSelector((state) => state.preferences);
+  const [openMenuId, setOpenMenuId] = useState(null);
+  const menuRef = useClickOutside(() => setOpenMenuId(null));
+
+  if (!file) {
+    return (
+      <div className="space-y-2 mt-4">
+        <h4 className={`text-xs font-bold uppercase tracking-wider ${appearance.theme == "dark" ? "text-white/60" : "text-slate-500"}`}>
+          Attached Files
+        </h4>
+        <p className={`text-xs ${appearance.theme == "dark" ? "text-white/40" : "text-gray-400"}`}>
+          {isGenerating ? "Generating Resume..." : "No files attached"}
+        </p>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-2 mt-4">
-      <h4
-        className={`text-xs font-bold uppercase tracking-wider ${
-          appearance.theme == "dark" ? "text-slate-400" : "text-slate-500"
-        }`}
-      >
+      <h4 className={`text-xs font-bold uppercase tracking-wider ${appearance.theme == "dark" ? "text-white/60" : "text-slate-500"}`}>
         {isGenerating ? "Generating Resume..." : "Attached Files"}
       </h4>
       <div className="space-y-1">
-        {files?.length > 0 ? (
-          files.map((file) => (
+        <div
+          onClick={() => {
+            console.log('clicked')
+            onSelectFile(file);
+            setOpenMenuId(openMenuId === file.id ? null : file.id);
+          }}
+          className={`flex items-center  justify-between p-3 rounded-xl cursor-pointer transition-all 
+            ${
+            file.id == selectedFile?.id
+              ? "bg-orange-500"
+              : appearance.theme == "dark"
+                ? "bg-[#202020] hover:bg-[#252525]"
+                : "bg-gray-50 hover:bg-gray-100"
+          }
+          `}
+        >
+          <div className="flex items-center gap-3">
             <div
-              key={file.id}
-              onClick={() => onSelectFile(file)}
-              className={`flex items-center justify-between p-3 rounded-xl cursor-pointer transition-all ${
+              className={`w-8 h-8 rounded-lg flex items-center justify-center ${
                 file.id == selectedFile?.id
-                  ? "bg-orange-500"
+                  ? "bg-white/20"
                   : appearance.theme == "dark"
-                    ? "bg-[#202020] hover:bg-[#252525]"
-                    : "bg-gray-50 hover:bg-gray-100"
+                    ? "bg-[#2a2a2a]"
+                    : "bg-gray-200"
               }`}
             >
-              <div className="flex items-center gap-3">
-                <div
-                  className={`w-8 h-8 rounded-lg flex items-center justify-center ${
-                    file.id == selectedFile?.id
-                      ? "bg-white/20"
-                      : appearance.theme == "dark"
-                        ? "bg-[#2a2a2a]"
-                        : "bg-gray-200"
+              <GetFileIcon />
+            </div>
+            <div>
+              <h3
+                className={`text-sm font-medium truncate max-w-40 ${
+                  file.id == selectedFile?.id
+                    ? "text-white"
+                    : appearance.theme == "dark"
+                      ? "text-white"
+                      : "text-slate-900"
+                }`}
+              >
+                {file.metaData?.name}
+              </h3>
+            </div>
+          </div>
+          <div className="relative">
+            {openMenuId === file.id && (
+              <div
+                ref={menuRef}
+                className={`absolute right-0 top-full mt-1 w-36 rounded-xl shadow-lg overflow-hidden z-50 ${
+                  appearance.theme == "dark" ? "bg-[#1a1a1a]" : "bg-white border border-gray-200"
+                }`}
+              >
+                <button
+                  onMouseDown={(e) => e.stopPropagation()}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setOpenMenuId(null);
+                    onEdit?.(file);
+                  }}
+                  className={`w-full px-4 py-2.5 text-sm font-medium text-left flex items-center gap-2 transition-colors ${
+                    appearance.theme == "dark" ? "text-white hover:bg-[#252525]" : "text-slate-700 hover:bg-gray-50"
                   }`}
                 >
-                  <GetFileIcon extension={file.metaData?.extension} />
-                </div>
-                <div>
-                  <h3
-                    className={`text-sm font-medium truncate max-w-40 ${
-                      file.id == selectedFile?.id
-                        ? "text-white"
-                        : appearance.theme == "dark"
-                          ? "text-white"
-                          : "text-slate-900"
-                    }`}
-                  >
-                    {file.metaData?.name}
-                  </h3>
-                </div>
+                  <Edit3 className="w-3.5 h-3.5" />
+                  Edit
+                </button>
+                <button
+                  onMouseDown={(e) => e.stopPropagation()}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setOpenMenuId(null);
+                    onPreview?.(file);
+                  }}
+                  className={`w-full px-4 py-2.5 text-sm font-medium text-left flex items-center gap-2 transition-colors ${
+                    appearance.theme == "dark" ? "text-white hover:bg-[#252525]" : "text-slate-700 hover:bg-gray-50"
+                  }`}
+                >
+                  <Eye className="w-3.5 h-3.5" />
+                  Preview
+                </button>
               </div>
-              <MoreVertical
-                className={`w-4 h-4 ${
-                  file.id == selectedFile?.id
-                    ? "text-white/70"
-                    : appearance.theme == "dark"
-                      ? "text-slate-500"
-                      : "text-gray-400"
-                }`}
-              />
-            </div>
-          ))
-        ) : (
-          <p
-            className={`text-xs ${
-              appearance.theme == "dark" ? "text-slate-500" : "text-gray-400"
-            }`}
-          >
-            No files attached
-          </p>
-        )}
+            )}
+          </div>
+        </div>
       </div>
     </div>
   );
@@ -120,7 +159,7 @@ function AttachedFiles({ files, selectedFile, onSelectFile, isGenerating }) {
 
 export default function Finalize() {
   const { emailDetails } = useSelector((state) => state.email);
-  const { job, tailoredResume } = useSelector((state) => state.ai);
+  const { job, tailoredResume, pdfUrl } = useSelector((state) => state.ai);
   const { appearance } = useSelector((state) => state.preferences);
   const dispatch = useDispatch();
   const queryClient = useQueryClient();
@@ -131,16 +170,14 @@ export default function Finalize() {
   });
 
   const [selectedFile, setSelectedFile] = useState(null);
-  const [pdfUrl, setPdfUrl] = useState(null);
   const [isGeneratingPDF, setIsGeneratingPDF] = useState(false);
   const [showSendMethodModal, setShowSendMethodModal] = useState(false);
-  const hasGeneratedRef = useRef(false);
+  const [previewFile, setPreviewFile] = useState(null);
 
   const resumeData = tailoredResume?.resume;
   const templateName = tailoredResume?.template;
   const generatePDF = useCallback(async () => {
-    if (resumeData && templateName && !hasGeneratedRef.current) {
-      hasGeneratedRef.current = true;
+    if (resumeData && templateName && !pdfUrl) {
       setIsGeneratingPDF(true);
       try {
         const fullName =
@@ -153,35 +190,32 @@ export default function Finalize() {
 
         if (result?.data?.url) {
           queryClient.invalidateQueries({ queryKey: ["program"] });
-          setPdfUrl(result.data.url);
+          dispatch(savePdfUrl(result.data.url));
         }
       } catch (error) {
         console.error("Failed to generate PDF:", error);
-        hasGeneratedRef.current = false;
       } finally {
         setIsGeneratingPDF(false);
       }
     }
-  }, [resumeData, templateName, queryClient]);
+  }, [resumeData, templateName, queryClient, pdfUrl, dispatch]);
   useEffect(() => {
     generatePDF();
   }, [generatePDF]);
 
-  const attachedFiles = resumeData
-    ? [
-        {
-          id: "tailored-resume",
-          metaData: {
-            name: `${
-              resumeData.personal?.contactDetails?.fullName || "Tailored Resume"
-            }.pdf`,
-            extension: "pdf",
-            content: pdfUrl || tailoredResume,
-            url: pdfUrl,
-          },
+  const attachedFile = resumeData
+    ? {
+        id: "tailored-resume",
+        metaData: {
+          name: `${
+            resumeData.personal?.contactDetails?.fullName || "Tailored Resume"
+          }.pdf`,
+          extension: "pdf",
+          content: pdfUrl || tailoredResume,
+          url: pdfUrl,
         },
-      ]
-    : [];
+      }
+    : null;
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -288,7 +322,7 @@ export default function Finalize() {
           </h1>
           <p
             className={`text-sm ml-1 ${
-              appearance.theme == "dark" ? "text-slate-400" : "text-slate-500"
+              appearance.theme == "dark" ? "text-white/60" : "text-slate-500"
             }`}
           >
             Review your application and send it directly to the recruiter.
@@ -299,7 +333,9 @@ export default function Finalize() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {/* Sender Email Section */}
             <div className="space-y-2">
-              <label className="block text-sm font-bold text-slate-700 ml-1">
+              <label
+                className={`block text-sm font-bold ml-1 ${appearance.theme == "dark" ? "text-white/80" : "text-slate-700"}`}
+              >
                 Your Email <span className="text-orange-500">*</span>
               </label>
               <div className="relative">
@@ -309,14 +345,16 @@ export default function Finalize() {
                   required
                   value={formData.userEmail}
                   onChange={handleChange}
-                  className="w-full pl-11 pr-4 py-3.5 border border-gray-200 focus:border-orange-400 focus:bg-white rounded-2xl outline-none transition-all text-sm font-medium bg-white text-slate-900 "
+                  className={`w-full pl-11 pr-4 py-3.5 border rounded-2xl outline-none transition-all text-sm font-medium ${appearance.theme == "dark" ? "bg-[#1a1a1a] text-white border-transparent focus:border-orange-400 focus:bg-[#1a1a1a]" : "bg-white text-slate-900 border-gray-200 focus:border-orange-400 focus:bg-white"}`}
                 />
               </div>
             </div>
 
             {/* Username Section */}
             <div className="space-y-2">
-              <label className="block text-sm font-bold text-slate-700 ml-1">
+              <label
+                className={`block text-sm font-bold ml-1 ${appearance.theme == "dark" ? "text-white/80" : "text-slate-700"}`}
+              >
                 Display Name <span className="text-orange-500">*</span>
               </label>
               <div className="relative">
@@ -326,7 +364,7 @@ export default function Finalize() {
                   required
                   value={formData.userName}
                   onChange={handleChange}
-                  className="w-full pl-11 pr-4 py-3.5 border border-gray-200 focus:border-orange-400 focus:bg-white rounded-2xl outline-none transition-all  text-sm font-medium bg-white text-slate-900 "
+                  className={`w-full pl-11 pr-4 py-3.5 border rounded-2xl outline-none transition-all text-sm font-medium ${appearance.theme == "dark" ? "bg-[#1a1a1a] text-white border-transparent focus:border-orange-400 focus:bg-[#1a1a1a]" : "bg-white text-slate-900 border-gray-200 focus:border-orange-400 focus:bg-white"}`}
                 />
               </div>
             </div>
@@ -337,7 +375,7 @@ export default function Finalize() {
             <div className="space-y-2">
               <label
                 htmlFor="email"
-                className="block text-sm font-bold text-slate-700 ml-1"
+                className={`block text-sm font-bold ml-1 ${appearance.theme == "dark" ? "text-white/80" : "text-slate-700"}`}
               >
                 To:
               </label>
@@ -356,7 +394,7 @@ export default function Finalize() {
                       }),
                     )
                   }
-                  className="w-full pl-11 pr-4 py-3.5 border border-gray-200 focus:border-orange-400 focus:bg-white rounded-2xl outline-none transition-all text-sm font-medium"
+                  className={`w-full pl-11 pr-4 py-3.5 border rounded-2xl outline-none transition-all text-sm font-medium ${appearance.theme == "dark" ? "bg-[#1a1a1a] text-white border-transparent focus:border-orange-400 focus:bg-[#1a1a1a]" : "bg-white text-slate-900 border-gray-200 focus:border-orange-400 focus:bg-white"}`}
                 />
               </div>
             </div>
@@ -365,7 +403,7 @@ export default function Finalize() {
             <div className="space-y-2">
               <label
                 htmlFor="subjectLine"
-                className="block text-sm font-bold text-slate-700 ml-1"
+                className={`block text-sm font-bold ml-1 ${appearance.theme == "dark" ? "text-white/80" : "text-slate-700"}`}
               >
                 Subject:
               </label>
@@ -377,7 +415,7 @@ export default function Finalize() {
                   placeholder="Application for..."
                   value={emailDetails?.subjectLine || ""}
                   onChange={handleEmailDetailsChange}
-                  className="w-full pl-11 pr-4 py-3.5 border border-gray-200 focus:border-orange-400 focus:bg-white rounded-2xl outline-none transition-all text-sm font-medium"
+                  className={`w-full pl-11 pr-4 py-3.5 border rounded-2xl outline-none transition-all text-sm font-medium ${appearance.theme == "dark" ? "bg-[#1a1a1a] text-white border-transparent focus:border-orange-400 focus:bg-[#1a1a1a]" : "bg-white text-slate-900 border-gray-200 focus:border-orange-400 focus:bg-white"}`}
                 />
               </div>
             </div>
@@ -386,9 +424,13 @@ export default function Finalize() {
           {/* Email Body & Preview Grid */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mt-6">
             {/* Left Column: Edit Fields */}
-            <div className="space-y-4  p-6 rounded-3xl border border-slate-100 ">
+            <div
+              className={`space-y-4 p-6 rounded-3xl ${appearance.theme == "dark" ? "" : "border border-slate-100"}`}
+            >
               <div className="flex items-center justify-between mb-4">
-                <h3 className="font-bold text-slate-800 flex items-center gap-2">
+                <h3
+                  className={`font-bold flex items-center gap-2 ${appearance.theme == "dark" ? "text-white" : "text-slate-800"}`}
+                >
                   Edit Content
                 </h3>
               </div>
@@ -397,7 +439,7 @@ export default function Finalize() {
               <div className="space-y-2">
                 <label
                   htmlFor="greeting"
-                  className="block text-xs font-bold text-slate-500 ml-1 uppercase tracking-wider"
+                  className={`block text-xs font-bold ml-1 uppercase tracking-wider ${appearance.theme == "dark" ? "text-white/60" : "text-slate-500"}`}
                 >
                   Greeting
                 </label>
@@ -407,7 +449,7 @@ export default function Finalize() {
                   name="greeting"
                   value={emailDetails?.greeting || ""}
                   onChange={handleEmailDetailsChange}
-                  className="w-full px-4 py-3 border border-gray-200 focus:border-orange-400 focus:bg-white rounded-xl outline-none transition-all text-sm font-medium bg-white/60"
+                  className={`w-full px-4 py-3 border rounded-xl outline-none transition-all text-sm font-medium ${appearance.theme == "dark" ? "bg-[#1a1a1a] text-white border-transparent focus:border-orange-400 focus:bg-[#1a1a1a]" : "bg-white/60 text-slate-900 border-gray-200 focus:border-orange-400 focus:bg-white"}`}
                 />
               </div>
 
@@ -415,7 +457,7 @@ export default function Finalize() {
               <div className="space-y-2">
                 <label
                   htmlFor="body"
-                  className="block text-xs font-bold text-slate-500 ml-1 uppercase tracking-wider"
+                  className={`block text-xs font-bold ml-1 uppercase tracking-wider ${appearance.theme == "dark" ? "text-white/60" : "text-slate-500"}`}
                 >
                   Core Message
                 </label>
@@ -426,7 +468,7 @@ export default function Finalize() {
                     rows={6}
                     value={emailDetails?.body || ""}
                     onChange={handleEmailDetailsChange}
-                    className="w-full px-4 py-4 border border-gray-200 focus:border-orange-400 focus:bg-white rounded-2xl outline-none transition-all text-sm font-medium resize-none min-h-40 bg-white/60"
+                    className={`w-full px-4 py-4 border rounded-2xl outline-none transition-all text-sm font-medium resize-none min-h-40 ${appearance.theme == "dark" ? "bg-[#1a1a1a] text-white border-transparent focus:border-orange-400 focus:bg-[#1a1a1a]" : "bg-white/60 text-slate-900 border-gray-200 focus:border-orange-400 focus:bg-white"}`}
                   />
                 </div>
               </div>
@@ -435,7 +477,7 @@ export default function Finalize() {
               <div className="space-y-2">
                 <label
                   htmlFor="callToAction"
-                  className="block text-xs font-bold text-slate-500 ml-1 uppercase tracking-wider"
+                  className={`block text-xs font-bold ml-1 uppercase tracking-wider ${appearance.theme == "dark" ? "text-white/60" : "text-slate-500"}`}
                 >
                   Call to Action
                 </label>
@@ -445,7 +487,7 @@ export default function Finalize() {
                   rows={3}
                   value={emailDetails?.callToAction || ""}
                   onChange={handleEmailDetailsChange}
-                  className="w-full px-4 py-4 border border-gray-200 focus:border-orange-400 focus:bg-white rounded-2xl outline-none transition-all text-sm font-medium resize-none min-h-25 bg-white/60"
+                  className={`w-full px-4 py-4 border rounded-2xl outline-none transition-all text-sm font-medium resize-none min-h-25 ${appearance.theme == "dark" ? "bg-[#1a1a1a] text-white border-transparent focus:border-orange-400 focus:bg-[#1a1a1a]" : "bg-white/60 text-slate-900 border-gray-200 focus:border-orange-400 focus:bg-white"}`}
                 />
               </div>
 
@@ -453,7 +495,7 @@ export default function Finalize() {
               <div className="space-y-2">
                 <label
                   htmlFor="attachmentNote"
-                  className="block text-xs font-bold text-slate-500 ml-1 uppercase tracking-wider"
+                  className={`block text-xs font-bold ml-1 uppercase tracking-wider ${appearance.theme == "dark" ? "text-white/60" : "text-slate-500"}`}
                 >
                   Attachment Note
                 </label>
@@ -463,7 +505,7 @@ export default function Finalize() {
                   name="attachmentNote"
                   value={emailDetails?.attachmentNote || ""}
                   onChange={handleEmailDetailsChange}
-                  className="w-full px-4 py-3 border border-gray-200 focus:border-orange-400 focus:bg-white rounded-xl outline-none transition-all text-sm font-medium bg-white/60"
+                  className={`w-full px-4 py-3 border rounded-xl outline-none transition-all text-sm font-medium ${appearance.theme == "dark" ? "bg-[#1a1a1a] text-white border-transparent focus:border-orange-400 focus:bg-[#1a1a1a]" : "bg-white/60 text-slate-900 border-gray-200 focus:border-orange-400 focus:bg-white"}`}
                 />
               </div>
 
@@ -471,7 +513,7 @@ export default function Finalize() {
               <div className="space-y-2">
                 <label
                   htmlFor="signOff"
-                  className="block text-xs font-bold text-slate-500 ml-1 uppercase tracking-wider"
+                  className={`block text-xs font-bold ml-1 uppercase tracking-wider ${appearance.theme == "dark" ? "text-white/60" : "text-slate-500"}`}
                 >
                   Sign Off
                 </label>
@@ -481,15 +523,21 @@ export default function Finalize() {
                   name="signOff"
                   value={emailDetails?.signOff || ""}
                   onChange={handleEmailDetailsChange}
-                  className="w-full px-4 py-3 border border-gray-200 focus:border-orange-400 focus:bg-white rounded-xl outline-none transition-all text-sm font-medium bg-white/60"
+                  className={`w-full px-4 py-3 border rounded-xl outline-none transition-all text-sm font-medium ${appearance.theme == "dark" ? "bg-[#1a1a1a] text-white border-transparent focus:border-orange-400 focus:bg-[#1a1a1a]" : "bg-white/60 text-slate-900 border-gray-200 focus:border-orange-400 focus:bg-white"}`}
                 />
               </div>
             </div>
 
             {/* Right Column: Live Preview */}
-            <div className=" p-8 shadow-md  pointer-events-none rounded-3xl flex flex-col h-full">
-              <div className="flex justify-between items-center mb-4 pb-4 border-b border-slate-200">
-                <h3 className="font-bold text-slate-800 flex items-center gap-2">
+            <div
+              className={`p-8 shadow-md pointer-events-none rounded-3xl flex flex-col h-full ${appearance.theme == "dark" ? "bg-[#222]" : "bg-white"}`}
+            >
+              <div
+                className={`flex justify-between items-center mb-4 pb-4 ${appearance.theme == "dark" ? "" : "border-b border-slate-200"}`}
+              >
+                <h3
+                  className={`font-bold flex items-center gap-2 ${appearance.theme == "dark" ? "text-white" : "text-slate-800"}`}
+                >
                   <Eye className="w-4 h-4 text-orange-500" />
                   Live Preview
                 </h3>
@@ -498,7 +546,9 @@ export default function Finalize() {
                 </span>
               </div>
 
-              <div className="flex-1 space-y-4 text-slate-700 font-medium leading-relaxed font-satoshi whitespace-pre-wrap text-[15px]">
+              <div
+                className={`flex-1 space-y-4 font-medium leading-relaxed font-satoshi whitespace-pre-wrap text-[15px] ${appearance.theme == "dark" ? "text-white/80" : "text-slate-700"}`}
+              >
                 <p>{emailDetails?.greeting || "Dear [Name],"}</p>
                 <p className="text-justify">
                   {emailDetails?.body ||
@@ -516,27 +566,41 @@ export default function Finalize() {
                 <p className="mb-0">
                   {emailDetails?.signOff || "Best regards,"}
                 </p>
-                <p className="mt-1 font-bold text-slate-900">
+                <p
+                  className={`mt-1 font-bold ${appearance.theme == "dark" ? "text-white" : "text-slate-900"}`}
+                >
                   {formData.userName || "John Doe"}
                 </p>
               </div>
 
               <AttachedFiles
-                files={attachedFiles}
+                file={attachedFile}
                 selectedFile={selectedFile}
                 onSelectFile={setSelectedFile}
                 isGenerating={isGeneratingPDF}
+                onPreview={(file) => setPreviewFile(file)}
+                onEdit={(file) => {
+                  const resume = tailoredResume?.resume;
+                  if (!resume) return;
+                  dispatch(loadPersonal(resume.personal));
+                  dispatch(loadWork(resume.work));
+                  dispatch(loadEducation(resume.education));
+                  dispatch(loadCredentials(resume.credentials));
+                  navigate("/editor");
+                }}
               />
             </div>
           </div>
 
           {/* Footer Actions */}
-          <div className="flex items-center justify-end pt-6  border-slate-100 mt-8">
+          <div
+            className={`flex items-center justify-end pt-6 mt-8 ${appearance.theme == "dark" ? "" : "border-slate-100"}`}
+          >
             <button
               type="button"
               onClick={handleSendClick}
               disabled={isGeneratingPDF}
-              className="px-10 py-3.5 bg-[#f17e27] hover:bg-[#e16d16] text-white text-sm font-bold rounded-[1.25rem] shadow-lg shadow-orange-100 transition-all flex items-center gap-2 group active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
+              className={`px-10 py-3.5 bg-[#f17e27] hover:bg-[#e16d16] text-white text-sm font-bold rounded-[1.25rem] transition-all flex items-center gap-2 group active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed ${appearance.theme == "dark" ? "" : "shadow-lg shadow-orange-100"}`}
             >
               <Send className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
               {isGeneratingPDF ? "Processing..." : "Send Application"}
@@ -550,6 +614,54 @@ export default function Finalize() {
           onSendServer={handleSendServer}
           userEmail={formData.userEmail}
         />
+
+        {previewFile && (
+          <div
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm"
+            onClick={() => setPreviewFile(null)}
+          >
+            <div
+              className={`relative w-[90vw] h-[90vh] rounded-2xl overflow-hidden ${
+                appearance.theme == "dark" ? "bg-[#1a1a1a]" : "bg-white"
+              }`}
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="flex items-center justify-between px-6 py-4">
+                <h3
+                  className={`text-sm font-bold ${appearance.theme == "dark" ? "text-white" : "text-slate-900"}`}
+                >
+                  {previewFile.metaData?.name}
+                </h3>
+                <button
+                  onClick={() => setPreviewFile(null)}
+                  className={`p-1.5 rounded-lg transition-colors ${
+                    appearance.theme == "dark"
+                      ? "hover:bg-[#252525]"
+                      : "hover:bg-gray-100"
+                  }`}
+                >
+                  <svg
+                    className="w-5 h-5"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <path d="M18 6 6 18" />
+                    <path d="m6 6 12 12" />
+                  </svg>
+                </button>
+              </div>
+              <iframe
+                src={previewFile.metaData?.url}
+                className="w-full h-[calc(90vh-64px)] border-0"
+                title="File Preview"
+              />
+            </div>
+          </div>
+        )}
       </div>
     </section>
   );

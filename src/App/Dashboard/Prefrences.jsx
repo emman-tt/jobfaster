@@ -16,7 +16,6 @@ import {
   setFileNaming
 } from '../../store/preferencesSlice'
 
-import systemThemeImg from '../../assets/img/systemMode.png'
 import lightThemeImg from '../../assets/img/lightMode.png'
 import darkThemeImg from '../../assets/img/darkMode.png'
 
@@ -211,42 +210,7 @@ export default function Prefrences () {
           </div>
         </SettingRow>
 
-        {/* Accessibility / Compact Mode */}
-        <SettingRow
-          label='Compact mode'
-          description='Reduce spacing to show more content at once. Ideal for smaller screens.'
-        >
-          <div
-            className={`flex items-center justify-between p-3 sm:p-4 rounded-xl border ${
-              appearance.theme == 'dark' ? 'bg-[#2A2A2A] border-0' : 'bg-white'
-            } border-slate-100`}
-          >
-            <div className='flex items-center gap-3'>
-              <div
-                className={`p-2  ${
-                  appearance.theme == 'dark' ? 'bg-gray-600' : ' bg-gray-50'
-                }  rounded-lg shadow-sm text-[#f17e27]`}
-              >
-                <Layout size={18} />
-              </div>
-              <div>
-                <p
-                  className={`text-sm font-medium ${
-                    appearance.theme === 'dark'
-                      ? 'text-white'
-                      : 'text-slate-900'
-                  }`}
-                >
-                  Enable Compact Mode
-                </p>
-              </div>
-            </div>
-            <Toggle
-              active={appearance.compactMode}
-              onChange={val => dispatch(setCompactMode(val))}
-            />
-          </div>
-        </SettingRow>
+      
 
         {/* Region & Language Section Placeholder */}
         <div className='mt-8 sm:mt-12 mb-4 sm:mb-6'>

@@ -114,6 +114,11 @@ export const workSlice = createSlice({
       if (project) {
         project.techStack = project.techStack.filter(t => t.id !== techId)
       }
+    },
+    loadResumeData: (state, action) => {
+      const { experiences, projects } = action.payload
+      if (experiences) state.experiences = experiences
+      if (projects) state.projects = projects
     }
   }
 })
@@ -129,5 +134,6 @@ export const {
   removeProject,
   addTech,
   removeTech,
-  reArrange
+  reArrange,
+  loadResumeData
 } = workSlice.actions

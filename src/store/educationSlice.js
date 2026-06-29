@@ -95,6 +95,11 @@ export const educationSlice = createSlice({
       if (category === 'education') {
         state.educations = value
       }
+    },
+    loadResumeData: (state, action) => {
+      const { educations, languages } = action.payload
+      if (educations) state.educations = educations
+      if (languages) state.languages = languages
     }
   }
 })
@@ -109,5 +114,6 @@ export const {
   addLanguage,
   removeLanguage,
   updateLanguageProficiency,
-  reArrange
+  reArrange,
+  loadResumeData
 } = educationSlice.actions
