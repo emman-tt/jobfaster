@@ -473,7 +473,7 @@ const SidebarTwoColumn = ({ data }) => {
                     >
                       •
                     </span>{" "}
-                    {acc}
+                    {acc.text}
                   </div>
                 ))}
               </div>

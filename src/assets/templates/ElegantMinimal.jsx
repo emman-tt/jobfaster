@@ -192,7 +192,7 @@ const ElegantMinimal = ({ data }) => {
                     color: bodyStyles.color || mediumGray,
                   }}
                 >
-                  — {acc}
+                  — {acc.text}
                 </div>
               ))}
             </div>

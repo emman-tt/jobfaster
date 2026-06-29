@@ -231,7 +231,7 @@ const SalesMarketing = ({ data }) => {
                     color: '#374151',
                   }}
                 >
-                  <span style={{ color: primaryGreen, fontWeight: 'bold' }}>▸</span> {acc}
+                  <span style={{ color: primaryGreen, fontWeight: 'bold' }}>▸</span> {acc.text}
                 </div>
               ))}
             </div>

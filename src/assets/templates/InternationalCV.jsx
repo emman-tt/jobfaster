@@ -383,7 +383,7 @@ const InternationalCV = ({ data }) => {
                     <span style={{ color: primaryTeal, fontWeight: "bold" }}>
                       •
                     </span>{" "}
-                    {acc}
+                    {acc.text}
                   </div>
                 ))}
               </div>

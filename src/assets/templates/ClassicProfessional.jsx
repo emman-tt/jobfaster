@@ -13,8 +13,6 @@ const ClassicProfessional = ({ data }) => {
   const links = data?.onlineLinks;
   const bodyLeading = bodyStyles.leading ? Number(bodyStyles.leading) : 1.6;
 
-  console.log(data.skills);
-
   return (
     <div
       style={{
@@ -191,7 +189,7 @@ const ClassicProfessional = ({ data }) => {
               >
                 {exp.accomplishments?.map((acc, i) => (
                   <li key={i} style={{ marginBottom: "4px" }}>
-                    {acc}
+                    {acc.text}
                   </li>
                 ))}
               </ul>

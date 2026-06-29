@@ -147,7 +147,7 @@ const ExecutiveSummary = ({ data }) => {
             >
               {data.experience[0]?.accomplishments?.map((acc, i) => (
                 <li key={i} style={{ marginBottom: '4px' }}>
-                  {acc}
+                  {acc.text}
                 </li>
               ))}
             </ul>

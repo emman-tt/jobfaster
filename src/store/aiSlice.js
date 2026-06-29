@@ -1,49 +1,41 @@
-import { createSlice } from '@reduxjs/toolkit'
+import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  corrections: [],
-  correctionsAnswers: [],
   job: {
-    description: '',
-    company: '',
-    hiringManager: '',
-    location: '',
-    tone: 'Formal',
-    email: '',
-    includeCoverLetter: false
+    description: "",
+    company: "",
+    hiringManager: "",
+    location: "",
+    tone: "Formal",
+    email: "",
+    includeCoverLetter: false,
   },
   uploadedUserFileData: {
-    data: {}
+    data: {},
   },
   tailoredResume: null,
-  pdfUrl: null
-}
+  pdfUrl: null,
+};
 export const aiSlice = createSlice({
-  name: 'ai',
+  name: "ai",
   initialState,
   reducers: {
-    saveCorrections: (state, action) => {
-      state.corrections = action.payload
+    saveJobDetails(state, action) {
+      const { category, value } = action.payload;
+      state.job[category] = value;
     },
-    saveJobDetails (state, action) {
-      const { category, value } = action.payload
-      state.job[category] = value
+    saveUserFileData(state, action) {
+      const { option, value } = action.payload;
+      state.uploadedUserFileData[option] = value;
     },
-    saveCorrectionAnswers: (state, action) => {
-      state.correctionsAnswers = action.payload
+    saveTailoredResume(state, action) {
+      state.tailoredResume = action.payload;
     },
-    saveUserFileData (state, action) {
-      const { option, value } = action.payload
-      state.uploadedUserFileData[option] = value
+    savePdfUrl(state, action) {
+      state.pdfUrl = action.payload;
     },
-    saveTailoredResume (state, action) {
-      state.tailoredResume = action.payload
-    },
-    savePdfUrl (state, action) {
-      state.pdfUrl = action.payload
-    }
-  }
-})
+  },
+});
 
 export const {
   saveCorrections,
@@ -51,5 +43,5 @@ export const {
   saveCorrectionAnswers,
   saveUserFileData,
   saveTailoredResume,
-  savePdfUrl
-} = aiSlice.actions
+  savePdfUrl,
+} = aiSlice.actions;

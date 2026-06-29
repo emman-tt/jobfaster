@@ -219,7 +219,7 @@ const MilitaryTransition = ({ data }) => {
                     color: bodyStyles.color || '#374151',
                   }}
                 >
-                  <span style={{ fontWeight: 'bold', color: gold }}>◆</span> {acc}
+                  <span style={{ fontWeight: 'bold', color: gold }}>◆</span> {acc.text}
                 </div>
               ))}
             </div>

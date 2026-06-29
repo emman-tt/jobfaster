@@ -165,7 +165,7 @@ const ModernMinimalist = ({ data }) => {
               >
                 {exp.accomplishments?.map((acc, i) => (
                   <div key={i} style={{ marginBottom: '4px' }}>
-                    • {acc}
+                    • {acc.text}
                   </div>
                 ))}
               </div>

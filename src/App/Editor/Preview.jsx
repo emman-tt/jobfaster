@@ -134,7 +134,7 @@ export function Preview() {
     [personal, work, education, credentials, styles],
   );
 
-
+console.log(userData)
 
   const dataHash = useMemo(
     () => JSON.stringify({ personal, work, education, credentials }),

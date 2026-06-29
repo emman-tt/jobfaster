@@ -292,7 +292,7 @@ const BoldStatement = ({ data }) => {
                       color: '#52525B',
                     }}
                   >
-                    <span style={{ color: accentRed, fontWeight: 'bold', marginRight: '6px' }}>▸</span> {acc}
+                    <span style={{ color: accentRed, fontWeight: 'bold', marginRight: '6px' }}>▸</span> {acc.text}
                   </div>
                 ))}
               </div>

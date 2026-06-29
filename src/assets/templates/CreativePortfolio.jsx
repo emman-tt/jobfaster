@@ -321,7 +321,7 @@ const CreativePortfolio = ({ data }) => {
                       color: bodyStyles.color || "#444",
                     }}
                   >
-                    • {acc}
+                    • {acc.text}
                   </div>
                 ))}
               </div>

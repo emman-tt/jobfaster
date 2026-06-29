@@ -402,7 +402,7 @@ const GraduateEntryLevel = ({ data }) => {
                   <span style={{ color: primaryOrange, fontWeight: "bold" }}>
                     •
                   </span>{" "}
-                  {acc}
+                  {acc.text}
                 </div>
               ))}
             </div>

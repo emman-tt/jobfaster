@@ -191,7 +191,7 @@ const TechnicalFocused = ({ data }) => {
                     marginBottom: '2px'
                   }}
                 >
-                  • {acc}
+                  • {acc.text}
                 </div>
               ))}
             </div>

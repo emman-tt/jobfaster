@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useEffect, useCallback } from "react";
 import {
   Mail,
   User,
@@ -46,11 +46,10 @@ function GetFileIcon() {
 
 function AttachedFiles({
   file,
-  selectedFile,
+
   onSelectFile,
   isGenerating,
   onEdit,
-  onPreview,
 }) {
   const { appearance } = useSelector((state) => state.preferences);
 

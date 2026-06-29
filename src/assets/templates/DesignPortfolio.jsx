@@ -394,7 +394,7 @@ const DesignPortfolio = ({ data }) => {
                   <span style={{ color: accentPink, fontWeight: "bold" }}>
                     ◦
                   </span>{" "}
-                  {acc}
+                  {acc.text}
                 </div>
               ))}
             </div>

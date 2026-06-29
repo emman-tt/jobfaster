@@ -201,7 +201,7 @@ const HealthcareProfessional = ({ data }) => {
                     color: professionalGray,
                   }}
                 >
-                  <span style={{ color: primaryBlue, fontWeight: 'bold' }}>•</span> {acc}
+                  <span style={{ color: primaryBlue, fontWeight: 'bold' }}>•</span> {acc.text}
                 </div>
               ))}
             </div>

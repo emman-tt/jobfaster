@@ -145,7 +145,7 @@ const companyStyles = styles.company || {}
                       fontSize: `${bodyStyles.size || 11}pt`
                     }}
                   >
-                    {acc}
+                    {acc.text}
                   </li>
                 ))}
               </ul>

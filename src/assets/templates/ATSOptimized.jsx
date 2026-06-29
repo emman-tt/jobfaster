@@ -165,7 +165,7 @@ const ATSOptimized = ({ data }) => {
                     marginLeft: '12px'
                   }}
                 >
-                  • {acc}
+                  • {acc.text}
                 </div>
               ))}
             </div>

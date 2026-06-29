@@ -137,7 +137,7 @@ const CompactLayout = ({ data }) => {
               </div>
               {exp.accomplishments?.map((acc, i) => (
                 <div key={i} style={{ marginLeft: '12px', marginTop: '2px', fontSize: `${bodyStyles.size || 8.5}pt` }}>
-                  • {acc}
+                  • {acc.text}
                 </div>
               ))}
             </div>

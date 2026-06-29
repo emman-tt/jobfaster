@@ -222,7 +222,7 @@ const CorporateStandard = ({ data }) => {
                     textAlign: "justify",
                   }}
                 >
-                  ▸ {acc}
+                  ▸ {acc.text}
                 </div>
               ))}
             </div>

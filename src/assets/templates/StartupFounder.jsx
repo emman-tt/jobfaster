@@ -258,7 +258,7 @@ const StartupBold = ({ data }) => {
                     color: bodyStyles.color || "#475569",
                   }}
                 >
-                  • {acc}
+                  • {acc.text}
                 </div>
               ))}
             </div>
