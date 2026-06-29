@@ -445,7 +445,7 @@ const DesignPortfolio = ({ data }) => {
                       border: `1px solid #E4E4E7`,
                     }}
                   >
-                    {skill}
+                    {skill.name}
                   </span>
                 ))}
               </div>

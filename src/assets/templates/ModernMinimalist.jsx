@@ -338,7 +338,7 @@ const ModernMinimalist = ({ data }) => {
                         marginBottom: '4px'
                       }}
                     >
-                      {skill}
+                      {skill.name}
                     </span>
                   ))}
                 </div>

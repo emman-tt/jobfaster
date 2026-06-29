@@ -276,7 +276,7 @@ const companyStyles = styles.company || {}
               lineHeight: bodyLeading
             }}
           >
-            {data.skills.join(', ')}
+            {data.skills.map(s => s.name).join(', ')}
           </p>
         </div>
       )}

@@ -239,7 +239,7 @@ const SidebarTwoColumn = ({ data }) => {
                       flexShrink: 0,
                     }}
                   />
-                  {skill}
+                  {skill.name}
                 </div>
               ))}
             </div>

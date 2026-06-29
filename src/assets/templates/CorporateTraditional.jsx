@@ -424,7 +424,7 @@ const CorporateStandard = ({ data }) => {
                 {data.skills.map((skill, i) => (
                   <span key={i}>
                     {i > 0 && " • "}
-                    {skill}
+                    {skill.name}
                   </span>
                 ))}
               </div>

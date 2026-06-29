@@ -187,7 +187,7 @@ const CreativePortfolio = ({ data }) => {
                     fontSize: "8pt",
                   }}
                 >
-                  {skill}
+                  {skill.name}
                 </span>
               ))}
             </div>

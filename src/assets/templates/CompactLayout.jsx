@@ -234,7 +234,7 @@ const CompactLayout = ({ data }) => {
                 Skills
               </h2>
               <div style={{ fontSize: `${bodyStyles.size || 8.5}pt`, lineHeight: 1.5 }}>
-                {data.skills.join(', ')}
+                {data.skills.map(s => s.name).join(', ')}
               </div>
             </div>
           )}

@@ -497,7 +497,7 @@ const StartupBold = ({ data }) => {
                         fontWeight: 500,
                       }}
                     >
-                      {skill}
+                      {skill.name}
                     </span>
                   ))}
                 </div>

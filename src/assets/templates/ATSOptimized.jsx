@@ -270,7 +270,7 @@ const ATSOptimized = ({ data }) => {
             Skills
           </div>
           <div style={{ fontSize: `${bodyStyles.size || 10}pt` }}>
-            {data.skills.join(', ')}
+            {data.skills.map(s => s.name).join(', ')}
           </div>
         </div>
       )}

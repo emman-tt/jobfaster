@@ -184,7 +184,7 @@ const FreelancePortfolio = ({ data }) => {
                   border: "1px solid #E5E7EB",
                 }}
               >
-                {skill}
+                {skill.name}
               </span>
             ))}
           </div>

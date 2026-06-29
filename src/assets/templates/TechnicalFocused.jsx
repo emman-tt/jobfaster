@@ -145,7 +145,7 @@ const TechnicalFocused = ({ data }) => {
                 key={i}
                 style={{ marginBottom: '4px', breakInside: 'avoid' }}
               >
-                → {skill}
+                → {skill.name}
               </div>
             ))}
           </div>

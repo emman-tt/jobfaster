@@ -359,7 +359,7 @@ const SalesMarketing = ({ data }) => {
                       fontWeight: 600,
                     }}
                   >
-                    {skill}
+                    {skill.name}
                   </span>
                 ))}
               </div>

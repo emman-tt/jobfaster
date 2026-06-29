@@ -161,7 +161,7 @@ const InternationalCV = ({ data }) => {
             >
               {data.skills.map((skill, i) => (
                 <div key={i} style={{ marginBottom: "2px" }}>
-                  • {skill}
+                  • {skill.name}
                 </div>
               ))}
             </div>

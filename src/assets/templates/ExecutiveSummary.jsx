@@ -281,7 +281,7 @@ const ExecutiveSummary = ({ data }) => {
             }}
           >
             {data.skills.slice(0, 6).map((skill, i) => (
-              <span key={i}>✓ {skill}</span>
+              <span key={i}>✓ {skill.name}</span>
             ))}
           </div>
         </div>

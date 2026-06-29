@@ -320,7 +320,7 @@ const MilitaryTransition = ({ data }) => {
                 {data.skills.map((skill, i) => (
                   <span key={i}>
                     {i > 0 && ' • '}
-                    <span style={{ fontWeight: 500, color: primaryBlue }}>{skill}</span>
+                    <span style={{ fontWeight: 500, color: primaryBlue }}>{skill.name}</span>
                   </span>
                 ))}
               </div>
