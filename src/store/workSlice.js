@@ -119,7 +119,8 @@ export const workSlice = createSlice({
       const { experiences, projects } = action.payload
       if (experiences) state.experiences = experiences
       if (projects) state.projects = projects
-    }
+    },
+    resetWork: () => initialState
   }
 })
 
@@ -135,5 +136,6 @@ export const {
   addTech,
   removeTech,
   reArrange,
-  loadResumeData
+  loadResumeData,
+  resetWork
 } = workSlice.actions

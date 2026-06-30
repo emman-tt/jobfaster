@@ -100,7 +100,8 @@ export const educationSlice = createSlice({
       const { educations, languages } = action.payload
       if (educations) state.educations = educations
       if (languages) state.languages = languages
-    }
+    },
+    resetEducation: () => initialState
   }
 })
 
@@ -115,5 +116,6 @@ export const {
   removeLanguage,
   updateLanguageProficiency,
   reArrange,
-  loadResumeData
+  loadResumeData,
+  resetEducation
 } = educationSlice.actions

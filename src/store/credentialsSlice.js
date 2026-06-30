@@ -100,7 +100,8 @@ export const credentialsSlice = createSlice({
       if (skills) state.skills = skills
       if (certifications) state.certifications = certifications
       if (achievements) state.achievements = achievements
-    }
+    },
+    resetCredentials: () => initialState
   }
 })
 
@@ -115,5 +116,6 @@ export const {
   addSkill,
   removeSkill,
   reArrange,
-  loadResumeData
+  loadResumeData,
+  resetCredentials
 } = credentialsSlice.actions

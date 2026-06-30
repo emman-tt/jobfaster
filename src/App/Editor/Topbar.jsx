@@ -11,6 +11,11 @@ import {
 } from "lucide-react";
 import { toggleModals } from "../../store/modalSlice";
 import { useDispatch, useSelector } from "react-redux";
+import { setUnsavedChanges } from "../../store/editorSlice";
+import { resetPersonal } from "../../store/personalSlice";
+import { resetWork } from "../../store/workSlice";
+import { resetEducation } from "../../store/educationSlice";
+import { resetCredentials } from "../../store/credentialsSlice";
 import useClickOutside from "../../hooks/useClick";
 import Menubar from "./Menubar";
 import { THEME_COLORS } from "./ThemeSelector";
@@ -26,6 +31,8 @@ export function Topbar() {
   const [showExportMenu, setShowExportMenu] = useState(false);
   const [menuBar, showMenuBar] = useState(false);
   const [showSaveModal, setShowSaveModal] = useState(false);
+  const [showUnsavedModal, setShowUnsavedModal] = useState(false);
+  const [pendingNavigation, setPendingNavigation] = useState(null);
   const [resumeName, setResumeName] = useState("");
   const exportMenuRef = useClickOutside(() => setShowExportMenu(false));
   const menuBarRef = useClickOutside(() => showMenuBar(false));
@@ -38,7 +45,35 @@ export function Topbar() {
   const credentials = useSelector((state) => state.credentials);
 
   function handleBack() {
-    navigate("/dashboard");
+    if (hasUnsavedChanges) {
+      setPendingNavigation("/dashboard");
+      setShowUnsavedModal(true);
+    } else {
+      navigate("/dashboard");
+    }
+  }
+
+  function handleUnsavedSave() {
+    setShowUnsavedModal(false);
+  }
+
+  function resetEditorRedux() {
+    dispatch(setUnsavedChanges(false));
+    dispatch(resetPersonal());
+    dispatch(resetWork());
+    dispatch(resetEducation());
+    dispatch(resetCredentials());
+    setShowUnsavedModal(false);
+  }
+
+  function handleUnsavedDiscard() {
+    resetEditorRedux();
+    navigate(pendingNavigation);
+  }
+
+  function handleUnsavedCancel() {
+    setShowUnsavedModal(false);
+    setPendingNavigation(null);
   }
 
   const [savedResumeName, setSavedResumeName] = useState(
@@ -446,6 +481,60 @@ export function Topbar() {
                 onClick={confirmSave}
                 disabled={!resumeName.trim()}
                 className="flex-1 px-4 py-2.5 rounded-xl font-medium bg-[#f17e27] text-white hover:bg-[#e16d16] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                Save
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {showUnsavedModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center">
+          <div className="absolute inset-0 bg-black/50" />
+          <div
+            className={`relative w-96 rounded-2xl shadow-xl p-6 ${
+              appearance.theme == "dark" ? "bg-[#2a2a2a]" : "bg-white"
+            }`}
+          >
+            <h3
+              className={`text-lg font-semibold mb-2 font-IBM ${
+                appearance.theme == "dark" ? "text-white" : "text-gray-900"
+              }`}
+            >
+              Unsaved Changes
+            </h3>
+            <p
+              className={`text-sm mb-6 ${
+                appearance.theme == "dark" ? "text-slate-400" : "text-gray-600"
+              }`}
+            >
+              You have unsaved changes. What would you like to do?
+            </p>
+            <div className="flex gap-3">
+              <button
+                onClick={handleUnsavedDiscard}
+                className={`flex-1 px-4 py-2.5 rounded-xl font-medium transition-colors ${
+                  appearance.theme == "dark"
+                    ? "bg-slate-700 text-white hover:bg-slate-600"
+                    : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                }`}
+              >
+                Discard
+              </button>
+              <button
+                onClick={handleUnsavedCancel}
+                className={`flex-1 px-4 py-2 rounded-xl font-medium transition-colors ${
+                  appearance.theme == "dark"
+                    ? "bg-slate-700 text-white hover:bg-slate-600"
+                    : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                }`}
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleUnsavedSave}
+                className="flex-1 px-4 py-2 rounded-xl font-medium bg-[#f17e27] text-white hover:bg-[#e16d16] transition-colors"
               >
                 Save
               </button>

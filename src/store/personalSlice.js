@@ -34,7 +34,8 @@ export const personalSlice = createSlice({
       if (contactDetails) state.contactDetails = contactDetails
       if (onlineLinks) state.onlineLinks = onlineLinks
       if (summary !== undefined) state.summary = summary
-    }
+    },
+    resetPersonal: () => initialState
   }
 })
 
@@ -43,5 +44,6 @@ export const {
   saveOnlineLinks,
   saveSummary,
   saveErrors,
-  loadResumeData
+  loadResumeData,
+  resetPersonal
 } = personalSlice.actions
