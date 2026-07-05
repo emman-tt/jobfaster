@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import {
   ArrowLeft,
   Save,
@@ -12,6 +12,7 @@ import {
 import { toggleModals } from "../../store/modalSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { setUnsavedChanges } from "../../store/editorSlice";
+import { savePdfUrl, saveFileId } from "../../store/aiSlice";
 import { resetPersonal } from "../../store/personalSlice";
 import { resetWork } from "../../store/workSlice";
 import { resetEducation } from "../../store/educationSlice";
@@ -21,12 +22,17 @@ import Menubar from "./Menubar";
 import { THEME_COLORS } from "./ThemeSelector";
 import ExportMenu from "./ExportMenu";
 import { generatePaginatedResumeHTML } from "../../utils/renderResume";
-import { saveResumeFromHTML } from "../../services/Program";
+import {
+  saveResumeFromHTML,
+  updateResumeFromHTML,
+} from "../../services/Program";
 import { toast } from "sonner";
 import { toastPresets } from "../../components/toasters";
 
 export function Topbar() {
   const navigate = useNavigate();
+  const location = useLocation();
+  const fileId = location.state?.fileId;
   const [isSaving, setIsSaving] = useState(false);
   const [showExportMenu, setShowExportMenu] = useState(false);
   const [menuBar, showMenuBar] = useState(false);
@@ -46,10 +52,10 @@ export function Topbar() {
 
   function handleBack() {
     if (hasUnsavedChanges) {
-      setPendingNavigation("/dashboard");
+      setPendingNavigation(-1);
       setShowUnsavedModal(true);
     } else {
-      navigate("/dashboard");
+      navigate(-1);
     }
   }
 
@@ -101,9 +107,18 @@ export function Topbar() {
       const html = await generatePaginatedResumeHTML(rawData, templateId, {
         styles,
       });
-      const result = await saveResumeFromHTML(html, resumeName.trim());
+      const result = fileId
+        ? await updateResumeFromHTML(html, resumeName.trim(), fileId)
+        : await saveResumeFromHTML(html, resumeName.trim());
 
       if (result.status === "success") {
+        dispatch(setUnsavedChanges(false));
+        if (result.data?.url) {
+          dispatch(savePdfUrl(result.data.url));
+        }
+        if (result.data?.id) {
+          dispatch(saveFileId(result.data.id));
+        }
         toast.success("Resume saved successfully", {
           ...toastPresets.generalSuccess("Your resume has been saved"),
         });
@@ -277,6 +292,7 @@ export function Topbar() {
 
   function handleDelete() {
     if (window.confirm("Are you sure you want to delete this resume?")) {
+      console.log("deleted");
     }
   }
 

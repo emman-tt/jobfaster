@@ -8,7 +8,7 @@ import { Modal as ProjectsModal } from './Projects/Modal'
 import { Modal as AchievementsModal } from './Achievements/Modal'
 import { Modal as CertificationsModal } from './Certifications/Modal'
 import { toggleModals } from '../../store/modalSlice'
-import { saveTemplateId } from '../../store/editorSlice'
+import { saveTemplateId, setUnsavedChanges } from '../../store/editorSlice'
 import { useState } from 'react'
 export function Main () {
   const { modals } = useSelector(state => state.modal)
@@ -20,7 +20,10 @@ export function Main () {
     <section className='h-full w-full overflow-hidden flex'>
       <TemplateSelector
         selectedTemplate={templateId}
-        onSelect={item => dispatch(saveTemplateId(item))}
+        onSelect={item => {
+          dispatch(saveTemplateId(item));
+          dispatch(setUnsavedChanges(true));
+        }}
         onClose={() => dispatch(toggleModals('showTemplates'))}
         isOpen={modals.showTemplates == true}
       />

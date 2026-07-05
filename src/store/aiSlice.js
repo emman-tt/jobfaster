@@ -15,6 +15,7 @@ const initialState = {
   },
   tailoredResume: null,
   pdfUrl: null,
+  fileId: null,
 };
 export const aiSlice = createSlice({
   name: "ai",
@@ -34,6 +35,9 @@ export const aiSlice = createSlice({
     savePdfUrl(state, action) {
       state.pdfUrl = action.payload;
     },
+    saveFileId(state, action) {
+      state.fileId = action.payload;
+    },
   },
 });
 
@@ -44,4 +48,5 @@ export const {
   saveUserFileData,
   saveTailoredResume,
   savePdfUrl,
+  saveFileId,
 } = aiSlice.actions;

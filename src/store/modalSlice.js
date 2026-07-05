@@ -12,9 +12,11 @@ const initialState = {
     selectResume: false,
     chooseTemplate: false,
     showTemplates: false,
-    fileDetails: false
+    fileDetails: false,
+    rename: false
   },
-  selectedFile: null
+  selectedFile: null,
+  renameTarget: null
 }
 export const modalSlice = createSlice({
   name: 'modal',
@@ -30,8 +32,14 @@ export const modalSlice = createSlice({
     closeFileDetails: (state) => {
       state.modals.fileDetails = false
       state.selectedFile = null
+    },
+    setRenameTarget: (state, action) => {
+      state.renameTarget = action.payload
+    },
+    clearRenameTarget: (state) => {
+      state.renameTarget = null
     }
   }
 })
 
-export const { toggleModals, openFileDetails, closeFileDetails } = modalSlice.actions
+export const { toggleModals, openFileDetails, closeFileDetails, setRenameTarget, clearRenameTarget } = modalSlice.actions

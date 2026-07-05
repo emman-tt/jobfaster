@@ -18,6 +18,7 @@ import { saveTailoredResume } from "../store/aiSlice";
 import { toast } from "sonner";
 import { toastPresets } from "../components/toasters";
 import FileDetails from "../App/Dashboard/Overview/Modals/FileDetails";
+import Rename from "../App/Dashboard/Overview/Modals/Rename";
 import ErrorBoundary from "../components/ErrorBoundary";
 
 import { useQuery } from "@tanstack/react-query";
@@ -314,6 +315,16 @@ export default function Dashboard() {
               } backdrop-blur-sm`}
             />
             <FileDetails />
+          </>
+        )}
+        {modals.rename && (
+          <>
+            <Overlay
+              className={` ${
+                appearance.theme == "dark" ? "bg-[#00000000]" : "bg-[#e0e4e582]"
+              } backdrop-blur-sm`}
+            />
+            <Rename />
           </>
         )}
       </section>

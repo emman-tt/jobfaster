@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import {
   Mail,
   User,
@@ -6,17 +6,19 @@ import {
   Type,
   Edit3,
   Eye,
+  EyeOff,
   FileText,
   RotateCcw,
   Loader2,
 } from "lucide-react";
 import { useSelector, useDispatch } from "react-redux";
 import { saveEmailDetails } from "../../../store/emailSlice";
-import { saveJobDetails, savePdfUrl } from "../../../store/aiSlice";
+import { saveJobDetails, savePdfUrl, saveFileId } from "../../../store/aiSlice";
 import { loadResumeData as loadPersonal } from "../../../store/personalSlice";
 import { loadResumeData as loadWork } from "../../../store/workSlice";
 import { loadResumeData as loadEducation } from "../../../store/educationSlice";
 import { loadResumeData as loadCredentials } from "../../../store/credentialsSlice";
+import { saveTemplateId } from "../../../store/editorSlice";
 import { generateTailoredResumePDF } from "../../../utils/renderResume";
 import { toast } from "sonner";
 import SendMethodModal from "./Modals/SendMethod";
@@ -44,8 +46,15 @@ function GetFileIcon() {
   );
 }
 
-function AttachedFiles({ file, onSelectFile, isGenerating, onEdit }) {
+function AttachedFiles({
+  file,
+  onSelectFile,
+  isGenerating,
+  onEdit,
+  onPreview,
+}) {
   const { appearance } = useSelector((state) => state.preferences);
+  const [showPreview, setShowPreview] = useState(false);
 
   if (!file) {
     return (
@@ -69,6 +78,12 @@ function AttachedFiles({ file, onSelectFile, isGenerating, onEdit }) {
       ? "hover:bg-[#252525] text-white/60 hover:text-white"
       : "hover:bg-gray-100 text-gray-400 hover:text-slate-700"
   }`;
+
+  const thumbnailUrl =
+    file.metaData?.url?.replace(
+      "/upload/",
+      "/upload/w_400,h_600,pg_1,f_jpg/",
+    ) || null;
 
   return (
     <div className="space-y-2 mt-4 pointer-events-auto">
@@ -110,6 +125,19 @@ function AttachedFiles({ file, onSelectFile, isGenerating, onEdit }) {
             <button
               onClick={(e) => {
                 e.stopPropagation();
+                setShowPreview((prev) => !prev);
+              }}
+              className={btnBase}
+            >
+              {showPreview ? (
+                <EyeOff className="w-4 h-4" />
+              ) : (
+                <Eye className="w-4 h-4" />
+              )}
+            </button>
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
                 onEdit?.(file);
               }}
               className={btnBase}
@@ -119,13 +147,27 @@ function AttachedFiles({ file, onSelectFile, isGenerating, onEdit }) {
           </div>
         </div>
       </div>
+
+      {showPreview && thumbnailUrl && (
+        <div
+          className={`rounded-xl overflow-hidden h-150  border  ${
+            appearance.theme == "dark" ? "border-slate-700" : "border-slate-200"
+          }`}
+        >
+          <img
+            src={thumbnailUrl}
+            alt={file.metaData?.name}
+            className="w-full  h-full object-cover"
+          />
+        </div>
+      )}
     </div>
   );
 }
 
 export default function Finalize() {
   const { emailDetails } = useSelector((state) => state.email);
-  const { job, tailoredResume, pdfUrl } = useSelector((state) => state.ai);
+  const { job, tailoredResume, pdfUrl, fileId } = useSelector((state) => state.ai);
   const { appearance } = useSelector((state) => state.preferences);
   const dispatch = useDispatch();
   const queryClient = useQueryClient();
@@ -139,12 +181,15 @@ export default function Finalize() {
   const [isGeneratingPDF, setIsGeneratingPDF] = useState(false);
   const [showSendMethodModal, setShowSendMethodModal] = useState(false);
   const [previewFile, setPreviewFile] = useState(null);
+  const generatedRef = useRef(false);
 
   const resumeData = tailoredResume?.resume;
   const templateName = tailoredResume?.template;
-  const generatePDF = useCallback(async () => {
-    if (resumeData && templateName && !pdfUrl) {
-      setIsGeneratingPDF(true);
+  useEffect(() => {
+    if (generatedRef.current || !resumeData || !templateName || pdfUrl) return;
+    generatedRef.current = true;
+    setIsGeneratingPDF(true);
+    (async () => {
       try {
         const fullName =
           resumeData.personal?.contactDetails?.fullName || "Tailored Resume";
@@ -153,21 +198,20 @@ export default function Finalize() {
           templateName,
           `${fullName}-Resume`,
         );
-
         if (result?.data?.url) {
           queryClient.invalidateQueries({ queryKey: ["program"] });
           dispatch(savePdfUrl(result.data.url));
+          if (result.data.id) {
+            dispatch(saveFileId(result.data.id));
+          }
         }
       } catch (error) {
         console.error("Failed to generate PDF:", error);
       } finally {
         setIsGeneratingPDF(false);
       }
-    }
-  }, [resumeData, templateName, queryClient, pdfUrl, dispatch]);
-  useEffect(() => {
-    generatePDF();
-  }, [generatePDF]);
+    })();
+  }, [resumeData, templateName, pdfUrl, queryClient, dispatch]);
 
   const attachedFile = resumeData
     ? {
@@ -177,7 +221,7 @@ export default function Finalize() {
             resumeData.personal?.contactDetails?.fullName || "Tailored Resume"
           }.pdf`,
           extension: "pdf",
-          content: pdfUrl || tailoredResume,
+          content: pdfUrl,
           url: pdfUrl,
         },
       }
@@ -535,7 +579,7 @@ export default function Finalize() {
                 <p
                   className={`mt-1 font-bold ${appearance.theme == "dark" ? "text-white" : "text-slate-900"}`}
                 >
-                  {formData.userName || "John Doe"}
+                  {formData.userName}
                 </p>
               </div>
 
@@ -552,7 +596,10 @@ export default function Finalize() {
                   dispatch(loadWork(resume.work));
                   dispatch(loadEducation(resume.education));
                   dispatch(loadCredentials(resume.credentials));
-                  navigate("/editor");
+                  if (tailoredResume?.template) {
+                    dispatch(saveTemplateId(tailoredResume.template));
+                  }
+                  navigate("/editor", { state: { fileId } });
                 }}
               />
             </div>

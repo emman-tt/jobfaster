@@ -12,7 +12,7 @@ import {
 import Folder from "../../../components/Folder";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
-import { toggleModals, openFileDetails } from "../../../store/modalSlice";
+import { toggleModals, openFileDetails, setRenameTarget } from "../../../store/modalSlice";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   deleteProgram,
@@ -483,6 +483,29 @@ function ContextMenu({ onClose, menuConfig, mutation, programs }) {
     return null;
   };
 
+  const findItem = () => {
+    if (!programs) return null;
+    if (item === "folder") {
+      const found = programs.find((p) => p?.folder?.id === menuConfig.id);
+      return found?.folder || null;
+    }
+    return findFile();
+  };
+
+  function handleRename() {
+    const target = findItem();
+    if (!target) return;
+    dispatch(
+      setRenameTarget({
+        id: menuConfig.id,
+        type: item,
+        name: target.metaData?.name || "",
+      }),
+    );
+    dispatch(toggleModals("rename"));
+    onClose();
+  }
+
   function handleDownload() {
     if (item !== "file") return onClose();
 
@@ -501,7 +524,6 @@ function ContextMenu({ onClose, menuConfig, mutation, programs }) {
     onClose();
   }
 
-  console.log(findFile());
   function handleEdit() {
     const file = findFile();
     const resume = file.parsedContent;
@@ -554,6 +576,14 @@ function ContextMenu({ onClose, menuConfig, mutation, programs }) {
       >
         <Download className="shrink-0" size={11} strokeWidth={2.5} />
         <span>Download</span>
+      </button>
+
+      <button
+        onClick={handleRename}
+        className="flex items-center gap-2 px-4 py-2 hover:bg-slate-50 text-slate-700 text-[10px] font-semibold transition-all cursor-pointer"
+      >
+        <Pencil className="shrink-0" size={11} strokeWidth={2.5} />
+        <span>Rename</span>
       </button>
 
       <div className="h-px bg-slate-100 my-1 mx-3" />

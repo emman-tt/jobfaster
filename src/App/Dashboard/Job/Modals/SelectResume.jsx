@@ -16,10 +16,19 @@ import { toggleModals } from '../../../../store/modalSlice'
 import UploadResume from './UploadResume'
 import { toggleNotification } from '../../../../store/notificationSlice'
 import { GetFileIcon } from '../../../../components/getFileIcon'
+import Loader from '../../../../components/Loader'
 import { sendMessage } from '../../../../services/useSocket'
 
 import { useQuery } from '@tanstack/react-query'
 import { FetchPrograms } from '../../../../services/Program'
+
+function formatBytes(bytes) {
+  if (!bytes || bytes === 0) return "0 B";
+  const k = 1024;
+  const sizes = ["B", "KB", "MB", "GB"];
+  const i = Math.floor(Math.log(bytes) / Math.log(k));
+  return parseFloat((bytes / Math.pow(k, i)).toFixed(1)) + " " + sizes[i];
+}
 
 export default function SelectResume () {
   const [activeTab, setActiveTab] = useState('recent')
@@ -192,7 +201,9 @@ export default function SelectResume () {
       {/* Main View */}
       <div className=' h-full  '>
         {isLoading || isFetching ? (
-          <div>Loading ..</div>
+          <div className="flex items-center justify-center h-full">
+            <Loader />
+          </div>
         ) : (
           <Files
             selected={selected}
@@ -221,8 +232,7 @@ export default function SelectResume () {
         </button>
         <button
           onClick={navigateNext}
-          className={`px-8 py-2.5 bg-[#f17e27] hover:bg-[#e16d16] text-white text-sm font-bold rounded-2xl 
-            ${appearance.theme == "dark" ? 'shadow-none' : 'shadow-lg'}  shadow-orange-200 transition-all flex items-center gap-2 group transform active:scale-95`}
+          className={`px-8 py-2.5 bg-[#f17e27] hover:bg-[#e16d16] text-white text-sm font-bold rounded-2xl transition-all flex items-center gap-2 group transform active:scale-95`}
         >
           Continue
           <ChevronRight className='w-4 h-4 group-hover:translate-x-0.5 transition-transform' />
@@ -243,12 +253,14 @@ function Files ({ data, setSelected, selected }) {
             onClick={() => {
               setSelected(resume)
             }}
-            className={`group flex items-center justify-between p-3 py-4 rounded-2xl   transition-all cursor-pointer ${
+            className={`group flex items-center justify-between p-3 py-4 rounded-2xl transition-all cursor-pointer ${
               resume.id == selected?.id
-                ? 'bg-[#f17e27]'
+                ? appearance.theme == 'dark'
+                  ? 'bg-[#333]'
+                  : 'bg-gray-100'
                 : appearance.theme == 'dark'
-                ? 'hover:bg-[#202020] border-slate-700'
-                : 'hover:bg-slate-50 '
+                ? 'hover:bg-[#202020]'
+                : 'hover:bg-gray-50'
             }`}
           >
             <div className='flex items-center gap-4'>
@@ -262,9 +274,7 @@ function Files ({ data, setSelected, selected }) {
               <div>
                 <h3
                   className={`text-sm font-bold truncate max-w-45 ${
-                    resume.id == selected?.id
-                      ? 'text-white'
-                      : appearance.theme == 'dark'
+                    appearance.theme == 'dark'
                       ? 'text-white'
                       : 'text-slate-900'
                   }`}
@@ -273,9 +283,7 @@ function Files ({ data, setSelected, selected }) {
                 </h3>
                 <p
                   className={`text-[11px] font-medium ${
-                    resume.id == selected?.id
-                      ? 'text-white/70'
-                      : appearance.theme == 'dark'
+                    appearance.theme == 'dark'
                       ? 'text-slate-400'
                       : 'text-gray-500'
                   }`}
@@ -296,14 +304,12 @@ function Files ({ data, setSelected, selected }) {
               ) : (
                 <div
                   className={`px-2 py-1 text-[10px] font-bold rounded ${
-                    resume.id == selected?.id
-                      ? 'bg-white/20 text-white'
-                      : appearance.theme == 'dark'
-                      ? 'bg-[#202020] text-slate-300 border border-none'
-                      : ' text-gray-600 bg-white'
+                    appearance.theme == 'dark'
+                      ? 'bg-[#202020] text-slate-300'
+                      : 'bg-gray-100 text-gray-600'
                   }`}
                 >
-                  {resume.metaData.size}mb
+                  {formatBytes(resume.metaData.size)}
                 </div>
               )}
             

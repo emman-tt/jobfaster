@@ -1,56 +1,78 @@
-import { api } from '../libs/axios'
+import { api } from "../libs/axios";
 
-const base = 'program'
+const base = "program";
 
-export async function deleteProgram (id) {
+export async function deleteProgram(id) {
   const response = await api.delete(`/${base}/${id}`, {
-    timeout: 50000
-  })
-  const raw = await response.data
-  return raw
+    timeout: 50000,
+  });
+  const raw = await response.data;
+  return raw;
 }
-export async function UploadFolder (name) {
+export async function UploadFolder(name) {
   const response = await api.post(`/${base}/folder/${name}`, {
-    timeout: 50000
-  })
-  const raw = await response.data
-  return raw
+    timeout: 50000,
+  });
+  const raw = await response.data;
+  return raw;
 }
 
-export async function UploadFile (formData) {
+export async function UploadFile(formData) {
   const response = await api.post(`/${base}/file/upload`, formData, {
     timeout: 50000,
     headers: {
-      'Content-Type': 'multipart/form-data'
-    }
-  })
-  const raw = await response.data
-  return raw
+      "Content-Type": "multipart/form-data",
+    },
+  });
+  const raw = await response.data;
+  return raw;
 }
 
-export async function FetchPrograms () {
+export async function FetchPrograms() {
   const response = await api.get(`/${base}`, {
-    timeout: 20000
-  })
-  return response.data.data
+    timeout: 20000,
+  });
+  return response.data.data;
 }
 
-export async function MoveFile (data) {
-  const { fileId, folderId } = data
+export async function renameProgram({ id, name, type }) {
+  const response = await api.patch(
+    `/${base}/rename/${id}`,
+    { name },
+    {
+      timeout: 50000,
+    },
+  );
+  return response.data;
+}
+
+export async function MoveFile(data) {
+  const { fileId, folderId } = data;
   const response = await api.patch(`/${base}/file`, {
     fileId,
-    folderId
-  })
-  return response.data
+    folderId,
+  });
+  return response.data;
 }
 
-export async function saveResumeFromHTML (html, name) {
+export async function saveResumeFromHTML(html, name) {
   const response = await api.post(
     `/${base}/file/save`,
     { html, name },
     {
-      timeout: 60000
-    }
-  )
-  return response.data
+      timeout: 60000,
+    },
+  );
+  return response.data;
+}
+
+export async function updateResumeFromHTML(html, name, id) {
+  const response = await api.patch(
+    `/${base}/file/${id}`,
+    { html, name },
+    {
+      timeout: 60000,
+    },
+  );
+  return response.data;
 }

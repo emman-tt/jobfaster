@@ -16,8 +16,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { toggleModals } from "../../../store/modalSlice";
 import { connector } from "../../../services/useSocket";
 import { saveJobDetails } from "../../../store/aiSlice";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { updateJobTrack } from "../../../services/jobs";
+// import { useMutation, useQueryClient } from "@tanstack/react-query";
+// import { updateJobTrack } from "../../../services/jobs";
 export default function Job() {
   const { job } = useSelector((state) => state.ai);
 
@@ -38,13 +38,13 @@ export default function Job() {
     );
   };
 
-  const queryClient = useQueryClient();
-  const updateMutation = useMutation({
-    mutationFn: updateJobTrack,
-    onSettled: () => {
-      queryClient.invalidateQueries({ queryKey: ["jobTracks"] });
-    },
-  });
+  // const queryClient = useQueryClient();
+  // const updateMutation = useMutation({
+  //   mutationFn: updateJobTrack,
+  //   onSettled: () => {
+  //     queryClient.invalidateQueries({ queryKey: ["jobTracks"] });
+  //   },
+  // });
 
   function saveTone(value) {
     dispatch(
