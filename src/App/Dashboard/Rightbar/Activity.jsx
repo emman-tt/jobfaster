@@ -60,7 +60,7 @@ export default function Activity({ data, total, hasMore, onLoadMore }) {
   const items = Array.isArray(data) ? [...data].reverse() : [];
 
   return (
-    <section className="w-full h-full pt-0 py-10 px-5">
+    <section className="w-full h-full  pt-0 py-10 pb-0 px-5">
       <h3
         className={`font-semibold font-IBM border-b pb-2 ${
           appearance.theme == "dark" ? "text-white" : "text-gray-600"
@@ -135,7 +135,7 @@ export default function Activity({ data, total, hasMore, onLoadMore }) {
                 </div>
               </section>
             ))}
-            {hasMore && (
+            {/* {hasMore && (
               <button
                 onClick={handleLoadMore}
                 disabled={loadingMore}
@@ -154,7 +154,7 @@ export default function Activity({ data, total, hasMore, onLoadMore }) {
                   `Show more (${total - items.length} remaining)`
                 )}
               </button>
-            )}
+            )} */}
           </section>
         )}
       </section>

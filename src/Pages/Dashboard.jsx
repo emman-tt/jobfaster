@@ -248,7 +248,8 @@ export default function Dashboard() {
               <div className="fixed inset-0 z-50 " onClick={closeRightbar}>
                 <div className="absolute inset-0 bg-black/50" />
                 <aside
-                  className={`absolute right-0 top-0 bottom-0 w-80 md:w-100 h-screen xl:w-120 transition-all duration-200 rounded-xl shadow-[#23232389] shadow-sm ${
+                  className={`absolute right-0 top-0 bottom-0 w-80 
+                    md:w-100 h-screen xl:w-120 transition-all duration-200 rounded-xl shadow-[#23232389] shadow-sm ${
                     appearance.theme == "dark" ? "bg-[#2a2a2a]" : "bg-white"
                   }`}
                   onClick={(e) => e.stopPropagation()}
@@ -258,7 +259,7 @@ export default function Dashboard() {
                     total={activityTotal}
                     hasMore={hasMoreActivity}
                     onLoadMore={loadMoreActivity}
-                    className="h-full pb-50"
+                    className="h-full pb-20"
                   />
                 </aside>
               </div>
