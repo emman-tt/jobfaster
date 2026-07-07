@@ -3,33 +3,31 @@ import { toastPresets } from "../components/toasters";
 import { getToken } from "../libs/token";
 
 let ws = null;
-let isConnecting = false;
+let reconnectTimer = null;
+let reconnectAttempts = 0;
+const MAX_RECONNECT_ATTEMPTS = 10;
+let intentionalClose = false;
 
 const callbacks = {
   JOB_APPLY: null,
   JOB_MAIL: null,
+  QUEUE_STATUS: null,
 };
 
 const pendingPromises = {};
 
-export function connector() {
-  if (ws && ws.readyState === WebSocket.OPEN) {
+function connect() {
+  if (ws && (ws.readyState === WebSocket.OPEN || ws.readyState === WebSocket.CONNECTING)) {
     return;
   }
 
-  if (ws && ws.readyState === WebSocket.CONNECTING) {
-    return;
-  }
-
-  if (ws && ws.readyState === WebSocket.CLOSED) {
-    ws = null;
-  }
+  ws = null;
 
   const wsUrl = import.meta.env.VITE_WS_URL || "ws://localhost:5000";
   ws = new WebSocket(`${wsUrl}?accessToken=${getToken()}`);
 
   ws.onopen = () => {
-    isConnecting = true;
+    reconnectAttempts = 0;
   };
 
   ws.onmessage = (event) => {
@@ -41,6 +39,10 @@ export function connector() {
       delete pendingPromises[type];
     }
 
+    if (callbacks.QUEUE_STATUS && type == "QUEUE_STATUS") {
+      return callbacks.QUEUE_STATUS(res);
+    }
+
     if (callbacks.JOB_MAIL && type == "JOB_MAIL") {
       return callbacks.JOB_MAIL(res);
     }
@@ -50,13 +52,8 @@ export function connector() {
     }
   };
 
-  ws.onerror = (error) => {
-    console.error("Error:", error);
-    toast.dismiss("ai-processing");
-    toast.error("AI Error", {
-      id: "ai-socket-error",
-      ...toastPresets.aiError(),
-    });
+  ws.onerror = () => {
+    console.error("WebSocket connection error");
   };
 
   ws.onclose = () => {
@@ -65,23 +62,46 @@ export function connector() {
       pendingPromises[key]({ status: "failed", error: "Connection closed" });
       delete pendingPromises[key];
     });
+
+    if (!intentionalClose && reconnectAttempts < MAX_RECONNECT_ATTEMPTS) {
+      const delay = Math.min(1000 * Math.pow(2, reconnectAttempts), 30000);
+      reconnectAttempts++;
+      reconnectTimer = setTimeout(connect, delay);
+    }
   };
 }
 
-export function sendMessage(type, data) {
-  if (ws && ws.readyState === WebSocket.CLOSED) {
-    console.log("socket closed ");
-  }
+export function connector() {
+  intentionalClose = false;
+  connect();
+}
 
+export function disconnect() {
+  intentionalClose = true;
+  if (reconnectTimer) {
+    clearTimeout(reconnectTimer);
+    reconnectTimer = null;
+  }
+  if (ws) {
+    ws.close();
+    ws = null;
+  }
+}
+
+export function sendMessage(type, data) {
   if (!ws || ws.readyState !== WebSocket.OPEN) {
-    toast.error("Connection Lost", {
-      id: "connection-lost",
-      ...toastPresets.generalError(
-        "Not connected. Please check your connection and try again.",
-      ),
-      position: "top-right",
-    });
-    console.error("Not connected", ws?.readyState);
+    connector();
+    setTimeout(() => {
+      if (!ws || ws.readyState !== WebSocket.OPEN) {
+        toast.error("Connection Lost", {
+          id: "connection-lost",
+          ...toastPresets.generalError(
+            "Not connected. Please check your connection and try again.",
+          ),
+          position: "top-right",
+        });
+      }
+    }, 3000);
     return false;
   }
 
@@ -89,7 +109,7 @@ export function sendMessage(type, data) {
     toast.loading("Tailoring Resume", {
       ...toastPresets.aiProcessing(),
       description:
-        "Generating a tailored resume and and email template for the job",
+        "Generating a tailored resume and email template for the job",
       id: "ai-processing",
       position: "top-right",
       duration: Infinity,
@@ -100,7 +120,7 @@ export function sendMessage(type, data) {
       ...toastPresets.aiProcessing(),
       id: "job-mail",
       position: "top-right",
-      description: "On success, email will be recieved by the hiring address",
+      description: "On success, email will be received by the hiring address",
       duration: Infinity,
     });
   }
@@ -115,6 +135,10 @@ export function sendMessage(type, data) {
       }
     };
   });
+}
+
+export function onQueueStatus(cb) {
+  callbacks.QUEUE_STATUS = cb;
 }
 
 export function onJobApply(cb) {

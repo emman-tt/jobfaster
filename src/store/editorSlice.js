@@ -12,7 +12,10 @@ const initialState = {
   isPreview: false,
   modal: null,
   editingId: null,
-  hasUnsavedChanges: false
+  hasUnsavedChanges: false,
+  editorSource: null,
+  editingFileName: null,
+  savedTemplateId: null
 }
 
 export const editorSlice = createSlice({
@@ -51,6 +54,19 @@ export const editorSlice = createSlice({
     },
     setUnsavedChanges: (state, action) => {
       state.hasUnsavedChanges = action.payload
+    },
+    setEditorSource: (state, action) => {
+      state.editorSource = action.payload
+    },
+    clearEditorSource: (state) => {
+      state.editorSource = null
+      state.editingFileName = null
+    },
+    setEditingFileName: (state, action) => {
+      state.editingFileName = action.payload
+    },
+    saveSavedTemplateId: (state, action) => {
+      state.savedTemplateId = action.payload
     }
   }
 })
@@ -66,5 +82,9 @@ export const {
   setModal,
   setTheme,
   setContrast,
-  setUnsavedChanges
+  setUnsavedChanges,
+  setEditorSource,
+  clearEditorSource,
+  setEditingFileName,
+  saveSavedTemplateId
 } = editorSlice.actions

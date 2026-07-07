@@ -1,4 +1,4 @@
-import { useRef } from 'react'
+import { useRef, useEffect } from 'react'
 import { Bold, Italic, Underline } from 'lucide-react'
 
 export default function TextBox ({
@@ -21,6 +21,12 @@ export default function TextBox ({
     const text = e.target.innerText
     onChange(text)
   }
+
+  useEffect(() => {
+    if (editorRef.current && editorRef.current.innerText !== value) {
+      editorRef.current.innerText = value
+    }
+  }, [value])
 
   return (
     <div

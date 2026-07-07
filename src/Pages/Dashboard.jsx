@@ -76,7 +76,10 @@ export default function Dashboard() {
         return;
       }
 
-      toastPresets.aiError();
+      toast.error("AI Processing Failed", {
+        id: "ai-error",
+        ...toastPresets.aiError(),
+      });
     });
   }, [dispatch, navigate]);
 

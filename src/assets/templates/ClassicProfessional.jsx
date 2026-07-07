@@ -357,17 +357,15 @@ const ClassicProfessional = ({ data }) => {
           >
             Skills
           </h2>
-          <div
+          <p
             style={{
               fontSize: `${bodyStyles.size || 11}pt`,
               margin: "0",
               lineHeight: bodyLeading,
             }}
           >
-            {data?.skills?.map((skil) => (
-              <div>{skil.name}</div>
-            ))}
-          </div>
+            {data.skills?.map(s => s.name).filter(Boolean).join(", ")}
+          </p>
         </div>
       )}
 

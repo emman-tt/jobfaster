@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import {
   Mail,
   User,
@@ -18,7 +18,7 @@ import { loadResumeData as loadPersonal } from "../../../store/personalSlice";
 import { loadResumeData as loadWork } from "../../../store/workSlice";
 import { loadResumeData as loadEducation } from "../../../store/educationSlice";
 import { loadResumeData as loadCredentials } from "../../../store/credentialsSlice";
-import { saveTemplateId } from "../../../store/editorSlice";
+import { saveTemplateId, setEditorSource, setEditingFileName } from "../../../store/editorSlice";
 import { generateTailoredResumePDF } from "../../../utils/renderResume";
 import { toast } from "sonner";
 import SendMethodModal from "./Modals/SendMethod";
@@ -169,6 +169,7 @@ export default function Finalize() {
   const { emailDetails } = useSelector((state) => state.email);
   const { job, tailoredResume, pdfUrl, fileId } = useSelector((state) => state.ai);
   const { appearance } = useSelector((state) => state.preferences);
+  const savedTemplateId = useSelector((state) => state.editor.savedTemplateId);
   const dispatch = useDispatch();
   const queryClient = useQueryClient();
   const navigate = useNavigate();
@@ -596,9 +597,13 @@ export default function Finalize() {
                   dispatch(loadWork(resume.work));
                   dispatch(loadEducation(resume.education));
                   dispatch(loadCredentials(resume.credentials));
-                  if (tailoredResume?.template) {
+                  if (tailoredResume?.template && !savedTemplateId) {
                     dispatch(saveTemplateId(tailoredResume.template));
                   }
+                  dispatch(setEditorSource("finalize"));
+                  dispatch(setEditingFileName(
+                    tailoredResume?.resume?.personal?.contactDetails?.fullName || "Resume"
+                  ));
                   navigate("/editor", { state: { fileId } });
                 }}
               />

@@ -11,7 +11,7 @@ import {
 } from "lucide-react";
 import { toggleModals } from "../../store/modalSlice";
 import { useDispatch, useSelector } from "react-redux";
-import { setUnsavedChanges } from "../../store/editorSlice";
+import { setUnsavedChanges, clearEditorSource, saveSavedTemplateId } from "../../store/editorSlice";
 import { savePdfUrl, saveFileId } from "../../store/aiSlice";
 import { resetPersonal } from "../../store/personalSlice";
 import { resetWork } from "../../store/workSlice";
@@ -32,7 +32,6 @@ import { toastPresets } from "../../components/toasters";
 export function Topbar() {
   const navigate = useNavigate();
   const location = useLocation();
-  const fileId = location.state?.fileId;
   const [isSaving, setIsSaving] = useState(false);
   const [showExportMenu, setShowExportMenu] = useState(false);
   const [menuBar, showMenuBar] = useState(false);
@@ -49,8 +48,16 @@ export function Topbar() {
   const work = useSelector((state) => state.work);
   const education = useSelector((state) => state.education);
   const credentials = useSelector((state) => state.credentials);
+  const fileId = location.state?.fileId;
 
-  function handleBack() {
+  async function handleBack() {
+    if (hasUnsavedChanges && editorSource === "finalize") {
+      const name = editingFileName || savedResumeName || personal.contactDetails.fullName || "";
+      await confirmSave(name);
+      dispatch(clearEditorSource());
+      navigate(-1);
+      return;
+    }
     if (hasUnsavedChanges) {
       setPendingNavigation(-1);
       setShowUnsavedModal(true);
@@ -91,15 +98,16 @@ export function Topbar() {
     setShowSaveModal(true);
   }
 
-  async function confirmSave() {
-    if (!resumeName.trim()) {
+  async function confirmSave(name) {
+    const saveName = name || resumeName;
+    if (!saveName?.trim()) {
       return;
     }
 
     setIsSaving(true);
     setShowSaveModal(false);
-    setSavedResumeName(resumeName.trim());
-    localStorage.setItem("editor-resume-name", resumeName.trim());
+    setSavedResumeName(saveName.trim());
+    localStorage.setItem("editor-resume-name", saveName.trim());
 
     try {
       const styles = buildExportStyles();
@@ -108,11 +116,12 @@ export function Topbar() {
         styles,
       });
       const result = fileId
-        ? await updateResumeFromHTML(html, resumeName.trim(), fileId)
-        : await saveResumeFromHTML(html, resumeName.trim());
+        ? await updateResumeFromHTML(html, saveName.trim(), fileId)
+        : await saveResumeFromHTML(html, saveName.trim());
 
       if (result.status === "success") {
         dispatch(setUnsavedChanges(false));
+        dispatch(saveSavedTemplateId(templateId));
         if (result.data?.url) {
           dispatch(savePdfUrl(result.data.url));
         }
@@ -148,6 +157,8 @@ export function Topbar() {
     contrast,
     templateId,
     hasUnsavedChanges,
+    editorSource,
+    editingFileName,
   } = useSelector((state) => state.editor);
 
   function buildExportStyles() {
@@ -555,6 +566,25 @@ export function Topbar() {
                 Save
               </button>
             </div>
+          </div>
+        </div>
+      )}
+
+      {isSaving && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30">
+          <div
+            className={`flex items-center gap-3 px-6 py-4 rounded-2xl shadow-xl ${
+              appearance.theme == "dark" ? "bg-[#2a2a2a]" : "bg-white"
+            }`}
+          >
+            <div className="w-5 h-5 border-2 border-orange-500 border-t-transparent rounded-full animate-spin" />
+            <span
+              className={`text-sm font-medium ${
+                appearance.theme == "dark" ? "text-white" : "text-gray-900"
+              }`}
+            >
+              Saving your resume...
+            </span>
           </div>
         </div>
       )}

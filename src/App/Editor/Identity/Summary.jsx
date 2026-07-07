@@ -1,4 +1,3 @@
-import { useState } from "react";
 import TextBox from "../../../components/Textbox";
 import { Info } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
@@ -6,12 +5,11 @@ import { saveSummary } from "../../../store/personalSlice";
 import { setUnsavedChanges } from "../../../store/editorSlice";
 
 export default function Summary() {
-  const [summary, setSummary] = useState("");
+  const summary = useSelector((state) => state.personal.summary);
   const dispatch = useDispatch();
   const { appearance } = useSelector((state) => state.preferences);
 
   const handleSummaryChange = (text) => {
-    setSummary(text);
     dispatch(saveSummary(text));
     dispatch(setUnsavedChanges(true));
   };

@@ -201,7 +201,7 @@ export function transformResumeData(rawData, options = {}) {
         endYear: edu.endYear,
         highlights: edu.highlights.filter((h) => h.text).map((h) => h.text),
       })),
-    skills: credentials.skills.flatMap((skill) => skill || []),
+    skills: credentials.skills.filter(Boolean),
     languages: education.languages
       .filter((lang) => lang.language)
       .map((lang) => ({
