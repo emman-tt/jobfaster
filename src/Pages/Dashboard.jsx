@@ -76,10 +76,12 @@ export default function Dashboard() {
         return;
       }
 
-      toast.error("AI Processing Failed", {
-        id: "ai-error",
-        ...toastPresets.aiError(),
-      });
+      if (status == "failed") {
+        toast.error("AI Processing Failed", {
+          id: "ai-error",
+          ...toastPresets.aiError(),
+        });
+      }
     });
   }, [dispatch, navigate]);
 
@@ -203,16 +205,16 @@ export default function Dashboard() {
           )}
           {pendingApplication && actualPath !== "finalize" && (
             <div
-              className={`flex items-center justify-between px-4 sm:px-6 py-3 ${appearance.theme == "dark" ? "bg-orange-600/20 text-orange-300" : "bg-orange-50 text-orange-700"} border-b ${appearance.theme == "dark" ? "border-orange-700/30" : "border-orange-200"}`}
+              className={`flex items-center justify-between px-4  sm:px-6 py-3 ${appearance.theme == "dark" ? "bg-orange-600/20 text-orange-300" : "bg-orange-50 text-orange-700"} border-b ${appearance.theme == "dark" ? "border-orange-700/30" : "border-orange-200"}`}
             >
               <p className="text-sm font-semibold flex items-center gap-2">
                 <span className="w-2 h-2 rounded-full bg-orange-500 animate-pulse" />
                 You have an application to complete
               </p>
-              <div className="flex items-center gap-3">
+              <div className="flex items-center gap-3 pr-20">
                 <Link
                   to="finalize"
-                  className="text-xs font-bold px-3 py-1.5 rounded-lg bg-orange-500 text-white hover:bg-orange-600 transition-colors"
+                  className="text-xs font-bold px-3 py-1.5  rounded-lg bg-orange-500 text-white hover:bg-orange-600 transition-colors"
                 >
                   Complete Now
                 </Link>
@@ -254,8 +256,8 @@ export default function Dashboard() {
                 <aside
                   className={`absolute right-0 top-0 bottom-0 w-80 
                     md:w-100 h-screen xl:w-120 transition-all duration-200 rounded-xl shadow-[#23232389] shadow-sm ${
-                    appearance.theme == "dark" ? "bg-[#2a2a2a]" : "bg-white"
-                  }`}
+                      appearance.theme == "dark" ? "bg-[#2a2a2a]" : "bg-white"
+                    }`}
                   onClick={(e) => e.stopPropagation()}
                 >
                   <Rightbar

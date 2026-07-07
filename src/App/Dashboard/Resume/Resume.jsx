@@ -1,4 +1,3 @@
-import Builder from './Builder'
 import Iframe from './Iframe'
 import { useSearchParams } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
@@ -31,7 +30,6 @@ export default function Resume () {
   }
 
   const resume = findResume()
-  const type = resume?.source
 
   if (isLoading) {
     return (
@@ -73,16 +71,5 @@ export default function Resume () {
     )
   }
 
-  if (type == 'builder') {
-    return <Builder resume={resume} />
-  }
-  if (type == 'upload') {
-    return <Iframe resume={resume.metaData} />
-  }
-
-  return (
-    <div className='flex flex-col items-center justify-center min-h-screen gap-4'>
-      <h2 className='text-xl font-semibold'>Unknown type</h2>
-    </div>
-  )
+  return <Iframe resume={resume.metaData} />
 }

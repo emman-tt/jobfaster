@@ -12,7 +12,11 @@ import {
 import Folder from "../../../components/Folder";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
-import { toggleModals, openFileDetails, setRenameTarget } from "../../../store/modalSlice";
+import {
+  toggleModals,
+  openFileDetails,
+  setRenameTarget,
+} from "../../../store/modalSlice";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   deleteProgram,
@@ -294,11 +298,7 @@ export default function Main() {
 
         <section
           className={`grid gap-3 sm:gap-4 2xl:gap-6 transform-gpu transition-all duration-150 ease-in-out  mt-0 pt-5 sm:px-3 sm:pl-5 sm:pr-10 2xl:px-8 justify-items-center max-sm:items-center max-sm:justify-items-center max-sm:align-bottom
-            grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 ${
-              showRightbar
-                ? "xl:grid-cols-6 2xl:grid-cols-8"
-                : "xl:grid-cols-8 2xl:grid-cols-10"
-            } pb-0 mb-0 gap-y-6 sm:gap-y-8 2xl:gap-y-10 w-full`}
+            grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 ${"xl:grid-cols-8 2xl:grid-cols-10"} pb-0 mb-0 gap-y-6 sm:gap-y-8 2xl:gap-y-10 w-full`}
         >
           {/* specific files in an opened folder  */}
           {

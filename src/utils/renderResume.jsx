@@ -271,7 +271,7 @@ export async function generatePaginatedResumeHTML(
   const pages = greedyPaginate(resumeData, template.component, options.styles);
 
   const pageHtmls = pages.map(
-    ({ data: pageData, pageNumber, totalPages }, i) => {
+    ({ data: pageData, pageNumber, totalPages }) => {
       const transformed = transformResumeData(pageData, options);
       transformed.pageNumber = pageNumber;
       transformed.totalPages = totalPages;
@@ -284,7 +284,9 @@ export async function generatePaginatedResumeHTML(
     },
   );
 
-  return pageHtmls.join("");
+  return pageHtmls.join(
+    '<div style="page-break-before:always;height:0;"></div>',
+  );
 }
 
 export async function generateTailoredResumePDF(

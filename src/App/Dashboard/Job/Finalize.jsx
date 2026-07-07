@@ -257,7 +257,7 @@ export default function Finalize() {
 
   const handleSendServer = async () => {
     connector();
-    await generatePDF();
+    // await generatePDF();
     setShowSendMethodModal(false);
     const res = await sendMessage("JOB_MAIL", {
       to: job.email,
